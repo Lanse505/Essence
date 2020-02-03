@@ -1,12 +1,14 @@
 package lanse505.essence.core.generation.trees.feature;
 
 import com.mojang.datafixers.Dynamic;
+import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.module.ModuleObjects;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LogBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -22,6 +24,7 @@ public class EssenceTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
 
     public EssenceTreeFeature() {
         super(dynamic -> CONFIG);
+        setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_tree_feature"));
     }
 
     @Override

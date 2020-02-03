@@ -1,5 +1,6 @@
 package lanse505.essence.core.generation;
 
+import lanse505.essence.Essence;
 import lanse505.essence.utils.generator.ChunkCornerPlacement;
 import lanse505.essence.utils.generator.DeferedFeature;
 import lanse505.essence.utils.generator.IGenerator;
@@ -38,7 +39,10 @@ public class WorldGenHandler {
     public static void loadComplete() {
         for(GenerationStage.Decoration stage : GenerationStage.Decoration.values()) {
             ConfiguredFeature<?, ?> feature = new DeferedFeature(stage).withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).func_227228_a_(new ChunkCornerPlacement().func_227446_a_(NoPlacementConfig.NO_PLACEMENT_CONFIG));
-            ForgeRegistries.BIOMES.forEach(biome -> biome.addFeature(stage, feature));
+            ForgeRegistries.BIOMES.forEach(biome -> {
+                biome.addFeature(stage, feature);
+            });
+
         }
     }
 
