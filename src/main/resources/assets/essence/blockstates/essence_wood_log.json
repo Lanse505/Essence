@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "essence:block/essence_wood_log" },
+        "axis=z":   { "model": "essence:block/essence_wood_log", "x": 90 },
+        "axis=x":   { "model": "essence:block/essence_wood_log", "x": 90, "y": 90 }
+    }
+}

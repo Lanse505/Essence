@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/Lanse505/Essence/issues"
+
+[[mods]]
+    modId="essence" #mandatory
+    version="${file.jarVersion}"
+    displayName="Essence"
+    authors="Lanse505"
+    description='''
+
+    '''
+
+[[dependencies.essence]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.essence]]
+    modId="titanium"
+    mandatory=true
+    versionRange="[2.3,]"
+    ordering="AFTER"
+    side="BOTH"

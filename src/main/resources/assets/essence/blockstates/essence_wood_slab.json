@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "essence:block/essence_wood_slab" },
+        "type=top": { "model": "essence:block/essence_wood_slab_top" },
+        "type=double": { "model": "essence:block/essence_wood_planks" }
+    }
+}

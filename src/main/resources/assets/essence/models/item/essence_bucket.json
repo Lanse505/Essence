@@ -1,0 +1,6 @@
+{
+  "parent": "essence:item/item",
+  "textures": {
+    "layer0": "essence:items/biofuel_bucket"
+  }
+}
