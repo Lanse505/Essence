@@ -2,9 +2,14 @@ package lanse505.essence;
 
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
+import lanse505.essence.core.blocks.essence.EssenceLeavesBlock;
 import lanse505.essence.core.generation.WorldGenHandler;
 import lanse505.essence.core.generation.trees.feature.EssenceTreeFeature;
+import lanse505.essence.utils.module.ModuleObjects;
 import lanse505.essence.utils.module.Modules;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -44,7 +49,8 @@ public class Essence extends ModuleController {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-
+        RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_LEAVES, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_SAPLING, RenderType.cutout());
     }
 
     private void loadComplete(FMLLoadCompleteEvent event) {

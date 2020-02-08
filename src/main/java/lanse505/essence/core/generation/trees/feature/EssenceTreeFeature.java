@@ -1,6 +1,7 @@
 package lanse505.essence.core.generation.trees.feature;
 
-import com.mojang.datafixers.Dynamic;
+import lanse505.essence.core.blocks.essence.EssenceLogBlock;
+import lanse505.essence.core.core.CustomRotatedPillarBlock;
 import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.module.ModuleObjects;
 import net.minecraft.block.Block;
@@ -15,12 +16,13 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
 
 import java.util.Random;
 import java.util.Set;
 
 public class EssenceTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
-    public static final TreeFeatureConfig CONFIG = new TreeFeatureConfig.Builder(null, null, null).build();
+    public static final TreeFeatureConfig CONFIG = new TreeFeatureConfig.Builder(null, null, new BlobFoliagePlacer(2, 0)).build();
 
     public EssenceTreeFeature() {
         super(dynamic -> CONFIG);
@@ -29,7 +31,7 @@ public class EssenceTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
 
     @Override
     protected boolean func_225557_a_(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> cb1, Set<BlockPos> cb2, MutableBoundingBox box, TreeFeatureConfig config) {
-        int height = random.nextInt(3) + 5;
+        int height = random.nextInt(config.baseHeight) + 5;
         BlockPos trunkTop = pos.up(height);
 
         this.setBlockState(world, pos, Blocks.AIR.getDefaultState());
@@ -76,7 +78,7 @@ public class EssenceTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
             if (func_214587_a(world, goal)) {
                 if (hasAxis) {
                     Direction.Axis axis = this.getLogAxis(first, goal);
-                    this.setBlockState(world, goal, state.with(LogBlock.AXIS, axis));
+                    this.setBlockState(world, goal, state.with(CustomRotatedPillarBlock.AXIS, axis));
                 } else {
                     this.setBlockState(world, goal, state);
                 }
@@ -94,7 +96,7 @@ public class EssenceTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
                         if (isAirOrLeaves(world, goal)) {
                             if (world.hasBlockState(goal, st -> {
                                 Block block = st.getBlock();
-                                return !(block instanceof LogBlock) && block != Blocks.DIRT && block != Blocks.GRASS;
+                                return !(block instanceof EssenceLogBlock) && block != Blocks.DIRT && block != Blocks.GRASS;
                             })) {
                                 this.setBlockState(world, goal, state);
                                 changedBlocks.add(goal);

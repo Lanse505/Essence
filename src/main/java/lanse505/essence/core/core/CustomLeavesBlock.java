@@ -2,6 +2,7 @@ package lanse505.essence.core.core;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.EntityType;
