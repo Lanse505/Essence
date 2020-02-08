@@ -3,7 +3,7 @@ loaderVersion="[31,)"
 issueTrackerURL="https://github.com/Lanse505/Essence/issues"
 
 [[mods]]
-    modId="essence" #mandatory
+    modId="essence"
     version="${file.jarVersion}"
     displayName="Essence"
     authors="Lanse505"

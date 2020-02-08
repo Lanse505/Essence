@@ -111,7 +111,7 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
             if (rand.nextInt(15) == 1) {
                 BlockPos blockpos = pos.down();
                 BlockState blockstate = worldIn.getBlockState(blockpos);
-                if (!blockstate.isSolid() || !blockstate.isSolidSide(worldIn, blockpos, Direction.UP)) {
+                if (!blockstate.isSolid() || !blockstate.isSideSolidFullSquare(worldIn, blockpos, Direction.UP)) {
                     double d0 = (double)((float)pos.getX() + rand.nextFloat());
                     double d1 = (double)pos.getY() - 0.05D;
                     double d2 = (double)((float)pos.getZ() + rand.nextFloat());

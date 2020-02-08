@@ -36,6 +36,6 @@ public abstract class Generator implements IGenerator{
     }
 
     public Biome getBiome(IWorld world, BlockPos pos) {
-        return world.getBiomeManager().getBiome(pos);
+        return world.getBiomeAccess().getBiome(pos);
     }
 }

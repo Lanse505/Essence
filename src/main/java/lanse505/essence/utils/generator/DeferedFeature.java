@@ -1,7 +1,5 @@
 package lanse505.essence.utils.generator;
 
-import com.mojang.datafixers.Dynamic;
-import lanse505.essence.core.generation.WorldGenHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -24,7 +22,6 @@ public class DeferedFeature extends Feature<NoFeatureConfig> {
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        WorldGenHandler.generateChunk(worldIn, generator, pos, stage);
         return true;
     }
 
