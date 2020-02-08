@@ -1,6 +1,6 @@
 {
-    "parent": "block/leaves",
+    "parent": "minecraft:block/leaves",
     "textures": {
-        "all": "block/essence_wood_leaves"
+        "all": "essence:blocks/essence_wood_leaves"
     }
 }

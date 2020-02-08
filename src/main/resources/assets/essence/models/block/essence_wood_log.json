@@ -1,7 +1,7 @@
 {
-    "parent": "block/cube_column",
+    "parent": "minecraft:block/cube_column",
     "textures": {
-        "end": "block/essence_wood_log_top",
-        "side": "block/essence_wood_log"
+        "end": "essence:blocks/essence_wood_log_top_bottom",
+        "side": "essence:blocks/essence_wood_log"
     }
 }

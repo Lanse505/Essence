@@ -1,8 +1,8 @@
 {
-    "parent": "block/slab",
+    "parent": "minecraft:block/slab",
     "textures": {
-        "bottom": "block/essence_wood_planks",
-        "top": "block/essence_wood_planks",
-        "side": "block/essence_wood_planks"
+        "bottom": "essence:blocks/essence_wood_planks",
+        "top": "essence:blocks/essence_wood_planks",
+        "side": "essence:blocks/essence_wood_planks"
     }
 }
