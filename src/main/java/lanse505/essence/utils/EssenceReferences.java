@@ -1,7 +1,6 @@
 package lanse505.essence.utils;
 
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.hrznstudio.titanium.tab.TitaniumTab;
 import lanse505.essence.utils.module.ModuleObjects;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

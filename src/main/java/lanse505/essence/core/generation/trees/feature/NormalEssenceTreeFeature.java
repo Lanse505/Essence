@@ -1,8 +1,6 @@
 package lanse505.essence.core.generation.trees.feature;
 
 import com.mojang.datafixers.Dynamic;
-import lanse505.essence.utils.EssenceReferences;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 

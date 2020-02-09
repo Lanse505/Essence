@@ -46,7 +46,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         SlabType slabtype = state.get(TYPE);
-        switch(slabtype) {
+        switch (slabtype) {
             case DOUBLE:
                 return VoxelShapes.fullCube();
             case TOP:
@@ -66,7 +66,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
             IFluidState ifluidstate = context.getWorld().getFluidState(blockpos);
             BlockState blockstate1 = this.getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
             Direction direction = context.getFace();
-            return direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double)blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.with(TYPE, SlabType.TOP);
+            return direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.with(TYPE, SlabType.TOP);
         }
     }
 
@@ -75,7 +75,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         SlabType slabtype = state.get(TYPE);
         if (slabtype != SlabType.DOUBLE && itemstack.getItem() == this.asItem()) {
             if (useContext.replacingClickedOnBlock()) {
-                boolean flag = useContext.getHitVec().y - (double)useContext.getPos().getY() > 0.5D;
+                boolean flag = useContext.getHitVec().y - (double) useContext.getPos().getY() > 0.5D;
                 Direction direction = useContext.getFace();
                 if (slabtype == SlabType.BOTTOM) {
                     return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
@@ -117,7 +117,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
     }
 
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        switch(type) {
+        switch (type) {
             case LAND:
                 return false;
             case WATER:

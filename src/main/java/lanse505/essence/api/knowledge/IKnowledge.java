@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 
 public interface IKnowledge {
     ResourceLocation getIdentifier();
+
     Item getInfusionItem();
 
 }

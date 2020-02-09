@@ -11,7 +11,7 @@ import net.minecraft.world.gen.GenerationStage;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
 
-public abstract class Generator implements IGenerator{
+public abstract class Generator implements IGenerator {
     public static final BooleanSupplier NO_COND = () -> true;
 
     private final BooleanSupplier condition;

@@ -2,7 +2,6 @@ package lanse505.essence.core.core;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.EntityType;
@@ -32,6 +31,30 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
     public CustomLeavesBlock(Block.Properties properties) {
         super(properties);
         this.setDefaultState(this.stateContainer.getBaseState().with(DISTANCE, Integer.valueOf(7)).with(PERSISTENT, Boolean.valueOf(false)));
+    }
+
+    private static BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
+        int i = 7;
+
+        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
+            for (Direction direction : Direction.values()) {
+                blockpos$pooledmutable.setPos(pos).move(direction);
+                i = Math.min(i, getDistance(worldIn.getBlockState(blockpos$pooledmutable)) + 1);
+                if (i == 1) {
+                    break;
+                }
+            }
+        }
+
+        return state.with(DISTANCE, Integer.valueOf(i));
+    }
+
+    private static int getDistance(BlockState neighbor) {
+        if (BlockTags.LOGS.contains(neighbor.getBlock())) {
+            return 0;
+        } else {
+            return neighbor.getBlock() instanceof LeavesBlock ? neighbor.get(DISTANCE) : 7;
+        }
     }
 
     /**
@@ -76,30 +99,6 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
         return stateIn;
     }
 
-    private static BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
-        int i = 7;
-
-        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
-            for(Direction direction : Direction.values()) {
-                blockpos$pooledmutable.setPos(pos).move(direction);
-                i = Math.min(i, getDistance(worldIn.getBlockState(blockpos$pooledmutable)) + 1);
-                if (i == 1) {
-                    break;
-                }
-            }
-        }
-
-        return state.with(DISTANCE, Integer.valueOf(i));
-    }
-
-    private static int getDistance(BlockState neighbor) {
-        if (BlockTags.LOGS.contains(neighbor.getBlock())) {
-            return 0;
-        } else {
-            return neighbor.getBlock() instanceof LeavesBlock ? neighbor.get(DISTANCE) : 7;
-        }
-    }
-
     /**
      * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that
      * this method is unrelated to randomTick and needsRandomTick, and will always be called regardless
@@ -112,9 +111,9 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
                 BlockPos blockpos = pos.down();
                 BlockState blockstate = worldIn.getBlockState(blockpos);
                 if (!blockstate.isSolid() || !blockstate.isSideSolidFullSquare(worldIn, blockpos, Direction.UP)) {
-                    double d0 = (double)((float)pos.getX() + rand.nextFloat());
-                    double d1 = (double)pos.getY() - 0.05D;
-                    double d2 = (double)((float)pos.getZ() + rand.nextFloat());
+                    double d0 = (double) ((float) pos.getX() + rand.nextFloat());
+                    double d1 = (double) pos.getY() - 0.05D;
+                    double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
                     worldIn.addParticle(ParticleTypes.DRIPPING_WATER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
                 }
             }
@@ -135,5 +134,15 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return updateDistance(this.getDefaultState().with(PERSISTENT, Boolean.valueOf(true)), context.getWorld(), context.getPos());
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+        return true;
+    }
+
+    @Override
+    public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+        return 150;
     }
 }

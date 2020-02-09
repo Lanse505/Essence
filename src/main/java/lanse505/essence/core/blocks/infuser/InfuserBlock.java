@@ -1,6 +1,5 @@
 package lanse505.essence.core.blocks.infuser;
 
-import com.hrznstudio.titanium._impl.creative.CreativeFEGeneratorBlock;
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import net.minecraft.block.material.Material;

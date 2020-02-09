@@ -21,14 +21,15 @@ public class CustomRotatedPillarBlock extends BasicBlock {
     /**
      * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
      * blockstate.
+     *
      * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
      * fine.
      */
     public BlockState rotate(BlockState state, Rotation rot) {
-        switch(rot) {
+        switch (rot) {
             case COUNTERCLOCKWISE_90:
             case CLOCKWISE_90:
-                switch((Direction.Axis)state.get(AXIS)) {
+                switch ((Direction.Axis) state.get(AXIS)) {
                     case X:
                         return state.with(AXIS, Direction.Axis.Z);
                     case Z:

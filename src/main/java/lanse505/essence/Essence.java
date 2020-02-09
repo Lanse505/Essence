@@ -34,12 +34,14 @@ public class Essence extends ModuleController {
         addModule(Modules.CORE);
     }
 
-    private void setup(final FMLCommonSetupEvent event) {}
+    private void setup(final FMLCommonSetupEvent event) {
+    }
 
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_SAPLING, RenderType.getCutout());
     }
 
-    private void loadComplete(FMLLoadCompleteEvent event) {}
+    private void loadComplete(FMLLoadCompleteEvent event) {
+    }
 }

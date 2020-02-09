@@ -12,5 +12,6 @@ import net.minecraft.world.gen.GenerationStage;
  */
 public interface IGenerator {
     int generate(int seedIncrement, long seed, GenerationStage.Decoration stage, IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, SharedSeedRandom rand, BlockPos pos);
+
     boolean canGenerate(IWorld world);
 }
