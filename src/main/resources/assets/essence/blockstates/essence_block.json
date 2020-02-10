@@ -1,9 +1,5 @@
 {
-	"default": {
-		"model": "forge_fluid",
-		"custom": {
-			"fluid": "essence"
-		}
-	},
-	"variants": {}
+	"variants": {
+		"": { "model": "essence:fluid/fluid"}
+	}
 }

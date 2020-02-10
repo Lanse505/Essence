@@ -1,15 +1,19 @@
 {
-  "block.essence.essence_wood_leaves": "Essence-Wood Leaves",
-  "block.essence.essence_wood_log": "Essence-Wood Log",
-  "block.essence.essence_wood_planks": "Essence-Wood Planks",
-  "block.essence.essence_wood_slab": "Essence-Wood Slab",
-  "block.essence.essence_wood_sapling": "Essence Sapling",
-  "block.essence.essence_ore": "Essence-Infused Ore",
-  "block.essence.essence_crystal_ore": "Essence-Infused Crystal Ore",
-  "block.essence.essence_infused_block": "Essence-Infused Metal Block",
+  "itemGroup.essence_core": "Essence: Core",
+  "itemGroup.essence_tools": "Essence: Tools",
+
   "item.essence.essence_bucket": "Bucket of Essence",
   "item.essence.essence_wood_sticks": "Essence-Wood Stick",
   "item.essence.essence_ingot": "Essence-Infused Ingot",
   "item.essence.essence_nugget": "Essence-Infused Nugget",
-  "item.essence.essence_crystal": "Essence-Infused Crystal"
+  "item.essence.essence_crystal": "Essence-Infused Crystal",
+
+  "block.essence.essence_wood_leaves": "Essence-Wood Leaves",
+  "block.essence.essence_wood_log": "Essence-Wood Log",
+  "block.essence.essence_wood_planks": "Essence-Wood Planks",
+  "block.essence.essence_wood_slab": "Essence-Wood Slab",
+  "block.essence.essence_wood_sapling": "Essence-Infused Sapling",
+  "block.essence.essence_ore": "Essence-Infused Ore",
+  "block.essence.essence_crystal_ore": "Essence-Infused Crystal Ore",
+  "block.essence.essence_infused_block": "Essence-Infused Metal Block"
 }
