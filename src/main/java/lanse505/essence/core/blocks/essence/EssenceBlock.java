@@ -12,6 +12,7 @@ public class EssenceBlock extends BasicBlock {
     public EssenceBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).velocityMultiplier(1.25f));
         setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_infused_block"));
+        setItemGroup(EssenceReferences.CORE_TAB);
     }
 
 }
