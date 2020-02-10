@@ -30,7 +30,7 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
 
     public CustomLeavesBlock(Block.Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(DISTANCE, Integer.valueOf(7)).with(PERSISTENT, Boolean.valueOf(false)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(DISTANCE, 7).with(PERSISTENT, Boolean.FALSE));
     }
 
     private static BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
