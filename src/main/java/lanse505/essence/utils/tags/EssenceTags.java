@@ -15,8 +15,9 @@ public class EssenceTags {
         public static Tag<Item> ESSENCE_WOOD_LOG = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_logs"));
         public static Tag<Item> ESSENCE_WOOD_PLANKS = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_planks"));
         public static Tag<Item> ESSENCE_CRYSTAL = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_crystal"));
-        public static Tag<Item> ESSENCE_INFUSED_METAL = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_ingot"));
         public static Tag<Item> ESSENCE_INFUSED_METAL_NUGGET = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_nugget"));
+        public static Tag<Item> ESSENCE_INFUSED_METAL = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_ingot"));
+        public static Tag<Item> ESSENCE_INFUSED_METAL_BLOCK = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_block"));
         public static Tag<Item> ESSENCE_INFUSED_STICK = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_stick"));
     }
 

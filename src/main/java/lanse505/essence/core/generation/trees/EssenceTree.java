@@ -14,6 +14,6 @@ public class EssenceTree extends Tree {
     @Nullable
     @Override
     protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean b) {
-        return random.nextInt(10) >= 8 ? EssenceRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.ESSENCE_TREE_CONFIG) : EssenceRegistration.FANCY_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.ESSENCE_TREE_CONFIG);
+        return random.nextInt(10) >= 8 ? EssenceRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG) : EssenceRegistration.FANCY_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG);
     }
 }
