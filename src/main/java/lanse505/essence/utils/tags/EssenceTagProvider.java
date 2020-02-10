@@ -20,7 +20,7 @@ public class EssenceTagProvider {
             getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL_NUGGET).add(ModuleObjects.ESSENCE_INFUSED_METAL_NUGGET);
             getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL).add(ModuleObjects.ESSENCE_INFUSED_METAL);
             getBuilder(EssenceTags.Items.ESSENCE_INFUSED_STICK).add(ModuleObjects.ESSENCE_INFUSED_STICK);
-            getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL_BLOCK).add(ModuleObjects.ESSENCE_INFUSED_BLOCK.asItem());
+            getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL_BLOCK).add(ModuleObjects.ESSENCE_INFUSED_METAL_BLOCK.asItem());
             getBuilder(EssenceTags.Items.ESSENCE_WOOD_LOG).add(ModuleObjects.ESSENCE_WOOD_LOG.asItem());
             getBuilder(EssenceTags.Items.ESSENCE_WOOD_PLANKS).add(ModuleObjects.ESSENCE_WOOD_PLANKS.asItem());
         }

@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidAttributes;
 import static lanse505.essence.utils.EssenceReferences.MODID;
 
 public class ModuleObjects {
-    public static EssenceBlock ESSENCE_INFUSED_BLOCK = new EssenceBlock();
+    public static EssenceBlock ESSENCE_INFUSED_METAL_BLOCK = new EssenceBlock();
     public static EssenceCrystalOre ESSENCE_CRYSTAL_ORE = new EssenceCrystalOre();
     public static EssenceLeavesBlock ESSENCE_WOOD_LEAVES = new EssenceLeavesBlock();
     public static EssenceLogBlock ESSENCE_WOOD_LOG = new EssenceLogBlock();

@@ -23,7 +23,7 @@ public class Modules {
                     Feature.builder("blocks")
                             .force()
                             .description("Core-Blocks")
-                            .content(Block.class, ModuleObjects.ESSENCE_INFUSED_BLOCK)
+                            .content(Block.class, ModuleObjects.ESSENCE_INFUSED_METAL_BLOCK)
                             .content(Block.class, ModuleObjects.ESSENCE_CRYSTAL_ORE)
                             .content(Block.class, ModuleObjects.ESSENCE_WOOD_LEAVES)
                             .content(Block.class, ModuleObjects.ESSENCE_WOOD_LOG)
