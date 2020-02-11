@@ -8,6 +8,7 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
 
@@ -21,14 +22,9 @@ public class EssenceAxe extends AxeItem {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        int modifiedValue = 0;
-        for (final Map.Entry<Modifier, Integer> modifierInfo : EssenceHelpers.getModifiers(stack).entrySet()) {
-            if (modifierInfo.getKey() instanceof ToolStatCoreModifier) {
-                ToolStatCoreModifier statModifier = (ToolStatCoreModifier) modifierInfo.getKey();
-                modifiedValue += statModifier.getModifiedDurability(stack, modifierInfo.getValue(), ESSENCE.getMaxUses());
-            }
-        }
-        return modifiedValue;
+        return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolStatCoreModifier)
+                .map(modifierEntry -> Pair.of(((ToolStatCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+                .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
 
