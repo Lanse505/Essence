@@ -49,7 +49,7 @@ public class Essence extends ModuleController {
 
     private void setup(final FMLCommonSetupEvent event) {
         EssenceReferences.CORE_TAB.addIconStacks(new ItemStack(ModuleObjects.ESSENCE_FLUID.getBucketFluid()), new ItemStack(ModuleObjects.ESSENCE_WOOD_SAPLING), new ItemStack(ModuleObjects.ESSENCE_WOOD_LEAVES), new ItemStack(ModuleObjects.ESSENCE_WOOD_LOG), new ItemStack(ModuleObjects.ESSENCE_WOOD_PLANKS));
-        EssenceReferences.TOOL_TAB.addIconStacks(new ItemStack(ModuleObjects.ESSENCE_AXE), new ItemStack(ModuleObjects.ESSENCE_PICKAXE), new ItemStack(ModuleObjects.ESSENCE_SHOVEL), new ItemStack(ModuleObjects.ESSENCE_OMNITOOL));
+        EssenceReferences.TOOL_TAB.addIconStacks(new ItemStack(ModuleObjects.ESSENCE_AXE), new ItemStack(ModuleObjects.ESSENCE_PICKAXE), new ItemStack(ModuleObjects.ESSENCE_SHOVEL), new ItemStack(ModuleObjects.ESSENCE_SWORD), new ItemStack(ModuleObjects.ESSENCE_HOE), new ItemStack(ModuleObjects.ESSENCE_OMNITOOL));
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -57,11 +57,8 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
     }
 
-    private void loadComplete(FMLLoadCompleteEvent event) {
-    }
+    private void loadComplete(FMLLoadCompleteEvent event) {}
 
     @SubscribeEvent
-    public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {
-
-    }
+    public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {}
 }

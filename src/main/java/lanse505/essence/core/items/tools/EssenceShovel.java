@@ -1,10 +1,17 @@
 package lanse505.essence.core.items.tools;
 
+import lanse505.essence.utils.EssenceItemTiers;
+import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.item.IItemTier;
+import net.minecraft.item.Item;
 import net.minecraft.item.ShovelItem;
+import net.minecraft.util.ResourceLocation;
+
+import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
 
 public class EssenceShovel extends ShovelItem {
-    public EssenceShovel(IItemTier p_i48469_1_, float p_i48469_2_, float p_i48469_3_, Properties p_i48469_4_) {
-        super(p_i48469_1_, p_i48469_2_, p_i48469_3_, p_i48469_4_);
+    public EssenceShovel(ResourceLocation resourceLocation) {
+        super(ESSENCE, 1.5f, -3.0f, new Item.Properties().group(EssenceReferences.TOOL_TAB));
+        setRegistryName(resourceLocation);
     }
 }

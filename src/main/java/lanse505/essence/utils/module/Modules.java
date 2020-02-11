@@ -3,8 +3,19 @@ package lanse505.essence.utils.module;
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.hrznstudio.titanium.module.Feature;
 import com.hrznstudio.titanium.module.Module;
+import lanse505.essence.core.blocks.essence.*;
+import lanse505.essence.core.items.essence.EssenceCrystal;
+import lanse505.essence.core.items.essence.EssenceIngotItem;
+import lanse505.essence.core.items.essence.EssenceNuggetItem;
+import lanse505.essence.core.items.essence.EssenceStickItem;
+import lanse505.essence.core.items.tools.*;
+import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidAttributes;
+
+import static lanse505.essence.utils.EssenceReferences.MODID;
 
 public class Modules {
     public static final Module.Builder CORE = Module.builder("core")
@@ -14,23 +25,23 @@ public class Modules {
                     Feature.builder("items")
                             .force()
                             .description("Core-Items")
-                            .content(Item.class, ModuleObjects.ESSENCE_INFUSED_CRYSTAL)
-                            .content(Item.class, ModuleObjects.ESSENCE_INFUSED_METAL_NUGGET)
-                            .content(Item.class, ModuleObjects.ESSENCE_INFUSED_METAL)
-                            .content(Item.class, ModuleObjects.ESSENCE_INFUSED_STICK)
+                            .content(Item.class, new EssenceCrystal())
+                            .content(Item.class, new EssenceIngotItem())
+                            .content(Item.class, new EssenceNuggetItem())
+                            .content(Item.class, new EssenceStickItem())
             )
             .feature(
                     Feature.builder("blocks")
                             .force()
                             .description("Core-Blocks")
-                            .content(Block.class, ModuleObjects.ESSENCE_INFUSED_METAL_BLOCK)
-                            .content(Block.class, ModuleObjects.ESSENCE_CRYSTAL_ORE)
-                            .content(Block.class, ModuleObjects.ESSENCE_WOOD_LEAVES)
-                            .content(Block.class, ModuleObjects.ESSENCE_WOOD_LOG)
-                            .content(Block.class, ModuleObjects.ESSENCE_ORE)
-                            .content(Block.class, ModuleObjects.ESSENCE_WOOD_PLANKS)
-                            .content(Block.class, ModuleObjects.ESSENCE_WOOD_SAPLING)
-                            .content(Block.class, ModuleObjects.ESSENCE_WOOD_SLAB)
+                            .content(Block.class, new EssenceBlock())
+                            .content(Block.class, new EssenceCrystalOre())
+                            .content(Block.class, new EssenceLeavesBlock())
+                            .content(Block.class, new EssenceLogBlock())
+                            .content(Block.class, new EssenceOre(new ResourceLocation(MODID, "essence_ore")))
+                            .content(Block.class, new EssencePlankBlock())
+                            .content(Block.class, new EssenceSapling())
+                            .content(Block.class, new EssenceSlabBlock())
             )
             .feature(
                     Feature.builder("misc")
@@ -46,9 +57,11 @@ public class Modules {
                     Feature.builder("tools")
                             .force()
                             .description("Tools")
-                            .content(Item.class, ModuleObjects.ESSENCE_AXE)
-                            .content(Item.class, ModuleObjects.ESSENCE_PICKAXE)
-                            .content(Item.class, ModuleObjects.ESSENCE_SHOVEL)
-                            .content(Item.class, ModuleObjects.ESSENCE_OMNITOOL)
+                            .content(Item.class, new EssenceAxe(new ResourceLocation(MODID, "essence_axe")))
+                            .content(Item.class, new EssencePickaxe(new ResourceLocation(MODID, "essence_pickaxe")))
+                            .content(Item.class, new EssenceShovel(new ResourceLocation(MODID, "essence_shovel")))
+                            .content(Item.class, new EssenceSword(new ResourceLocation(MODID, "essence_sword")))
+                            .content(Item.class, new EssenceHoe(new ResourceLocation(MODID, "essence_hoe")))
+                            .content(Item.class, new EssenceOmniTool(new ResourceLocation(MODID, "essence_omnitool")))
             );
 }

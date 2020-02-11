@@ -1,13 +1,16 @@
 package lanse505.essence.core.items.tools;
 
 import com.google.common.collect.Sets;
+import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.module.ModuleObjects;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 
 import java.util.ArrayList;
@@ -19,8 +22,9 @@ import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
 public class EssenceOmniTool extends ToolItem {
     private static final List<Item> tools = new ArrayList<>(Arrays.asList(ModuleObjects.ESSENCE_AXE, ModuleObjects.ESSENCE_PICKAXE, ModuleObjects.ESSENCE_SHOVEL));
 
-    protected EssenceOmniTool() {
-        super(ESSENCE.getAttackDamage(), ESSENCE.getEfficiency(), ESSENCE, Sets.newHashSet(), new Item.Properties().addToolType(ToolType.AXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.PICKAXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.SHOVEL, ESSENCE.getHarvestLevel()));
+    public EssenceOmniTool(ResourceLocation resourceLocation) {
+        super(ESSENCE.getAttackDamage(), ESSENCE.getEfficiency(), ESSENCE, Sets.newHashSet(), new Item.Properties().group(EssenceReferences.TOOL_TAB).addToolType(ToolType.AXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.PICKAXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.SHOVEL, ESSENCE.getHarvestLevel()));
+        setRegistryName(resourceLocation);
     }
 
     @Override
@@ -38,6 +42,7 @@ public class EssenceOmniTool extends ToolItem {
     }
 
     @Override
+    @MethodsReturnNonnullByDefault
     public ActionResultType onItemUse(ItemUseContext context) {
         if (tools.stream().anyMatch(tool -> onItemUse(context) == ActionResultType.SUCCESS)) {
             return ActionResultType.SUCCESS;
