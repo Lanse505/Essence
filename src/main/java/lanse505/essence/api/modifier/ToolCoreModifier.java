@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -98,7 +99,8 @@ public class ToolCoreModifier extends BaseModifier {
      * @return Returns a Multimap with the AttributeModifiers that gets added to the tool.
      */
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, int level) {
+    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, int level) {
         return this.modifiers.get(this.getLevelInRange(level) - 1);
     }
+
 }

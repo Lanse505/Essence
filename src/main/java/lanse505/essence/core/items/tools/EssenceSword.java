@@ -53,7 +53,7 @@ public class EssenceSword extends SwordItem {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
         EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolCoreModifier)
                 .map(modifierEntry -> Pair.of(((ToolCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-                .map(modifierPair -> multimap.put("tool_modifier_" + modifierPair.getLeft().getRegistryName(), new AttributeModifier(modifierPair.getLeft().getRegistryName().toString(), modifierPair.getLeft().getModifiedAttackDamage(stack, modifierPair.getRight(), ESSENCE.getAttackDamage()), AttributeModifier.Operation.ADDITION)));
+                .map(modifierPair -> modifierPair.getLeft().getAttributeModifiers(stack, null, modifierPair.getRight()).entries().stream().map(entry -> multimap.put(entry.getKey(), entry.getValue())));
         return multimap;
     }
 }
