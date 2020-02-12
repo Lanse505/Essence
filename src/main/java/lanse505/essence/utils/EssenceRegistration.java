@@ -1,7 +1,7 @@
 package lanse505.essence.utils;
 
-import lanse505.essence.core.generation.trees.feature.FancyEssenceTreeFeature;
-import lanse505.essence.core.generation.trees.feature.NormalEssenceTreeFeature;
+import lanse505.essence.impl.generation.FancyEssenceTreeFeature;
+import lanse505.essence.impl.generation.NormalEssenceTreeFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
