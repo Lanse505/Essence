@@ -1,6 +1,6 @@
-package lanse505.essence.core.blocks.essence;
+package lanse505.essence.impl.blocks.essence.building;
 
-import lanse505.essence.core.core.CustomSlabBlock;
+import lanse505.essence.base.core.CustomSlabBlock;
 import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

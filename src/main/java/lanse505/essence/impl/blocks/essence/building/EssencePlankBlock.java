@@ -1,4 +1,4 @@
-package lanse505.essence.core.blocks.essence;
+package lanse505.essence.impl.blocks.essence.building;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import lanse505.essence.utils.EssenceReferences;
