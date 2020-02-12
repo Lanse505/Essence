@@ -34,7 +34,7 @@ public class ToolStatCoreModifier extends BaseModifier {
      * @param base The base value.
      * @return The amount to modify the efficiency by.
      */
-    public float getModifiedEfficiency(ItemStack stack, int level, int base) {
+    public float getModifiedEfficiency(ItemStack stack, int level, float base) {
         return 0;
     }
 
@@ -44,7 +44,7 @@ public class ToolStatCoreModifier extends BaseModifier {
      * @param base The base value.
      * @return The amount to modify the attack-damage by.
      */
-    public float getModifiedAttackDamage(ItemStack stack, int level, int base) {
+    public float getModifiedAttackDamage(ItemStack stack, int level, float base) {
         return 0;
     }
 
