@@ -2,7 +2,7 @@ package lanse505.essence.core.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import lanse505.essence.api.modifier.ToolStatCoreModifier;
+import lanse505.essence.api.modifier.ToolCoreModifier;
 import lanse505.essence.utils.EssenceHelpers;
 import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.module.ModuleObjects;
@@ -37,24 +37,24 @@ public class EssenceOmniTool extends ToolItem {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolStatCoreModifier)
-                .map(modifierEntry -> Pair.of(((ToolStatCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+        return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolCoreModifier)
+                .map(modifierEntry -> Pair.of(((ToolCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
                 .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         boolean breakable = tools.stream().anyMatch(tool -> tool.canHarvestBlock(state));
-        return breakable ? EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolStatCoreModifier)
-                .map(modifierEntry -> Pair.of(((ToolStatCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+        return breakable ? EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolCoreModifier)
+                .map(modifierEntry -> Pair.of(((ToolCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
                 .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum) : this.efficiency;
     }
 
     @Override
     public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
         int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-        return harvestLevel + EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolStatCoreModifier)
-                .map(modifierEntry -> Pair.of(((ToolStatCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+        return harvestLevel + EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolCoreModifier)
+                .map(modifierEntry -> Pair.of(((ToolCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
                 .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight(), harvestLevel)).reduce(0, Integer::sum);
     }
 
@@ -76,8 +76,8 @@ public class EssenceOmniTool extends ToolItem {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-        EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolStatCoreModifier)
-                .map(modifierEntry -> Pair.of(((ToolStatCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+        EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof ToolCoreModifier)
+                .map(modifierEntry -> Pair.of(((ToolCoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
                 .map(modifierPair -> multimap.put("tool_modifier_" + modifierPair.getLeft().getRegistryName(), new AttributeModifier(modifierPair.getLeft().getRegistryName().toString(), modifierPair.getLeft().getModifiedAttackDamage(stack, modifierPair.getRight(), ESSENCE.getAttackDamage()), AttributeModifier.Operation.ADDITION)));
         return multimap;
     }
