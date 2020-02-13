@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "essence:block/essence_crystal_ore"
+        "all": "essence:blocks/essence_crystal_ore"
     }
 }
