@@ -1,6 +1,5 @@
 package lanse505.essence.api.modifier;
 
-import lanse505.essence.api.modifier.core.BaseModifier;
 import lanse505.essence.utils.EssenceHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -41,18 +40,20 @@ public class InteractionCoreModifier extends CoreModifier {
 
     /**
      * Called when this item is used when targetting a Block
+     *
      * @param context ItemUse Context
      * @return This is where you'd handle the use-functionality.
      */
-    public ActionResultType onItemUse(ItemUseContext context, int level){
+    public ActionResultType onItemUse(ItemUseContext context, int level) {
         return ActionResultType.PASS;
     }
 
     /**
      * As taken from Item#onHitEntity:
-     *  Current implementations of this method in child classes do not use the entry argument beside ev.
-     *  They just raise the damage on the stack.
-     * @param stack The Tool-Stack
+     * Current implementations of this method in child classes do not use the entry argument beside ev.
+     * They just raise the damage on the stack.
+     *
+     * @param stack  The Tool-Stack
      * @param entity The LivingEntity being Hit
      * @param player The PlayerEntity that's attacking.
      * @return returns a dummy boolean, this is where things like increasing the damage done by the stack should be handled.
@@ -63,10 +64,11 @@ public class InteractionCoreModifier extends CoreModifier {
 
     /**
      * Called when a Block is destroyed using this Item.
+     *
      * @param stack The Tool-Stack
      * @param world The World
      * @param state The Blockstate of the Block being broken.
-     * @param pos The Position of the Block being broken.
+     * @param pos   The Position of the Block being broken.
      * @param miner The LivingEntity that mined the block.
      * @return Return true to trigger the "Use Item" statistic.
      */
@@ -76,12 +78,14 @@ public class InteractionCoreModifier extends CoreModifier {
 
     /**
      * Called each tick as long the ItemStack in on player inventory. Used to progress the pickup animation and update maps.
-     * @param stack The Tool-Stack
-     * @param world The World
-     * @param entity The Entity with the Inventory holding the Item.
+     *
+     * @param stack         The Tool-Stack
+     * @param world         The World
+     * @param entity        The Entity with the Inventory holding the Item.
      * @param inventorySlot The integer for the InventorySlot holding the Item.
      * @param isCurrentItem If
      */
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {}
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
+    }
 
 }

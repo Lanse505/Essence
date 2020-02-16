@@ -45,7 +45,7 @@ public class CoreModifier extends BaseModifier {
         super(id);
         this.maxLevel = maxLevel;
         final ResourceLocation registryName = getRegistryName();
-        for (int i  = 1; i <= maxLevel; i++) {
+        for (int i = 1; i <= maxLevel; i++) {
             final Multimap<String, AttributeModifier> levelModifiers = HashMultimap.create();
             levelModifiers.put(attribute.getName(), new AttributeModifier(UUID.fromString(uuid), registryName.getNamespace() + "_" + registryName.getPath(), amount * i, operation));
             this.modifiers.add(levelModifiers);
@@ -71,7 +71,7 @@ public class CoreModifier extends BaseModifier {
     /**
      * @param stack The stack being modified.
      * @param level The current level of the Modifier.
-     * @param base The base value.
+     * @param base  The base value.
      * @return The amount to modify the durability by.
      */
     public int getModifiedDurability(ItemStack stack, int level, int base) {
@@ -81,7 +81,7 @@ public class CoreModifier extends BaseModifier {
     /**
      * @param stack The stack being modified.
      * @param level The current level of the Modifier.
-     * @param base The base value.
+     * @param base  The base value.
      * @return The amount to modify the efficiency by.
      */
     public float getModifiedEfficiency(ItemStack stack, int level, float base) {
@@ -91,7 +91,7 @@ public class CoreModifier extends BaseModifier {
     /**
      * @param stack The stack being modified.
      * @param level The current level of the Modifier.
-     * @param base The base value.
+     * @param base  The base value.
      * @return The amount to modify the durability by.
      */
     public int getModifiedHarvestLevel(ItemStack stack, int level, int base) {
@@ -99,9 +99,9 @@ public class CoreModifier extends BaseModifier {
     }
 
     /**
-     * @param stack Essence-Tool ItemStack that provides the AttributeModifiers
+     * @param stack   Essence-Tool ItemStack that provides the AttributeModifiers
      * @param wielder Wielder of the Essence-Tool
-     * @param level Modifier-Level
+     * @param level   Modifier-Level
      * @return Returns a Multimap with the AttributeModifiers that gets added to the tool.
      */
     @Override

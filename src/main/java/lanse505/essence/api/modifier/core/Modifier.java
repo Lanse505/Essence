@@ -12,13 +12,13 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class Modifier extends ForgeRegistryEntry<Modifier> {
 
-    private ResourceLocation resourceLocation;
     private static final Multimap<String, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
+    private ResourceLocation resourceLocation;
 
     /**
-     * @param stack Essence-Tool ItemStack that provides the AttributeModifiers.
+     * @param stack   Essence-Tool ItemStack that provides the AttributeModifiers.
      * @param wielder Wielder of the Essence-Tool.
-     * @param level Modifier-Level.
+     * @param level   Modifier-Level.
      * @return Default: Returns the empty attribute map.
      */
     public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, int level) {
