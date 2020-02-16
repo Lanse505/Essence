@@ -19,9 +19,14 @@ public class EssenceRegistration {
             () -> new NormalEssenceTreeFeature(TreeFeatureConfig::deserialize));
     public static RegistryObject<FancyEssenceTreeFeature> FANCY_ESSENCE_TREE_FEATURE = FEATURE_DEFERRED_REGISTER.register("fancy_essence_tree",
             () -> new FancyEssenceTreeFeature(TreeFeatureConfig::deserialize));
+    private static ForgeRegistry<Modifier> MODIFIER_REGISTRY;
+    private static final DeferredRegister<Modifier> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<>(MODIFIER_REGISTRY, EssenceReferences.MODID);
 
     public static void register(IEventBus eventBus) {
         FEATURE_DEFERRED_REGISTER.register(eventBus);
     }
 
+    public static void setModifierRegistry(ForgeRegistry<Modifier> modifierRegistry) {
+        MODIFIER_REGISTRY = modifierRegistry;
+    }
 }

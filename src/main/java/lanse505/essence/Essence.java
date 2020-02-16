@@ -1,6 +1,7 @@
 package lanse505.essence;
 
 import com.hrznstudio.titanium.module.ModuleController;
+import lanse505.essence.api.modifier.core.Modifier;
 import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.EssenceRegistration;
 import lanse505.essence.utils.module.ModuleObjects;
@@ -9,6 +10,7 @@ import lanse505.essence.utils.tags.EssenceTagProvider;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,8 +61,18 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
     }
 
-    private void loadComplete(FMLLoadCompleteEvent event) {}
+    private void loadComplete(FMLLoadCompleteEvent event) {
+    }
 
     @SubscribeEvent
-    public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {}
+    public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {
+        EssenceRegistration.setModifierRegistry(
+                (ForgeRegistry<Modifier>) new RegistryBuilder<Modifier>()
+                        .setName(new ResourceLocation(EssenceReferences.MODID, "modifiers"))
+                        .setIDRange(1, Integer.MAX_VALUE - 1)
+                        .setType(Modifier.class)
+                        .disableSaving()
+                        .create()
+        );
+    }
 }
