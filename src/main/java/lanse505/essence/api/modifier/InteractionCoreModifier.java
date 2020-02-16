@@ -44,7 +44,7 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param context ItemUse Context
      * @return This is where you'd handle the use-functionality.
      */
-    public ActionResultType onItemUse(ItemUseContext context){
+    public ActionResultType onItemUse(ItemUseContext context, int level){
         return ActionResultType.PASS;
     }
 
@@ -57,7 +57,7 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param player The PlayerEntity that's attacking.
      * @return returns a dummy boolean, this is where things like increasing the damage done by the stack should be handled.
      */
-    public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
+    public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, int level) {
         return false;
     }
 
@@ -70,7 +70,7 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param miner The LivingEntity that mined the block.
      * @return Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, int level) {
         return false;
     }
 
@@ -82,6 +82,6 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param inventorySlot The integer for the InventorySlot holding the Item.
      * @param isCurrentItem If
      */
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {}
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {}
 
 }
