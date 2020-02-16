@@ -1,4 +1,4 @@
-package lanse505.essence.base.core;
+package lanse505.essence.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import net.minecraft.block.Block;

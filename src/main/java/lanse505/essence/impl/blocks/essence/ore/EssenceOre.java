@@ -1,6 +1,6 @@
 package lanse505.essence.impl.blocks.essence.ore;
 
-import lanse505.essence.base.core.CustomOreBlock;
+import lanse505.essence.base.CustomOreBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;

@@ -1,6 +1,6 @@
 package lanse505.essence.impl.blocks.essence.wood;
 
-import lanse505.essence.base.core.CustomRotatedPillarBlock;
+import lanse505.essence.base.CustomRotatedPillarBlock;
 import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

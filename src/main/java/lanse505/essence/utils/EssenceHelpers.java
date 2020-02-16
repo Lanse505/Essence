@@ -1,7 +1,5 @@
 package lanse505.essence.utils;
 
-import com.hrznstudio.titanium.module.ModuleController;
-import com.mojang.datafixers.types.templates.CompoundList;
 import lanse505.essence.api.modifier.core.Modifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

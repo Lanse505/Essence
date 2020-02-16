@@ -1,6 +1,6 @@
 package lanse505.essence.impl.blocks.essence.wood;
 
-import lanse505.essence.base.core.CustomLeavesBlock;
+import lanse505.essence.base.CustomLeavesBlock;
 import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

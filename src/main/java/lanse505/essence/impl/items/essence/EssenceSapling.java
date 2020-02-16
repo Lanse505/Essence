@@ -1,6 +1,6 @@
 package lanse505.essence.impl.items.essence;
 
-import lanse505.essence.base.core.CustomSaplingBlock;
+import lanse505.essence.base.CustomSaplingBlock;
 import lanse505.essence.impl.generation.tree.feature.essence_tree.EssenceTree;
 import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.block.SoundType;

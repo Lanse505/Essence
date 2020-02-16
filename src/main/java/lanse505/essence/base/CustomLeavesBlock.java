@@ -1,4 +1,4 @@
-package lanse505.essence.base.core;
+package lanse505.essence.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import net.minecraft.block.Block;
@@ -20,11 +20,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.IShearable;
 
 import java.util.Random;
 
-public class CustomLeavesBlock extends BasicBlock implements IShearable {
+public class CustomLeavesBlock extends BasicBlock {
     public static final IntegerProperty DISTANCE = BlockStateProperties.DISTANCE_1_7;
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
@@ -73,7 +72,6 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
             spawnDrops(state, worldIn, pos);
             worldIn.removeBlock(pos, false);
         }
-
     }
 
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {

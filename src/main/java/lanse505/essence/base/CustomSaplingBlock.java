@@ -1,4 +1,4 @@
-package lanse505.essence.base.core;
+package lanse505.essence.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
