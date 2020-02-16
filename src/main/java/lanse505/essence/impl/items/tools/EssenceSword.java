@@ -12,7 +12,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +24,7 @@ import net.minecraftforge.common.ToolType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
 
@@ -67,12 +71,14 @@ public class EssenceSword extends SwordItem {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType superResult = super.onItemUse(context);
-        return superResult == ActionResultType.SUCCESS ? superResult : EssenceHelpers.getModifiers(context.getItem())
+        Optional<ActionResultType> modifierResult = EssenceHelpers.getModifiers(context.getItem())
                 .entrySet()
                 .stream()
                 .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
                 .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue()))
-                .findFirst().get();
+                .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
+                .findFirst();
+        return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
     }
 
     @Override

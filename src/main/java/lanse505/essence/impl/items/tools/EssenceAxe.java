@@ -5,7 +5,6 @@ import lanse505.essence.api.modifier.CoreModifier;
 import lanse505.essence.api.modifier.InteractionCoreModifier;
 import lanse505.essence.utils.EssenceHelpers;
 import lanse505.essence.utils.EssenceReferences;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
