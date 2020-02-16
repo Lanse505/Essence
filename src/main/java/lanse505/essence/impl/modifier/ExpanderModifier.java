@@ -22,7 +22,9 @@ public class ExpanderModifier extends InteractionCoreModifier {
         Stream<BlockPos> blockPosStream = BlockPos.getAllInBox(
                 pos.getX() + level, pos.getY() + level, pos.getZ() + level,
                 pos.getX() - level, pos.getY() - level, pos.getZ() - level);
-        blockPosStream.filter(position -> !position.equals(pos) && stack.canHarvestBlock(state)).forEach(position -> world.breakBlock(position, true, miner));
+        blockPosStream
+                .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
+                .forEach(position -> world.breakBlock(position, true, miner));
         return true;
     }
 }

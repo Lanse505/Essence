@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
 
@@ -75,12 +76,14 @@ public class EssenceOmniTool extends ToolItem {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType superResult = super.onItemUse(context);
-        return superResult == ActionResultType.SUCCESS ? superResult : EssenceHelpers.getModifiers(context.getItem())
+        Optional<ActionResultType> modifierResult = EssenceHelpers.getModifiers(context.getItem())
                 .entrySet()
                 .stream()
                 .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
                 .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue()))
-                .findFirst().get();
+                .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
+                .findFirst();
+        return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
     }
 
     @Override

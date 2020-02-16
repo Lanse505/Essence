@@ -110,4 +110,5 @@ public class EssenceSword extends SwordItem {
                 .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue()));
         super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
     }
+
 }
