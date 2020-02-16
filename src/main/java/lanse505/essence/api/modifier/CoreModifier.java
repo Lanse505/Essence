@@ -20,15 +20,27 @@ public class CoreModifier extends BaseModifier {
     private final List<Multimap<String, AttributeModifier>> modifiers = new ArrayList<>();
     private final int maxLevel;
 
+    /**
+     * This specific one is used for a blank CoreModifier, mostly useful for when you want a modifier that doesn't implement an AttributeModifier.
+     * This is used by Child-classes so that child-classes don't need to implement AttributeModifier changes.
+     */
     public CoreModifier(ResourceLocation id, int maxLevel) {
         super(id);
         this.maxLevel = maxLevel;
     }
 
+    /**
+     * This specific one is used for a blank CoreModifier, mostly useful for when you want a modifier that doesn't implement an AttributeModifier.
+     * This is used by Child-classes so that child-classes don't need to implement AttributeModifier changes.
+     * This specific one is used for when you want an quick and dirty attribute modifier.
+     */
     public CoreModifier(String id, int maxLevel) {
         this(EssenceHelpers.getIDForActiveMod(id), maxLevel);
     }
 
+    /**
+     * This specific one is used for when you want an quick and dirty AttributeModifier modifier.
+     */
     public CoreModifier(ResourceLocation id, IAttribute attribute, double amount, AttributeModifier.Operation operation, String uuid, int maxLevel) {
         super(id);
         this.maxLevel = maxLevel;
@@ -40,6 +52,10 @@ public class CoreModifier extends BaseModifier {
         }
     }
 
+    /**
+     * Returns a CoreModifier-Object, This grabs the currently active mod and inserts it as the domain.
+     * This specific one is used for when you want an quick and dirty attribute modifier.
+     */
     public CoreModifier(String id, IAttribute attribute, double amount, AttributeModifier.Operation operation, String uuid, int maxLevel) {
         this(EssenceHelpers.getIDForActiveMod(id), attribute, amount, operation, uuid, maxLevel);
     }
