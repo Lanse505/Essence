@@ -1,6 +1,7 @@
-package lanse505.essence.utils.tags;
+package lanse505.essence.utils.serializable;
 
 import lanse505.essence.utils.module.ModuleObjects;
+import lanse505.essence.utils.tags.EssenceTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;

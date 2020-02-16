@@ -1,14 +1,17 @@
 package lanse505.essence;
 
 import com.hrznstudio.titanium.module.ModuleController;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import lanse505.essence.api.modifier.core.Modifier;
 import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.EssenceRegistration;
 import lanse505.essence.utils.module.ModuleObjects;
 import lanse505.essence.utils.module.Modules;
-import lanse505.essence.utils.tags.EssenceTagProvider;
+import lanse505.essence.utils.serializable.EssenceTagProvider;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,6 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -34,7 +38,6 @@ public class Essence extends ModuleController {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
-        eventBus.addListener(this::loadComplete);
         EssenceRegistration.register(eventBus);
     }
 
@@ -49,6 +52,7 @@ public class Essence extends ModuleController {
         super.addDataProvider(event);
         event.getGenerator().addProvider(new EssenceTagProvider.Items(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceTagProvider.Blocks(event.getGenerator()));
+
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -61,7 +65,8 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
     }
 
-    private void loadComplete(FMLLoadCompleteEvent event) {
+    public void serverStarting(FMLServerStartingEvent event) {
+
     }
 
     @SubscribeEvent
