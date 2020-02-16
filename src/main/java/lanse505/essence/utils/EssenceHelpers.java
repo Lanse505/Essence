@@ -49,4 +49,35 @@ public class EssenceHelpers {
         }
         return modifiers;
     }
+
+    public static void addModifier(ItemStack stack, Modifier modifier, int level) {
+        if (!stack.hasTag()) {
+            CompoundNBT nbt = new CompoundNBT();
+            if (!nbt.contains(TAG_MODIFIERS)) {
+                ListNBT listNBT = new ListNBT();
+                CompoundNBT nbt1 = new CompoundNBT();
+                nbt1.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
+                nbt1.putInt(TAG_LEVEL, level);
+                listNBT.add(nbt1);
+                nbt.put(TAG_MODIFIERS, listNBT);
+            } else {
+                ListNBT listNBT = nbt.getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
+                CompoundNBT nbt1 = new CompoundNBT();
+                nbt1.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
+                nbt1.putInt(TAG_LEVEL, level);
+                listNBT.add(nbt1);
+            }
+        } else {
+            CompoundNBT nbt = stack.getTag();
+            if (!nbt.contains(TAG_MODIFIERS)) {
+                nbt.put(TAG_MODIFIERS, new ListNBT());
+            } else {
+                ListNBT listNBT = nbt.getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
+                CompoundNBT nbt1 = new CompoundNBT();
+                nbt1.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
+                nbt1.putInt(TAG_LEVEL, level);
+                listNBT.add(nbt1);
+            }
+        }
+    }
 }

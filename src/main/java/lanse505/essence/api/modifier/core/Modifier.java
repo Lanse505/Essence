@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class Modifier extends ForgeRegistryEntry<Modifier> {
@@ -57,4 +58,5 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
         final ResourceLocation id = this.getRegistryName();
         return "essence.modifier." + id.getNamespace() + "." + id.getPath();
     }
+
 }
