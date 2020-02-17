@@ -13,11 +13,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-
-import java.util.stream.Stream;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 

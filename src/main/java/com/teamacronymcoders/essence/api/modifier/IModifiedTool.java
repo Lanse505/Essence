@@ -4,5 +4,5 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 
 public interface IModifiedTool {
-    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive);
+    ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive);
 }
