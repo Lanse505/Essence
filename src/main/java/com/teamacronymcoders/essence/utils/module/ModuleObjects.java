@@ -1,26 +1,26 @@
-package lanse505.essence.utils.module;
+package com.teamacronymcoders.essence.utils.module;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
-import lanse505.essence.impl.blocks.essence.EssenceBlock;
-import lanse505.essence.impl.blocks.essence.building.EssencePlankBlock;
-import lanse505.essence.impl.blocks.essence.building.EssenceSlabBlock;
-import lanse505.essence.impl.blocks.essence.ore.EssenceCrystalOre;
-import lanse505.essence.impl.blocks.essence.ore.EssenceOre;
-import lanse505.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
-import lanse505.essence.impl.blocks.essence.wood.EssenceLogBlock;
-import lanse505.essence.impl.blocks.essence.wood.EssenceSapling;
-import lanse505.essence.impl.blocks.infuser.InfusionTableBlock;
-import lanse505.essence.impl.items.essence.EssenceCrystal;
-import lanse505.essence.impl.items.essence.EssenceIngotItem;
-import lanse505.essence.impl.items.essence.EssenceNuggetItem;
-import lanse505.essence.impl.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.impl.blocks.essence.EssenceBlock;
+import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionTableBlock;
+import com.teamacronymcoders.essence.impl.items.tools.*;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.impl.blocks.essence.building.EssencePlankBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.building.EssenceSlabBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceCrystalOre;
+import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceOre;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLogBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceSapling;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
 import lanse505.essence.impl.items.tools.*;
-import lanse505.essence.utils.EssenceReferences;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;
-
-import static lanse505.essence.utils.EssenceReferences.MODID;
+import teamacronymcoders.essence.impl.items.tools.*;
 
 public class ModuleObjects {
     @ObjectHolder("essence:essence_infused_block")
@@ -65,5 +65,5 @@ public class ModuleObjects {
     @ObjectHolder("essence:essence_omnitool")
     public static EssenceOmniTool ESSENCE_OMNITOOL;
 
-    public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(MODID, "essence", FluidAttributes.builder(new ResourceLocation(MODID, "blocks/fluids/essence_still"), new ResourceLocation(MODID, "blocks/fluids/essence_flowing")), true, EssenceReferences.CORE_TAB);
+    public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(EssenceReferences.MODID, "essence", FluidAttributes.builder(new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_still"), new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_flowing")), true, EssenceReferences.CORE_TAB);
 }

@@ -1,7 +1,7 @@
-package lanse505.essence.impl.generation.tree.feature.essence_tree;
+package com.teamacronymcoders.essence.impl.generation.tree.feature.essence_tree;
 
-import lanse505.essence.impl.generation.EssenceFeatureConfigs;
-import lanse505.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.impl.generation.EssenceFeatureConfigs;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;

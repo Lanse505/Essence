@@ -1,20 +1,18 @@
-package lanse505.essence.impl.blocks.infuser;
+package com.teamacronymcoders.essence.impl.blocks.infuser;
 
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
 import com.hrznstudio.titanium.component.progress.ProgressBarComponent;
+import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import lanse505.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
-import lanse505.essence.utils.module.ModuleObjects;
-import lanse505.essence.utils.tags.EssenceTags;
-import net.minecraft.inventory.IInventory;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.Tag;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

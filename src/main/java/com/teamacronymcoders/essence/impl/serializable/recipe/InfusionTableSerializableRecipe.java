@@ -1,16 +1,13 @@
-package lanse505.essence.impl.serializable.recipe;
+package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
-import lanse505.essence.api.modifier.core.Modifier;
-import lanse505.essence.impl.blocks.infuser.InfusionTableTile;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 

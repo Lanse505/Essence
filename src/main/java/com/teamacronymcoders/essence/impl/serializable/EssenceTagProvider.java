@@ -1,7 +1,7 @@
-package lanse505.essence.impl.serializable;
+package com.teamacronymcoders.essence.impl.serializable;
 
-import lanse505.essence.utils.module.ModuleObjects;
-import lanse505.essence.utils.tags.EssenceTags;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;

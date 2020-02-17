@@ -1,12 +1,12 @@
-package lanse505.essence.impl.items.tools;
+package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import lanse505.essence.api.modifier.CoreModifier;
-import lanse505.essence.api.modifier.InteractionCoreModifier;
-import lanse505.essence.utils.EssenceHelpers;
-import lanse505.essence.utils.EssenceReferences;
-import lanse505.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.CoreModifier;
+import com.teamacronymcoders.essence.utils.EssenceHelpers;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
+import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 
 public class EssenceOmniTool extends ToolItem {
     private static final List<Item> tools = new ArrayList<>(Arrays.asList(ModuleObjects.ESSENCE_AXE, ModuleObjects.ESSENCE_PICKAXE, ModuleObjects.ESSENCE_SHOVEL));

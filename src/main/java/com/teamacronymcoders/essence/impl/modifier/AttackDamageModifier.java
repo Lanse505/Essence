@@ -1,7 +1,7 @@
-package lanse505.essence.impl.modifier;
+package com.teamacronymcoders.essence.impl.modifier;
 
-import lanse505.essence.api.modifier.CoreModifier;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.CoreModifier;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.ResourceLocation;

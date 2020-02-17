@@ -1,7 +1,7 @@
-package lanse505.essence.impl.items.essence;
+package com.teamacronymcoders.essence.impl.items.essence;
 
 import com.hrznstudio.titanium.item.BasicItem;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.item.Item;
 
 public class EssenceIngotItem extends BasicItem {

@@ -1,7 +1,7 @@
-package lanse505.essence.impl.generation;
+package com.teamacronymcoders.essence.impl.generation;
 
 import com.google.common.collect.ImmutableList;
-import lanse505.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;

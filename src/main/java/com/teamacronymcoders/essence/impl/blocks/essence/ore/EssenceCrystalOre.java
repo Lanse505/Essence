@@ -1,6 +1,6 @@
-package lanse505.essence.impl.blocks.essence.ore;
+package com.teamacronymcoders.essence.impl.blocks.essence.ore;
 
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 

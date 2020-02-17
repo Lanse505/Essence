@@ -1,10 +1,11 @@
-package lanse505.essence.impl.items.tools;
+package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
-import lanse505.essence.api.modifier.CoreModifier;
-import lanse505.essence.api.modifier.InteractionCoreModifier;
-import lanse505.essence.utils.EssenceHelpers;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.utils.EssenceItemTiers;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.CoreModifier;
+import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -26,12 +27,10 @@ import javax.annotation.Nullable;
 
 import java.util.Optional;
 
-import static lanse505.essence.utils.EssenceItemTiers.ESSENCE;
-
 public class EssenceAxe extends AxeItem {
 
     public EssenceAxe(ResourceLocation resourceLocation) {
-        super(ESSENCE, 6.0f, -3.1f, new Item.Properties().group(EssenceReferences.TOOL_TAB));
+        super(EssenceItemTiers.ESSENCE, 6.0f, -3.1f, new Item.Properties().group(EssenceReferences.TOOL_TAB));
         setRegistryName(resourceLocation);
     }
 
@@ -39,7 +38,7 @@ public class EssenceAxe extends AxeItem {
     public int getMaxDamage(ItemStack stack) {
         return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
                 .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-                .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
+                .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), EssenceItemTiers.ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override

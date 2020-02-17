@@ -1,9 +1,9 @@
-package lanse505.essence.api.modifier;
+package com.teamacronymcoders.essence.api.modifier;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import lanse505.essence.api.modifier.core.BaseModifier;
-import lanse505.essence.utils.EssenceHelpers;
+import com.teamacronymcoders.essence.api.modifier.core.BaseModifier;
+import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;

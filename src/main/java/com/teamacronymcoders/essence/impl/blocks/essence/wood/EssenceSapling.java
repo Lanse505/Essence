@@ -1,8 +1,8 @@
-package lanse505.essence.impl.blocks.essence.wood;
+package com.teamacronymcoders.essence.impl.blocks.essence.wood;
 
-import lanse505.essence.base.CustomSaplingBlock;
-import lanse505.essence.impl.generation.tree.feature.essence_tree.EssenceSaplingTree;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.base.CustomSaplingBlock;
+import com.teamacronymcoders.essence.impl.generation.tree.feature.essence_tree.EssenceSaplingTree;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

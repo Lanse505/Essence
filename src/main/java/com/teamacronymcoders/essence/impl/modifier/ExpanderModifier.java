@@ -1,11 +1,10 @@
-package lanse505.essence.impl.modifier;
+package com.teamacronymcoders.essence.impl.modifier;
 
-import lanse505.essence.api.modifier.InteractionCoreModifier;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

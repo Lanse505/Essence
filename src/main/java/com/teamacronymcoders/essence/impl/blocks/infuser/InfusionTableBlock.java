@@ -1,4 +1,4 @@
-package lanse505.essence.impl.blocks.infuser;
+package com.teamacronymcoders.essence.impl.blocks.infuser;
 
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;

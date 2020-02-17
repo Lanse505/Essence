@@ -1,7 +1,7 @@
-package lanse505.essence.impl.blocks.essence.wood;
+package com.teamacronymcoders.essence.impl.blocks.essence.wood;
 
-import lanse505.essence.base.CustomLeavesBlock;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.base.CustomLeavesBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

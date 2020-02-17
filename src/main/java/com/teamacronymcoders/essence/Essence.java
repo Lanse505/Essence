@@ -1,13 +1,13 @@
-package lanse505.essence;
+package com.teamacronymcoders.essence;
 
 import com.hrznstudio.titanium.module.ModuleController;
-import lanse505.essence.api.modifier.core.Modifier;
-import lanse505.essence.utils.EssenceReferences;
-import lanse505.essence.utils.EssenceRegistration;
-import lanse505.essence.utils.module.ModuleObjects;
-import lanse505.essence.utils.module.Modules;
-import lanse505.essence.impl.serializable.EssenceRecipeProvider;
-import lanse505.essence.impl.serializable.EssenceTagProvider;
+import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.utils.module.Modules;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;

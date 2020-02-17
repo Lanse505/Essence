@@ -1,6 +1,6 @@
-package lanse505.essence.utils;
+package com.teamacronymcoders.essence.utils;
 
-import lanse505.essence.utils.module.ModuleObjects;
+import com.teamacronymcoders.essence.utils.module.ModuleObjects;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;

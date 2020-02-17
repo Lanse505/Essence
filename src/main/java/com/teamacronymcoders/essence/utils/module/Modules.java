@@ -1,26 +1,28 @@
-package lanse505.essence.utils.module;
+package com.teamacronymcoders.essence.utils.module;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.hrznstudio.titanium.module.Feature;
 import com.hrznstudio.titanium.module.Module;
-import lanse505.essence.impl.blocks.essence.EssenceBlock;
-import lanse505.essence.impl.blocks.essence.building.EssencePlankBlock;
-import lanse505.essence.impl.blocks.essence.building.EssenceSlabBlock;
-import lanse505.essence.impl.blocks.essence.ore.EssenceCrystalOre;
-import lanse505.essence.impl.blocks.essence.ore.EssenceOre;
-import lanse505.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
-import lanse505.essence.impl.blocks.essence.wood.EssenceLogBlock;
-import lanse505.essence.impl.blocks.essence.wood.EssenceSapling;
-import lanse505.essence.impl.items.essence.EssenceCrystal;
-import lanse505.essence.impl.items.essence.EssenceIngotItem;
-import lanse505.essence.impl.items.essence.EssenceNuggetItem;
-import lanse505.essence.impl.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.impl.blocks.essence.EssenceBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.building.EssencePlankBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.building.EssenceSlabBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceCrystalOre;
+import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceOre;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLogBlock;
+import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceSapling;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
+import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.impl.items.tools.*;
 import lanse505.essence.impl.items.tools.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import teamacronymcoders.essence.impl.items.tools.*;
 
-import static lanse505.essence.utils.EssenceReferences.MODID;
+import static com.teamacronymcoders.essence.utils.EssenceReferences.MODID;
 
 public class Modules {
     public static final Module.Builder CORE = Module.builder("core")

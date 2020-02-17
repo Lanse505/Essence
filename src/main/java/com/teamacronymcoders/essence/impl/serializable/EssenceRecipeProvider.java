@@ -1,10 +1,11 @@
-package lanse505.essence.impl.serializable;
+package com.teamacronymcoders.essence.impl.serializable;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumRecipeProvider;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
+
 import java.util.function.Consumer;
 
 public class EssenceRecipeProvider extends TitaniumRecipeProvider {

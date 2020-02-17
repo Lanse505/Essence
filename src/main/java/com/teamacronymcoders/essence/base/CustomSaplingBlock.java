@@ -1,4 +1,4 @@
-package lanse505.essence.base;
+package com.teamacronymcoders.essence.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class CustomSaplingBlock extends CustomBushBlock implements IGrowable {
     public static final IntegerProperty STAGE = BlockStateProperties.STAGE_0_1;
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
+    protected static final VoxelShape SHAPE = makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
     private final Tree tree;
 
     protected CustomSaplingBlock(Tree treeIn, Block.Properties properties) {

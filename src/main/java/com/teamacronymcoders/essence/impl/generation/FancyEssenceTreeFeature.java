@@ -1,4 +1,4 @@
-package lanse505.essence.impl.generation;
+package com.teamacronymcoders.essence.impl.generation;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.world.gen.feature.FancyTreeFeature;

@@ -1,6 +1,6 @@
-package lanse505.essence.api.modifier.core;
+package com.teamacronymcoders.essence.api.modifier.core;
 
-import lanse505.essence.utils.EssenceHelpers;
+import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;

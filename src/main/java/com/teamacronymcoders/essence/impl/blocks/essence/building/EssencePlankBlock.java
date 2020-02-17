@@ -1,9 +1,9 @@
-package lanse505.essence.impl.blocks.essence.building;
+package com.teamacronymcoders.essence.impl.blocks.essence.building;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
-import lanse505.essence.utils.EssenceReferences;
-import lanse505.essence.utils.tags.EssenceTags;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

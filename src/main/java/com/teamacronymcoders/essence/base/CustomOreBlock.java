@@ -1,7 +1,7 @@
-package lanse505.essence.base;
+package com.teamacronymcoders.essence.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
-import lanse505.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

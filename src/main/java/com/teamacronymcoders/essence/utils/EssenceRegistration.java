@@ -1,10 +1,8 @@
-package lanse505.essence.utils;
+package com.teamacronymcoders.essence.utils;
 
-import lanse505.essence.api.modifier.core.Modifier;
-import lanse505.essence.impl.generation.FancyEssenceTreeFeature;
-import lanse505.essence.impl.generation.NormalEssenceTreeFeature;
-import lanse505.essence.impl.modifier.AttackDamageModifier;
-import lanse505.essence.impl.modifier.ExpanderModifier;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.impl.generation.FancyEssenceTreeFeature;
+import com.teamacronymcoders.essence.impl.generation.NormalEssenceTreeFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,7 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EssenceRegistration {

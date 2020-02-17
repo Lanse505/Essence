@@ -1,4 +1,4 @@
-package lanse505.essence.api.knowledge;
+package com.teamacronymcoders.essence.api.knowledge;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;

@@ -1,6 +1,6 @@
-package lanse505.essence.api.modifier;
+package com.teamacronymcoders.essence.api.modifier;
 
-import lanse505.essence.utils.EssenceHelpers;
+import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

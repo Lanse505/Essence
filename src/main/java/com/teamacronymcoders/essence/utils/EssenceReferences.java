@@ -1,4 +1,4 @@
-package lanse505.essence.utils;
+package com.teamacronymcoders.essence.utils;
 
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 

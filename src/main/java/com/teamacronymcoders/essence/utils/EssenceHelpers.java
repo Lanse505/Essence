@@ -1,6 +1,6 @@
-package lanse505.essence.utils;
+package com.teamacronymcoders.essence.utils;
 
-import lanse505.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
