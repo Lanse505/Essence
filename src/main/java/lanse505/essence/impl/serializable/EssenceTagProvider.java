@@ -1,4 +1,4 @@
-package lanse505.essence.utils.serializable;
+package lanse505.essence.impl.serializable;
 
 import lanse505.essence.utils.module.ModuleObjects;
 import lanse505.essence.utils.tags.EssenceTags;

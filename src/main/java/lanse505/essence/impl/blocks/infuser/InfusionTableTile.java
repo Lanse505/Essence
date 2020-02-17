@@ -4,14 +4,22 @@ import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
 import com.hrznstudio.titanium.component.progress.ProgressBarComponent;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import lanse505.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import lanse505.essence.utils.module.ModuleObjects;
 import lanse505.essence.utils.tags.EssenceTags;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.Tag;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     public static Tag<Item>[] VALID_INPUT = new Tag[] {
@@ -22,6 +30,8 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     public static Tag<Item>[] VALID_INFUSION_ITEMS = new Tag[] {
             EssenceTags.Items.ATTACK_DAMAGE_MODIFIER, EssenceTags.Items.EXPANDER_MODIFIER
     };
+
+    private List<InfusionTableSerializableRecipe> recipes = new ArrayList<>();
 
     private boolean isWorking = false;
 
@@ -66,6 +76,8 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
         super.tick();
     }
 
+
+
     @Nonnull
     @Override
     public InfusionTableTile getSelf() {
@@ -88,6 +100,43 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
             }
         }
         return false;
+    }
+
+    private boolean areStoredRecipesValidForInfusionArray() {
+        IntList usedSlots = new IntArrayList(8);
+        IntList matchedSlots = new IntArrayList(8);
+        int counter = 0;
+        for (InfusionTableSerializableRecipe recipe : recipes) {
+            for (ItemStack stack : recipe.getTagList().getStacks()) {
+                for (int idx = 0; idx < 8; idx++) {
+                    ItemStack s = infusion_array.getStackInSlot(idx);
+                    if (!matchedSlots.contains(counter) && stack.isItemEqualIgnoreDurability(s) && !usedSlots.contains(idx)) {
+                        usedSlots.add(idx);
+                        matchedSlots.add(counter);
+                        break;
+                    }
+                }
+                break;
+            }
+            counter++;
+        }
+        return matchedSlots.size() == recipes.size();
+    }
+
+    private void getInfusionRecipes(ItemStack... itemStacks) {
+        recipes.clear();
+        for (ItemStack stack : itemStacks) {
+            recipes.add(this.world.getRecipeManager().getRecipes()
+                    .stream()
+                    .filter(iRecipe -> iRecipe.getType() == InfusionTableSerializableRecipe.SERIALIZER.getRecipeType())
+                    .map(iRecipe -> (InfusionTableSerializableRecipe) iRecipe)
+                    .filter(recipes -> recipes.isValid(stack))
+                    .findFirst().orElse(null));
+        }
+    }
+
+    private int getCollectedDuration(InfusionTableSerializableRecipe... serializableRecipes) {
+        return Arrays.stream(serializableRecipes).map(InfusionTableSerializableRecipe::getDuration).reduce(0, Integer::sum);
     }
 
 }

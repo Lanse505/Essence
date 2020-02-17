@@ -1,4 +1,4 @@
-package lanse505.essence.utils.serializable;
+package lanse505.essence.impl.serializable;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumRecipeProvider;
