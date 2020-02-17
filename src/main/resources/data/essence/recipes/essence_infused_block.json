@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "values": [
+            {
+              "item": "essence:essence_infused_block",
+              "type": "forge:item_exists"
+            }
+          ],
+          "type": "forge:and"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "iii",
+          "iii",
+          "iii"
+        ],
+        "key": {
+          "i": {
+            "item": "essence:essence_ingot"
+          }
+        },
+        "result": {
+          "item": "essence:essence_infused_block"
+        }
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import lanse505.essence.impl.blocks.essence.ore.EssenceOre;
 import lanse505.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
 import lanse505.essence.impl.blocks.essence.wood.EssenceLogBlock;
 import lanse505.essence.impl.blocks.essence.wood.EssenceSapling;
+import lanse505.essence.impl.blocks.infuser.InfusionTableBlock;
 import lanse505.essence.impl.items.essence.EssenceCrystal;
 import lanse505.essence.impl.items.essence.EssenceIngotItem;
 import lanse505.essence.impl.items.essence.EssenceNuggetItem;
@@ -38,6 +39,9 @@ public class ModuleObjects {
     public static EssenceSapling ESSENCE_WOOD_SAPLING;
     @ObjectHolder("essence:essence_wood_slab")
     public static EssenceSlabBlock ESSENCE_WOOD_SLAB;
+
+    @ObjectHolder("essence:essence_infusion_table")
+    public static InfusionTableBlock ESSENCE_INFUSION_TABLE;
 
     @ObjectHolder("essence:essence_crystal")
     public static EssenceCrystal ESSENCE_INFUSED_CRYSTAL;

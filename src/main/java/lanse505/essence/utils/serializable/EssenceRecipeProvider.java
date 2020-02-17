@@ -17,6 +17,5 @@ public class EssenceRecipeProvider extends TitaniumRecipeProvider {
         BasicBlock.BLOCKS.stream()
                 .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(EssenceReferences.MODID))
                 .forEach(basicBlock -> basicBlock.registerRecipe(consumer));
-
     }
 }

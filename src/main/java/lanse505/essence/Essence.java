@@ -7,6 +7,7 @@ import lanse505.essence.utils.EssenceReferences;
 import lanse505.essence.utils.EssenceRegistration;
 import lanse505.essence.utils.module.ModuleObjects;
 import lanse505.essence.utils.module.Modules;
+import lanse505.essence.utils.serializable.EssenceRecipeProvider;
 import lanse505.essence.utils.serializable.EssenceTagProvider;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -52,7 +53,7 @@ public class Essence extends ModuleController {
         super.addDataProvider(event);
         event.getGenerator().addProvider(new EssenceTagProvider.Items(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceTagProvider.Blocks(event.getGenerator()));
-
+        event.getGenerator().addProvider(new EssenceRecipeProvider(event.getGenerator()));
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -71,13 +72,11 @@ public class Essence extends ModuleController {
 
     @SubscribeEvent
     public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {
-        EssenceRegistration.setModifierRegistry(
-                (ForgeRegistry<Modifier>) new RegistryBuilder<Modifier>()
-                        .setName(new ResourceLocation(EssenceReferences.MODID, "modifiers"))
-                        .setIDRange(1, Integer.MAX_VALUE - 1)
-                        .setType(Modifier.class)
-                        .disableSaving()
-                        .create()
-        );
+        new RegistryBuilder<Modifier>()
+                .setName(new ResourceLocation(EssenceReferences.MODID, "modifiers"))
+                .setIDRange(1, Integer.MAX_VALUE - 1)
+                .setType(Modifier.class)
+                .disableSaving()
+                .create();
     }
 }

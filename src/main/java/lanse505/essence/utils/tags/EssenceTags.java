@@ -19,6 +19,16 @@ public class EssenceTags {
         public static Tag<Item> ESSENCE_INFUSED_METAL = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_ingot"));
         public static Tag<Item> ESSENCE_INFUSED_METAL_BLOCK = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_block"));
         public static Tag<Item> ESSENCE_INFUSED_STICK = new ItemTags.Wrapper(new ResourceLocation(MODID, "infused_stick"));
+
+        public static Tag<Item> ESSENCE_AXE = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_axe"));
+        public static Tag<Item> ESSENCE_PICKAXE = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_pickaxe"));
+        public static Tag<Item> ESSENCE_SHOVEL = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_shovel"));
+        public static Tag<Item> ESSENCE_HOE = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_hoe"));
+        public static Tag<Item> ESSENCE_SWORD = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_sword"));
+        public static Tag<Item> ESSENCE_OMNITOOL = new ItemTags.Wrapper(new ResourceLocation(MODID, "essence_omnitool"));
+
+        public static Tag<Item> ATTACK_DAMAGE_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(MODID, "modifier_attack_damage"));
+        public static Tag<Item> EXPANDER_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(MODID, "modifier_expander"));
     }
 
     public static class Blocks {
