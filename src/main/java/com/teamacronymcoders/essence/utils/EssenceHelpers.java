@@ -58,7 +58,7 @@ public class EssenceHelpers {
 
     public static void setModifiers(ItemStack stack, Map<Modifier, Integer> modifiers) {
         final ListNBT list = new ListNBT();
-        for(final Map.Entry<Modifier, Integer> modifierData : modifiers.entrySet()) {
+        for (final Map.Entry<Modifier, Integer> modifierData : modifiers.entrySet()) {
             final CompoundNBT tag = new CompoundNBT();
             tag.putString(TAG_MODIFIER, modifierData.getKey().getRegistryName().toString());
             tag.putInt(TAG_LEVEL, modifierData.getValue());

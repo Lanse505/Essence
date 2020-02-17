@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.api.modifier;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class CoreModifier extends Modifier {
-
     private final List<Multimap<String, AttributeModifier>> modifiers = new ArrayList<>();
     private final int maxLevel;
 

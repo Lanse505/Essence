@@ -16,7 +16,7 @@ public class EssenceRecipeProvider extends TitaniumRecipeProvider {
     @Override
     public void register(Consumer<IFinishedRecipe> consumer) {
         BasicBlock.BLOCKS.stream()
-                .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(EssenceReferences.MODID))
-                .forEach(basicBlock -> basicBlock.registerRecipe(consumer));
+            .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(EssenceReferences.MODID))
+            .forEach(basicBlock -> basicBlock.registerRecipe(consumer));
     }
 }

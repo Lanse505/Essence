@@ -36,6 +36,6 @@ public class EssencePlankBlock extends BasicBlock {
     @Override
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
         TitaniumShapelessRecipeBuilder.shapelessRecipe(this, 4)
-                .addIngredient(EssenceTags.Items.ESSENCE_WOOD_LOG).build(consumer);
+            .addIngredient(EssenceTags.Items.ESSENCE_WOOD_LOG).build(consumer);
     }
 }

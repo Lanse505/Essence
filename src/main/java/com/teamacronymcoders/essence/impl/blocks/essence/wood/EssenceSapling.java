@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.wood;
 
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.base.CustomSaplingBlock;
 import com.teamacronymcoders.essence.impl.generation.tree.feature.essence_tree.EssenceSaplingTree;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

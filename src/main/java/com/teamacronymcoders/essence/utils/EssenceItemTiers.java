@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.utils;
 
-import com.teamacronymcoders.essence.utils.module.ModuleObjects;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
@@ -9,7 +8,7 @@ import java.util.function.Supplier;
 
 public enum EssenceItemTiers implements IItemTier {
     ESSENCE(2, 256, 6.0F, 2.0F, 14, () -> {
-        return Ingredient.fromItems(ModuleObjects.ESSENCE_INFUSED_METAL_NUGGET, ModuleObjects.ESSENCE_INFUSED_METAL, ModuleObjects.ESSENCE_INFUSED_METAL_BLOCK);
+        return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_NUGGET, EssenceObjectHolders.ESSENCE_INFUSED_METAL, EssenceObjectHolders.ESSENCE_INFUSED_METAL_BLOCK);
     });
 
     private final int harvestLevel;

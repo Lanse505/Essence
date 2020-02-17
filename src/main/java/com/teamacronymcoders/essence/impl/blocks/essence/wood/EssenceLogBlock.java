@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.wood;
 
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.base.CustomRotatedPillarBlock;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

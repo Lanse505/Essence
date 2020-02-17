@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.building;
 
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
+import com.teamacronymcoders.essence.base.CustomSlabBlock;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.tags.EssenceTags;
-import com.teamacronymcoders.essence.base.CustomSlabBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -37,8 +37,8 @@ public class EssenceSlabBlock extends CustomSlabBlock {
     @Override
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
         TitaniumShapedRecipeBuilder.shapedRecipe(this, 4).setName(new ResourceLocation(EssenceReferences.MODID, "essence_wood_slab_mid"))
-                .patternLine("   ").patternLine("ppp").patternLine("   ")
-                .key('p', EssenceTags.Items.ESSENCE_WOOD_PLANKS)
-                .build(consumer);
+            .patternLine("   ").patternLine("ppp").patternLine("   ")
+            .key('p', EssenceTags.Items.ESSENCE_WOOD_PLANKS)
+            .build(consumer);
     }
 }

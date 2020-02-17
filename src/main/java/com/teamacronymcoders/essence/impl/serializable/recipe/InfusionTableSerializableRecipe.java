@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
@@ -19,15 +19,15 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<InfusionTableSerializableRecipe>(new ResourceLocation(EssenceReferences.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
+    static {
+
+    }
+
     private ResourceLocation id;
     private Modifier modifier;
     private int level;
     private Ingredient.TagList tagList;
     private int duration;
-
-    static {
-
-    }
 
     public InfusionTableSerializableRecipe(ResourceLocation id) {
         super(id);
