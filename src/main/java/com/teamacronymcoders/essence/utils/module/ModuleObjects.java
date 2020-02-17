@@ -16,11 +16,9 @@ import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
-import lanse505.essence.impl.items.tools.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;
-import teamacronymcoders.essence.impl.items.tools.*;
 
 public class ModuleObjects {
     @ObjectHolder("essence:essence_infused_block")

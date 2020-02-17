@@ -1,13 +1,16 @@
 package com.teamacronymcoders.essence.impl.modifier;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.api.modifier.CoreModifier;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.UUID;
+
 public class AttackDamageModifier extends CoreModifier {
     public AttackDamageModifier() {
-        super(new ResourceLocation(EssenceReferences.MODID, "attack_damage"), SharedMonsterAttributes.ATTACK_DAMAGE, 2.5d, AttributeModifier.Operation.ADDITION, "attack_damage", 4);
+        super(SharedMonsterAttributes.ATTACK_DAMAGE,"attack_damage_modifier", "dc3a5e97-4bbb-4b0f-9698-43fe2babb628", 2.5d, 4, AttributeModifier.Operation.ADDITION);
     }
 }

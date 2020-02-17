@@ -6,6 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -56,6 +58,14 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     public String getTranslationName() {
         final ResourceLocation id = this.getRegistryName();
         return "essence.modifier." + id.getNamespace() + "." + id.getPath();
+    }
+
+    /**
+     * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
+     */
+    @OnlyIn(Dist.CLIENT)
+    public ITextComponent getRenderedText() {
+        return new TranslationTextComponent(getTranslationName());
     }
 
 }

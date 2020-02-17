@@ -16,11 +16,9 @@ import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.impl.items.tools.*;
-import lanse505.essence.impl.items.tools.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import teamacronymcoders.essence.impl.items.tools.*;
 
 import static com.teamacronymcoders.essence.utils.EssenceReferences.MODID;
 

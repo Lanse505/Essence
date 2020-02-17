@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class ExpanderModifier extends InteractionCoreModifier {
 
     public ExpanderModifier() {
-        super(new ResourceLocation(EssenceReferences.MODID, "expander"), 2);
+        super(2);
     }
 
     @Override

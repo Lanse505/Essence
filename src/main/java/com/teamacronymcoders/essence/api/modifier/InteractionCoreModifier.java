@@ -21,21 +21,8 @@ public class InteractionCoreModifier extends CoreModifier {
      * onBlockDestroyed (Left-Click  - Item-Destroyed Block)
      * onInventoryTick (None-Click - Action-performed when the ItemStack ticks in the inventory)
      */
-    public InteractionCoreModifier(ResourceLocation id, int maxLevel) {
-        super(id, maxLevel);
-    }
-
-    /**
-     * This returns an InteractionCoreModifier Object.
-     * This grabs the currently active mod and inserts it as the domain.
-     * This object is used for handling the same stuff as CoreModifier but also for handling things like:
-     * onItemUse (Right-click - Item on Block Behaviour)
-     * onHitEntity (Left-click - Item-attack Entity Behaviour)
-     * onBlockDestroyed (Left-Click  - Item-Destroyed Block)
-     * onInventoryTick (None-Click - Action-performed when the ItemStack ticks in the inventory)
-     */
-    public InteractionCoreModifier(String id, int maxLevel) {
-        this(EssenceHelpers.getIDForActiveMod(id), maxLevel);
+    public InteractionCoreModifier(int maxLevel) {
+        super(maxLevel);
     }
 
     /**

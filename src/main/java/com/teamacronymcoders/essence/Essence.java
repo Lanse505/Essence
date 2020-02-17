@@ -25,6 +25,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.UUID;
+
 @Mod("essence")
 public class Essence extends ModuleController {
 
@@ -61,17 +63,5 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(ModuleObjects.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
     }
 
-    public void serverStarting(FMLServerStartingEvent event) {
-
-    }
-
-    @SubscribeEvent
-    public void onNewRegistry(RegistryEvent.NewRegistry newRegistry) {
-        new RegistryBuilder<Modifier>()
-                .setName(new ResourceLocation(EssenceReferences.MODID, "modifiers"))
-                .setIDRange(1, Integer.MAX_VALUE - 1)
-                .setType(Modifier.class)
-                .disableSaving()
-                .create();
-    }
+    public void serverStarting(FMLServerStartingEvent event) {}
 }
