@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier;
+package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

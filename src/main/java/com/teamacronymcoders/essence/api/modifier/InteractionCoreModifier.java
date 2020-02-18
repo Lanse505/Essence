@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.api.modifier;
 
+import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

@@ -44,11 +44,33 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     }
 
     /**
+     * @return Returns how many modifiers, this modifier counts towards
+     */
+    public int getModifierCountValue(ItemStack stack, int level) {
+        return 1;
+    }
+
+    /**
      * @param level The current level.
      * @return Gets the minimum value, and caps it at 0.
      */
     public int getLevelInRange(int level) {
         return Math.max(Math.min(level, this.getMaxLevel()), 0);
+    }
+
+    /**
+     * @param modifier Modifier to check against
+     * @return Returns if the provided Modifier can be applied with this one.
+     */
+    public boolean canApplyTogether(Modifier modifier) {return true;}
+
+    /**
+     * This returns a boolean check against both Modifiers not just this Modifier.
+     * @param modifier Modifier to check against.
+     * @return Returns the final value if this can be applied together with the other Modifier.
+     */
+    public final boolean isCompatibleWith(Modifier modifier) {
+        return this.canApplyTogether(modifier) && modifier.canApplyTogether(this);
     }
 
     /**
@@ -63,7 +85,6 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     /**
      * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
      */
-    @OnlyIn(Dist.CLIENT)
     public ITextComponent getRenderedText() {
         return new TranslationTextComponent(getTranslationName());
     }

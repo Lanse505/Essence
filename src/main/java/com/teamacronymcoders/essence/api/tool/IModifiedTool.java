@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier;
+package com.teamacronymcoders.essence.api.tool;
 
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;

@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.impl.modifier;
 
-import com.teamacronymcoders.essence.api.modifier.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -18,9 +18,6 @@ import net.minecraftforge.common.ToolType;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 
-    /**
-     *
-     */
     public ExpanderModifier() {
         super(2);
     }
@@ -62,4 +59,10 @@ public class ExpanderModifier extends InteractionCoreModifier {
         }
         return false;
     }
+
+    @Override
+    public float getModifiedEfficiency(ItemStack stack, int level, float base) {
+        return (float) (base - ((base * 0.85) * level));
+    }
+
 }
