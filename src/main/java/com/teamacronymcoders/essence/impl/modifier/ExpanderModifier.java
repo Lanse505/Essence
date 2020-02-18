@@ -18,6 +18,9 @@ import net.minecraftforge.common.ToolType;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 
+    /**
+     *
+     */
     public ExpanderModifier() {
         super(2);
     }
@@ -29,7 +32,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
             PlayerEntity player = context.getPlayer();
             Hand hand = context.getHand();
             BlockPos pos = context.getPos();
-            Direction dir = context.getPlayer().getHorizontalFacing();
+            Direction dir = context.getPlacementHorizontalFacing();
             BlockState state = context.getWorld().getBlockState(context.getPos());
             BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
             BlockPos start = pos.add(offset);

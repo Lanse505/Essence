@@ -4,9 +4,10 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modifier.CoreModifier;
 import com.teamacronymcoders.essence.api.modifier.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.utils.EssenceHelpers;
 import com.teamacronymcoders.essence.utils.EssenceItemTiers;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
+import com.teamacronymcoders.essence.utils.helpers.EssenceHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -111,6 +112,7 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
+        EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
         EssenceHelpers.getModifiers(stack)
             .entrySet()
             .stream()

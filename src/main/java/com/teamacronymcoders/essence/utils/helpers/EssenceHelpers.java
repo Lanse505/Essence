@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.utils;
+package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.item.ItemStack;
@@ -6,8 +6,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -21,23 +19,13 @@ public class EssenceHelpers {
     private static final String TAG_MODIFIER = "Modifier";
     private static final String TAG_LEVEL = "ModifierLevel";
 
-    public static ResourceLocation getIDForActiveMod(String id) {
-        if (!id.contains(":")) {
-            final ModContainer container = ModLoadingContext.get().getActiveContainer();
-            if (container != null) {
-                return new ResourceLocation(container.getModId(), id);
-            }
-        }
-        return new ResourceLocation(id);
-    }
-
     public static Modifier getModifierByName(String name) {
         return MODIFIERS.getValue(new ResourceLocation(name));
     }
 
     public static Map<Modifier, Integer> getModifiers(ItemStack stack) {
         final Map<Modifier, Integer> modifiers = new HashMap<>();
-        if (stack.hasTag() && stack.getTag().contains(TAG_MODIFIERS)) {
+        if (stack.hasTag() && (stack.getTag() != null && stack.getTag().contains(TAG_MODIFIERS))) {
             final ListNBT list = stack.getTag().getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < list.size(); i++) {
                 final CompoundNBT compoundNBT = list.getCompound(i);
