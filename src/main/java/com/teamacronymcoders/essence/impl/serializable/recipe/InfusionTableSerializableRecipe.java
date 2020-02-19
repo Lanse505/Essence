@@ -4,41 +4,89 @@ import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class InfusionTableSerializableRecipe extends SerializableRecipe {
     public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<InfusionTableSerializableRecipe>(new ResourceLocation(EssenceReferences.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
     static {
-
+        RECIPES.add(new InfusionTableSerializableRecipe(
+           new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
+           new Ingredient.IItemList[]{
+               new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
+           },
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.ATTACK_DAMAGE_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
+            300
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
+            new Ingredient.IItemList[]{
+                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_BLOCK)),
+                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_PILLAR)),
+                new Ingredient.SingleItemList(new ItemStack(Items.CHISELED_QUARTZ_BLOCK)),
+                new Ingredient.SingleItemList(new ItemStack(Items.SMOOTH_QUARTZ))
+            },
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.ATTACK_DAMAGE_MODIFIER.get(), 1, SerializableModifier.Operation.INCREMENT)),
+            600
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "fortune_test"),
+            new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.GEMS_LAPIS)},
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
+            300
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "fortune_test_2"),
+            new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.STORAGE_BLOCKS_LAPIS)},
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), 1, SerializableModifier.Operation.INCREMENT)),
+            300
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "expander_test"),
+            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.PISTON))},
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
+            300
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "expander_test_2"),
+            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), 1, SerializableModifier.Operation.INCREMENT)),
+            600
+        ));
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(EssenceReferences.MODID, "silk_touch_test"),
+            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.SILK_TOUCH_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
+            600
+        ));
     }
 
     private ResourceLocation id;
-    private Modifier modifier;
-    private int level;
-    private Ingredient.TagList tagList;
+    private Ingredient.IItemList[] inputList;
+    private SerializableModifier[] modifiers;
     private int duration;
 
     public InfusionTableSerializableRecipe(ResourceLocation id) {
         super(id);
     }
 
-    public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.TagList tagList, Modifier modifier, int level, int duration) {
+    public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.IItemList[] inputList, SerializableModifier[] modifiers, int duration) {
         super(id);
         this.id = id;
-        this.modifier = modifier;
-        this.level = level;
-        this.tagList = tagList;
+        this.inputList = inputList;
+        this.modifiers = modifiers;
         this.duration = duration;
     }
 
@@ -73,25 +121,49 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     }
 
     public boolean isValid(ItemStack stack) {
-        Optional<Boolean> optional = tagList.getStacks().stream().map(tagStack -> tagStack.isItemEqualIgnoreDurability(stack)).findAny();
-        return optional.orElse(false);
+        return Arrays.stream(getInputList()).map(list -> list.getStacks().stream().map(tagStack -> tagStack.isItemEqual(stack))).anyMatch(booleanStream -> booleanStream.findAny().orElse(false));
     }
 
     @Override
     public ResourceLocation getId() {
-        return id;
+        return this.id;
     }
 
-    public Ingredient.TagList getTagList() {
-        return tagList;
+    private Ingredient.IItemList[] getInputList() {
+        return this.inputList;
     }
 
-    public Modifier getModifier() {
-        return modifier;
+    public Set<ItemStack> getCollectedStacks() {
+        Set<ItemStack> stacks = new HashSet<>();
+        for (Ingredient.IItemList itemList : getInputList()) {
+            stacks.addAll(itemList.getStacks());
+        }
+        return stacks;
     }
 
-    public int getLevel() {
-        return level;
+    public SerializableModifier[] getModifiers() {
+        return this.modifiers;
+    }
+
+    public void resolveRecipe(ItemStack stack) {
+        for (SerializableModifier modifier : getModifiers()) {
+            resolveOperationBehaviour(stack, modifier);
+        }
+    }
+
+    private void resolveOperationBehaviour(ItemStack stack, SerializableModifier modifier) {
+        switch (modifier.getOperation()) {
+            case ADD:
+                EssenceModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getLevel());
+            case REMOVE:
+                EssenceModifierHelpers.removeModifiers(stack, modifier.getModifier());
+            case SET:
+                EssenceModifierHelpers.setModifier(stack, modifier.getModifier(), modifier.getLevel());
+            case INCREMENT:
+                EssenceModifierHelpers.increaseModifierLevel(stack, modifier.getModifier(), modifier.getLevel());
+            case DECREMENT:
+                EssenceModifierHelpers.decreaseModifierLevel(stack, modifier.getModifier(), modifier.getLevel());
+        }
     }
 
     public int getDuration() {

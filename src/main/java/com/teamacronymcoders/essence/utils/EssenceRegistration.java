@@ -5,6 +5,8 @@ import com.teamacronymcoders.essence.impl.generation.FancyEssenceTreeFeature;
 import com.teamacronymcoders.essence.impl.generation.NormalEssenceTreeFeature;
 import com.teamacronymcoders.essence.impl.modifier.AttackDamageModifier;
 import com.teamacronymcoders.essence.impl.modifier.ExpanderModifier;
+import com.teamacronymcoders.essence.impl.modifier.LuckModifier;
+import com.teamacronymcoders.essence.impl.modifier.SilkTouchModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
@@ -30,6 +32,8 @@ public class EssenceRegistration {
     public static RegistryObject<FancyEssenceTreeFeature> FANCY_ESSENCE_TREE_FEATURE = FEATURE_DEFERRED_REGISTER.register("fancy_essence_tree", () -> new FancyEssenceTreeFeature(TreeFeatureConfig::deserialize));
     public static RegistryObject<AttackDamageModifier> ATTACK_DAMAGE_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("attack_damage_modifier", AttackDamageModifier::new);
     public static RegistryObject<ExpanderModifier> EXPANDER_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("expander_modifier", ExpanderModifier::new);
+    public static RegistryObject<LuckModifier> LUCK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("luck_modifier", LuckModifier::new);
+    public static RegistryObject<SilkTouchModifier> SILK_TOUCH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("silk_touch_modifier", SilkTouchModifier::new);
 
     public static void register(IEventBus eventBus) {
         FEATURE_DEFERRED_REGISTER.register(eventBus);

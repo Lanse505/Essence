@@ -1,12 +1,14 @@
 package com.teamacronymcoders.essence;
 
 import com.hrznstudio.titanium.module.ModuleController;
+import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
-import com.teamacronymcoders.essence.utils.module.Modules;
+import com.teamacronymcoders.essence.utils.EssenceModules;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
@@ -34,8 +36,8 @@ public class Essence extends ModuleController {
 
     @Override
     protected void initModules() {
-        addModule(Modules.CORE);
-        addModule(Modules.TOOLS);
+        addModule(EssenceModules.CORE);
+        addModule(EssenceModules.TOOLS);
     }
 
     @Override
@@ -49,13 +51,11 @@ public class Essence extends ModuleController {
     private void setup(final FMLCommonSetupEvent event) {
         EssenceReferences.CORE_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS));
         EssenceReferences.TOOL_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_AXE), new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE), new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL), new ItemStack(EssenceObjectHolders.ESSENCE_SWORD), new ItemStack(EssenceObjectHolders.ESSENCE_HOE), new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
+
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
-    }
-
-    public void serverStarting(FMLServerStartingEvent event) {
     }
 }

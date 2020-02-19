@@ -1,12 +1,12 @@
 package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.api.modifier.CoreModifier;
-import com.teamacronymcoders.essence.api.modifier.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -38,14 +38,14 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
+        return EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
             .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
+        return EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
             .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
     }
@@ -53,7 +53,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
         int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-        return harvestLevel + EssenceHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
+        return harvestLevel + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
             .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight(), harvestLevel)).reduce(0, Integer::sum);
     }
@@ -62,7 +62,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-        EssenceHelpers.getModifiers(stack).entrySet()
+        EssenceModifierHelpers.getModifiers(stack).entrySet()
             .stream()
             .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue()))
             .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
@@ -79,7 +79,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType superResult = super.onItemUse(context);
-        Optional<ActionResultType> modifierResult = EssenceHelpers.getModifiers(context.getItem())
+        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem())
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
@@ -91,7 +91,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceHelpers.getModifiers(stack)
+        EssenceModifierHelpers.getModifiers(stack)
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
@@ -101,7 +101,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        EssenceHelpers.getModifiers(stack)
+        EssenceModifierHelpers.getModifiers(stack)
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
@@ -112,7 +112,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceHelpers.getModifiers(stack)
+        EssenceModifierHelpers.getModifiers(stack)
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)

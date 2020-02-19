@@ -34,6 +34,14 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
         return 1;
     }
 
+
+    /**
+     * @return Returns the Min level of the Modifier.
+     */
+    public int getMinLevel() {
+        return 0;
+    }
+
     /**
      * @param stack The ItemStack that holds the Modifier.
      * @param level Level of Modifier.

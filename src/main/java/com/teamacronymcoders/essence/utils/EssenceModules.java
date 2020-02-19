@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.utils.module;
+package com.teamacronymcoders.essence.utils;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.hrznstudio.titanium.module.Feature;
@@ -16,14 +16,13 @@ import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.impl.items.tools.*;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import static com.teamacronymcoders.essence.utils.EssenceReferences.MODID;
 
-public class Modules {
+public class EssenceModules {
     public static final Module.Builder CORE = Module.builder("core")
         .force()
         .description("Core-Content")

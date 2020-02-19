@@ -2,8 +2,11 @@ package com.teamacronymcoders.essence.utils;
 
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 
+import java.util.Random;
+
 public class EssenceReferences {
     public static final String MODID = "essence";
+    public static final Random random = new Random();
 
     public static final AdvancedTitaniumTab CORE_TAB = (AdvancedTitaniumTab) new AdvancedTitaniumTab("essence_core", true) {
         @Override
