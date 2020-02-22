@@ -28,6 +28,8 @@ public class EssenceTags {
 
         public static Tag<Item> ATTACK_DAMAGE_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "modifier_attack_damage"));
         public static Tag<Item> EXPANDER_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "modifier_expander"));
+        public static Tag<Item> FORTUNE_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "fortune_modifier"));
+        public static Tag<Item> SILK_TOUCH_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "silk_touch_modifier"));
     }
 
     public static class Blocks {

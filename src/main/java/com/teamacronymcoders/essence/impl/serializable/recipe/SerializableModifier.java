@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import net.minecraftforge.common.IExtensibleEnum;
 
 public class SerializableModifier {
     private Modifier modifier;
@@ -15,7 +14,7 @@ public class SerializableModifier {
     }
 
     public static SerializableModifier[] getNewArray(SerializableModifier... modifiers) {
-        SerializableModifier[] modifierArray = new SerializableModifier[]{};
+        SerializableModifier[] modifierArray = new SerializableModifier[modifiers.length];
         int counter = 0;
         for (SerializableModifier modifier : modifiers) {
             modifierArray[counter] = modifier;
@@ -39,11 +38,11 @@ public class SerializableModifier {
     public enum Operation {
         ADD(0, "add"),
         REMOVE(1, "remove"),
-        SET(2, "set"),
+        REPLACE(2, "replace"),
         INCREMENT(3, "increment"),
         DECREMENT(4, "decrement");
 
-        private static final Operation[] VALUES = new Operation[]{ADD, REMOVE, SET, INCREMENT, DECREMENT};
+        private static final Operation[] VALUES = new Operation[]{ADD, REMOVE, REPLACE, INCREMENT, DECREMENT};
         private final int id;
         private final String name;
 

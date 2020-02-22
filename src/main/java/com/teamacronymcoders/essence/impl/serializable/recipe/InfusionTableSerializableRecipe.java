@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.Tags;
 import java.util.*;
 
 public class InfusionTableSerializableRecipe extends SerializableRecipe {
-    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<InfusionTableSerializableRecipe>(new ResourceLocation(EssenceReferences.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
+    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(EssenceReferences.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
     static {
@@ -31,7 +30,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
+            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test_2"),
             new Ingredient.IItemList[]{
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_BLOCK)),
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_PILLAR)),
@@ -73,10 +72,10 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
         ));
     }
 
-    private ResourceLocation id;
-    private Ingredient.IItemList[] inputList;
-    private SerializableModifier[] modifiers;
-    private int duration;
+    public ResourceLocation id;
+    public Ingredient.IItemList[] inputList;
+    public SerializableModifier[] modifiers;
+    public int duration;
 
     public InfusionTableSerializableRecipe(ResourceLocation id) {
         super(id);
@@ -97,7 +96,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     @Override
     public ItemStack getCraftingResult(IInventory p_77572_1_) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -107,7 +106,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -157,8 +156,8 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
                 EssenceModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getLevel());
             case REMOVE:
                 EssenceModifierHelpers.removeModifiers(stack, modifier.getModifier());
-            case SET:
-                EssenceModifierHelpers.setModifier(stack, modifier.getModifier(), modifier.getLevel());
+            case REPLACE:
+                EssenceModifierHelpers.replaceModifierValue(stack, modifier.getModifier(), modifier.getLevel());
             case INCREMENT:
                 EssenceModifierHelpers.increaseModifierLevel(stack, modifier.getModifier(), modifier.getLevel());
             case DECREMENT:

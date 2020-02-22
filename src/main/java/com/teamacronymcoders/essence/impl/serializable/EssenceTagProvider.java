@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.impl.serializable;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import net.minecraft.data.BlockTagsProvider;
@@ -17,6 +18,7 @@ public class EssenceTagProvider {
 
         @Override
         protected void registerTags() {
+            Essence.LOGGER.debug("Registering Tag<Item> tags");
             getBuilder(EssenceTags.Items.ESSENCE_CRYSTAL).add(EssenceObjectHolders.ESSENCE_INFUSED_CRYSTAL);
             getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL_NUGGET).add(EssenceObjectHolders.ESSENCE_INFUSED_METAL_NUGGET);
             getBuilder(EssenceTags.Items.ESSENCE_INFUSED_METAL).add(EssenceObjectHolders.ESSENCE_INFUSED_METAL);
@@ -35,6 +37,7 @@ public class EssenceTagProvider {
 
         @Override
         protected void registerTags() {
+            Essence.LOGGER.debug("Registering Tag<Block> tags");
             getBuilder(BlockTags.LEAVES).add(EssenceObjectHolders.ESSENCE_WOOD_LEAVES);
             getBuilder(BlockTags.LOGS).add(EssenceObjectHolders.ESSENCE_WOOD_LOG);
             getBuilder(BlockTags.PLANKS).add(EssenceObjectHolders.ESSENCE_WOOD_PLANKS);

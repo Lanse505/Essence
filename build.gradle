@@ -61,9 +61,7 @@ minecraft {
 }
 
 repositories {
-    maven {
-        url 'https://cdn.hrzn.studio/maven/'
-    }
+    mavenLocal()
     maven {
         url 'http://dvs1.progwml6.com/files/maven'
     }

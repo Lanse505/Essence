@@ -83,7 +83,7 @@ public class EssenceModifierHelpers {
      */
     public static void addModifier(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        modifiers.compute(modifier, (modifier1, integer) -> Math.max(level, integer == null ? 0 : integer));
+        modifiers.putIfAbsent(modifier, level);
         setModifiersToNBT(stack, modifiers);
     }
 
@@ -112,9 +112,9 @@ public class EssenceModifierHelpers {
      * @param modifier The Modifier to set.
      * @param level The Level of the Modifier to set.
      */
-    public static void setModifier(ItemStack stack, Modifier modifier, int level) {
+    public static void replaceModifierValue(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifierMap = getModifiers(stack);
-        modifierMap.replace(modifier, level);
+        modifierMap.computeIfPresent(modifier, (modifier1, integer) -> level);
         setModifiersToNBT(stack, modifierMap);
     }
 
@@ -134,8 +134,8 @@ public class EssenceModifierHelpers {
      */
     public static void increaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        int oldLevel = getModifierLevel(stack, modifier);
-        modifiers.compute(modifier, (modifier1, integer) -> Math.min(oldLevel + level, modifier.getMaxLevel()));
+        int oldLevel = modifiers.getOrDefault(modifier, 0);
+        modifiers.computeIfPresent(modifier, (modifier1, integer) -> Math.min(oldLevel + level, modifier.getMaxLevel()));
         setModifiersToNBT(stack, modifiers);
     }
 
@@ -155,8 +155,12 @@ public class EssenceModifierHelpers {
      */
     public static void decreaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        int oldLevel = getModifierLevel(stack, modifier);
-        modifiers.compute(modifier, (modifier1, integer) -> oldLevel - level <= 0 ? null : Math.max(oldLevel - level, modifier.getMinLevel()));
+        int oldLevel = modifiers.getOrDefault(modifier, 0);
+        modifiers.computeIfPresent(modifier, (modifier1, integer) -> {
+            int newLevel = Math.min(oldLevel - level, modifier.getMinLevel());
+            if (newLevel <= 0) return null;
+            return newLevel;
+        });
         setModifiersToNBT(stack, modifiers);
     }
 

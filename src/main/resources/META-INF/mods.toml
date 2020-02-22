@@ -6,9 +6,16 @@ issueTrackerURL="https://github.com/Lanse505/Essence/issues"
     modId="essence"
     version="${file.jarVersion}"
     displayName="Essence"
-    authors="Lanse505"
+    authors="Lanse505, VeyezX"
     description='''
-
+        Special Thanks to:
+            - 2xsaiko
+            - Amadornes
+            - Drullkus
+            - Ellpeck
+            - Sekwah
+            - Skysom
+            - Vazkii
     '''
 
 [[dependencies.essence]]

@@ -28,14 +28,18 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     };
 
     public static Tag<Item>[] VALID_INFUSION_ITEMS = new Tag[]{
-        EssenceTags.Items.ATTACK_DAMAGE_MODIFIER, EssenceTags.Items.EXPANDER_MODIFIER
+        EssenceTags.Items.ATTACK_DAMAGE_MODIFIER, EssenceTags.Items.EXPANDER_MODIFIER, EssenceTags.Items.FORTUNE_MODIFIER,
+        EssenceTags.Items.SILK_TOUCH_MODIFIER
     };
 
     private List<InfusionTableSerializableRecipe> recipes = new ArrayList<>();
 
-    private boolean shouldBeWorking = false;
-    private boolean isWorking = false;
-    private int workDuration = 0;
+    @Save
+    private Boolean shouldBeWorking = false;
+    @Save
+    private Boolean isWorking = false;
+    @Save
+    private Integer workDuration = 0;
 
     @Save
     private SidedInventoryComponent<InfusionTableTile> infusable;
