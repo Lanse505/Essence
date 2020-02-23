@@ -25,5 +25,13 @@
   "item.essence.essence_shovel": "Essence-Infused Shovel",
   "item.essence.essence_sword": "Essence-Infused Sword",
   "item.essence.essence_hoe": "Essence-Infused Hoe",
-  "item.essence.essence_omnitool": "Essence-Infused Omnitool"
+  "item.essence.essence_omnitool": "Essence-Infused Omnitool",
+
+  "modifier.essence.attack_damage": "  Attack Damage",
+  "modifier.essence.enchanted": "  Enchanted",
+  "modifier.essence.expander": "  Expander",
+  "modifier.essence.luck": "  Luck",
+  "modifier.essence.silk_touch": "  Silk Touch",
+
+  "tooltip.essence.modifier": "Modifiers:"
 }

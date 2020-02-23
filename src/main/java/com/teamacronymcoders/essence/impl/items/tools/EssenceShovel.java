@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -21,12 +22,16 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 
@@ -37,15 +42,35 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+    }
+
+    @Override
     public int getMaxDamage(ItemStack stack) {
-        return EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
+        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
             .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
+        return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
             .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
     }
@@ -58,22 +83,17 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
             .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight(), harvestLevel)).reduce(0, Integer::sum);
     }
 
-    //TODO: Investigate how stable this will be, AttributeModifiers apparently can break quite easily if they bottom-out from negative modifiers.
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-        EssenceModifierHelpers.getModifiers(stack).entrySet()
-            .stream()
-            .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue()))
-            .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
-        return multimap;
-    }
-
-    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-        if (isRecursive) {
-            return super.onItemUse(context);
+        if (slot == EquipmentSlotType.MAINHAND) {
+            Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
+            EssenceModifierHelpers.getModifiers(stack).entrySet()
+                .stream()
+                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue()))
+                .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
+            return multimap;
         }
-        return onItemUse(context);
+        return super.getAttributeModifiers(slot, stack);
     }
 
     @Override
@@ -87,6 +107,13 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
             .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
             .findFirst();
         return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
+    }
+
+    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
+        if (isRecursive) {
+            return super.onItemUse(context);
+        }
+        return onItemUse(context);
     }
 
     @Override
@@ -110,6 +137,14 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
+    public boolean onBlockDestroyedModified(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, boolean isRecursive) {
+        if (isRecursive) {
+            return super.onBlockDestroyed(stack, world, state, pos, miner);
+        }
+        return onBlockDestroyed(stack, world, state, pos, miner);
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
         EssenceModifierHelpers.getModifiers(stack)
@@ -121,7 +156,17 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
+            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
+            Map<String, ITextComponent> sorting_map = new HashMap<>();
+            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).getString(), key.getRenderedText(value)));
+            sorting_map
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
+                .forEach((s, iTextComponent) -> list.add(iTextComponent));
+        }
     }
 }

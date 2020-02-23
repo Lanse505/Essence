@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
@@ -90,14 +91,17 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     @OnlyIn(Dist.CLIENT)
     public String getTranslationName() {
         final ResourceLocation id = this.getRegistryName();
-        return "essence.modifier." + id.getNamespace() + "." + id.getPath();
+        return "modifier." + id.getNamespace() + "." + id.getPath();
     }
 
     /**
      * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
      */
-    public ITextComponent getRenderedText() {
-        return new TranslationTextComponent(getTranslationName());
+    public ITextComponent getRenderedText(int level) {
+        if (level == 1) {
+            return new TranslationTextComponent(getTranslationName());
+        }
+        return new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level));
     }
 
 }

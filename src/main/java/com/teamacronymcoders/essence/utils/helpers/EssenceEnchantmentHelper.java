@@ -31,9 +31,11 @@ public class EssenceEnchantmentHelper {
         if (!enchantments.isEmpty()) {
             Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
                 .mapToObj(enchantments::getCompound)
-                .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) < level).findAny();
+                .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) <= level).findAny();
             if (nbtOptional.isPresent()) {
-                nbtOptional.get().putInt(lvl, level);
+                if (nbtOptional.get().getInt(lvl) != level) {
+                    nbtOptional.get().putInt(lvl, level);
+                }
             } else {
                 CompoundNBT nbt = new CompoundNBT();
                 nbt.putString(id, enchantment.getRegistryName().toString());

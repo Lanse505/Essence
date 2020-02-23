@@ -1,5 +1,6 @@
-package com.teamacronymcoders.essence.api.modifier.core;
+package com.teamacronymcoders.essence.api.modifier;
 
+import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import net.minecraft.item.ItemStack;
 
 public class CosmeticCoreModifier extends CoreModifier {

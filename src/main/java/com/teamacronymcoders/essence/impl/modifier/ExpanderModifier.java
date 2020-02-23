@@ -2,9 +2,11 @@ package com.teamacronymcoders.essence.impl.modifier;
 
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
@@ -39,7 +41,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
                 .forEach(position -> {
                     if (stack.getItem() instanceof IModifiedTool) {
                         IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
-                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), player.getHorizontalFacing(), position, true)), true);
+                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), player.getHorizontalFacing(), position, false)), true);
                     }
                 });
             return ActionResultType.SUCCESS;
@@ -54,7 +56,17 @@ public class ExpanderModifier extends InteractionCoreModifier {
             BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
             BlockPos start = pos.add(offset);
             BlockPos end = pos.subtract(offset);
-            BlockPos.getAllInBox(start, end).filter(position -> !position.equals(pos) && stack.canHarvestBlock(state)).forEach(position -> world.breakBlock(position, true, miner));
+            BlockPos.getAllInBox(start, end)
+                .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
+                .forEach(position -> {
+                    if (miner instanceof PlayerEntity) {
+                        if (world.getBlockState(position).canHarvestBlock(world, position, (PlayerEntity) miner)) {
+                            EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+                        }
+                    } else {
+                        EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+                    }
+                });
             return true;
         }
         return false;
@@ -62,7 +74,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
 
     @Override
     public float getModifiedEfficiency(ItemStack stack, int level, float base) {
-        return (float) (base - ((base * 0.85) * level));
+        return (float) -(base * 0.275) * level;
     }
 
     @Override

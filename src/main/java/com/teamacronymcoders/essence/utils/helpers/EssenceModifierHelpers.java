@@ -19,9 +19,9 @@ public class EssenceModifierHelpers {
 
     public static final IForgeRegistry<Modifier> MODIFIERS = GameRegistry.findRegistry(Modifier.class);
 
-    private static final String TAG_MODIFIERS = "Modifiers";
-    private static final String TAG_MODIFIER = "Modifier";
-    private static final String TAG_LEVEL = "ModifierLevel";
+    public static final String TAG_MODIFIERS = "Modifiers";
+    public static final String TAG_MODIFIER = "Modifier";
+    public static final String TAG_LEVEL = "ModifierLevel";
 
     /**
      * @param name The ResourceLocation name of the Modifier stored in NBT.

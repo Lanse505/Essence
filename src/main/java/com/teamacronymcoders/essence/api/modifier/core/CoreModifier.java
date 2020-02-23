@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -30,7 +31,6 @@ public class CoreModifier extends Modifier {
      */
     public CoreModifier(IAttribute attribute, String identifier, String uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
         this.maxLevel = maxLevel;
-        final ResourceLocation registryName = getRegistryName();
         for (int i = 1; i <= maxLevel; i++) {
             final Multimap<String, AttributeModifier> levelModifiers = HashMultimap.create();
             levelModifiers.put(attribute.getName(), new AttributeModifier(UUID.fromString(uuid), identifier, amount * i, operation));
@@ -84,7 +84,7 @@ public class CoreModifier extends Modifier {
      */
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, int level) {
-        return this.modifiers.get(this.getLevelInRange(level) - 1);
+        return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(level) - 1);
     }
 
 }

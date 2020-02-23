@@ -37,7 +37,9 @@ public class Essence extends ModuleController {
         EventManager.mod(RegistryEvent.Register.class)
             .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
             .process(register -> {
-                register.getRegistry().register(InfusionTableSerializableRecipe.SERIALIZER);
+                register.getRegistry().registerAll(
+                    InfusionTableSerializableRecipe.SERIALIZER
+                );
             }).subscribe();
     }
 
