@@ -70,10 +70,13 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
      * @param modifier Modifier to check against
      * @return Returns if the provided Modifier can be applied with this one.
      */
-    public boolean canApplyTogether(Modifier modifier) {return true;}
+    public boolean canApplyTogether(Modifier modifier) {
+        return true;
+    }
 
     /**
      * This returns a boolean check against both Modifiers not just this Modifier.
+     *
      * @param modifier Modifier to check against.
      * @return Returns the final value if this can be applied together with the other Modifier.
      */

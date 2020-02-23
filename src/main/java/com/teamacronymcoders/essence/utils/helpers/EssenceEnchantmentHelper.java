@@ -20,9 +20,10 @@ public class EssenceEnchantmentHelper {
     /**
      * Either creates a new enchantment matching the values of "enchantment" and "level.
      * Or grabs the current matching enchantment and updates the level to match the value of "level"
-     * @param stack The ItemStack to Enchant
+     *
+     * @param stack       The ItemStack to Enchant
      * @param enchantment The Enchantment to add
-     * @param level The level of the Enchantment
+     * @param level       The level of the Enchantment
      */
     public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, int level) {
         CompoundNBT stackNBT = stack.getOrCreateTag();
@@ -51,6 +52,7 @@ public class EssenceEnchantmentHelper {
     /**
      * This takes an ItemStack, checks all the modifiers on it for EnchantmentCoreModifiers.
      * Grabs the Enchantments from the ItemStack, and then filters out any lingering Enchantments from removed Modifiers and removes them.
+     *
      * @param stack The ItemStack to check for Enchantments on
      */
     public static void checkEnchantmentsForRemoval(ItemStack stack) {

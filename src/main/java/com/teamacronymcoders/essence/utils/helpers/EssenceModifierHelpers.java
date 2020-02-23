@@ -10,7 +10,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class EssenceModifierHelpers {
@@ -51,7 +53,8 @@ public class EssenceModifierHelpers {
 
     /**
      * Sets the Converts the Map of Modifiers and Levels to NBT on the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack     The ItemStack holding the Modifiers.
      * @param modifiers The Map of the Modifiers and their Levels on the Tool.
      */
     public static void setModifiersToNBT(ItemStack stack, Map<Modifier, Integer> modifiers) {
@@ -66,7 +69,7 @@ public class EssenceModifierHelpers {
     }
 
     /**
-     * @param stack The ItemStack holding the Modifiers.
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to get the level off.
      * @return Returns the level of the modifier on the tool.
      */
@@ -77,9 +80,10 @@ public class EssenceModifierHelpers {
 
     /**
      * This adds the specified Modifier to the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
-     * @param level The Integer level that the Modifier being applied should have.
+     * @param level    The Integer level that the Modifier being applied should have.
      */
     public static void addModifier(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
@@ -89,7 +93,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This adds the specified Modifiers to the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack     The ItemStack holding the Modifiers.
      * @param modifiers The Modifier to remove.
      */
     public static void addModifiers(ItemStack stack, Modifier... modifiers) {
@@ -98,7 +103,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This removes the specified Modifier from the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack     The ItemStack holding the Modifiers.
      * @param modifiers The Modifiers to remove.
      */
     public static void removeModifiers(ItemStack stack, Modifier... modifiers) {
@@ -108,9 +114,9 @@ public class EssenceModifierHelpers {
     }
 
     /**
-     * @param stack The ItemStack holding the Modifiers.
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to set.
-     * @param level The Level of the Modifier to set.
+     * @param level    The Level of the Modifier to set.
      */
     public static void replaceModifierValue(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifierMap = getModifiers(stack);
@@ -120,7 +126,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This lowers the level of the specified Modifier on the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
     public static void increaseModifierLevel(ItemStack stack, Modifier modifier) {
@@ -129,7 +136,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This lowers the level of the specified Modifier on the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
     public static void increaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
@@ -141,7 +149,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This lowers the level of the specified Modifier on the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
     public static void decreaseModifierLevel(ItemStack stack, Modifier modifier) {
@@ -150,7 +159,8 @@ public class EssenceModifierHelpers {
 
     /**
      * This lowers the level of the specified Modifier on the Tool.
-     * @param stack The ItemStack holding the Modifiers.
+     *
+     * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
     public static void decreaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
@@ -158,7 +168,9 @@ public class EssenceModifierHelpers {
         int oldLevel = modifiers.getOrDefault(modifier, 0);
         modifiers.computeIfPresent(modifier, (modifier1, integer) -> {
             int newLevel = Math.min(oldLevel - level, modifier.getMinLevel());
-            if (newLevel <= 0) return null;
+            if (newLevel <= 0) {
+                return null;
+            }
             return newLevel;
         });
         setModifiersToNBT(stack, modifiers);
@@ -176,6 +188,7 @@ public class EssenceModifierHelpers {
     /**
      * DO NOT USE THIS UNLESS YOU KNOW WHAT YOU'RE DOING!
      * I'm looking at you Future Simon >_>
+     *
      * @param stack The ItemStack to be cleared of Modifiers
      */
     public static void clearModifiers(ItemStack stack) {

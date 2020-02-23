@@ -51,20 +51,20 @@ public class SerializableModifier {
             this.name = name;
         }
 
-        public int getID() {
-            return this.id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
         public static Operation byID(int id) {
             if (id >= 0 && id < VALUES.length) {
                 return VALUES[id];
             } else {
                 throw new IllegalArgumentException("No operation with value " + id);
             }
+        }
+
+        public int getID() {
+            return this.id;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }

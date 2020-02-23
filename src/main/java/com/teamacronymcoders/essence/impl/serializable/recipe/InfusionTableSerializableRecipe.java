@@ -22,10 +22,10 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     static {
         RECIPES.add(new InfusionTableSerializableRecipe(
-           new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
-           new Ingredient.IItemList[]{
-               new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
-           },
+            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
+            new Ingredient.IItemList[]{
+                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
+            },
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.ATTACK_DAMAGE_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
             300
         ));

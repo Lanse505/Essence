@@ -1,13 +1,11 @@
 package com.teamacronymcoders.essence.impl.blocks.infuser;
 
-import com.google.common.collect.Lists;
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
 import com.hrznstudio.titanium.component.progress.ProgressBarComponent;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -18,7 +16,6 @@ import net.minecraft.tags.Tag;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InfusionTableTile extends ActiveTile<InfusionTableTile> {

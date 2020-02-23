@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.impl.modifier;
 
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
