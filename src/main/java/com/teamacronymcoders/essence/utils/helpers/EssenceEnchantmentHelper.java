@@ -30,18 +30,18 @@ public class EssenceEnchantmentHelper {
         if (!enchantments.isEmpty()) {
             Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
                 .mapToObj(enchantments::getCompound)
-                .filter(tag -> tag.getString(id).equals(enchantment.getName()) && tag.getInt(lvl) < level).findAny();
+                .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) < level).findAny();
             if (nbtOptional.isPresent()) {
                 nbtOptional.get().putInt(lvl, level);
             } else {
                 CompoundNBT nbt = new CompoundNBT();
-                nbt.putString(id, enchantment.getName());
+                nbt.putString(id, enchantment.getRegistryName().toString());
                 nbt.putInt(lvl, level);
                 enchantments.add(nbt);
             }
         } else {
             CompoundNBT nbt = new CompoundNBT();
-            nbt.putString(id, enchantment.getName());
+            nbt.putString(id, enchantment.getRegistryName().toString());
             nbt.putInt(lvl, level);
             enchantments.add(nbt);
             stackNBT.put(enchantment_list, enchantments);
@@ -61,7 +61,7 @@ public class EssenceEnchantmentHelper {
             EssenceModifierHelpers.getModifiers(stack).keySet().stream()
                 .filter(integer -> integer instanceof EnchantmentCoreModifier)
                 .map(integer -> (EnchantmentCoreModifier) integer)
-                .forEach(enchantmentCoreModifier -> enchantmentIDs.remove(enchantmentCoreModifier.getLinkedEnchantment(stack).getName()));
+                .forEach(enchantmentCoreModifier -> enchantmentIDs.remove(enchantmentCoreModifier.getLinkedEnchantment(stack).getRegistryName().toString()));
             enchantmentIDs.values().forEach(enchantments::remove);
         }
     }

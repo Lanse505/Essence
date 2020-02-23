@@ -65,4 +65,8 @@ public class ExpanderModifier extends InteractionCoreModifier {
         return (float) (base - ((base * 0.85) * level));
     }
 
+    @Override
+    public int getModifierCountValue(ItemStack stack, int level) {
+        return level;
+    }
 }
