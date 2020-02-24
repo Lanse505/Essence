@@ -27,11 +27,21 @@
   "item.essence.essence_hoe": "Essence-Infused Hoe",
   "item.essence.essence_omnitool": "Essence-Infused Omnitool",
 
-  "modifier.essence.attack_damage": "  Attack Damage",
+  "modifier.essence.efficiency": "  Efficiency",
   "modifier.essence.enchanted": "  Enchanted",
   "modifier.essence.expander": "  Expander",
+  "modifier.essence.knockback": "  Knockback",
   "modifier.essence.luck": "  Luck",
   "modifier.essence.silk_touch": "  Silk Touch",
+  "modifier.essence.strengthened": "  Strengthened [%s]",
 
-  "tooltip.essence.modifier": "Modifiers:"
+  "strengthened.type.arthropod": "Arthropods",
+  "strengthened.type.sharpness": "Melee",
+  "strengthened.type.smite": "Holy",
+  "strengthened.type.power": "Ranged",
+
+  "tooltip.essence.modifier": "Modifiers:",
+  "tooltip.essence.modifier.free": "Free Modifiers: %s",
+
+  "curios.identifier.backpack": "Backpack"
 }
