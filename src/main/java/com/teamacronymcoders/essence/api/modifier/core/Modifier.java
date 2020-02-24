@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -68,6 +69,14 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     }
 
     /**
+     * @param stack The ItemStack that will hold the Modifier.
+     * @return Returns if the Modifier can be applied to the ItemStack.
+     */
+    public boolean canApplyOnItemStack(ItemStack stack) {
+        return true;
+    }
+
+    /**
      * @param modifier Modifier to check against
      * @return Returns if the provided Modifier can be applied with this one.
      */
@@ -99,9 +108,9 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
      */
     public ITextComponent getRenderedText(int level) {
         if (level == 1) {
-            return new TranslationTextComponent(getTranslationName());
+            return new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY);
         }
-        return new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level));
+        return new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level)).applyTextStyle(TextFormatting.GRAY);
     }
 
 }

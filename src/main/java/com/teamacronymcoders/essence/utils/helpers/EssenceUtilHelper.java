@@ -1,5 +1,7 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import net.minecraft.util.text.TextFormatting;
+
 import java.util.TreeMap;
 
 public class EssenceUtilHelper {
@@ -23,10 +25,20 @@ public class EssenceUtilHelper {
     }
 
     public static String toRoman(int number) {
-        int l =  map.floorKey(number);
-        if ( number == l ) {
+        int l = map.floorKey(number);
+        if (number == l) {
             return map.get(number);
         }
-        return map.get(l) + toRoman(number-l);
+        return map.get(l) + toRoman(number - l);
+    }
+
+    public static TextFormatting getTextColor(int free_modifiers) {
+        if (free_modifiers <= 1) {
+            return TextFormatting.RED;
+        }
+        if (free_modifiers <= 3) {
+            return TextFormatting.YELLOW;
+        }
+        return TextFormatting.GREEN;
     }
 }

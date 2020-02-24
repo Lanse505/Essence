@@ -10,5 +10,6 @@ import net.minecraft.world.World;
 
 public interface IModifiedTool {
     ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive);
+
     boolean onBlockDestroyedModified(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, boolean isRecursive);
 }

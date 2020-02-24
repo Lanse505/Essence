@@ -4,10 +4,12 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -15,14 +17,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -37,9 +38,12 @@ import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 
 public class EssenceHoe extends HoeItem implements IModifiedTool {
 
+    private int free_modifiers;
+
     public EssenceHoe(ResourceLocation resourceLocation) {
         super(ESSENCE, -1.0F, new Item.Properties().group(EssenceReferences.TOOL_TAB));
         setRegistryName(resourceLocation);
+        free_modifiers = 5;
     }
 
     @Override
@@ -60,6 +64,17 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
+        if (this.isInGroup(group)) {
+            ItemStack stack = new ItemStack(EssenceObjectHolders.ESSENCE_HOE);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+        }
     }
 
     @Override
@@ -158,6 +173,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(free_modifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(free_modifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();
@@ -168,6 +184,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
                 .forEach((s, iTextComponent) -> list.add(iTextComponent));
+            list.add(new StringTextComponent(""));
         }
     }
 }

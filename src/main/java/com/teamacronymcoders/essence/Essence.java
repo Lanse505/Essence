@@ -24,6 +24,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.UUID;
+
 @Mod("essence")
 public class Essence extends ModuleController {
 
@@ -41,6 +43,9 @@ public class Essence extends ModuleController {
                     InfusionTableSerializableRecipe.SERIALIZER
                 );
             }).subscribe();
+        for (int i = 0; i < 10; i++) {
+            LOGGER.info(UUID.randomUUID());
+        }
     }
 
     @Override

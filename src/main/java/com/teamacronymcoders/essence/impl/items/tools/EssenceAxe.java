@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -24,6 +25,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -38,9 +40,12 @@ import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 
 public class EssenceAxe extends AxeItem implements IModifiedTool {
 
+    private int free_modifiers;
+
     public EssenceAxe(ResourceLocation resourceLocation) {
         super(EssenceItemTiers.ESSENCE, 6.0f, -3.1f, new Item.Properties().group(EssenceReferences.TOOL_TAB));
         setRegistryName(resourceLocation);
+        free_modifiers = 5;
     }
 
     @Override
@@ -159,6 +164,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(free_modifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(free_modifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();
@@ -169,6 +175,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
                 .forEach((s, iTextComponent) -> list.add(iTextComponent));
+            list.add(new StringTextComponent(""));
         }
     }
 }

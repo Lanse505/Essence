@@ -1,12 +1,15 @@
-package com.teamacronymcoders.essence.impl.modifier;
+package com.teamacronymcoders.essence.impl.modifier.interaction;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.impl.items.tools.EssenceBow;
+import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
@@ -14,9 +17,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 
@@ -31,17 +34,17 @@ public class ExpanderModifier extends InteractionCoreModifier {
             PlayerEntity player = context.getPlayer();
             Hand hand = context.getHand();
             BlockPos pos = context.getPos();
-            Direction dir = context.getPlacementHorizontalFacing();
-            BlockState state = context.getWorld().getBlockState(context.getPos());
+            Direction dir = context.getFace();
             BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
             BlockPos start = pos.add(offset);
             BlockPos end = pos.subtract(offset);
             BlockPos.getAllInBox(start, end)
-                .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
+                .filter(position -> !position.equals(pos))
                 .forEach(position -> {
                     if (stack.getItem() instanceof IModifiedTool) {
                         IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
-                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), player.getHorizontalFacing(), position, false)), true);
+                        Essence.LOGGER.info(position);
+                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
                     }
                 });
             return ActionResultType.SUCCESS;
@@ -51,25 +54,22 @@ public class ExpanderModifier extends InteractionCoreModifier {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, int level) {
-        if (stack.getToolTypes().stream().map(toolType -> toolType.equals(ToolType.AXE) || toolType.equals(ToolType.PICKAXE) || toolType.equals(ToolType.SHOVEL)).findAny().orElse(false)) {
-            Direction dir = miner.getHorizontalFacing();
-            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
-            BlockPos start = pos.add(offset);
-            BlockPos end = pos.subtract(offset);
-            BlockPos.getAllInBox(start, end)
-                .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
-                .forEach(position -> {
-                    if (miner instanceof PlayerEntity) {
-                        if (world.getBlockState(position).canHarvestBlock(world, position, (PlayerEntity) miner)) {
-                            EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
-                        }
-                    } else {
+        Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vec3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
+        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
+        BlockPos start = pos.add(offset);
+        BlockPos end = pos.subtract(offset);
+        BlockPos.getAllInBox(start, end)
+            .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
+            .forEach(position -> {
+                if (miner instanceof PlayerEntity) {
+                    if (world.getBlockState(position).canHarvestBlock(world, position, (PlayerEntity) miner)) {
                         EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
                     }
-                });
-            return true;
-        }
-        return false;
+                } else {
+                    EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+                }
+            });
+        return true;
     }
 
     @Override
@@ -80,5 +80,15 @@ public class ExpanderModifier extends InteractionCoreModifier {
     @Override
     public int getModifierCountValue(ItemStack stack, int level) {
         return level;
+    }
+
+    @Override
+    public boolean canApplyTogether(Modifier modifier) {
+        return !(modifier instanceof LumberjackModifier);
+    }
+
+    @Override
+    public boolean canApplyOnItemStack(ItemStack stack) {
+        return !(stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow);
     }
 }

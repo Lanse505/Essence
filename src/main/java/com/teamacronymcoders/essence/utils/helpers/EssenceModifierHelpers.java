@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -10,9 +11,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class EssenceModifierHelpers {
@@ -52,6 +51,24 @@ public class EssenceModifierHelpers {
     }
 
     /**
+     * @param modifier_set The Set of Modifiers on the ItemStack.
+     * @param modifier     The Modifier to be applied.
+     * @return Returns if the Modifiers can be applied together with the Modifiers on the ItemStack.
+     */
+    public static boolean canApplyModifier(Set<Modifier> modifier_set, ItemStack stack, Modifier modifier) {
+        return modifier_set.stream().allMatch(modifier::isCompatibleWith) && modifier.canApplyOnItemStack(stack);
+    }
+
+    /**
+     * @param modifier_set The Set of Modifiers on the ItemStack.
+     * @param modifiers    The Modifiers to be applied.
+     * @return Returns if the Modifier can be applied together with the Modifiers on the ItemStack.
+     */
+    public static boolean canApplyModifiers(Set<Modifier> modifier_set, ItemStack stack, Modifier[] modifiers) {
+        return modifier_set.stream().allMatch(modifier -> Arrays.stream(modifiers).allMatch(modifier1 -> modifier.isCompatibleWith(modifier1) && modifier1.canApplyOnItemStack(stack)));
+    }
+
+    /**
      * Sets the Converts the Map of Modifiers and Levels to NBT on the Tool.
      *
      * @param stack     The ItemStack holding the Modifiers.
@@ -87,7 +104,9 @@ public class EssenceModifierHelpers {
      */
     public static void addModifier(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        modifiers.putIfAbsent(modifier, level);
+        if (stack.getItem() instanceof IModifiedTool && canApplyModifier(modifiers.keySet(), stack, modifier)) {
+            modifiers.putIfAbsent(modifier, level);
+        }
         setModifiersToNBT(stack, modifiers);
     }
 
@@ -98,7 +117,11 @@ public class EssenceModifierHelpers {
      * @param modifiers The Modifier to remove.
      */
     public static void addModifiers(ItemStack stack, Modifier... modifiers) {
-        Stream.of(modifiers).forEach(modifier -> addModifier(stack, modifier, 1));
+        final Map<Modifier, Integer> modifier_map = getModifiers(stack);
+        if (canApplyModifiers(modifier_map.keySet(), stack, modifiers)) {
+            Stream.of(modifiers).forEach(modifier -> modifier_map.computeIfAbsent(modifier, key -> 1));
+        }
+        setModifiersToNBT(stack, modifier_map);
     }
 
     /**
