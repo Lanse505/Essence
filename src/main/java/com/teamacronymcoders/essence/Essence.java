@@ -10,6 +10,7 @@ import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.impl.serializable.recipe.SerializableModifier;
 import com.teamacronymcoders.essence.utils.*;
+import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
@@ -50,9 +51,13 @@ public class Essence extends ModuleController {
                     InfusionTableSerializableRecipe.SERIALIZER
                 );
             }).subscribe();
-        for (int i = 0; i < 10; i++) {
-            LOGGER.info(UUID.randomUUID());
+        if (EssenceGeneralConfig.enableDebugLogging) {
+            LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
+            for (int i = 0; i < 10; i++) {
+                LOGGER.info(UUID.randomUUID());
+            }
         }
+
     }
 
     @Override

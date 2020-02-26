@@ -37,4 +37,18 @@ public class EssenceTags {
         public static Tag<Block> ESSENCE_WOOD_LOG = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "essence_logs"));
         public static Tag<Block> ESSENCE_ORE = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "essence_ore"));
     }
+
+    public static class Modifier {
+        public static Tag<Item> NONE_TOOL = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "tool/none"));
+        public static Tag<Item> AXE_TOOL = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "tool/axe"));
+        public static Tag<Item> PICKAXE_TOOL = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "tool/pickaxe"));
+        public static Tag<Item> SHOVEL_TOOL = new ItemTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "tool/shovel"));
+
+        public static Tag<Block> CASCADING_NONE = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "cascading/none"));
+        public static Tag<Block> CASCADING_VEIN = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "cascading/vein"));
+        public static Tag<Block> CASCADING_LUMBER = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "cascading/lumber"));
+        public static Tag<Block> CASCADING_EXCAVATION = new BlockTags.Wrapper(new ResourceLocation(EssenceReferences.MODID, "cascading/excavation"));
+    }
+
+
 }

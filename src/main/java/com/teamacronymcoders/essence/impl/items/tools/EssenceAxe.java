@@ -17,11 +17,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -66,6 +64,34 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+    }
+
+    @Override
+    public boolean canHarvestBlock(BlockState state) {
+        if (state.getHarvestTool() == ToolType.AXE) {
+            return getTier().getHarvestLevel() >= state.getHarvestLevel();
+        }
+        return super.canHarvestBlock(state);
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
+        if (this.isInGroup(group)) {
+            list.add(new ItemStack(this));
+            ItemStack stack;
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifiers(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), EssenceRegistration.CASCADING_LUMBER_MODIFIER.get());
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+        }
     }
 
     @Override

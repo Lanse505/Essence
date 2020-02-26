@@ -6,12 +6,21 @@ import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
+import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingModifier;
+import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
+import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
+import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -20,6 +29,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+
+import java.util.List;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 
@@ -62,8 +74,24 @@ public class ExpanderModifier extends InteractionCoreModifier {
             .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
             .forEach(position -> {
                 if (miner instanceof PlayerEntity) {
-                    if (world.getBlockState(position).canHarvestBlock(world, position, (PlayerEntity) miner)) {
-                        EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+                    PlayerEntity player = (PlayerEntity) miner;
+                    if (player instanceof ServerPlayerEntity) {
+                        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                        BlockState foundState = world.getBlockState(position);
+                        int exp = ForgeHooks.onBlockBreakEvent(world, serverPlayer.interactionManager.getGameType(), serverPlayer, position);
+                        if (exp != -1) {
+                            Block block = foundState.getBlock();
+                            TileEntity tile = EssenceUtilHelper.getTileEntity(world, pos);
+                            boolean removed = foundState.removedByPlayer(world, position, player, true, world.getFluidState(position));
+                            if (removed) {
+                                block.onPlayerDestroy(world, position, foundState);
+                                block.harvestBlock(world, player, position, foundState, tile, stack);
+                                player.addStat(Stats.ITEM_USED.get(stack.getItem()));
+                                if (exp > 0) {
+                                    block.dropXpOnBlockBreak(world, position, exp);
+                                }
+                            }
+                        }
                     }
                 } else {
                     EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
@@ -84,7 +112,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
 
     @Override
     public boolean canApplyTogether(Modifier modifier) {
-        return !(modifier instanceof LumberjackModifier);
+        return !(modifier instanceof CascadingModifier);
     }
 
     @Override

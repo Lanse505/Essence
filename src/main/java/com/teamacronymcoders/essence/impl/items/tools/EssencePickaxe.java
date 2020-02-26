@@ -91,6 +91,12 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             if (!list.contains(stack)) {
                 list.add(stack);
             }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifiers(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), EssenceRegistration.CASCADING_VEIN_MODIFIER.get());
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
         }
     }
 

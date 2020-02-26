@@ -1,7 +1,12 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.TreeMap;
 
 public class EssenceUtilHelper {
@@ -41,4 +46,19 @@ public class EssenceUtilHelper {
         }
         return TextFormatting.GREEN;
     }
+
+    /**
+     * Gets a tile entity if the location is loaded
+     * @param world - world
+     * @param pos   - position
+     * @return tile entity if found, null if either not found or not loaded
+     */
+    @Nullable
+    public static TileEntity getTileEntity(@Nullable World world, @Nonnull BlockPos pos) {
+        if (world == null || !world.isBlockPresent(pos)) {
+            return null;
+        }
+        return world.getTileEntity(pos);
+    }
+
 }

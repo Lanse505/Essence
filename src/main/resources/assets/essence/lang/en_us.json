@@ -27,6 +27,7 @@
   "item.essence.essence_hoe": "Essence-Infused Hoe",
   "item.essence.essence_omnitool": "Essence-Infused Omnitool",
 
+  "modifier.essence.cascading": "  Cascading [%s]",
   "modifier.essence.efficiency": "  Efficiency",
   "modifier.essence.enchanted": "  Enchanted",
   "modifier.essence.expander": "  Expander",
@@ -34,6 +35,11 @@
   "modifier.essence.luck": "  Luck",
   "modifier.essence.silk_touch": "  Silk Touch",
   "modifier.essence.strengthened": "  Strengthened [%s]",
+
+  "cascading.type.none": "???",
+  "cascading.type.lumber": "Lumber",
+  "cascading.type.vein": "Vein",
+  "cascading.type.excavation": "Excavation",
 
   "strengthened.type.arthropod": "Arthropods",
   "strengthened.type.sharpness": "Melee",
