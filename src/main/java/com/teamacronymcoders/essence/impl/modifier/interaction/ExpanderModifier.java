@@ -55,7 +55,6 @@ public class ExpanderModifier extends InteractionCoreModifier {
                 .forEach(position -> {
                     if (stack.getItem() instanceof IModifiedTool) {
                         IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
-                        Essence.LOGGER.info(position);
                         modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
                     }
                 });

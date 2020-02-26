@@ -5,10 +5,10 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.util.text.TextFormatting;
 
 public enum  StrengthenedType {
-    BANE_OF_ARTHROPODS(0, "arthropod", Enchantments.BANE_OF_ARTHROPODS, TextFormatting.DARK_PURPLE),
-    SHARPNESS(1, "sharpness", Enchantments.SHARPNESS, TextFormatting.WHITE),
-    SMITE(2, "smite", Enchantments.SMITE, TextFormatting.YELLOW),
-    POWER(3, "power", Enchantments.POWER, TextFormatting.GOLD);
+    BANE_OF_ARTHROPODS(0, "arthropod", Enchantments.BANE_OF_ARTHROPODS, TextFormatting.DARK_PURPLE, TextFormatting.ITALIC),
+    SHARPNESS(1, "sharpness", Enchantments.SHARPNESS, TextFormatting.WHITE, TextFormatting.ITALIC),
+    SMITE(2, "smite", Enchantments.SMITE, TextFormatting.YELLOW, TextFormatting.ITALIC),
+    POWER(3, "power", Enchantments.POWER, TextFormatting.GOLD, TextFormatting.ITALIC);
 
     private static final StrengthenedType[] VALUES = new StrengthenedType[]{BANE_OF_ARTHROPODS, SHARPNESS, SMITE, POWER};
     private final int id;

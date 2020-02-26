@@ -4,6 +4,8 @@ import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
+import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalTile;
+import com.teamacronymcoders.essence.impl.client.PedestalTESR;
 import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
@@ -15,11 +17,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -102,5 +106,7 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
+
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
     }
 }
