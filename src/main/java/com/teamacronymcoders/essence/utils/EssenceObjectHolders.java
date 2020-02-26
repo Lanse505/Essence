@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceOre;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLogBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceSapling;
+import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionTableBlock;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
@@ -39,6 +40,8 @@ public class EssenceObjectHolders {
 
     @ObjectHolder("essence:essence_infusion_table")
     public static InfusionTableBlock ESSENCE_INFUSION_TABLE;
+    @ObjectHolder("essence:essence_infusion_pedestal")
+    public static InfusionPedestalBlock ESSENCE_INFUSION_PEDESTAL;
 
     @ObjectHolder("essence:essence_crystal")
     public static EssenceCrystal ESSENCE_INFUSED_CRYSTAL;

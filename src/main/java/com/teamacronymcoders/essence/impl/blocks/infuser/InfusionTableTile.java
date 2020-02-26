@@ -9,16 +9,33 @@ import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.tags.EssenceTags;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.Tag;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
+    private static final BlockPos[] pedestal_positions = new BlockPos[] {
+        new BlockPos(-4, 0, 0),
+        new BlockPos(+4, 0, 0),
+        new BlockPos(0, 0, +4),
+        new BlockPos(0, 0, -4),
+        new BlockPos(+3, 0, -3),
+        new BlockPos(+3, 0, +3),
+        new BlockPos(-3, 0, +3),
+        new BlockPos(-3, 0, -3)
+    };
+
     public static Tag<Item>[] VALID_INPUT = new Tag[]{
         EssenceTags.Items.ESSENCE_AXE, EssenceTags.Items.ESSENCE_PICKAXE, EssenceTags.Items.ESSENCE_SHOVEL,
         EssenceTags.Items.ESSENCE_HOE, EssenceTags.Items.ESSENCE_SWORD, EssenceTags.Items.ESSENCE_OMNITOOL
@@ -87,7 +104,6 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
             }
         }
     }
-
 
     @Nonnull
     @Override

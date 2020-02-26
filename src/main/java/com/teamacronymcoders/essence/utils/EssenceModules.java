@@ -11,6 +11,8 @@ import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceOre;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLogBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceSapling;
+import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalBlock;
+import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionTableBlock;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
@@ -47,6 +49,13 @@ public class EssenceModules {
                 .content(Block.class, new EssencePlankBlock())
                 .content(Block.class, new EssenceSapling())
                 .content(Block.class, new EssenceSlabBlock())
+        )
+        .feature(
+            Feature.builder("infusion")
+                .force()
+                .description("Infusion-Blocks")
+                .content(Block.class, new InfusionPedestalBlock())
+                .content(Block.class, new InfusionTableBlock())
         )
         .feature(
             Feature.builder("misc")
