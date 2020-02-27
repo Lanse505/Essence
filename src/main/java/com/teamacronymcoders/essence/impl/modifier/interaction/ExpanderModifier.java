@@ -47,7 +47,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
             Hand hand = context.getHand();
             BlockPos pos = context.getPos();
             Direction dir = context.getFace();
-            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
+            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(level));
             BlockPos start = pos.add(offset);
             BlockPos end = pos.subtract(offset);
             BlockPos.getAllInBox(start, end)
@@ -66,7 +66,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, int level) {
         Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vec3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
-        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getUnitVector()).add(1.0, 1.0, 1.0).scale(level));
+        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(level));
         BlockPos start = pos.add(offset);
         BlockPos end = pos.subtract(offset);
         BlockPos.getAllInBox(start, end)

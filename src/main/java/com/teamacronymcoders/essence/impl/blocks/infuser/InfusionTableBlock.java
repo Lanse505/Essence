@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -25,13 +26,12 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
         setItemGroup(EssenceReferences.CORE_TAB);
     }
 
-    @Nonnull
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
         if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
         }
-        InfusionTableTile te = worldIn.getTileEntity(pos) == null ? (worldIn.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) worldIn.getTileEntity(pos) : null) : null;
+        InfusionTableTile te = worldIn.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) worldIn.getTileEntity(pos) : null;
         if (te == null) {
             return ActionResultType.PASS;
         }

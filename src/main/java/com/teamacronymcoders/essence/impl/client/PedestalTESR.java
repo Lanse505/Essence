@@ -1,12 +1,14 @@
 package com.teamacronymcoders.essence.impl.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalTile;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -26,13 +28,14 @@ public class PedestalTESR extends TileEntityRenderer<InfusionPedestalTile> {
         ItemStack stack = tile.getStack();
         if (!stack.isEmpty() && stack.getCount() > 0)  {
             matrixStack.push();
-            matrixStack.translate(0.5, 0.5, 0.5);
+            matrixStack.translate(0.5, 1.07, 0.5);
+            matrixStack.scale(0.5f, 0.5f, 0.5f);
 
             Minecraft mc = Minecraft.getInstance();
             ItemRenderer renderer = mc.getItemRenderer();
             IBakedModel model = renderer.getItemModelWithOverrides(stack, tile.getWorld(), null);
 
-            renderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, true, matrixStack, buffer, overlay, light, model);
+            renderer.renderItem(stack, ItemCameraTransforms.TransformType.NONE, true, matrixStack, buffer, overlay, light, model);
             matrixStack.pop();
         }
     }

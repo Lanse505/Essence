@@ -34,7 +34,7 @@
   "modifier.essence.knockback": "  Knockback",
   "modifier.essence.luck": "  Luck",
   "modifier.essence.silk_touch": "  Silk Touch",
-  "modifier.essence.strengthened": "  Strengthened [%s]",
+  "modifier.essence.strengthened": "  Strengthened %s [%s]",
 
   "cascading.type.none": "???",
   "cascading.type.lumber": "Lumber",

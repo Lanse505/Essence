@@ -37,19 +37,19 @@ public class CustomSaplingBlock extends CustomBushBlock implements IGrowable {
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         }
         if (worldIn.getLight(pos.up()) >= 9 && rand.nextInt(7) == 0) {
-            this.func_226942_a_(worldIn, pos, state, rand);
+            this.attemptGrow(worldIn, pos, state, rand);
         }
 
     }
 
-    public void func_226942_a_(ServerWorld p_226942_1_, BlockPos p_226942_2_, BlockState p_226942_3_, Random p_226942_4_) {
-        if (p_226942_3_.get(STAGE) == 0) {
-            p_226942_1_.setBlockState(p_226942_2_, p_226942_3_.cycle(STAGE), 4);
+    public void attemptGrow(ServerWorld world, BlockPos pos, BlockState state, Random random) {
+        if (state.get(STAGE) == 0) {
+            world.setBlockState(pos, state.cycle(STAGE), 4);
         } else {
-            if (!net.minecraftforge.event.ForgeEventFactory.saplingGrowTree(p_226942_1_, p_226942_4_, p_226942_2_)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.saplingGrowTree(world, random, pos)) {
                 return;
             }
-            this.tree.generate(p_226942_1_, p_226942_1_.getChunkProvider().getChunkGenerator(), p_226942_2_, p_226942_3_, p_226942_4_);
+            this.tree.func_225545_a_(world, world.getChunkProvider().getChunkGenerator(), pos, state, random);
         }
 
     }
@@ -66,7 +66,7 @@ public class CustomSaplingBlock extends CustomBushBlock implements IGrowable {
     }
 
     public void grow(ServerWorld p_225535_1_, Random p_225535_2_, BlockPos p_225535_3_, BlockState p_225535_4_) {
-        this.func_226942_a_(p_225535_1_, p_225535_3_, p_225535_4_, p_225535_2_);
+        this.attemptGrow(p_225535_1_, p_225535_3_, p_225535_4_, p_225535_2_);
     }
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {

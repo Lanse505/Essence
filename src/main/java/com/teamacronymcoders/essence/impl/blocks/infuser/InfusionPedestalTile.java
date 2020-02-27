@@ -5,6 +5,7 @@ import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -25,8 +26,9 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
     }
 
     @Override
-    public void openGui(PlayerEntity player) {}
-
+    public void tick() {
+        //Essence.LOGGER.info("Has " + this.inventory.getStackInSlot(0).getDisplayName().getString() + " in Slot 0");
+    }
 
     @Nonnull
     @Override
@@ -35,7 +37,7 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
     }
 
     public void addItem(ItemStack stack) {
-        this.inventory.setStackInSlot(0, stack);
+        this.inventory.insertItem(0, stack, false);
     }
 
     public ItemStack getStack() {

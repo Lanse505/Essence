@@ -64,19 +64,20 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
 
     public InfusionTableTile() {
         super(EssenceObjectHolders.ESSENCE_INFUSION_TABLE);
-        addInventory(infusable = (SidedInventoryComponent<InfusionTableTile>) new SidedInventoryComponent<InfusionTableTile>("input", 0, 0, 1, 0)
+        addInventory(infusable = (SidedInventoryComponent<InfusionTableTile>) new SidedInventoryComponent<InfusionTableTile>("input", 80, 20, 1, 0)
             .setColor(DyeColor.CYAN)
             .setComponentHarness(this)
             .setInputFilter(this::canInsertInfusable)
             .setOutputFilter(this::canExtractInfusable)
         );
-        addInventory(infusion_array = (SidedInventoryComponent<InfusionTableTile>) new SidedInventoryComponent<InfusionTableTile>("infusion_array", 0, 0, 8, 0)
+        addInventory(infusion_array = (SidedInventoryComponent<InfusionTableTile>) new SidedInventoryComponent<InfusionTableTile>("infusion_array", 17, 55, 8, 1)
             .setComponentHarness(this)
-            .setInputFilter(this::canInsertInfusionArray)
+            .setInputFilter((stack, integer) -> false)
             .setOutputFilter((stack, integer) -> false)
         );
-        addProgressBar(progressBar = new ProgressBarComponent<InfusionTableTile>(0, 0, 1)
+        addProgressBar(progressBar = new ProgressBarComponent<InfusionTableTile>(175, 1, 1)
             .setCanIncrease(iComponentHarness -> isWorking)
+
         );
     }
 

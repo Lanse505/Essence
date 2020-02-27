@@ -12,7 +12,7 @@ import java.util.Random;
 public class EssenceSaplingTree extends Tree {
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean b) {
-        return random.nextInt(10) >= 8 ? EssenceRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG) : EssenceRegistration.FANCY_ESSENCE_TREE_FEATURE.get().configure(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG);
+    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
+        return random.nextInt(10) >= 8 ? EssenceRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG) : EssenceRegistration.FANCY_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.SAPLING_ESSENCE_TREE_CONFIG);
     }
 }
