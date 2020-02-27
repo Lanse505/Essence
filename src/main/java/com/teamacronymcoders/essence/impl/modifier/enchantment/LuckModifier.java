@@ -4,6 +4,8 @@ import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.impl.items.tools.EssencePickaxe;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
+import com.teamacronymcoders.essence.impl.modifier.interaction.FieryModifier;
+import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -31,7 +33,7 @@ public class LuckModifier extends EnchantmentCoreModifier {
 
     @Override
     public boolean canApplyTogether(Modifier modifier) {
-        return !(modifier instanceof SilkTouchModifier);
+        return !(modifier instanceof SilkTouchModifier) && (!(modifier instanceof FieryModifier) || EssenceModifierConfig.luckAndFieryExclusive);
     }
 
     @Override

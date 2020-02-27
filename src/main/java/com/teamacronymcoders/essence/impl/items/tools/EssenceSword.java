@@ -94,6 +94,13 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
             if (!list.contains(stack)) {
                 list.add(stack);
             }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.STRENGTHENED_POWER_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.KNOCKBACK_MODIFIER.get(), 3);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
         }
     }
 

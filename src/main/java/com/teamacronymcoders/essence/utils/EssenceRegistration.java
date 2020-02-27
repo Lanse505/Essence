@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.impl.modifier.enchantment.*;
 import com.teamacronymcoders.essence.impl.modifier.enchantment.strengthened.StrengthenedModifier;
 import com.teamacronymcoders.essence.impl.modifier.enchantment.strengthened.StrengthenedType;
 import com.teamacronymcoders.essence.impl.modifier.interaction.ExpanderModifier;
+import com.teamacronymcoders.essence.impl.modifier.interaction.FieryModifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingType;
 import net.minecraft.util.ResourceLocation;
@@ -50,6 +51,7 @@ public class EssenceRegistration {
         public static RegistryObject<EnchantedModifier> ENCHANTED_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("enchanted", EnchantedModifier::new);
         // Enchantment Modifiers
         public static RegistryObject<EfficiencyModifier> EFFICIENCY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("efficiency", EfficiencyModifier::new);
+        public static RegistryObject<FieryModifier> FIERY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("fiery", FieryModifier::new);
         public static RegistryObject<KnockbackModifier> KNOCKBACK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("knockback", KnockbackModifier::new);
         public static RegistryObject<LuckModifier> LUCK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("luck", LuckModifier::new);
         public static RegistryObject<SilkTouchModifier> SILK_TOUCH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("silk_touch", SilkTouchModifier::new);

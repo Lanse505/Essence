@@ -32,7 +32,7 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     /**
      * @return Returns the Max Level of the Modifier.
      */
-    public int getMaxLevel() {
+    public int getMaxLevel(ItemStack stack) {
         return 1;
     }
 
@@ -40,7 +40,7 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     /**
      * @return Returns the Min level of the Modifier.
      */
-    public int getMinLevel() {
+    public int getMinLevel(ItemStack stack) {
         return 0;
     }
 
@@ -64,8 +64,8 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
      * @param level The current level.
      * @return Gets the minimum value, and caps it at 0.
      */
-    public int getLevelInRange(int level) {
-        return Math.max(Math.min(level, this.getMaxLevel()), 0);
+    public int getLevelInRange(int level, ItemStack stack) {
+        return Math.max(Math.min(level, this.getMaxLevel(stack)), this.getMinLevel(stack));
     }
 
     /**

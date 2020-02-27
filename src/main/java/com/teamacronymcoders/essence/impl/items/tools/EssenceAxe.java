@@ -91,6 +91,26 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
             if (!list.contains(stack)) {
                 list.add(stack);
             }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_LUMBER_MODIFIER.get(), 1);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
         }
     }
 

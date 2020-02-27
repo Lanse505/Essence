@@ -10,6 +10,7 @@ import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
 import com.teamacronymcoders.essence.impl.serializable.loot_modifier.FieryLootModifier;
+import com.teamacronymcoders.essence.impl.serializable.loot_modifier.MatchModifier;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.impl.serializable.recipe.SerializableModifier;
 import com.teamacronymcoders.essence.utils.*;
@@ -22,6 +23,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -109,6 +111,7 @@ public class Essence extends ModuleController {
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
+        LootConditionManager.registerCondition(new MatchModifier.Serializer());
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

@@ -166,7 +166,7 @@ public class EssenceModifierHelpers {
     public static void increaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
         int oldLevel = modifiers.getOrDefault(modifier, 0);
-        modifiers.computeIfPresent(modifier, (modifier1, integer) -> Math.min(oldLevel + level, modifier.getMaxLevel()));
+        modifiers.computeIfPresent(modifier, (modifier1, integer) -> Math.min(oldLevel + level, modifier.getMaxLevel(stack)));
         setModifiersToNBT(stack, modifiers);
     }
 
@@ -190,7 +190,7 @@ public class EssenceModifierHelpers {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
         int oldLevel = modifiers.getOrDefault(modifier, 0);
         modifiers.computeIfPresent(modifier, (modifier1, integer) -> {
-            int newLevel = Math.min(oldLevel - level, modifier.getMinLevel());
+            int newLevel = Math.min(oldLevel - level, modifier.getMinLevel(stack));
             if (newLevel <= 0) {
                 return null;
             }

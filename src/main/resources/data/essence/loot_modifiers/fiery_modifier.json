@@ -1,9 +1,9 @@
 {
-	"condition": "",
+	"condition": "essence:modifier_matcher",
 	"predicate": {
 		"modifiers": [
 			{
-				"modifier": "",
+				"modifier": "essence:fiery",
 				"level": {
 					"min": 1
 				}

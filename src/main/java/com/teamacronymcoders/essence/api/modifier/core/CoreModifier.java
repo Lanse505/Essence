@@ -40,7 +40,7 @@ public class CoreModifier extends Modifier {
      * @return Gets the Max Level of the Modifier
      */
     @Override
-    public int getMaxLevel() {
+    public int getMaxLevel(ItemStack stack) {
         return this.maxLevel;
     }
 
@@ -82,7 +82,7 @@ public class CoreModifier extends Modifier {
      */
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, int level) {
-        return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(level) - 1);
+        return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(level, stack) - 1);
     }
 
 }

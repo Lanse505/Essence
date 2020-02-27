@@ -65,7 +65,12 @@ public class EssenceEnchantmentHelper {
             EssenceModifierHelpers.getModifiers(stack).keySet().stream()
                 .filter(integer -> integer instanceof EnchantmentCoreModifier)
                 .map(integer -> (EnchantmentCoreModifier) integer)
-                .forEach(enchantmentCoreModifier -> enchantmentIDs.remove(enchantmentCoreModifier.getLinkedEnchantment(stack).getRegistryName().toString()));
+                .forEach(enchantmentCoreModifier -> {
+                    Enchantment enchantment = enchantmentCoreModifier.getLinkedEnchantment(stack);
+                    if (enchantment != null) {
+                        enchantmentIDs.remove(enchantment.getRegistryName().toString());
+                    }
+                });
             enchantmentIDs.values().forEach(enchantments::remove);
         }
     }

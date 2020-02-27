@@ -6,6 +6,9 @@ import com.hrznstudio.titanium.annotation.config.ConfigVal;
 @ConfigFile(value = "modifiers")
 public class EssenceModifierConfig {
 
+    @ConfigVal(comment = "Should Luck and Fiery (Auto-Smelt) Modifiers be allowed on the same tool?")
+    public static boolean luckAndFieryExclusive = false;
+
     @ConfigVal
     public static Cascading cascading = new Cascading();
 
