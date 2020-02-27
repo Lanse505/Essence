@@ -1,0 +1,14 @@
+{
+	"condition": "",
+	"predicate": {
+		"modifiers": [
+			{
+				"modifier": "",
+				"level": {
+					"min": 1
+				}
+			}
+		]
+	},
+	"function": "essence:fiery_modifier"
+}

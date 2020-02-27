@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.impl.client.PedestalTESR;
 import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
+import com.teamacronymcoders.essence.impl.serializable.loot_modifier.FieryLootModifier;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.impl.serializable.recipe.SerializableModifier;
 import com.teamacronymcoders.essence.utils.*;
@@ -20,6 +21,8 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -55,6 +58,13 @@ public class Essence extends ModuleController {
                     InfusionTableSerializableRecipe.SERIALIZER
                 );
             }).subscribe();
+        EventManager.mod(RegistryEvent.Register.class)
+            .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
+            .process(register -> {
+                register.getRegistry().registerAll(
+                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(EssenceReferences.MODID, "fiery_modifier"))
+                );
+            }).subscribe();
         if (EssenceGeneralConfig.enableDebugLogging) {
             LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
             for (int i = 0; i < 10; i++) {
@@ -85,7 +95,6 @@ public class Essence extends ModuleController {
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("hands").setSize(1).setEnabled(true).setHidden(false));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("ring").setSize(2).setEnabled(true).setHidden(false));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
-
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("head", new ResourceLocation(CuriosAPI.MODID, "item/empty_head_slot")));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("necklace", new ResourceLocation(CuriosAPI.MODID, "item/empty_necklace_slot")));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("hands", new ResourceLocation(CuriosAPI.MODID, "item/empty_hands_slot")));
