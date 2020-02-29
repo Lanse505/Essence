@@ -6,9 +6,6 @@ import com.hrznstudio.titanium.annotation.config.ConfigVal;
 @ConfigFile(value = "modifiers")
 public class EssenceModifierConfig {
 
-    @ConfigVal(comment = "Should Luck and Fiery (Auto-Smelt) Modifiers be allowed on the same tool?")
-    public static boolean luckAndFieryExclusive = false;
-
     @ConfigVal
     public static Cascading cascading = new Cascading();
 
@@ -24,7 +21,7 @@ public class EssenceModifierConfig {
             @ConfigVal(comment = "Block-Break Limit")
             public static int blockLimit = 625;
             @ConfigVal(comment = "Max-Search Limit")
-            public static int searchLimit = 25;
+            public static int searchLimit = 75;
         }
 
         public static class Vein {

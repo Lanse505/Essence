@@ -38,12 +38,12 @@ import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 
 public class EssenceAxe extends AxeItem implements IModifiedTool {
 
-    private int free_modifiers;
+    private int freeModifiers;
 
     public EssenceAxe(ResourceLocation resourceLocation) {
         super(EssenceItemTiers.ESSENCE, 6.0f, -3.1f, new Item.Properties().group(EssenceReferences.TOOL_TAB));
         setRegistryName(resourceLocation);
-        free_modifiers = 5;
+        freeModifiers = 5;
     }
 
     @Override
@@ -190,14 +190,6 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     }
 
     @Override
-    public boolean onBlockDestroyedModified(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, boolean isRecursive) {
-        if (isRecursive) {
-            return super.onBlockDestroyed(stack, world, state, pos, miner);
-        }
-        return onBlockDestroyed(stack, world, state, pos, miner);
-    }
-
-    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
         EssenceModifierHelpers.getModifiers(stack)
@@ -210,7 +202,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(free_modifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(free_modifiers))).applyTextStyle(TextFormatting.GRAY));
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.utils.tags;
+package com.teamacronymcoders.essence.utils;
 
 import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;

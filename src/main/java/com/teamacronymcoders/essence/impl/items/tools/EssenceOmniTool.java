@@ -42,12 +42,12 @@ import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
 public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     private static final List<Item> tools = new ArrayList<>(Arrays.asList(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_SHOVEL));
-    private int free_modifiers;
+    private int freeModifiers;
 
     public EssenceOmniTool(ResourceLocation resourceLocation) {
         super(ESSENCE.getAttackDamage(), ESSENCE.getEfficiency(), ESSENCE, Sets.newHashSet(), new Item.Properties().group(EssenceReferences.TOOL_TAB).addToolType(ToolType.AXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.PICKAXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.SHOVEL, ESSENCE.getHarvestLevel()));
         setRegistryName(resourceLocation);
-        free_modifiers = 5;
+        freeModifiers = 5;
     }
 
     @Override
@@ -146,14 +146,6 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     }
 
     @Override
-    public boolean onBlockDestroyedModified(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, boolean isRecursive) {
-        if (isRecursive) {
-            return super.onBlockDestroyed(stack, world, state, pos, miner);
-        }
-        return onBlockDestroyed(stack, world, state, pos, miner);
-    }
-
-    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
         EssenceModifierHelpers.getModifiers(stack)
@@ -166,7 +158,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(free_modifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(free_modifiers))).applyTextStyle(TextFormatting.GRAY));
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();

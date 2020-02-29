@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.impl.serializable;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.utils.tags.EssenceTags;
+import com.teamacronymcoders.essence.utils.EssenceTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
