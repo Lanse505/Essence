@@ -64,6 +64,8 @@ public class EssenceObjectHolders {
     public static EssenceHoe ESSENCE_HOE;
     @ObjectHolder("essence:essence_omnitool")
     public static EssenceOmniTool ESSENCE_OMNITOOL;
+    @ObjectHolder("essence:essence_shear")
+    public static EssenceShear ESSENCE_SHEAR;
 
     public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(EssenceReferences.MODID, "essence", FluidAttributes.builder(new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_still"), new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_flowing")), true, EssenceReferences.CORE_TAB);
 }

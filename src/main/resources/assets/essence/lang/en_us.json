@@ -26,6 +26,7 @@
   "item.essence.essence_sword": "Essence-Infused Sword",
   "item.essence.essence_hoe": "Essence-Infused Hoe",
   "item.essence.essence_omnitool": "Essence-Infused Omnitool",
+  "item.essence.essence_shear": "Essence-Infused Shears",
 
   "modifier.essence.cascading": "  Cascading [%s]",
   "modifier.essence.efficiency": "  Efficiency",
@@ -34,6 +35,7 @@
   "modifier.essence.fiery": "  Fiery %s",
   "modifier.essence.knockback": "  Knockback",
   "modifier.essence.luck": "  Luck",
+  "modifier.essence.rainbow": "  Rainbow",
   "modifier.essence.silk_touch": "  Silk Touch",
   "modifier.essence.strengthened": "  Strengthened %s [%s]",
 

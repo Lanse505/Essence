@@ -118,7 +118,7 @@ public class EssenceModifierHelpers {
      */
     public static void addModifiers(ItemStack stack, Modifier... modifiers) {
         final Map<Modifier, Integer> modifier_map = getModifiers(stack);
-        if (canApplyModifiers(modifier_map.keySet(), stack, modifiers)) {
+        if (stack.getItem() instanceof IModifiedTool && canApplyModifiers(modifier_map.keySet(), stack, modifiers)) {
             Stream.of(modifiers).forEach(modifier -> modifier_map.computeIfAbsent(modifier, key -> 1));
         }
         setModifiersToNBT(stack, modifier_map);

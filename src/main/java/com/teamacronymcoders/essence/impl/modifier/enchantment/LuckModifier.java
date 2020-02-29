@@ -33,12 +33,7 @@ public class LuckModifier extends EnchantmentCoreModifier {
 
     @Override
     public boolean canApplyTogether(Modifier modifier) {
-        return !(modifier instanceof SilkTouchModifier) && (!(modifier instanceof FieryModifier) || EssenceModifierConfig.luckAndFieryExclusive);
-    }
-
-    @Override
-    public boolean canApplyOnItemStack(ItemStack stack) {
-        return stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssencePickaxe;
+        return !(modifier instanceof SilkTouchModifier);
     }
 
     @Override

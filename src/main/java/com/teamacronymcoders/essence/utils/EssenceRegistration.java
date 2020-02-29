@@ -10,6 +10,7 @@ import com.teamacronymcoders.essence.impl.modifier.enchantment.strengthened.Stre
 import com.teamacronymcoders.essence.impl.modifier.enchantment.strengthened.StrengthenedType;
 import com.teamacronymcoders.essence.impl.modifier.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.FieryModifier;
+import com.teamacronymcoders.essence.impl.modifier.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingType;
 import net.minecraft.util.ResourceLocation;
@@ -63,6 +64,7 @@ public class EssenceRegistration {
 
         // Interaction Modifiers
         public static RegistryObject<ExpanderModifier> EXPANDER_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("expander", ExpanderModifier::new);
+        public static RegistryObject<RainbowModifier> RAINBOW_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("rainbow", RainbowModifier::new);
             // Cascading Modifiers
             public static RegistryObject<CascadingModifier> CASCADING_NONE_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_none", () -> new CascadingModifier(CascadingType.NONE));
             public static RegistryObject<CascadingModifier> CASCADING_LUMBER_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_lumber", () -> new CascadingModifier(CascadingType.LUMBER));

@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -61,4 +62,7 @@ public class EssenceUtilHelper {
         return world.getTileEntity(pos);
     }
 
+    public static int nextIntInclusive(int min, int max) {
+        return EssenceReferences.random.nextInt(max - min + 1) + min;
+    }
 }

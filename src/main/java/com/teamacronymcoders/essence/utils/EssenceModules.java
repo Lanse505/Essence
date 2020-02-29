@@ -77,5 +77,6 @@ public class EssenceModules {
                 .content(Item.class, new EssenceSword(new ResourceLocation(MODID, "essence_sword")))
                 .content(Item.class, new EssenceHoe(new ResourceLocation(MODID, "essence_hoe")))
                 .content(Item.class, new EssenceOmniTool(new ResourceLocation(MODID, "essence_omnitool")))
+                .content(Item.class, new EssenceShear(new ResourceLocation(MODID, "essence_shear")))
         );
 }
