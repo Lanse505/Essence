@@ -21,27 +21,27 @@ public class ModifierPredicate {
     public static final ModifierPredicate ANY = new ModifierPredicate();
 
     @Nullable
-    private final ItemPredicate item;
-    private final SerializableModifierPredicateObject[] serializable_modifiers;
+    private final ItemPredicate itemPredicate;
+    private final SerializableModifierPredicateObject[] modifiers;
 
     public ModifierPredicate() {
-        this.item = null;
-        this.serializable_modifiers = null;
+        this.itemPredicate = null;
+        this.modifiers = null;
     }
 
-    public ModifierPredicate(@Nullable ItemPredicate item, SerializableModifierPredicateObject... serializable_modifiers) {
-        this.item = item;
-        this.serializable_modifiers = SerializableModifierPredicateObject.getNewArray(serializable_modifiers);
+    public ModifierPredicate(@Nullable ItemPredicate itemPredicate, SerializableModifierPredicateObject... modifiers) {
+        this.itemPredicate = itemPredicate;
+        this.modifiers = SerializableModifierPredicateObject.getNewArray(modifiers);
     }
 
     public boolean test(ItemStack stack) {
-        return (this.item != null && this.item.test(stack)) && Arrays.stream(this.serializable_modifiers).allMatch(object -> object.test(stack));
+        return (this.itemPredicate != null && this.itemPredicate.test(stack)) && Arrays.stream(this.modifiers).allMatch(object -> object.test(stack));
     }
 
     public static ModifierPredicate deserializer(@Nullable JsonElement element) {
         if (element != null && !element.isJsonNull()) {
             JsonObject object = element.getAsJsonObject();
-            ItemPredicate itemPredicate = ItemPredicate.deserialize(object.get("item"));
+            ItemPredicate itemPredicate = ItemPredicate.deserialize(object.get("itemPredicate"));
             JsonArray modifierArray = object.getAsJsonArray("modifiers");
             SerializableModifierPredicateObject[] trueArray = new SerializableModifierPredicateObject[modifierArray.size()];
             for (int i = 0; i < modifierArray.size(); i++) {
@@ -57,15 +57,15 @@ public class ModifierPredicate {
             return JsonNull.INSTANCE;
         } else {
             JsonObject predicate = new JsonObject();
-            if (this.item != null) {
-                predicate.add("item", item.serialize());
+            if (this.itemPredicate != null) {
+                predicate.add("itemPredicate", itemPredicate.serialize());
             }
-            if (serializable_modifiers != null && serializable_modifiers.length > 0) {
-                JsonArray modifiers = new JsonArray();
-                for (SerializableModifierPredicateObject object : serializable_modifiers) {
-                    modifiers.add(object.serializer());
+            if (modifiers != null && modifiers.length > 0) {
+                JsonArray serializable_modifiers = new JsonArray();
+                for (SerializableModifierPredicateObject object : modifiers) {
+                    serializable_modifiers.add(object.serializer());
                 }
-                predicate.add("modifiers", modifiers);
+                predicate.add("modifiers", serializable_modifiers);
             }
             return predicate;
         }

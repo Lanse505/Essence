@@ -1,14 +1,18 @@
 {
-	"condition": "essence:modifier_matcher",
-	"predicate": {
-		"modifiers": [
-			{
-				"modifier": "essence:fiery",
-				"level": {
-					"min": 1
-				}
+	"conditions": [
+		{
+			"condition": "essence:modifier_matcher",
+			"predicate": {
+				"modifiers": [
+					{
+						"modifier": "essence:fiery",
+						"level": {
+							"min": 1
+						}
+					}
+				]
 			}
-		]
-	},
+		}
+	],
 	"function": "essence:fiery_modifier"
 }

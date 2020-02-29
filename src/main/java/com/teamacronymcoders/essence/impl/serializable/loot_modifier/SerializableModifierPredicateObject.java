@@ -54,7 +54,7 @@ public class SerializableModifierPredicateObject {
 
     public boolean test(ItemStack stack) {
         final Map<Modifier, Integer> modifier_map = EssenceModifierHelpers.getModifiers(stack);
-        final int level = modifier_map.get(this.modifier);
+        final int level = modifier_map.containsKey(this.modifier) ? modifier_map.get(modifier) : 0;
         return (modifier_map.containsKey(modifier) && !(this.level == null || this.level.isUnbounded())) && this.level.test(level);
     }
 

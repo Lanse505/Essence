@@ -26,7 +26,7 @@ public class FieryModifier extends EnchantmentCoreModifier {
     @Override
     public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
         if (stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow) {
-            EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level);
+            EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level * 2);
         }
     }
 
@@ -49,11 +49,6 @@ public class FieryModifier extends EnchantmentCoreModifier {
     @Override
     public boolean canApplyOnItemStack(ItemStack stack) {
         return !(stack.getItem() instanceof EssenceHoe);
-    }
-
-    @Override
-    public boolean canApplyTogether(Modifier modifier) {
-        return !(modifier instanceof LuckModifier) || EssenceModifierConfig.luckAndFieryExclusive;
     }
 
     @Override
