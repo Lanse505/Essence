@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.wood;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.base.CustomRotatedPillarBlock;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -14,8 +14,8 @@ import net.minecraft.world.IBlockReader;
 public class EssenceLogBlock extends CustomRotatedPillarBlock {
     public EssenceLogBlock() {
         super(Block.Properties.create(Material.WOOD, MaterialColor.CYAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
-        setRegistryName(EssenceReferences.MODID, "essence_wood_log");
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setRegistryName(Essence.MODID, "essence_wood_log");
+        setItemGroup(Essence.CORE_TAB);
     }
 
     @Override

@@ -51,11 +51,4 @@ public class FieryModifier extends EnchantmentCoreModifier {
         return !(stack.getItem() instanceof EssenceHoe);
     }
 
-    @Override
-    public ITextComponent getRenderedText(int level) {
-        if (level == 1) {
-            new TranslationTextComponent(getTranslationName());
-        }
-        return new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(level));
-    }
 }

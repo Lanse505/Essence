@@ -1,11 +1,11 @@
 package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -45,7 +45,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     private int freeModifiers;
 
     public EssenceShear(ResourceLocation resourceLocation) {
-        super(new Item.Properties().maxDamage(238).group(EssenceReferences.TOOL_TAB));
+        super(new Item.Properties().maxDamage(238).group(Essence.TOOL_TAB));
         setRegistryName(resourceLocation);
         freeModifiers = 5;
     }
@@ -63,6 +63,26 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
     }
 
     @Override
@@ -172,9 +192,9 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 dropList.forEach(s -> {
                     ItemEntity entity = sheared.entityDropItem(s);
                     entity.setMotion(entity.getMotion().add(
-                        (EssenceReferences.random.nextFloat() - EssenceReferences.random.nextFloat()) * 0.1F,
-                        EssenceReferences.random.nextFloat() * 0.05F,
-                        (EssenceReferences.random.nextFloat() - EssenceReferences.random.nextFloat()) * 0.1F));
+                        (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
+                        Essence.RANDOM.nextFloat() * 0.05F,
+                        (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
                 });
 
                 // Damage the ItemStack

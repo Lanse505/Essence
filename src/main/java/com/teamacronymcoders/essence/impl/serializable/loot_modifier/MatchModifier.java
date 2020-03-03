@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.impl.serializable.loot_modifier;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -26,7 +26,7 @@ public class MatchModifier implements ILootCondition {
     public static class Serializer extends ILootCondition.AbstractSerializer<MatchModifier> {
 
         public Serializer() {
-            super(new ResourceLocation(EssenceReferences.MODID,"modifier_matcher"), MatchModifier.class);
+            super(new ResourceLocation(Essence.MODID,"modifier_matcher"), MatchModifier.class);
         }
 
         @Override

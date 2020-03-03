@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.utils;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.impl.blocks.essence.EssenceBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.building.EssencePlankBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.building.EssenceSlabBlock;
@@ -67,5 +68,5 @@ public class EssenceObjectHolders {
     @ObjectHolder("essence:essence_shear")
     public static EssenceShear ESSENCE_SHEAR;
 
-    public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(EssenceReferences.MODID, "essence", FluidAttributes.builder(new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_still"), new ResourceLocation(EssenceReferences.MODID, "blocks/fluids/essence_flowing")), true, EssenceReferences.CORE_TAB);
+    public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(Essence.MODID, "essence", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/essence_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/essence_flowing")), true, Essence.CORE_TAB);
 }

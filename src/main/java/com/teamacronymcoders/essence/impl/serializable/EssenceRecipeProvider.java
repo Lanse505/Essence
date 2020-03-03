@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.impl.serializable;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumRecipeProvider;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 
@@ -16,7 +16,7 @@ public class EssenceRecipeProvider extends TitaniumRecipeProvider {
     @Override
     public void register(Consumer<IFinishedRecipe> consumer) {
         BasicBlock.BLOCKS.stream()
-            .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(EssenceReferences.MODID))
+            .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(Essence.MODID))
             .forEach(basicBlock -> basicBlock.registerRecipe(consumer));
     }
 }

@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.impl.blocks.essence.building;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -19,8 +19,8 @@ import java.util.function.Consumer;
 public class EssencePlankBlock extends BasicBlock {
     public EssencePlankBlock() {
         super(Properties.create(Material.WOOD, MaterialColor.CYAN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
-        setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_wood_planks"));
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_planks"));
+        setItemGroup(Essence.CORE_TAB);
     }
 
     @Override

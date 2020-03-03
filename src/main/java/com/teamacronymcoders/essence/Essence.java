@@ -4,8 +4,10 @@ import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
+import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalTile;
 import com.teamacronymcoders.essence.impl.client.PedestalTESR;
+import com.teamacronymcoders.essence.impl.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.impl.serializable.EssenceTagProvider;
@@ -39,12 +41,28 @@ import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
 import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Mod("essence")
 public class Essence extends ModuleController {
 
+    public static final String MODID = "essence";
+    public static final Random RANDOM = new Random();
     public static final Logger LOGGER = LogManager.getLogger("Essence");
+
+    public static final AdvancedTitaniumTab CORE_TAB = new AdvancedTitaniumTab("essence_core", true) {
+        @Override
+        public boolean hasScrollbar() {
+            return true;
+        }
+    };
+    public static final AdvancedTitaniumTab TOOL_TAB = new AdvancedTitaniumTab("essence_tools", true) {
+        @Override
+        public boolean hasScrollbar() {
+            return true;
+        }
+    };
 
     public Essence() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -63,7 +81,7 @@ public class Essence extends ModuleController {
             .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
             .process(register -> {
                 register.getRegistry().registerAll(
-                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(EssenceReferences.MODID, "fiery_modifier"))
+                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
                 );
             }).subscribe();
         if (EssenceGeneralConfig.enableDebugLogging) {
@@ -100,17 +118,18 @@ public class Essence extends ModuleController {
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("necklace", new ResourceLocation(CuriosAPI.MODID, "item/empty_necklace_slot")));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("hands", new ResourceLocation(CuriosAPI.MODID, "item/empty_hands_slot")));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("ring", new ResourceLocation(CuriosAPI.MODID, "item/empty_ring_slot")));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(EssenceReferences.MODID, "items/curios/empty_backpack_slot")));
+        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MODID, "items/curios/empty_backpack_slot")));
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        EssenceReferences.CORE_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS));
-        EssenceReferences.TOOL_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_AXE), new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE), new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL), new ItemStack(EssenceObjectHolders.ESSENCE_SWORD), new ItemStack(EssenceObjectHolders.ESSENCE_HOE), new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
+        CORE_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS));
+        TOOL_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_AXE), new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE), new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL), new ItemStack(EssenceObjectHolders.ESSENCE_SWORD), new ItemStack(EssenceObjectHolders.ESSENCE_HOE), new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
         JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
+        EssenceDispenseBehaviours.init();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

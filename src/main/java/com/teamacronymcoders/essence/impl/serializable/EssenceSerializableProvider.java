@@ -3,8 +3,8 @@ package com.teamacronymcoders.essence.impl.serializable;
 import com.hrznstudio.titanium.recipe.generator.IJSONGenerator;
 import com.hrznstudio.titanium.recipe.generator.IJsonFile;
 import com.hrznstudio.titanium.recipe.generator.TitaniumSerializableProvider;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.data.DataGenerator;
 
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 public class EssenceSerializableProvider extends TitaniumSerializableProvider {
 
     public EssenceSerializableProvider(DataGenerator generatorIn) {
-        super(generatorIn, EssenceReferences.MODID);
+        super(generatorIn, Essence.MODID);
     }
 
     @Override

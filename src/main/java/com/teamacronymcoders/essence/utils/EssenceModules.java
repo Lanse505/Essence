@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.utils;
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.hrznstudio.titanium.module.Feature;
 import com.hrznstudio.titanium.module.Module;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.impl.blocks.essence.EssenceBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.building.EssencePlankBlock;
 import com.teamacronymcoders.essence.impl.blocks.essence.building.EssenceSlabBlock;
@@ -21,8 +22,6 @@ import com.teamacronymcoders.essence.impl.items.tools.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-
-import static com.teamacronymcoders.essence.utils.EssenceReferences.MODID;
 
 public class EssenceModules {
     public static final Module.Builder CORE = Module.builder("core")
@@ -45,7 +44,7 @@ public class EssenceModules {
                 .content(Block.class, new EssenceCrystalOre())
                 .content(Block.class, new EssenceLeavesBlock())
                 .content(Block.class, new EssenceLogBlock())
-                .content(Block.class, new EssenceOre(new ResourceLocation(MODID, "essence_ore")))
+                .content(Block.class, new EssenceOre(new ResourceLocation(Essence.MODID, "essence_ore")))
                 .content(Block.class, new EssencePlankBlock())
                 .content(Block.class, new EssenceSapling())
                 .content(Block.class, new EssenceSlabBlock())
@@ -71,12 +70,13 @@ public class EssenceModules {
             Feature.builder("tools")
                 .force()
                 .description("Tools")
-                .content(Item.class, new EssenceAxe(new ResourceLocation(MODID, "essence_axe")))
-                .content(Item.class, new EssencePickaxe(new ResourceLocation(MODID, "essence_pickaxe")))
-                .content(Item.class, new EssenceShovel(new ResourceLocation(MODID, "essence_shovel")))
-                .content(Item.class, new EssenceSword(new ResourceLocation(MODID, "essence_sword")))
-                .content(Item.class, new EssenceHoe(new ResourceLocation(MODID, "essence_hoe")))
-                .content(Item.class, new EssenceOmniTool(new ResourceLocation(MODID, "essence_omnitool")))
-                .content(Item.class, new EssenceShear(new ResourceLocation(MODID, "essence_shear")))
+                .content(Item.class, new EssenceAxe(new ResourceLocation(Essence.MODID, "essence_axe")))
+                .content(Item.class, new EssencePickaxe(new ResourceLocation(Essence.MODID, "essence_pickaxe")))
+                .content(Item.class, new EssenceShovel(new ResourceLocation(Essence.MODID, "essence_shovel")))
+                .content(Item.class, new EssenceSword(new ResourceLocation(Essence.MODID, "essence_sword")))
+                .content(Item.class, new EssenceHoe(new ResourceLocation(Essence.MODID, "essence_hoe")))
+                .content(Item.class, new EssenceOmniTool(new ResourceLocation(Essence.MODID, "essence_omnitool")))
+                .content(Item.class, new EssenceShear(new ResourceLocation(Essence.MODID, "essence_shear")))
+                .content(Item.class, new EssenceBow(new ResourceLocation(Essence.MODID, "essence_bow")))
         );
 }

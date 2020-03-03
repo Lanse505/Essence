@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +14,7 @@ public class CustomOreBlock extends BasicBlock {
 
     public CustomOreBlock(Properties properties) {
         super(properties);
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setItemGroup(Essence.CORE_TAB);
     }
 
     protected int getExperience(Random random) {

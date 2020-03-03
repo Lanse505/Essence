@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.ore;
 
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -9,7 +9,7 @@ import java.util.Random;
 public class EssenceCrystalOre extends EssenceOre {
 
     public EssenceCrystalOre() {
-        super(new ResourceLocation(EssenceReferences.MODID, "essence_crystal_ore"));
+        super(new ResourceLocation(Essence.MODID, "essence_crystal_ore"));
     }
 
     @Override

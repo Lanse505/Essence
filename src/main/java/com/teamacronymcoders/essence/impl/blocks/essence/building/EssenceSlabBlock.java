@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.impl.blocks.essence.building;
 
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.base.CustomSlabBlock;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,8 +20,8 @@ import java.util.function.Consumer;
 public class EssenceSlabBlock extends CustomSlabBlock {
     public EssenceSlabBlock() {
         super(Block.Properties.create(Material.WOOD, MaterialColor.CYAN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
-        setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_wood_slab"));
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_slab"));
+        setItemGroup(Essence.CORE_TAB);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class EssenceSlabBlock extends CustomSlabBlock {
 
     @Override
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
-        TitaniumShapedRecipeBuilder.shapedRecipe(this, 4).setName(new ResourceLocation(EssenceReferences.MODID, "essence_wood_slab_mid"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(this, 4).setName(new ResourceLocation(Essence.MODID, "essence_wood_slab_mid"))
             .patternLine("   ").patternLine("ppp").patternLine("   ")
             .key('p', EssenceTags.Items.ESSENCE_WOOD_PLANKS)
             .build(consumer);

@@ -9,10 +9,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EssenceWorldHelper {
 
+    /**
+     * @param world
+     * @param pos
+     * @param hasTileEntity
+     * @param entity
+     * @param stack
+     * @return
+     */
     public static boolean breakBlock(World world, BlockPos pos, boolean hasTileEntity, @Nullable Entity entity, ItemStack stack) {
         BlockState blockstate = world.getBlockState(pos);
         if (blockstate.isAir(world, pos)) {
@@ -28,4 +37,19 @@ public class EssenceWorldHelper {
             return world.setBlockState(pos, ifluidstate.getBlockState(), 3);
         }
     }
+
+    /**
+     * Gets a tile entity if the location is loaded
+     * @param world - world
+     * @param pos   - position
+     * @return tile entity if found, null if either not found or not loaded
+     */
+    @Nullable
+    public static TileEntity getTileEntity(@Nullable World world, @Nonnull BlockPos pos) {
+        if (world == null || !world.isBlockPresent(pos)) {
+            return null;
+        }
+        return world.getTileEntity(pos);
+    }
+
 }

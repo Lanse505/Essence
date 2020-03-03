@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.impl.modifier.interaction;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceShear;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ public class RainbowModifier extends InteractionCoreModifier {
             List<ItemStack> modifiedList = new ArrayList<>();
             for (ItemStack s : stackList) {
                 if (s.getItem().isIn(ItemTags.WOOL)) {
-                    modifiedList.add(new ItemStack(SheepEntity.WOOL_BY_COLOR.get(DyeColor.values()[EssenceReferences.random.nextInt(DyeColor.values().length)])));
+                    modifiedList.add(new ItemStack(SheepEntity.WOOL_BY_COLOR.get(DyeColor.values()[Essence.RANDOM.nextInt(DyeColor.values().length)])));
                 } else {
                     modifiedList.add(s);
                 }

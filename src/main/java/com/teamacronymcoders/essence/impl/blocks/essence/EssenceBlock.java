@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.impl.blocks.essence;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,8 +16,8 @@ public class EssenceBlock extends BasicBlock {
 
     public EssenceBlock() {
         super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).speedFactor(1.25f));
-        setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_infused_block"));
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block"));
+        setItemGroup(Essence.CORE_TAB);
     }
 
     @Override

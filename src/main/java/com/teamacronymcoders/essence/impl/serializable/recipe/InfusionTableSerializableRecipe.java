@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.inventory.IInventory;
@@ -17,12 +17,12 @@ import net.minecraftforge.common.Tags;
 import java.util.*;
 
 public class InfusionTableSerializableRecipe extends SerializableRecipe {
-    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(EssenceReferences.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
+    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
     static {
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test"),
+            new ResourceLocation(Essence.MODID, "attack_damage_test"),
             new Ingredient.IItemList[]{
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
             },
@@ -30,7 +30,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "attack_damage_test_2"),
+            new ResourceLocation(Essence.MODID, "attack_damage_test_2"),
             new Ingredient.IItemList[]{
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_BLOCK)),
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_PILLAR)),
@@ -41,31 +41,31 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
             600
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "fortune_test"),
+            new ResourceLocation(Essence.MODID, "fortune_test"),
             new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.GEMS_LAPIS)},
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "fortune_test_2"),
+            new ResourceLocation(Essence.MODID, "fortune_test_2"),
             new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.STORAGE_BLOCKS_LAPIS)},
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), 1, SerializableModifier.Operation.INCREMENT)),
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "expander_test"),
+            new ResourceLocation(Essence.MODID, "expander_test"),
             new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.PISTON))},
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "expander_test_2"),
+            new ResourceLocation(Essence.MODID, "expander_test_2"),
             new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), 1, SerializableModifier.Operation.INCREMENT)),
             600
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(EssenceReferences.MODID, "silk_touch_test"),
+            new ResourceLocation(Essence.MODID, "silk_touch_test"),
             new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
             SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.SILK_TOUCH_MODIFIER.get(), 1, SerializableModifier.Operation.ADD)),
             600

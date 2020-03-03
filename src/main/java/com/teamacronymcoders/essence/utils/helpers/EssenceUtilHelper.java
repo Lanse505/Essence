@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.utils.EssenceReferences;
+import com.teamacronymcoders.essence.Essence;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -48,21 +48,8 @@ public class EssenceUtilHelper {
         return TextFormatting.GREEN;
     }
 
-    /**
-     * Gets a tile entity if the location is loaded
-     * @param world - world
-     * @param pos   - position
-     * @return tile entity if found, null if either not found or not loaded
-     */
-    @Nullable
-    public static TileEntity getTileEntity(@Nullable World world, @Nonnull BlockPos pos) {
-        if (world == null || !world.isBlockPresent(pos)) {
-            return null;
-        }
-        return world.getTileEntity(pos);
-    }
 
     public static int nextIntInclusive(int min, int max) {
-        return EssenceReferences.random.nextInt(max - min + 1) + min;
+        return Essence.RANDOM.nextInt(max - min + 1) + min;
     }
 }

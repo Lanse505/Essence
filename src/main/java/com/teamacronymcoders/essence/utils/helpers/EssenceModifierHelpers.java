@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -205,7 +205,7 @@ public class EssenceModifierHelpers {
      */
     public static Modifier getRandomModifier(ItemStack stack) {
         final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        return modifiers.keySet().stream().skip(EssenceReferences.random.nextInt(modifiers.size())).findFirst().orElse(null);
+        return modifiers.keySet().stream().skip(Essence.RANDOM.nextInt(modifiers.size())).findFirst().orElse(null);
     }
 
     /**

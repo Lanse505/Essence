@@ -1,11 +1,11 @@
 package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.utils.EssenceItemTiers;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -41,7 +41,7 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
     private int freeModifiers;
 
     public EssenceSword(ResourceLocation resourceLocation) {
-        super(EssenceItemTiers.ESSENCE, 3, -2.4F, new Item.Properties().group(EssenceReferences.TOOL_TAB));
+        super(EssenceItemTiers.ESSENCE, 3, -2.4F, new Item.Properties().group(Essence.TOOL_TAB));
         setRegistryName(resourceLocation);
         freeModifiers = 5;
     }

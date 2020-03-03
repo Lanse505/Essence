@@ -1,15 +1,11 @@
 package com.teamacronymcoders.essence.impl.modifier.interaction;
 
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingModifier;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
-import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
-import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.Block;
@@ -30,8 +26,6 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-
-import java.util.List;
 
 public class ExpanderModifier extends InteractionCoreModifier {
 
@@ -80,7 +74,7 @@ public class ExpanderModifier extends InteractionCoreModifier {
                         int exp = ForgeHooks.onBlockBreakEvent(world, serverPlayer.interactionManager.getGameType(), serverPlayer, position);
                         if (exp != -1) {
                             Block block = foundState.getBlock();
-                            TileEntity tile = EssenceUtilHelper.getTileEntity(world, pos);
+                            TileEntity tile = EssenceWorldHelper.getTileEntity(world, pos);
                             boolean removed = foundState.removedByPlayer(world, position, player, true, world.getFluidState(position));
                             if (removed) {
                                 block.onPlayerDestroy(world, position, foundState);

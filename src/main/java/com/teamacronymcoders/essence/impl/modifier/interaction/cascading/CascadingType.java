@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.impl.modifier.interaction.cascading;
 
 import com.teamacronymcoders.essence.utils.EssenceTags;
+import com.teamacronymcoders.essence.utils.config.modifier.CascadingConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;
@@ -8,13 +9,12 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.util.Arrays;
 
-import static com.teamacronymcoders.essence.utils.config.EssenceModifierConfig.Cascading.*;
 
 public enum CascadingType {
     NONE(0, "none", EssenceTags.Modifier.NONE_TOOL, EssenceTags.Modifier.CASCADING_NONE, 0, 0, TextFormatting.GRAY, TextFormatting.ITALIC),
-    LUMBER(1, "lumber", EssenceTags.Modifier.AXE_TOOL, EssenceTags.Modifier.CASCADING_LUMBER, Lumber.blockLimit, Lumber.searchLimit, TextFormatting.GREEN, TextFormatting.ITALIC),
-    VEIN(2, "vein", EssenceTags.Modifier.PICKAXE_TOOL, EssenceTags.Modifier.CASCADING_VEIN, Vein.blockLimit, Vein.searchLimit, TextFormatting.BLUE, TextFormatting.ITALIC),
-    EXCAVATION(3, "excavation", EssenceTags.Modifier.SHOVEL_TOOL, EssenceTags.Modifier.CASCADING_EXCAVATION, Excavation.blockLimit, Excavation.searchLimit, TextFormatting.GOLD, TextFormatting.ITALIC);
+    LUMBER(1, "lumber", EssenceTags.Modifier.AXE_TOOL, EssenceTags.Modifier.CASCADING_LUMBER, CascadingConfig.Lumber.blockLimit, CascadingConfig.Lumber.searchLimit, TextFormatting.GREEN, TextFormatting.ITALIC),
+    VEIN(2, "vein", EssenceTags.Modifier.PICKAXE_TOOL, EssenceTags.Modifier.CASCADING_VEIN, CascadingConfig.Vein.blockLimit, CascadingConfig.Vein.searchLimit, TextFormatting.BLUE, TextFormatting.ITALIC),
+    EXCAVATION(3, "excavation", EssenceTags.Modifier.SHOVEL_TOOL, EssenceTags.Modifier.CASCADING_EXCAVATION, CascadingConfig.Excavation.blockLimit, CascadingConfig.Excavation.searchLimit, TextFormatting.GOLD, TextFormatting.ITALIC);
 
     private final int id;
     private final String name;

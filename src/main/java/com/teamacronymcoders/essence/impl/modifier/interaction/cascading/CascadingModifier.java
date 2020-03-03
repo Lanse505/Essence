@@ -51,7 +51,7 @@ public class CascadingModifier extends InteractionCoreModifier {
                             continue;
                         }
                         Block block = foundState.getBlock();
-                        TileEntity tile = EssenceUtilHelper.getTileEntity(world, pos);
+                        TileEntity tile = EssenceWorldHelper.getTileEntity(world, pos);
                         boolean removed = foundState.removedByPlayer(world, foundPos, player, true, world.getFluidState(foundPos));
                         if (removed) {
                             block.onPlayerDestroy(world, foundPos, foundState);

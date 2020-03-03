@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.impl.blocks.infuser;
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.helpers.EssenceVoxelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -41,8 +40,8 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
 
     public InfusionPedestalBlock() {
         super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestLevel(2).harvestTool(ToolType.PICKAXE).notSolid(), InfusionPedestalTile.class);
-        setRegistryName(new ResourceLocation(EssenceReferences.MODID, "essence_infusion_pedestal"));
-        setItemGroup(EssenceReferences.CORE_TAB);
+        setRegistryName(new ResourceLocation(Essence.MODID, "essence_infusion_pedestal"));
+        setItemGroup(Essence.CORE_TAB);
     }
 
     @Override

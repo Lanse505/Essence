@@ -2,11 +2,11 @@ package com.teamacronymcoders.essence.impl.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceReferences;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -45,7 +45,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     private int freeModifiers;
 
     public EssenceOmniTool(ResourceLocation resourceLocation) {
-        super(ESSENCE.getAttackDamage(), ESSENCE.getEfficiency(), ESSENCE, Sets.newHashSet(), new Item.Properties().group(EssenceReferences.TOOL_TAB).addToolType(ToolType.AXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.PICKAXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.SHOVEL, ESSENCE.getHarvestLevel()));
+        super(ESSENCE.getAttackDamage(), ESSENCE.getEfficiency(), ESSENCE, Sets.newHashSet(), new Item.Properties().group(Essence.TOOL_TAB).addToolType(ToolType.AXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.PICKAXE, ESSENCE.getHarvestLevel()).addToolType(ToolType.SHOVEL, ESSENCE.getHarvestLevel()));
         setRegistryName(resourceLocation);
         freeModifiers = 5;
     }

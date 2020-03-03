@@ -12,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class InteractionCoreModifier extends CoreModifier {
@@ -83,7 +84,7 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param level
      * @return
      */
-    public List<ItemStack> onSheared(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, int level) {
+    public List<ItemStack> onSheared(ItemStack stack, @Nullable PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, int level) {
         return stackList;
     }
 }
