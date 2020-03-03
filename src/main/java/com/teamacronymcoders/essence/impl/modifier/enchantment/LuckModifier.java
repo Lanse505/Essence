@@ -2,10 +2,7 @@ package com.teamacronymcoders.essence.impl.modifier.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.impl.items.tools.EssencePickaxe;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
-import com.teamacronymcoders.essence.impl.modifier.interaction.FieryModifier;
-import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;

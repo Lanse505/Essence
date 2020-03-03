@@ -43,6 +43,15 @@ public class SerializableModifierPredicateObject {
         return modifierArray;
     }
 
+    public static SerializableModifierPredicateObject deserializer(@Nullable JsonElement element) {
+        if (element != null && !element.isJsonNull()) {
+            JsonObject object = element.getAsJsonObject();
+            Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
+            return new SerializableModifierPredicateObject(modifier, MinMaxBounds.IntBound.fromJson(object.get("level")));
+        }
+        return ANY;
+    }
+
     public Modifier getModifier() {
         return modifier;
     }
@@ -56,15 +65,6 @@ public class SerializableModifierPredicateObject {
         final Map<Modifier, Integer> modifier_map = EssenceModifierHelpers.getModifiers(stack);
         final int level = modifier_map.containsKey(this.modifier) ? modifier_map.get(modifier) : 0;
         return (modifier_map.containsKey(modifier) && !(this.level == null || this.level.isUnbounded())) && this.level.test(level);
-    }
-
-    public static SerializableModifierPredicateObject deserializer(@Nullable JsonElement element) {
-        if (element != null && !element.isJsonNull()) {
-            JsonObject object = element.getAsJsonObject();
-            Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
-            return new SerializableModifierPredicateObject(modifier, MinMaxBounds.IntBound.fromJson(object.get("level")));
-        }
-        return ANY;
     }
 
     public JsonElement serializer() {

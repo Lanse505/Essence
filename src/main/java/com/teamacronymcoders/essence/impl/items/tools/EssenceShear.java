@@ -50,12 +50,27 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         freeModifiers = 5;
     }
 
+    private static List<ItemStack> handleShearingSheep(SheepEntity sheep, ItemStack item, IWorld world, BlockPos pos, int fortune) {
+        List<ItemStack> ret = new ArrayList<>();
+        if (!sheep.world.isRemote) {
+            sheep.setSheared(true);
+            int i = EssenceUtilHelper.nextIntInclusive(1 + fortune, 4 + fortune);
+
+            for (int j = 0; j < i; ++j) {
+                ret.add(new ItemStack(SheepEntity.WOOL_BY_COLOR.get(sheep.getFleeceColor())));
+            }
+        }
+        sheep.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+        return ret;
+    }
+
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
         if (this.isInGroup(group)) {
             ItemStack stack;
             for (int i = 1; i < 6; i++) {
-                stack = new ItemStack(this);;
+                stack = new ItemStack(this);
+                ;
                 EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), 1);
                 EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), i);
                 if (!list.contains(stack)) {
@@ -108,6 +123,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
             Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
@@ -165,8 +181,11 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand) {
-        if (sheared.world.isRemote) return false;
+        if (sheared.world.isRemote) {
+            return false;
+        }
         if (sheared instanceof IShearable) {
             IShearable target = (IShearable) sheared;
             BlockPos pos = new BlockPos(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
@@ -220,20 +239,6 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 .forEach((s, iTextComponent) -> list.add(iTextComponent));
             list.add(new StringTextComponent(""));
         }
-    }
-
-    private static List<ItemStack> handleShearingSheep(SheepEntity sheep, ItemStack item, IWorld world, BlockPos pos, int fortune) {
-        List<ItemStack> ret = new ArrayList<>();
-        if (!sheep.world.isRemote) {
-            sheep.setSheared(true);
-            int i = EssenceUtilHelper.nextIntInclusive(1 + fortune, 4 + fortune);
-
-            for(int j = 0; j < i; ++j) {
-                ret.add(new ItemStack(SheepEntity.WOOL_BY_COLOR.get(sheep.getFleeceColor())));
-            }
-        }
-        sheep.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
-        return ret;
     }
 
     @Override

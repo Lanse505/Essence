@@ -4,7 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.util.text.TextFormatting;
 
-public enum  StrengthenedType {
+public enum StrengthenedType {
     BANE_OF_ARTHROPODS(0, "arthropod", Enchantments.BANE_OF_ARTHROPODS, TextFormatting.DARK_PURPLE, TextFormatting.ITALIC),
     SHARPNESS(1, "sharpness", Enchantments.SHARPNESS, TextFormatting.WHITE, TextFormatting.ITALIC),
     SMITE(2, "smite", Enchantments.SMITE, TextFormatting.YELLOW, TextFormatting.ITALIC),

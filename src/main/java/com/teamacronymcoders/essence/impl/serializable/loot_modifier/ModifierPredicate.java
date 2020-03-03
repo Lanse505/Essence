@@ -16,10 +16,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ModifierPredicate {
+    public static final ModifierPredicate ANY = new ModifierPredicate();
     private static final Map<ResourceLocation, Function<JsonObject, ModifierPredicate>> custom_predicates = new HashMap<>();
     private static final Map<ResourceLocation, Function<JsonObject, ModifierPredicate>> unmod_predicates = Collections.unmodifiableMap(custom_predicates);
-    public static final ModifierPredicate ANY = new ModifierPredicate();
-
     @Nullable
     private final ItemPredicate itemPredicate;
     private final SerializableModifierPredicateObject[] modifiers;
@@ -34,10 +33,6 @@ public class ModifierPredicate {
         this.modifiers = SerializableModifierPredicateObject.getNewArray(modifiers);
     }
 
-    public boolean test(ItemStack stack) {
-        return (this.itemPredicate != null && this.itemPredicate.test(stack)) && Arrays.stream(this.modifiers).allMatch(object -> object.test(stack));
-    }
-
     public static ModifierPredicate deserializer(@Nullable JsonElement element) {
         if (element != null && !element.isJsonNull()) {
             JsonObject object = element.getAsJsonObject();
@@ -50,6 +45,10 @@ public class ModifierPredicate {
             return new ModifierPredicate(itemPredicate, trueArray);
         }
         return ANY;
+    }
+
+    public boolean test(ItemStack stack) {
+        return (this.itemPredicate != null && this.itemPredicate.test(stack)) && Arrays.stream(this.modifiers).allMatch(object -> object.test(stack));
     }
 
     public JsonElement serialize() {

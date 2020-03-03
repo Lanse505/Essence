@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
-    private static final BlockPos[] pedestal_positions = new BlockPos[] {
+    private static final BlockPos[] pedestal_positions = new BlockPos[]{
         new BlockPos(-4, 0, 0),
         new BlockPos(+4, 0, 0),
         new BlockPos(0, 0, +4),

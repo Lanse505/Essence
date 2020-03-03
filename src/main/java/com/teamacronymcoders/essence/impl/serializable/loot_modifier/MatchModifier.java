@@ -26,7 +26,7 @@ public class MatchModifier implements ILootCondition {
     public static class Serializer extends ILootCondition.AbstractSerializer<MatchModifier> {
 
         public Serializer() {
-            super(new ResourceLocation(Essence.MODID,"modifier_matcher"), MatchModifier.class);
+            super(new ResourceLocation(Essence.MODID, "modifier_matcher"), MatchModifier.class);
         }
 
         @Override

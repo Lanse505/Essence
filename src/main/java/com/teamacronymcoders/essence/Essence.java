@@ -5,7 +5,6 @@ import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalTile;
 import com.teamacronymcoders.essence.impl.client.PedestalTESR;
 import com.teamacronymcoders.essence.impl.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.impl.serializable.EssenceRecipeProvider;
@@ -15,13 +14,15 @@ import com.teamacronymcoders.essence.impl.serializable.loot_modifier.FieryLootMo
 import com.teamacronymcoders.essence.impl.serializable.loot_modifier.MatchModifier;
 import com.teamacronymcoders.essence.impl.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.impl.serializable.recipe.SerializableModifier;
-import com.teamacronymcoders.essence.utils.*;
+import com.teamacronymcoders.essence.utils.EssenceModules;
+import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
@@ -136,7 +137,6 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
-
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
     }
 }

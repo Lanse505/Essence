@@ -15,7 +15,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -26,6 +25,7 @@ import java.util.Map;
 public class EssenceDispenseBehaviours {
     public static Map<IItemProvider, IDispenseItemBehavior> dispenserBehaviours = new HashMap<>();
 
+    @SuppressWarnings("deprecation")
     public static void init() {
         dispenserBehaviours.put(EssenceObjectHolders.ESSENCE_SHEAR, new OptionalDispenseBehavior() {
             @Override

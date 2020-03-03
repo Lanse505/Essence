@@ -72,7 +72,8 @@ public class InteractionCoreModifier extends CoreModifier {
      * @param isCurrentItem If the itemstack is the currently held Item.
      * @param level         The Level of the Modifier
      */
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {}
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
+    }
 
 
     /**

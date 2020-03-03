@@ -27,16 +27,15 @@ import java.util.List;
 
 public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> {
 
-    public static VoxelShape shape;
-    public static List<VoxelShape> shapes;
-
-    private static final VoxelShape[] bounds = new VoxelShape[] {
+    private static final VoxelShape[] bounds = new VoxelShape[]{
         EssenceVoxelHelper.combine(
             makeCuboidShape(4, 0, 4, 12, 2, 12),
             makeCuboidShape(5, 2, 5, 11, 12, 11),
             makeCuboidShape(3, 12, 3, 13, 13, 13)
         )
     };
+    public static VoxelShape shape;
+    public static List<VoxelShape> shapes;
 
     public InfusionPedestalBlock() {
         super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestLevel(2).harvestTool(ToolType.PICKAXE).notSolid(), InfusionPedestalTile.class);
@@ -83,6 +82,7 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
         return InfusionPedestalTile::new;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
         return bounds[0];

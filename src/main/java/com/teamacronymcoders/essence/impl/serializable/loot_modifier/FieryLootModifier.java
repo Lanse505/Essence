@@ -26,20 +26,20 @@ public class FieryLootModifier extends LootModifier {
         super(conditionsIn);
     }
 
-    @Nonnull
-    @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-        List<ItemStack> list = new ArrayList<>();
-        generatedLoot.forEach(stack -> list.add(smelt(stack, context)));
-        return list;
-    }
-
     private static ItemStack smelt(ItemStack stack, LootContext context) {
         return context.getWorld().getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), context.getWorld())
             .map(AbstractCookingRecipe::getRecipeOutput)
             .filter(itemStack -> !itemStack.isEmpty())
             .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
             .orElse(stack);
+    }
+
+    @Nonnull
+    @Override
+    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+        List<ItemStack> list = new ArrayList<>();
+        generatedLoot.forEach(stack -> list.add(smelt(stack, context)));
+        return list;
     }
 
     public static class Serializer extends GlobalLootModifierSerializer<FieryLootModifier> {

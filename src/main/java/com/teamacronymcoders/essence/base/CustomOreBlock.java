@@ -22,6 +22,7 @@ public class CustomOreBlock extends BasicBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void spawnAdditionalDrops(BlockState state, World world, BlockPos pos, ItemStack stack) {
         super.spawnAdditionalDrops(state, world, pos, stack);
     }

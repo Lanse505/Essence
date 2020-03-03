@@ -6,7 +6,6 @@ import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.impl.items.tools.EssenceSword;
 import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingModifier;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

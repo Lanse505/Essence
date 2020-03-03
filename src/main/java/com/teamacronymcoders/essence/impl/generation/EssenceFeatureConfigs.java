@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.teamacronymcoders.essence.api.misc.IBlockProvider;
 import com.teamacronymcoders.essence.api.misc.IOreGenConfig;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.config.worldgen.EssenceOreGenConfig;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;

@@ -4,7 +4,6 @@ import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.impl.modifier.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

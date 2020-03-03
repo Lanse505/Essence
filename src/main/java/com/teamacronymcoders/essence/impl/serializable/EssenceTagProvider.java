@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.impl.serializable;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.utils.EssenceTags;
+import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
@@ -32,11 +32,11 @@ public class EssenceTagProvider {
             getBuilder(EssenceTags.Items.ESSENCE_WOOD_LOG).add(EssenceObjectHolders.ESSENCE_WOOD_LOG.asItem());
             getBuilder(EssenceTags.Items.ESSENCE_WOOD_PLANKS).add(EssenceObjectHolders.ESSENCE_WOOD_PLANKS.asItem());
 
-                // Essence Modifier-Specific Tag<Item>(s)
-                getBuilder(EssenceTags.Modifier.NONE_TOOL);
-                getBuilder(EssenceTags.Modifier.AXE_TOOL).add(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_OMNITOOL);
-                getBuilder(EssenceTags.Modifier.PICKAXE_TOOL).add(EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_OMNITOOL);
-                getBuilder(EssenceTags.Modifier.SHOVEL_TOOL).add(EssenceObjectHolders.ESSENCE_SHOVEL, EssenceObjectHolders.ESSENCE_OMNITOOL);
+            // Essence Modifier-Specific Tag<Item>(s)
+            getBuilder(EssenceTags.Modifier.NONE_TOOL);
+            getBuilder(EssenceTags.Modifier.AXE_TOOL).add(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_OMNITOOL);
+            getBuilder(EssenceTags.Modifier.PICKAXE_TOOL).add(EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_OMNITOOL);
+            getBuilder(EssenceTags.Modifier.SHOVEL_TOOL).add(EssenceObjectHolders.ESSENCE_SHOVEL, EssenceObjectHolders.ESSENCE_OMNITOOL);
         }
     }
 
@@ -63,11 +63,11 @@ public class EssenceTagProvider {
             getBuilder(EssenceTags.Blocks.ESSENCE_ORE).add(EssenceObjectHolders.ESSENCE_ORE);
             getBuilder(EssenceTags.Blocks.ESSENCE_WOOD_LOG).add(EssenceObjectHolders.ESSENCE_WOOD_LOG);
 
-                // Essence Modifier-Specific Tag<Block>
-                getBuilder(EssenceTags.Modifier.CASCADING_NONE);
-                getBuilder(EssenceTags.Modifier.CASCADING_VEIN).add(Tags.Blocks.ORES);
-                getBuilder(EssenceTags.Modifier.CASCADING_LUMBER).add(BlockTags.LOGS);
-                getBuilder(EssenceTags.Modifier.CASCADING_EXCAVATION).add(Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
+            // Essence Modifier-Specific Tag<Block>
+            getBuilder(EssenceTags.Modifier.CASCADING_NONE);
+            getBuilder(EssenceTags.Modifier.CASCADING_VEIN).add(Tags.Blocks.ORES);
+            getBuilder(EssenceTags.Modifier.CASCADING_LUMBER).add(BlockTags.LOGS);
+            getBuilder(EssenceTags.Modifier.CASCADING_EXCAVATION).add(Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
         }
     }
 }

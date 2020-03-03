@@ -16,15 +16,14 @@ public enum CascadingType {
     VEIN(2, "vein", EssenceTags.Modifier.PICKAXE_TOOL, EssenceTags.Modifier.CASCADING_VEIN, CascadingConfig.Vein.blockLimit, CascadingConfig.Vein.searchLimit, TextFormatting.BLUE, TextFormatting.ITALIC),
     EXCAVATION(3, "excavation", EssenceTags.Modifier.SHOVEL_TOOL, EssenceTags.Modifier.CASCADING_EXCAVATION, CascadingConfig.Excavation.blockLimit, CascadingConfig.Excavation.searchLimit, TextFormatting.GOLD, TextFormatting.ITALIC);
 
+    private static final CascadingType[] VALUES = new CascadingType[]{VEIN, LUMBER, EXCAVATION};
     private final int id;
     private final String name;
+    private final TextFormatting[] formatting;
     private Tag<Item> toolTag;
     private Tag<Block> blockTag;
     private int blockLimit;
     private int searchLimit;
-    private final TextFormatting[] formatting;
-
-    private static final CascadingType[] VALUES = new CascadingType[] {VEIN, LUMBER, EXCAVATION};
 
     CascadingType(int id, String name, Tag<Item> toolTag, Tag<Block> blockTag, int blockLimit, int searchLimit, TextFormatting... formatting) {
         this.id = id;

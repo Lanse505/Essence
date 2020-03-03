@@ -27,10 +27,12 @@ public class CustomSaplingBlock extends CustomBushBlock implements IGrowable {
         this.setDefaultState(this.stateContainer.getBaseState().with(STAGE, Integer.valueOf(0)));
     }
 
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return SHAPE;
     }
 
+    @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         super.animateTick(state, worldIn, pos, rand);
         if (!worldIn.isAreaLoaded(pos, 1)) {

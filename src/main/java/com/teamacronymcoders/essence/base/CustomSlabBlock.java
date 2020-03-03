@@ -36,6 +36,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isTransparent(BlockState state) {
         return state.get(TYPE) != SlabType.DOUBLE;
     }
@@ -44,6 +45,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         builder.add(TYPE, WATERLOGGED);
     }
 
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         SlabType slabtype = state.get(TYPE);
         switch (slabtype) {
@@ -70,6 +72,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
         ItemStack itemstack = useContext.getItem();
         SlabType slabtype = state.get(TYPE);
@@ -90,6 +93,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public IFluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
@@ -108,6 +112,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
      * returns its solidified counterpart.
      * Note that this method should ideally consider only the specific face passed in.
      */
+    @SuppressWarnings("deprecation")
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (stateIn.get(WATERLOGGED)) {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -116,6 +121,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
         return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
+    @SuppressWarnings("deprecation")
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
         switch (type) {
             case LAND:
