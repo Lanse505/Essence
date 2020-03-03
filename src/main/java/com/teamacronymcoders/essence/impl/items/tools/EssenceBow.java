@@ -67,6 +67,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
@@ -104,13 +105,15 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     @Override
     public void onPlayerStoppedUsing(ItemStack bow, World world, LivingEntity livingEntity, int timeLeft) {
         if (livingEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)livingEntity;
+            PlayerEntity player = (PlayerEntity) livingEntity;
             boolean flag = player.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow) > 0;
             ItemStack arrow = player.findAmmo(bow);
 
             int i = this.getUseDuration(bow) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bow, world, player, i, !arrow.isEmpty() || flag);
-            if (i < 0) return;
+            if (i < 0) {
+                return;
+            }
 
             if (!arrow.isEmpty() || flag) {
                 if (arrow.isEmpty()) {
@@ -118,11 +121,11 @@ public class EssenceBow extends BowItem implements IModifiedTool {
                 }
 
                 float f = getArrowVelocity(i);
-                if (!((double)f < 0.1D)) {
+                if (!((double) f < 0.1D)) {
                     boolean flag1 = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
                     if (!world.isRemote) {
                         AbstractArrowEntity abstractarrowentity = EssenceBowHelper.getArrowEntity(world, bow, arrow, player, f);
-                        EssenceBowHelper.modifyArrowEntityWithEnchantments(abstractarrowentity, bow, f);
+                        EssenceBowHelper.modifyArrowEntityWithEnchantments(abstractarrowentity, bow);
                         bow.damageItem(1, player, (p_220009_1_) -> {
                             p_220009_1_.sendBreakAnimation(player.getActiveHand());
                         });
