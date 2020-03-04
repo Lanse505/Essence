@@ -5,12 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.impl.serializable.recipe.SerializableModifier;
+import com.teamacronymcoders.essence.serializable.recipe.SerializableModifier;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class EssenceSerializableObjectHandler {

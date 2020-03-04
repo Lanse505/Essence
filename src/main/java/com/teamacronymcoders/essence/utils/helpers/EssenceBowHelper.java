@@ -2,13 +2,11 @@ package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.modifier.ArrowCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.impl.modifier.arrow.BrewedModifier;
+import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.impl.modifier.interaction.cascading.CascadingType;
+import com.teamacronymcoders.essence.modifier.interaction.cascading.CascadingType;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -4,21 +4,21 @@ import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.hrznstudio.titanium.module.Feature;
 import com.hrznstudio.titanium.module.Module;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.impl.blocks.essence.EssenceBlock;
-import com.teamacronymcoders.essence.impl.blocks.essence.building.EssencePlankBlock;
-import com.teamacronymcoders.essence.impl.blocks.essence.building.EssenceSlabBlock;
-import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceCrystalOre;
-import com.teamacronymcoders.essence.impl.blocks.essence.ore.EssenceOre;
-import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLeavesBlock;
-import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceLogBlock;
-import com.teamacronymcoders.essence.impl.blocks.essence.wood.EssenceSapling;
-import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionPedestalBlock;
-import com.teamacronymcoders.essence.impl.blocks.infuser.InfusionTableBlock;
-import com.teamacronymcoders.essence.impl.items.essence.EssenceCrystal;
-import com.teamacronymcoders.essence.impl.items.essence.EssenceIngotItem;
-import com.teamacronymcoders.essence.impl.items.essence.EssenceNuggetItem;
-import com.teamacronymcoders.essence.impl.items.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.impl.items.tools.*;
+import com.teamacronymcoders.essence.blocks.EssenceBlock;
+import com.teamacronymcoders.essence.blocks.EssencePlankBlock;
+import com.teamacronymcoders.essence.blocks.EssenceSlabBlock;
+import com.teamacronymcoders.essence.blocks.EssenceCrystalOreBlock;
+import com.teamacronymcoders.essence.blocks.EssenceOreBlock;
+import com.teamacronymcoders.essence.blocks.EssenceLeavesBlock;
+import com.teamacronymcoders.essence.blocks.EssenceLogBlock;
+import com.teamacronymcoders.essence.blocks.EssenceSaplingBlock;
+import com.teamacronymcoders.essence.blocks.InfusionPedestalBlock;
+import com.teamacronymcoders.essence.blocks.InfusionTableBlock;
+import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
+import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
+import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
+import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.items.tools.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -41,12 +41,12 @@ public class EssenceModules {
                 .force()
                 .description("Core-Blocks")
                 .content(Block.class, new EssenceBlock())
-                .content(Block.class, new EssenceCrystalOre())
+                .content(Block.class, new EssenceCrystalOreBlock())
                 .content(Block.class, new EssenceLeavesBlock())
                 .content(Block.class, new EssenceLogBlock())
-                .content(Block.class, new EssenceOre(new ResourceLocation(Essence.MODID, "essence_ore")))
+                .content(Block.class, new EssenceOreBlock(new ResourceLocation(Essence.MODID, "essence_ore")))
                 .content(Block.class, new EssencePlankBlock())
-                .content(Block.class, new EssenceSapling())
+                .content(Block.class, new EssenceSaplingBlock())
                 .content(Block.class, new EssenceSlabBlock())
         )
         .feature(
