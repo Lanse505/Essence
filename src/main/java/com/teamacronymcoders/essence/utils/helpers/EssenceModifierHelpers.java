@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -20,7 +22,9 @@ public class EssenceModifierHelpers {
 
     public static final String TAG_MODIFIERS = "Modifiers";
     public static final String TAG_MODIFIER = "Modifier";
+    public static final String TAG_INFO = "ModifierInfo";
     public static final String TAG_LEVEL = "ModifierLevel";
+    public static final String TAG_COMPOUND = "ModifierCompound";
 
     /**
      * @param name The ResourceLocation name of the Modifier stored in NBT.
@@ -34,8 +38,8 @@ public class EssenceModifierHelpers {
      * @param stack The ItemStack to grab the Modifiers off.
      * @return Returns a map of all the Modifiers and their respective levels.
      */
-    public static Map<Modifier, Integer> getModifiers(ItemStack stack) {
-        final Map<Modifier, Integer> modifiers = new HashMap<>();
+    public static Map<Modifier, Pair<Integer, CompoundNBT>> getModifiers(ItemStack stack) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = new HashMap<>();
         final CompoundNBT compoundNBT = stack.getTag();
         if (compoundNBT != null) {
             final ListNBT list = compoundNBT.getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
@@ -43,7 +47,11 @@ public class EssenceModifierHelpers {
                 final CompoundNBT subCNBT = list.getCompound(i);
                 final Modifier modifier = getModifierByName(subCNBT.getString(TAG_MODIFIER));
                 if (modifier != null) {
-                    modifiers.put(modifier, subCNBT.getInt(TAG_LEVEL));
+                    final CompoundNBT nbt = subCNBT.getCompound(TAG_INFO);
+                    if (modifier instanceof INBTModifier) {
+                        ((INBTModifier) modifier).update(nbt.getCompound(TAG_COMPOUND));
+                    }
+                    modifiers.put(modifier, Pair.of(nbt.getInt(TAG_LEVEL), nbt.getCompound(TAG_COMPOUND)));
                 }
             }
         }
@@ -74,12 +82,15 @@ public class EssenceModifierHelpers {
      * @param stack     The ItemStack holding the Modifiers.
      * @param modifiers The Map of the Modifiers and their Levels on the Tool.
      */
-    public static void setModifiersToNBT(ItemStack stack, Map<Modifier, Integer> modifiers) {
+    public static void setModifiersToNBT(ItemStack stack, Map<Modifier, Pair<Integer, CompoundNBT>> modifiers) {
         final ListNBT list = new ListNBT();
-        for (final Map.Entry<Modifier, Integer> modifierData : modifiers.entrySet()) {
+        for (final Map.Entry<Modifier, Pair<Integer, CompoundNBT>> modifierData : modifiers.entrySet()) {
             final CompoundNBT tag = new CompoundNBT();
             tag.putString(TAG_MODIFIER, modifierData.getKey().getRegistryName().toString());
-            tag.putInt(TAG_LEVEL, modifierData.getValue());
+                final CompoundNBT info = new CompoundNBT();
+                    info.putInt(TAG_LEVEL, modifierData.getValue().getKey());
+                    info.put(TAG_COMPOUND, modifierData.getValue().getValue() != null ? modifierData.getValue().getValue() : new CompoundNBT());
+                tag.put(TAG_INFO, info);
             list.add(tag);
         }
         stack.getOrCreateTag().put(TAG_MODIFIERS, list);
@@ -90,9 +101,9 @@ public class EssenceModifierHelpers {
      * @param modifier The Modifier to get the level off.
      * @return Returns the level of the modifier on the tool.
      */
-    public static int getModifierLevel(ItemStack stack, Modifier modifier) {
-        final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        return modifiers.getOrDefault(modifier, 0);
+    public static Pair<Integer, CompoundNBT> getModifierLevel(ItemStack stack, Modifier modifier) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
+        return modifiers.getOrDefault(modifier, Pair.of(0, null));
     }
 
     /**
@@ -100,12 +111,12 @@ public class EssenceModifierHelpers {
      *
      * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
-     * @param level    The Integer level that the Modifier being applied should have.
+     * @param info    The Integer level that the Modifier being applied should have.
      */
-    public static void addModifier(ItemStack stack, Modifier modifier, int level) {
-        final Map<Modifier, Integer> modifiers = getModifiers(stack);
+    public static void addModifier(ItemStack stack, Modifier modifier, Pair<Integer, CompoundNBT> info) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
         if (stack.getItem() instanceof IModifiedTool && canApplyModifier(modifiers.keySet(), stack, modifier)) {
-            modifiers.putIfAbsent(modifier, level);
+            modifiers.putIfAbsent(modifier, info);
         }
         setModifiersToNBT(stack, modifiers);
     }
@@ -117,9 +128,9 @@ public class EssenceModifierHelpers {
      * @param modifiers The Modifier to remove.
      */
     public static void addModifiers(ItemStack stack, Modifier... modifiers) {
-        final Map<Modifier, Integer> modifier_map = getModifiers(stack);
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifier_map = getModifiers(stack);
         if (stack.getItem() instanceof IModifiedTool && canApplyModifiers(modifier_map.keySet(), stack, modifiers)) {
-            Stream.of(modifiers).forEach(modifier -> modifier_map.computeIfAbsent(modifier, key -> 1));
+            Stream.of(modifiers).forEach(modifier -> modifier_map.computeIfAbsent(modifier, key -> Pair.of(1, null)));
         }
         setModifiersToNBT(stack, modifier_map);
     }
@@ -131,7 +142,7 @@ public class EssenceModifierHelpers {
      * @param modifiers The Modifiers to remove.
      */
     public static void removeModifiers(ItemStack stack, Modifier... modifiers) {
-        final Map<Modifier, Integer> modifierMap = getModifiers(stack);
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifierMap = getModifiers(stack);
         Stream.of(modifiers).forEach(modifierMap::remove);
         setModifiersToNBT(stack, modifierMap);
     }
@@ -139,11 +150,11 @@ public class EssenceModifierHelpers {
     /**
      * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to set.
-     * @param level    The Level of the Modifier to set.
+     * @param info     The Level of the Modifier to set.
      */
-    public static void replaceModifierValue(ItemStack stack, Modifier modifier, int level) {
-        final Map<Modifier, Integer> modifierMap = getModifiers(stack);
-        modifierMap.computeIfPresent(modifier, (modifier1, integer) -> level);
+    public static void replaceModifierValue(ItemStack stack, Modifier modifier, Pair<Integer, CompoundNBT> info) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifierMap = getModifiers(stack);
+        modifierMap.computeIfPresent(modifier, (modifier1, integer) -> info);
         setModifiersToNBT(stack, modifierMap);
     }
 
@@ -163,10 +174,10 @@ public class EssenceModifierHelpers {
      * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
-    public static void increaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
-        final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        int oldLevel = modifiers.getOrDefault(modifier, 0);
-        modifiers.computeIfPresent(modifier, (modifier1, integer) -> Math.min(oldLevel + level, modifier.getMaxLevel(stack)));
+    public static void increaseModifierLevel(ItemStack stack, Modifier modifier, int increase) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
+        Pair<Integer, CompoundNBT> oldLevel = modifiers.getOrDefault(modifier, Pair.of(0, null));
+        modifiers.computeIfPresent(modifier, (modifier1, info) -> Pair.of(Math.min(oldLevel.getKey() + increase, modifier.getMaxLevel(stack)), info.getValue()));
         setModifiersToNBT(stack, modifiers);
     }
 
@@ -186,12 +197,12 @@ public class EssenceModifierHelpers {
      * @param stack    The ItemStack holding the Modifiers.
      * @param modifier The Modifier to remove.
      */
-    public static void decreaseModifierLevel(ItemStack stack, Modifier modifier, int level) {
-        final Map<Modifier, Integer> modifiers = getModifiers(stack);
-        int oldLevel = modifiers.getOrDefault(modifier, 0);
-        modifiers.computeIfPresent(modifier, (modifier1, integer) -> {
-            int newLevel = Math.min(oldLevel - level, modifier.getMinLevel(stack));
-            if (newLevel <= 0) {
+    public static void decreaseModifierLevel(ItemStack stack, Modifier modifier, int decrease) {
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
+        Pair<Integer, CompoundNBT> oldLevel = modifiers.getOrDefault(modifier, Pair.of(0, null));
+        modifiers.computeIfPresent(modifier, (modifier1, info) -> {
+            Pair<Integer, CompoundNBT> newLevel = Pair.of(Math.min(oldLevel.getKey() - decrease, modifier.getMinLevel(stack)), info.getValue());
+            if (newLevel.getLeft() <= 0) {
                 return null;
             }
             return newLevel;
@@ -204,7 +215,7 @@ public class EssenceModifierHelpers {
      * @return Returns an random modifier from the modifiers on the ItemStack
      */
     public static Modifier getRandomModifier(ItemStack stack) {
-        final Map<Modifier, Integer> modifiers = getModifiers(stack);
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
         return modifiers.keySet().stream().skip(Essence.RANDOM.nextInt(modifiers.size())).findFirst().orElse(null);
     }
 

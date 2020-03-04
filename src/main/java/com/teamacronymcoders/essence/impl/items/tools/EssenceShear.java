@@ -22,6 +22,7 @@ import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -71,8 +72,8 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             for (int i = 1; i < 6; i++) {
                 stack = new ItemStack(this);
                 ;
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), 1);
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), i);
+                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), Pair.of(1, null));
+                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(i, null));
                 if (!list.contains(stack)) {
                     list.add(stack);
                 }
@@ -104,14 +105,14 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     public int getMaxDamage(ItemStack stack) {
         return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight().getKey(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight().getKey(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
     }
 
     @Override
@@ -119,7 +120,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
         return harvestLevel + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight(), harvestLevel)).reduce(0, Integer::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight().getKey(), harvestLevel)).reduce(0, Integer::sum);
     }
 
     @Override
@@ -129,7 +130,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
             EssenceModifierHelpers.getModifiers(stack).entrySet()
                 .stream()
-                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue()))
+                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue().getKey()))
                 .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
             return multimap;
         }
@@ -143,7 +144,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue()))
+            .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue().getKey()))
             .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
             .findFirst();
         return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
@@ -155,7 +156,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue().getKey()));
         return super.hitEntity(stack, entity, player);
     }
 
@@ -165,7 +166,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onBlockDestroyed(stack, world, state, pos, miner, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onBlockDestroyed(stack, world, state, pos, miner, modifierEntry.getValue().getKey()));
         return super.onBlockDestroyed(stack, world, state, pos, miner);
     }
 
@@ -176,7 +177,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue().getKey()));
         super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
     }
 
@@ -194,7 +195,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 List<ItemStack> dropList = baseDropList;
 
                 // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
-                List<Pair<Modifier, Integer>> matchingEntries = EssenceModifierHelpers.getModifiers(stack)
+                List<Pair<Modifier, Pair<Integer, CompoundNBT>>> matchingEntries = EssenceModifierHelpers.getModifiers(stack)
                     .entrySet()
                     .stream()
                     .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
@@ -202,9 +203,9 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                     .collect(Collectors.toList());
 
                 // Loops over and Gathers the final modified list
-                for (Pair<Modifier, Integer> pair : matchingEntries) {
+                for (Pair<Modifier, Pair<Integer, CompoundNBT>> pair : matchingEntries) {
                     InteractionCoreModifier interactionCoreModifier = (InteractionCoreModifier) pair.getKey();
-                    dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, pair.getValue());
+                    dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, pair.getValue().getKey());
                 }
 
                 // Handle dropping the final list of ItemStacks
@@ -230,7 +231,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).getString(), key.getRenderedText(value)));
+            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).get(0).getString(), key.getRenderedText(value).get(0)));
             sorting_map
                 .entrySet()
                 .stream()

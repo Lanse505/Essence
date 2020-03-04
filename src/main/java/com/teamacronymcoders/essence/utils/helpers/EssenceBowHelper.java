@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.mojang.datafixers.util.Pair;
 import com.teamacronymcoders.essence.api.modifier.ArrowCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.impl.modifier.arrow.BrewedModifier;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,46 +12,34 @@ import net.minecraft.entity.projectile.SpectralArrowEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
 
 public class EssenceBowHelper {
 
     public static AbstractArrowEntity getArrowEntity(World world, ItemStack bow, ItemStack arrow, PlayerEntity player, float arrowVelocity) {
-        final Map<Modifier, Integer> modifier_map = EssenceModifierHelpers.getModifiers(bow);
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifierMap = EssenceModifierHelpers.getModifiers(bow);
 
         // Flag for if the Bow has Modifiers && has Infinity
-        boolean flag = !modifier_map.isEmpty();
-        boolean flag1 = modifier_map.keySet().stream().anyMatch(modifier -> modifier instanceof ArrowCoreModifier);
-        boolean flag3 = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
+        boolean baseCodeCheck = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
 
         // Checks if the Arrow is a "normal" arrow or a "special" arrow.
-        ArrowItem arrowitem = (ArrowItem) arrow.getItem();
+        ArrowItem arrowitem = arrow.getItem() instanceof ArrowItem ? (ArrowItem) arrow.getItem() : (ArrowItem) Items.ARROW;
         AbstractArrowEntity abstractArrowEntity = arrowitem.createArrow(world, arrow, player);
-        ;
 
-        // Check the flags, if there are mods and one of them is the "Brewed" modifier.
-        if (flag && flag1) {
-            if (abstractArrowEntity instanceof ArrowEntity) {
-                ArrowEntity arrowEntity = (ArrowEntity) abstractArrowEntity;
-                modifier_map.entrySet().stream()
-                    .filter(entry -> entry.getKey() instanceof ArrowCoreModifier)
-                    .map(entry -> Pair.of((ArrowCoreModifier) entry.getKey(), entry.getValue()))
-                    .forEach(pair -> pair.getFirst().alterArrowEntity(arrowEntity, player, arrowVelocity, pair.getSecond()));
-                abstractArrowEntity = arrowEntity;
-            } else if (abstractArrowEntity instanceof SpectralArrowEntity) {
-                SpectralArrowEntity spectralArrowEntity = (SpectralArrowEntity) abstractArrowEntity;
-                modifier_map.entrySet().stream()
-                    .filter(entry -> entry.getKey() instanceof ArrowCoreModifier)
-                    .map(entry -> Pair.of((ArrowCoreModifier) entry.getKey(), entry.getValue()))
-                    .forEach(pair -> pair.getFirst().alterArrowEntity(spectralArrowEntity, player, arrowVelocity, pair.getSecond()));
-                abstractArrowEntity = spectralArrowEntity;
-            }
-        }
+        // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
+        modifierMap.entrySet().stream()
+            .filter(entry -> entry.getKey() instanceof ArrowCoreModifier)
+            .map(entry -> Pair.of((ArrowCoreModifier) entry.getKey(), entry.getValue()))
+            .forEach(pair -> pair.getKey().alterArrowEntity(abstractArrowEntity, player, arrowVelocity, pair.getRight().getKey()));
 
         abstractArrowEntity.shoot(player, player.rotationPitch, player.rotationYaw, 0f, arrowVelocity * 3f, 1f);
-        if (flag3 || player.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
+        if (baseCodeCheck || player.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
             abstractArrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
         }
         return abstractArrowEntity;
@@ -72,6 +60,17 @@ public class EssenceBowHelper {
         if (l > 0) {
             arrowEntity.setFire(100 * l);
         }
+    }
+
+    public static CompoundNBT createEffectInstanceNBT(EffectInstance... instances) {
+        final CompoundNBT nbt = new CompoundNBT();
+        final ListNBT list = new ListNBT();
+        for (EffectInstance instance : instances) {
+            final CompoundNBT effect = new CompoundNBT();
+            list.add(instance.write(effect));
+        }
+        nbt.put(BrewedModifier.TAG_EFFECTS, list);
+        return nbt;
     }
 
 }

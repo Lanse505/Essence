@@ -30,7 +30,8 @@
   "item.essence.essence_bow": "Essence-Infused Bow",
 
   "modifier.essence.attribute": "  Attribute [%s]",
-  "modifier.essence.brewed": "  Brewed [%s]",
+  "modifier.essence.brewed": "  Brewed [Shift for More Info]",
+  "modifier.essence.brewed.cleaned": "  Brewed",
   "modifier.essence.cascading": "  Cascading [%s]",
   "modifier.essence.efficiency": "  Efficiency",
   "modifier.essence.enchanted": "  Enchanted",
@@ -42,6 +43,10 @@
   "modifier.essence.rainbow": "  Rainbow",
   "modifier.essence.silk_touch": "  Silk Touch",
   "modifier.essence.strengthened": "  Strengthened %s [%s]",
+
+  "brewed.contents": "    Contents:",
+  "brewed.duration": "        Duration %s",
+  "brewed.amplifier": "        Amplifier %s",
 
   "cascading.type.none": "???",
   "cascading.type.lumber": "Lumber",

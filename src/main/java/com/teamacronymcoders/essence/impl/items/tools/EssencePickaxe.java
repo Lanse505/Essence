@@ -72,56 +72,56 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             list.add(new ItemStack(this));
             ItemStack stack;
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), 3);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(3, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.SILK_TOUCH_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.SILK_TOUCH_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
             EssenceModifierHelpers.addModifiers(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), EssenceRegistration.CASCADING_VEIN_MODIFIER.get());
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), 2);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
             stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), 1);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), 5);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), 5);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), Pair.of(1, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(5, null));
             if (!list.contains(stack)) {
                 list.add(stack);
             }
@@ -132,14 +132,14 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
     public int getMaxDamage(ItemStack stack) {
         return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight().getKey(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight().getKey(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
         int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
         return harvestLevel + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
             .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight(), harvestLevel)).reduce(0, Integer::sum);
+            .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight().getKey(), harvestLevel)).reduce(0, Integer::sum);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
             EssenceModifierHelpers.getModifiers(stack).entrySet()
                 .stream()
-                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue()))
+                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue().getKey()))
                 .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
             return multimap;
         }
@@ -170,7 +170,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue()))
+            .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue().getKey()))
             .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
             .findFirst();
         return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
@@ -189,7 +189,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue().getKey()));
         return super.hitEntity(stack, entity, player);
     }
 
@@ -199,7 +199,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onBlockDestroyed(stack, world, state, pos, miner, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onBlockDestroyed(stack, world, state, pos, miner, modifierEntry.getValue().getKey()));
         return super.onBlockDestroyed(stack, world, state, pos, miner);
     }
 
@@ -210,7 +210,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             .entrySet()
             .stream()
             .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue()));
+            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue().getKey()));
         super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
     }
 
@@ -220,7 +220,7 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).getString(), key.getRenderedText(value)));
+            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).get(0).getString(), key.getRenderedText(value).get(0)));
             sorting_map
                 .entrySet()
                 .stream()

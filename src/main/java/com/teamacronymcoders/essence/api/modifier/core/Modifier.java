@@ -2,10 +2,14 @@ package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -13,6 +17,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Modifier extends ForgeRegistryEntry<Modifier> {
 
@@ -106,11 +114,19 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     /**
      * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
      */
-    public ITextComponent getRenderedText(int level) {
-        if (level == 1) {
-            return new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY);
+    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+        List<ITextComponent> textComponents = new ArrayList<>();
+        if (info == null || info.getKey() == null) {
+            return textComponents;
         }
-        return new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level)).applyTextStyle(TextFormatting.GRAY);
+
+        if (info.getKey() == 1) {
+            textComponents.add(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
+            return textComponents;
+        }
+
+        textComponents.add(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(info.getKey())).applyTextStyle(TextFormatting.GRAY));
+        return textComponents;
     }
 
 }

@@ -1,15 +1,17 @@
 package com.teamacronymcoders.essence.impl.serializable.recipe;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import net.minecraft.nbt.CompoundNBT;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class SerializableModifier {
     private Modifier modifier;
-    private int level;
+    private Pair<Integer, CompoundNBT> info;
     private Operation operation;
 
-    public SerializableModifier(Modifier modifier, int level, Operation operation) {
+    public SerializableModifier(Modifier modifier, Pair<Integer, CompoundNBT> level, Operation operation) {
         this.modifier = modifier;
-        this.level = level;
+        this.info = level;
         this.operation = operation;
     }
 
@@ -27,8 +29,8 @@ public class SerializableModifier {
         return modifier;
     }
 
-    public int getLevel() {
-        return level;
+    public Pair<Integer, CompoundNBT> getInfo() {
+        return info;
     }
 
     public Operation getOperation() {

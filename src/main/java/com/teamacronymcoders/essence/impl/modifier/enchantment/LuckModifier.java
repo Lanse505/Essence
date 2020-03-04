@@ -8,9 +8,13 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 public class LuckModifier extends EnchantmentCoreModifier {
 
@@ -34,7 +38,8 @@ public class LuckModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public ITextComponent getRenderedText(int level) {
-        return super.getRenderedText(level).applyTextStyle(TextFormatting.BLUE);
+    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+        super.getRenderedText(info).add(0, super.getRenderedText(info).get(0).applyTextStyle(TextFormatting.BLUE));
+        return super.getRenderedText(info);
     }
 }

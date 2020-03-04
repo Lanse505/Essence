@@ -6,7 +6,7 @@ import com.teamacronymcoders.essence.impl.generation.FancyEssenceTreeFeature;
 import com.teamacronymcoders.essence.impl.generation.NormalEssenceTreeFeature;
 import com.teamacronymcoders.essence.impl.modifier.arrow.BrewedModifier;
 import com.teamacronymcoders.essence.impl.modifier.arrow.KeenModifier;
-import com.teamacronymcoders.essence.impl.modifier.attribute.AttackDamageModifier;
+import com.teamacronymcoders.essence.impl.modifier.attribute.*;
 import com.teamacronymcoders.essence.impl.modifier.cosmetic.EnchantedModifier;
 import com.teamacronymcoders.essence.impl.modifier.enchantment.EfficiencyModifier;
 import com.teamacronymcoders.essence.impl.modifier.enchantment.KnockbackModifier;
@@ -52,14 +52,23 @@ public class EssenceRegistration {
 
 
     // Modifier RegistryObjects
+    // Arrow Modifiers
+    public static RegistryObject<BrewedModifier> BREWED_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("brewed", BrewedModifier::new);
+    public static RegistryObject<KeenModifier> KEEN_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("keen", KeenModifier::new);
+
     // Attribute Modifiers
+    public static RegistryObject<ArmorModifier> ARMOR_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("armor", ArmorModifier::new);
+    public static RegistryObject<ArmorToughnessModifier> ARMOR_TOUGHNESS_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("armor_toughness", ArmorToughnessModifier::new);
     public static RegistryObject<AttackDamageModifier> ATTACK_DAMAGE_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("attack_damage", AttackDamageModifier::new);
+    public static RegistryObject<MaxHealthModifier> MAX_HEALTH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("max_health", MaxHealthModifier::new);
+    public static RegistryObject<MovementSpeedModifier> MOVEMENT_SPEED_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("movement_speed", MovementSpeedModifier::new);
+
     // Cosmetic Modifiers
     public static RegistryObject<EnchantedModifier> ENCHANTED_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("enchanted", EnchantedModifier::new);
+
     // Enchantment Modifiers
     public static RegistryObject<EfficiencyModifier> EFFICIENCY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("efficiency", EfficiencyModifier::new);
     public static RegistryObject<FieryModifier> FIERY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("fiery", FieryModifier::new);
-    public static RegistryObject<KeenModifier> KEEN_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("keen", KeenModifier::new);
     public static RegistryObject<KnockbackModifier> KNOCKBACK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("knockback", KnockbackModifier::new);
     public static RegistryObject<LuckModifier> LUCK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("luck", LuckModifier::new);
     public static RegistryObject<SilkTouchModifier> SILK_TOUCH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("silk_touch", SilkTouchModifier::new);
@@ -78,19 +87,9 @@ public class EssenceRegistration {
     public static RegistryObject<CascadingModifier> CASCADING_VEIN_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_vein", () -> new CascadingModifier(CascadingType.VEIN));
     public static RegistryObject<CascadingModifier> CASCADING_EXCAVATION_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_excavation", () -> new CascadingModifier(CascadingType.EXCAVATION));
 
-    public static void initBrewedModifiers() {
-        for (Potion potion : ForgeRegistries.POTION_TYPES) {
-            MODIFIER_DEFERRED_REGISTER.register("brewed_" + potion.getRegistryName().getPath(), () -> new BrewedModifier(potion));
-            if (EssenceGeneralConfig.enableDebugLogging) {
-                Essence.LOGGER.info("Registered Brewed Modifier for Type: " + potion.getRegistryName() + " , with RegistryName: " + "essence:brewed_" + potion.getRegistryName().getPath());
-            }
-        }
-    }
-
     // Deferred Registration
     public static void register(IEventBus eventBus) {
         FEATURE_DEFERRED_REGISTER.register(eventBus);
-        initBrewedModifiers();
         MODIFIER_DEFERRED_REGISTER.register(eventBus);
     }
 

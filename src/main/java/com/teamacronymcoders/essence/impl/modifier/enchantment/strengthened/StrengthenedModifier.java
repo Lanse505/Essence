@@ -7,10 +7,15 @@ import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StrengthenedModifier extends EnchantmentCoreModifier {
 
@@ -46,8 +51,10 @@ public class StrengthenedModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public ITextComponent getRenderedText(int level) {
-        return new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(level), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY);
+    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+        List<ITextComponent> textComponents = new ArrayList<>();
+        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(info.getKey()), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY));
+        return textComponents;
     }
 
     public StrengthenedType getType() {

@@ -8,7 +8,9 @@ import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -62,8 +64,8 @@ public class SerializableModifierPredicateObject {
     }
 
     public boolean test(ItemStack stack) {
-        final Map<Modifier, Integer> modifier_map = EssenceModifierHelpers.getModifiers(stack);
-        final int level = modifier_map.containsKey(this.modifier) ? modifier_map.get(modifier) : 0;
+        final Map<Modifier, Pair<Integer, CompoundNBT>> modifier_map = EssenceModifierHelpers.getModifiers(stack);
+        final int level = modifier_map.containsKey(this.modifier) ? modifier_map.get(modifier).getKey() : 0;
         return (modifier_map.containsKey(modifier) && !(this.level == null || this.level.isUnbounded())) && this.level.test(level);
     }
 
