@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.impl.modifier.interaction.cascading;
+package com.teamacronymcoders.essence.modifier.interaction.cascading;
 
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.config.modifier.CascadingConfig;

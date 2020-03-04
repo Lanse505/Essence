@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.loot_modifier;
+package com.teamacronymcoders.essence.serializable.loot.condition;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
