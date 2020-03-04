@@ -101,7 +101,7 @@ public class EssenceModifierHelpers {
      * @param modifier The Modifier to get the level off.
      * @return Returns the level of the modifier on the tool.
      */
-    public static Pair<Integer, CompoundNBT> getModifierLevel(ItemStack stack, Modifier modifier) {
+    public static Pair<Integer, CompoundNBT> getModifierInfo(ItemStack stack, Modifier modifier) {
         final Map<Modifier, Pair<Integer, CompoundNBT>> modifiers = getModifiers(stack);
         return modifiers.getOrDefault(modifier, Pair.of(0, null));
     }

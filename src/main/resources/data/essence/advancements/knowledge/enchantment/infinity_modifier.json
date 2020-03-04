@@ -1,0 +1,30 @@
+{
+  "parent": "essence:knowledge/enchantment/enchantment_modifier",
+  "display": {
+    "icon": {
+      "item": "essence:essence_crystal"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.infinity.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.infinity.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "crafting_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:essence_crystal"
+          }
+        ]
+      }
+    }
+  }
+}

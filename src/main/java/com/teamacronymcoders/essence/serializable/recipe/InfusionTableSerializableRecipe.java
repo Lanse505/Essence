@@ -27,7 +27,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
             new Ingredient.IItemList[]{
                 new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
             },
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.ATTACK_DAMAGE_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.STRENGTHENED_SHARPNESS_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
             300
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
@@ -38,7 +38,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
                 new Ingredient.SingleItemList(new ItemStack(Items.CHISELED_QUARTZ_BLOCK)),
                 new Ingredient.SingleItemList(new ItemStack(Items.SMOOTH_QUARTZ))
             },
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.ATTACK_DAMAGE_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.INCREMENT)),
+            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.STRENGTHENED_SHARPNESS_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.INCREMENT)),
             600
         ));
         RECIPES.add(new InfusionTableSerializableRecipe(
@@ -73,7 +73,6 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
         ));
     }
 
-    public ResourceLocation id;
     public Ingredient.IItemList[] inputList;
     public SerializableModifier[] modifiers;
     public int duration;
@@ -84,7 +83,6 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.IItemList[] inputList, SerializableModifier[] modifiers, int duration) {
         super(id);
-        this.id = id;
         this.inputList = inputList;
         this.modifiers = modifiers;
         this.duration = duration;
@@ -122,11 +120,6 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     public boolean isValid(ItemStack stack) {
         return Arrays.stream(getInputList()).map(list -> list.getStacks().stream().map(tagStack -> tagStack.isItemEqual(stack))).anyMatch(booleanStream -> booleanStream.findAny().orElse(false));
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return this.id;
     }
 
     private Ingredient.IItemList[] getInputList() {

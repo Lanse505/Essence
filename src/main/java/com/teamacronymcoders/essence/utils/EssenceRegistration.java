@@ -8,10 +8,7 @@ import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
 import com.teamacronymcoders.essence.modifier.arrow.KeenModifier;
 import com.teamacronymcoders.essence.modifier.attribute.*;
 import com.teamacronymcoders.essence.modifier.cosmetic.EnchantedModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.EfficiencyModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.KnockbackModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.LuckModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.SilkTouchModifier;
+import com.teamacronymcoders.essence.modifier.enchantment.*;
 import com.teamacronymcoders.essence.modifier.enchantment.strengthened.StrengthenedModifier;
 import com.teamacronymcoders.essence.modifier.enchantment.strengthened.StrengthenedType;
 import com.teamacronymcoders.essence.modifier.interaction.ExpanderModifier;
@@ -33,6 +30,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EssenceRegistration {
     private static final DeferredRegister<Feature<?>> FEATURE_DEFERRED_REGISTER = new DeferredRegister<>(ForgeRegistries.FEATURES, Essence.MODID);
+
     // Registry
     public static ForgeRegistry<Modifier> MODIFIER_REGISTRY = (ForgeRegistry<Modifier>) new RegistryBuilder<Modifier>()
         .setName(new ResourceLocation(Essence.MODID, "modifiers"))
@@ -40,8 +38,10 @@ public class EssenceRegistration {
         .setType(Modifier.class)
         .disableSaving()
         .create();
+
     // DeferredRegistry
     private static final DeferredRegister<Modifier> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<>(MODIFIER_REGISTRY, Essence.MODID);
+
     // Feature RegistryObjects
     // Essence Tree
     public static RegistryObject<NormalEssenceTreeFeature> NORMAL_ESSENCE_TREE_FEATURE = FEATURE_DEFERRED_REGISTER.register("normal_essence_tree", () -> new NormalEssenceTreeFeature(TreeFeatureConfig::func_227338_a_));
@@ -66,10 +66,11 @@ public class EssenceRegistration {
 
     // Enchantment Modifiers
     public static RegistryObject<EfficiencyModifier> EFFICIENCY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("efficiency", EfficiencyModifier::new);
-    public static RegistryObject<FieryModifier> FIERY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("fiery", FieryModifier::new);
+    public static RegistryObject<InfinityModifier> INFINITY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("infinity", InfinityModifier::new);
     public static RegistryObject<KnockbackModifier> KNOCKBACK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("knockback", KnockbackModifier::new);
     public static RegistryObject<LuckModifier> LUCK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("luck", LuckModifier::new);
     public static RegistryObject<SilkTouchModifier> SILK_TOUCH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("silk_touch", SilkTouchModifier::new);
+    public static RegistryObject<UnbreakingModifier> UNBREAKING_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("unbreaking", UnbreakingModifier::new);
     // Strengthened Modifiers
     public static RegistryObject<StrengthenedModifier> STRENGTHENED_ARTHROPOD_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("strengthened_arthropod", () -> new StrengthenedModifier(StrengthenedType.BANE_OF_ARTHROPODS));
     public static RegistryObject<StrengthenedModifier> STRENGTHENED_SHARPNESS_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("strengthened_sharpness", () -> new StrengthenedModifier(StrengthenedType.SHARPNESS));
@@ -78,6 +79,7 @@ public class EssenceRegistration {
 
     // Interaction Modifiers
     public static RegistryObject<ExpanderModifier> EXPANDER_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("expander", ExpanderModifier::new);
+    public static RegistryObject<FieryModifier> FIERY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("fiery", FieryModifier::new);
     public static RegistryObject<RainbowModifier> RAINBOW_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("rainbow", RainbowModifier::new);
     // Cascading Modifiers
     public static RegistryObject<CascadingModifier> CASCADING_NONE_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_none", () -> new CascadingModifier(CascadingType.NONE));

@@ -3,6 +3,8 @@ package com.teamacronymcoders.essence.items.tools.misc;
 
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
+import com.teamacronymcoders.essence.utils.EssenceRegistration;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
@@ -10,6 +12,7 @@ import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IItemProvider;
@@ -18,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +34,7 @@ public class EssenceDispenseBehaviours {
         dispenserBehaviours.put(EssenceObjectHolders.ESSENCE_SHEAR, new OptionalDispenseBehavior() {
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+                Pair<Integer, CompoundNBT> info = EssenceModifierHelpers.getModifierInfo(stack, EssenceRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos pos = source.getBlockPos();

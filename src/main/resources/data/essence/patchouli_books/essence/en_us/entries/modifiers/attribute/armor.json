@@ -1,0 +1,13 @@
+{
+  "name": "Armor",
+  "category": "modifiers/attribute",
+  "icon": "essence:essence_crystal",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lorem ipsum dolar banana"
+    }
+  ],
+  "advancement": "",
+  "secret": "true"
+}
