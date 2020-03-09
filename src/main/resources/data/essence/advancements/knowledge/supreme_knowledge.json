@@ -1,14 +1,14 @@
 {
-  "parent": "essence:knowledge/enchantment/enchantment_modifier",
+  "parent": "essence:knowledge/root",
   "display": {
     "icon": {
-      "item": ""
+      "item": "minecraft:nether_star"
     },
     "title": {
-      "translate": "advancements.essence.knowledge.strengthened.title"
+      "translate": "advancements.essence.knowledge.supreme.knowledge.title"
     },
     "description": {
-      "translate": "advancements.essence.knowledge.strengthened.description"
+      "translate": "advancements.essence.knowledge.supreme.knowledge.description"
     },
     "frame": "task",
     "show_toast": false,

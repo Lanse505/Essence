@@ -2,7 +2,7 @@
   "parent": "essence:knowledge/attribute/attribute_modifier",
   "display": {
     "icon": {
-      "item": "essence:essence_crystal"
+      "item": ""
     },
     "title": {
       "translate": "advancements.essence.knowledge.armor.title"

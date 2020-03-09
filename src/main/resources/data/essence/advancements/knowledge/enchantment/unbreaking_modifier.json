@@ -2,7 +2,7 @@
   "parent": "essence:knowledge/enchantment/enchantment_modifier",
   "display": {
     "icon": {
-      "item": "essence:essence_crystal"
+      "item": ""
     },
     "title": {
       "translate": "advancements.essence.knowledge.unbreaking.title"

@@ -1,0 +1,37 @@
+{
+  "name": "Hoe",
+  "category": "tools/tool_types",
+  "icon": "essence:essence_crystal",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lorem ipsum dolar banana"
+    },
+    {
+      "type": "crafting",
+      "recipe": "essence:essence_hoe_basic",
+      "text": "",
+      "advancement": ""
+    },
+    {
+      "type": "crafting",
+      "recipe": "essence:essence_hoe_empowered",
+      "text": "",
+      "advancement": ""
+    },
+    {
+      "type": "crafting",
+      "recipe": "essence:essence_hoe_exalted",
+      "text": "",
+      "advancement": ""
+    },
+    {
+      "type": "crafting",
+      "recipe": "essence:essence_hoe_godly",
+      "text": "",
+      "advancement": ""
+    }
+  ],
+  "sortnum": 2,
+  "secret": "true"
+}

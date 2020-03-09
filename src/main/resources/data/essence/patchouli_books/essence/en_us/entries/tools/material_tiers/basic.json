@@ -1,0 +1,13 @@
+{
+  "name": "Basic",
+  "category": "tools/material_tiers",
+  "icon": "essence:essence_crystal",
+  "pages": [
+    {
+      "type": "text",
+      "text": "lorem ipsum dolar banana"
+    }
+  ],
+  "sortnum": 0,
+  "secret": "true"
+}
