@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
     public InfusionTableBlock() {
         super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(3.5F), InfusionTableTile.class);
-        setRegistryName(new ResourceLocation(Essence.MODID, "essence_infusion_table"));
         setItemGroup(Essence.CORE_TAB);
     }
 

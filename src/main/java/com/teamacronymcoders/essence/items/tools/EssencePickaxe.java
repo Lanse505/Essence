@@ -5,7 +5,7 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.EssenceItemTiers;
+import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -19,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -34,16 +33,15 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
+import static com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers.ESSENCE;
 
 public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
 
     private int freeModifiers;
 
-    public EssencePickaxe(ResourceLocation resourceLocation) {
-        super(EssenceItemTiers.ESSENCE, 1, -2.8f, new Item.Properties().group(Essence.TOOL_TAB));
-        setRegistryName(resourceLocation);
-        freeModifiers = 5;
+    public EssencePickaxe(EssenceToolTiers tier) {
+        super(tier, tier.getAttackDamagePickaxeMod(), tier.getAttackSpeedPickaxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.freeModifiers = tier.getFreeModifiers();
     }
 
     @Override
@@ -64,68 +62,6 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
-        if (this.isInGroup(group)) {
-            list.add(new ItemStack(this));
-            ItemStack stack;
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(3, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.SILK_TOUCH_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifiers(stack, EssenceRegistration.ENCHANTED_MODIFIER.get(), EssenceRegistration.CASCADING_VEIN_MODIFIER.get());
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(2, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-            stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.FIERY_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.CASCADING_VEIN_MODIFIER.get(), Pair.of(1, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.EFFICIENCY_MODIFIER.get(), Pair.of(5, null));
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(5, null));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-        }
     }
 
     @Override
@@ -216,6 +152,10 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        EssenceToolTiers tier = EssenceUtilHelper.getEssenceItemTier(getTier());
+        if (tier != null) {
+            list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
+        }
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));

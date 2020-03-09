@@ -1,6 +1,8 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
+import net.minecraft.item.IItemTier;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.TreeMap;
@@ -68,5 +70,13 @@ public class EssenceUtilHelper {
         }
 
         return String.valueOf(number);
+    }
+
+    private static boolean isEssenceItemTier(IItemTier tier) {
+        return tier instanceof EssenceToolTiers;
+    }
+
+    public static EssenceToolTiers getEssenceItemTier(IItemTier tier) {
+        return isEssenceItemTier(tier) ? (EssenceToolTiers) tier : null;
     }
 }

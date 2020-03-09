@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.api.modifier.ArrowCoreModifier;
+import com.teamacronymcoders.essence.modifier.arrow.ArrowCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
 import net.minecraft.enchantment.EnchantmentHelper;

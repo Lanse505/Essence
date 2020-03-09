@@ -40,7 +40,6 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
 
     public InfusionPedestalBlock() {
         super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestLevel(2).harvestTool(ToolType.PICKAXE).notSolid(), InfusionPedestalTile.class);
-        setRegistryName(new ResourceLocation(Essence.MODID, "essence_infusion_pedestal"));
         setItemGroup(Essence.CORE_TAB);
     }
 

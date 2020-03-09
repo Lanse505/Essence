@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "values": [
+            {
+              "item": "essence:essence_bow_godly",
+              "type": "forge:item_exists"
+            }
+          ],
+          "type": "forge:and"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " ns",
+          "n s",
+          " ns"
+        ],
+        "key": {
+          "n": {
+            "item": "essence:essence_ingot_godly"
+          },
+          "s": {
+            "tag": "forge:string"
+          }
+        },
+        "result": {
+          "item": "essence:essence_bow_godly"
+        }
+      }
+    }
+  ]
+}

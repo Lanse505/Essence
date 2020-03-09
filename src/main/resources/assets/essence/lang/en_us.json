@@ -13,12 +13,24 @@
   "item.essence.essence_wood_sticks": "Essence-Wood Stick",
 
   "block.essence.essence_ore": "Essence-Infused Ore",
+  "block.essence.essence_crystal_ore": "Essence-Infused Crystal Ore",
+  "item.essence.essence_crystal": "Essence-Infused Crystal",
+
   "item.essence.essence_nugget": "Essence-Infused Nugget",
   "item.essence.essence_ingot": "Essence-Infused Ingot",
   "block.essence.essence_infused_block": "Essence-Infused Metal Block",
 
-  "block.essence.essence_crystal_ore": "Essence-Infused Crystal Ore",
-  "item.essence.essence_crystal": "Essence-Infused Crystal",
+  "item.essence.essence_nugget_empowered": "Essence-Infused Nugget",
+  "item.essence.essence_ingot_empowered": "Essence-Infused Ingot",
+  "block.essence.essence_infused_block_empowered": "Essence-Infused Metal Block",
+
+  "item.essence.essence_nugget_exalted": "Essence-Infused Nugget",
+  "item.essence.essence_ingot_exalted": "Essence-Infused Ingot",
+  "block.essence.essence_infused_block_exalted": "Essence-Infused Metal Block",
+
+  "item.essence.essence_nugget_godly": "Essence-Infused Nugget",
+  "item.essence.essence_ingot_godly": "Essence-Infused Ingot",
+  "block.essence.essence_infused_block_godly": "Essence-Infused Metal Block",
 
   "item.essence.essence_axe": "Essence-Infused Axe",
   "item.essence.essence_pickaxe": "Essence-Infused Pickaxe",
@@ -28,6 +40,33 @@
   "item.essence.essence_omnitool": "Essence-Infused Omnitool",
   "item.essence.essence_shear": "Essence-Infused Shears",
   "item.essence.essence_bow": "Essence-Infused Bow",
+
+  "item.essence.essence_axe_empowered": "Essence-Infused Axe",
+  "item.essence.essence_pickaxe_empowered": "Essence-Infused Pickaxe",
+  "item.essence.essence_shovel_empowered": "Essence-Infused Shovel",
+  "item.essence.essence_sword_empowered": "Essence-Infused Sword",
+  "item.essence.essence_hoe_empowered": "Essence-Infused Hoe",
+  "item.essence.essence_omnitool_empowered": "Essence-Infused Omnitool",
+  "item.essence.essence_shear_empowered": "Essence-Infused Shears",
+  "item.essence.essence_bow_empowered": "Essence-Infused Bow",
+
+  "item.essence.essence_axe_exalted": "Essence-Infused Axe",
+  "item.essence.essence_pickaxe_exalted": "Essence-Infused Pickaxe",
+  "item.essence.essence_shovel_exalted": "Essence-Infused Shovel",
+  "item.essence.essence_sword_exalted": "Essence-Infused Sword",
+  "item.essence.essence_hoe_exalted": "Essence-Infused Hoe",
+  "item.essence.essence_omnitool_exalted": "Essence-Infused Omnitool",
+  "item.essence.essence_shear_exalted": "Essence-Infused Shears",
+  "item.essence.essence_bow_exalted": "Essence-Infused Bow",
+
+  "item.essence.essence_axe_godly": "Essence-Infused Axe",
+  "item.essence.essence_pickaxe_godly": "Essence-Infused Pickaxe",
+  "item.essence.essence_shovel_godly": "Essence-Infused Shovel",
+  "item.essence.essence_sword_godly": "Essence-Infused Sword",
+  "item.essence.essence_hoe_godly": "Essence-Infused Hoe",
+  "item.essence.essence_omnitool_godly": "Essence-Infused Omnitool",
+  "item.essence.essence_shear_godly": "Essence-Infused Shears",
+  "item.essence.essence_bow_godly": "Essence-Infused Bow",
 
   "modifier.essence.attribute": "  Attribute [%s]",
   "modifier.essence.brewed": "  Brewed [Shift for More Info]",
@@ -60,6 +99,12 @@
 
   "tooltip.essence.modifier": "Modifiers:",
   "tooltip.essence.modifier.free": "Free Modifiers: %s",
+  "tooltip.essence.tool.tier": "Material Tier: ",
+
+  "tier.essence.basic": "Basic",
+  "tier.essence.empowered": "Empowered",
+  "tier.essence.exalted": "Exalted",
+  "tier.essence.godly": "Godly",
 
   "advancements.essence.core.root.title": "Essence",
   "advancements.essence.core.root.description": "Essence Advancements",
@@ -128,5 +173,5 @@
   "curios.identifier.backpack": "Backpack",
 
   "patchouli.book.essence.knowledge.tome.name": "Tome of Knowledge",
-  "patchouli.book.essence.knowledge.tome.landingtext": ""
+  "patchouli.book.essence.knowledge.tome.landingtext": "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'"
 }

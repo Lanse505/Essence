@@ -18,11 +18,6 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
         addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1).setComponentHarness(this));
     }
 
-    @Override
-    public void tick() {
-        //Essence.LOGGER.info("Has " + this.inventory.getStackInSlot(0).getDisplayName().getString() + " in Slot 0");
-    }
-
     @Nonnull
     @Override
     public InfusionPedestalTile getSelf() {

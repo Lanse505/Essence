@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "essence:essence_infused_block_godly"
+    }
+  ],
+  "result": {
+    "item": "essence:essence_ingot_godly",
+    "count": 9
+  }
+}

@@ -2,6 +2,12 @@
   "replace": false,
   "values": [
     "essence:essence_pickaxe",
-    "essence:essence_omnitool"
+    "essence:essence_pickaxe_empowered",
+    "essence:essence_pickaxe_exalted",
+    "essence:essence_pickaxe_godly",
+    "essence:essence_omnitool",
+    "essence:essence_omnitool_empowered",
+    "essence:essence_omnitool_exalted",
+    "essence:essence_omnitool_godly"
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    "bdb",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "tag": "essence:essence_bricks"
+    },
+    "d": {
+      "tag": "forge:dyes/gray"
+    }
+  },
+  "result": {
+    "item": "essence:essence_bricks_gray",
+    "count": 8
+  }
+}

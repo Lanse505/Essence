@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
@@ -19,8 +20,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
@@ -28,7 +27,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -40,11 +38,12 @@ import java.util.stream.Collectors;
 public class EssenceBow extends BowItem implements IModifiedTool {
 
     private int freeModifiers;
+    private EssenceToolTiers tier;
 
-    public EssenceBow(ResourceLocation resourceLocation) {
-        super(new Item.Properties().maxDamage(384).group(Essence.TOOL_TAB));
-        setRegistryName(resourceLocation);
-        freeModifiers = 5;
+    public EssenceBow(EssenceToolTiers tier) {
+        super(new Item.Properties().maxDamage(tier.getMaxUsesBow()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.freeModifiers = tier.getFreeModifiers();
+        this.tier = tier;
         this.addPropertyOverride(new ResourceLocation("pull"), (stack, world, livingEntity) -> {
             if (livingEntity == null) {
                 return 0.0F;
@@ -73,29 +72,6 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
-            ItemStack stack;
-            for (int keen = 1; keen < 5; keen++) {
-                stack = new ItemStack(this);
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.KEEN_MODIFIER.get(), Pair.of(keen, null));
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.BREWED_MODIFIER.get(),
-                    Pair.of(
-                        1,
-                        EssenceBowHelper.createEffectInstanceNBT(
-                            new EffectInstance(Effects.POISON, 200, 2),
-                            new EffectInstance(Effects.REGENERATION, 200, 1)
-                        )
-                    )
-                );
-                if (!items.contains(stack)) {
-                    items.add(stack);
-                }
-            }
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -177,6 +153,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));

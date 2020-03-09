@@ -1,14 +1,18 @@
 package com.teamacronymcoders.essence.items.tools.misc;
 
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
+import net.minecraft.dispenser.Position;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -19,6 +23,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,39 +34,36 @@ import java.util.Map;
 public class EssenceDispenseBehaviours {
     public static Map<IItemProvider, IDispenseItemBehavior> dispenserBehaviours = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
-    public static void init() {
+    static {
         dispenserBehaviours.put(EssenceObjectHolders.ESSENCE_SHEAR, new OptionalDispenseBehavior() {
+            @SuppressWarnings("deprecation")
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
                 Pair<Integer, CompoundNBT> info = EssenceModifierHelpers.getModifierInfo(stack, EssenceRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
-                BlockPos pos = source.getBlockPos();
-                BlockPos offset = new BlockPos(
-                    new Vec3d(
-                        Direction.getFacingFromAxis(
-                            Direction.AxisDirection.NEGATIVE,
-                            dir.getAxis()
-                        ).getDirectionVec()).add(1.0, 1.0, 1.0).scale(1));
-                BlockPos start = pos.add(offset);
-                BlockPos end = pos.subtract(offset);
+                BlockPos sourcePos = source.getBlockPos();
+                Vec3i dirVec = dir.getDirectionVec();
+                int level = info.getKey();
+                Vec3d dirVecXYZ = new Vec3d(sourcePos.offset(dir)).add(new Vec3d(dirVec)).scale(level + 1);
+                Vec3d vec1 = new Vec3d(-level, -level, -level).add(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).add(new Vec3d(dirVec).scale(level + 1));
+                Vec3d vec2 = new Vec3d(level + 1, level + 1, level + 1).subtract(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).subtract(new Vec3d(dirVec).scale(level + 1));
                 if (!world.isRemote && stack.getItem() instanceof EssenceShear) {
                     this.successful = false;
                     EssenceShear shear = (EssenceShear) stack.getItem();
-                    BlockPos.getAllInBox(start, end)
-                        .forEach(position -> {
-                            for (Entity entity : world.getEntitiesInAABBexcluding((Entity) null, new AxisAlignedBB(pos), entity -> !entity.isSpectator() && entity instanceof IShearable)) {
-                                if (entity instanceof LivingEntity) {
-                                    shear.itemInteractionForEntity(stack, null, (LivingEntity) entity, Hand.MAIN_HAND);
-                                }
-                            }
-                        });
+                    world.getEntitiesInAABBexcluding(null, new AxisAlignedBB(vec1, vec2),
+                        e -> e instanceof LivingEntity && e instanceof IShearable && !e.isSpectator())
+                            .forEach(e -> {
+                                shear.itemInteractionForEntity(stack, null, (LivingEntity) e, Hand.MAIN_HAND);
+                                Essence.LOGGER.info("Attempted to Shear at " + e.getPosition().toString());
+                            });
                 }
                 return stack;
             }
         });
-        dispenserBehaviours.forEach(DispenserBlock::registerDispenseBehavior);
     }
 
+    public static void init() {
+        dispenserBehaviours.forEach(DispenserBlock::registerDispenseBehavior);
+    }
 }

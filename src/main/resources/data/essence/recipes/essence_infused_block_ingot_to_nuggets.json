@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "essence:essence_ingot"
+    }
+  ],
+  "result": {
+    "item": "essence:essence_nugget",
+    "count": 9
+  }
+}

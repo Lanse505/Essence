@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "essence:essence_infused_block_empowered"
+    }
+  ],
+  "result": {
+    "item": "essence:essence_ingot_empowered",
+    "count": 9
+  }
+}

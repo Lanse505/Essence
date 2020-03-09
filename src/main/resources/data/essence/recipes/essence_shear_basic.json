@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "values": [
+            {
+              "item": "essence:essence_shear",
+              "type": "forge:item_exists"
+            }
+          ],
+          "type": "forge:and"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " i",
+          "i "
+        ],
+        "key": {
+          "i": {
+            "item": "essence:essence_ingot"
+          }
+        },
+        "result": {
+          "item": "essence:essence_shear"
+        }
+      }
+    }
+  ]
+}

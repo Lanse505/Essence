@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "essence:essence_bricks_white",
+    "essence:essence_bricks_orange",
+    "essence:essence_bricks_magenta",
+    "essence:essence_bricks_light_blue",
+    "essence:essence_bricks_yellow",
+    "essence:essence_bricks_lime",
+    "essence:essence_bricks_pink",
+    "essence:essence_bricks_gray",
+    "essence:essence_bricks_light_gray",
+    "essence:essence_bricks_cyan",
+    "essence:essence_bricks_purple",
+    "essence:essence_bricks_blue",
+    "essence:essence_bricks_brown",
+    "essence:essence_bricks_green",
+    "essence:essence_bricks_red",
+    "essence:essence_bricks_black"
+  ]
+}

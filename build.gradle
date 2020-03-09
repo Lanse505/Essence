@@ -66,9 +66,6 @@ repositories {
         url 'http://dvs1.progwml6.com/files/maven'
     }
     maven {
-        url 'https://tehnut.info/maven'
-    }
-    maven {
         url 'https://maven.theillusivec4.top/'
     }
     maven {
@@ -79,12 +76,15 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compile fg.deobf("com.hrznstudio:titanium:${titanium_version}")
+    compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
         // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:${curios_version}")
+
     compileOnly fg.deobf("top.theillusivec4.curios:curios:${curios_version}:api")
-    compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+        // at runtime, use the full Curios jar
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:${curios_version}")
 }
 
 jar {

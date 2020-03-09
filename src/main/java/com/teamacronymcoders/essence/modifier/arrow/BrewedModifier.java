@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.modifier.arrow;
 
-import com.teamacronymcoders.essence.api.modifier.ArrowCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -74,9 +74,10 @@ public class BrewedModifier extends ArrowCoreModifier implements INBTModifier {
 
     @Override
     public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
-        long handle = Minecraft.getInstance().getMainWindow().getHandle();
+        final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
+        final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();
-        if (InputMappings.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(handle, GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+        if (InputMappings.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
             textComponents.add(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN));
             textComponents.add(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD));
             for (EffectInstance instance : effects) {

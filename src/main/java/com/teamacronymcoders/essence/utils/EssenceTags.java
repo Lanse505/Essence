@@ -18,6 +18,7 @@ public class EssenceTags {
         public static Tag<Item> ESSENCE_INFUSED_METAL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "infused_ingot"));
         public static Tag<Item> ESSENCE_INFUSED_METAL_BLOCK = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "infused_block"));
         public static Tag<Item> ESSENCE_INFUSED_STICK = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "infused_stick"));
+        public static Tag<Item> ESSENCE_BRICKS = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_bricks"));
 
         public static Tag<Item> ESSENCE_AXE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_axe"));
         public static Tag<Item> ESSENCE_PICKAXE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_pickaxe"));
@@ -36,6 +37,7 @@ public class EssenceTags {
         public static Tag<Block> ESSENCE_CRYSTAL_ORE = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_crystal_ore"));
         public static Tag<Block> ESSENCE_WOOD_LOG = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_logs"));
         public static Tag<Block> ESSENCE_ORE = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_ore"));
+        public static Tag<Block> ESSENCE_BRICKS = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_bricks"));
     }
 
     public static class Modifier {

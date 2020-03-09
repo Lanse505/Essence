@@ -3,13 +3,16 @@ package com.teamacronymcoders.essence;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
+import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.client.PedestalTESR;
+import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
-import com.teamacronymcoders.essence.serializable.EssenceRecipeProvider;
-import com.teamacronymcoders.essence.serializable.EssenceSerializableProvider;
-import com.teamacronymcoders.essence.serializable.EssenceTagProvider;
+import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
+import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableProvider;
+import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
+import com.teamacronymcoders.essence.serializable.providers.EssenceToolRecipeProvider;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.recipe.InfusionTableSerializableRecipe;
@@ -19,6 +22,8 @@ import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
+import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemStack;
@@ -26,6 +31,7 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -42,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
 import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.UUID;
 
@@ -85,6 +92,22 @@ public class Essence extends ModuleController {
                     new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
                 );
             }).subscribe();
+        EventManager.forge(RenderTooltipEvent.Color.class)
+            .process(color -> {
+                boolean isShear = color.getStack().getItem() instanceof EssenceShear;
+                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).containsKey(EssenceRegistration.RAINBOW_MODIFIER.get());
+                if (isShear && hasRainbow) {
+                    EssenceShear shear = (EssenceShear) color.getStack().getItem();
+                    int rainbowVal = shear.getRainbowVal();
+                    if (rainbowVal > 599) rainbowVal = 0;
+                    Color colorVal = EssenceColorHelper.getColor(rainbowVal);
+                    Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
+                    color.setBorderStart(colorVal.getRGB());
+                    color.setBorderEnd(colorVal3.getRGB());
+                    shear.setRainbowVal(rainbowVal + 1);
+
+                }
+            }).subscribe();
         if (EssenceGeneralConfig.enableDebugLogging) {
             LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
             for (int i = 0; i < 10; i++) {
@@ -106,7 +129,9 @@ public class Essence extends ModuleController {
         event.getGenerator().addProvider(new EssenceTagProvider.Items(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceTagProvider.Blocks(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceRecipeProvider(event.getGenerator()));
+        event.getGenerator().addProvider(new EssenceToolRecipeProvider(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceSerializableProvider(event.getGenerator()));
+        event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MODID));
     }
 
     private void setupCuriosIMC(final InterModEnqueueEvent event) {
@@ -139,4 +164,5 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
     }
+
 }

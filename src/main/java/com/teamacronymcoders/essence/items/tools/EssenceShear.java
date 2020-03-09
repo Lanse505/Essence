@@ -1,11 +1,14 @@
 package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
+import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
+import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -31,24 +34,29 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.ToolType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.teamacronymcoders.essence.utils.EssenceItemTiers.ESSENCE;
+import static com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers.ESSENCE;
 
 public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     private int freeModifiers;
+    private EssenceToolTiers tier;
+    private int rainbowVal = 0;
 
-    public EssenceShear(ResourceLocation resourceLocation) {
-        super(new Item.Properties().maxDamage(238).group(Essence.TOOL_TAB));
-        setRegistryName(resourceLocation);
-        freeModifiers = 5;
+    public EssenceShear(EssenceToolTiers tier) {
+        super(new Item.Properties().maxDamage(tier.getMaxUses()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.freeModifiers = tier.getFreeModifiers();
+        this.tier = tier;
     }
 
     private static List<ItemStack> handleShearingSheep(SheepEntity sheep, ItemStack item, IWorld world, BlockPos pos, int fortune) {
@@ -56,29 +64,12 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         if (!sheep.world.isRemote) {
             sheep.setSheared(true);
             int i = EssenceUtilHelper.nextIntInclusive(1 + fortune, 4 + fortune);
-
             for (int j = 0; j < i; ++j) {
                 ret.add(new ItemStack(SheepEntity.WOOL_BY_COLOR.get(sheep.getFleeceColor())));
             }
         }
         sheep.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return ret;
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
-        if (this.isInGroup(group)) {
-            ItemStack stack;
-            for (int i = 1; i < 6; i++) {
-                stack = new ItemStack(this);
-                ;
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), Pair.of(1, null));
-                EssenceModifierHelpers.addModifier(stack, EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(i, null));
-                if (!list.contains(stack)) {
-                    list.add(stack);
-                }
-            }
-        }
     }
 
     @Override
@@ -99,6 +90,15 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            ItemStack stack = new ItemStack(this);
+            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), Pair.of(1, null));
+            items.add(stack);
+        }
     }
 
     @Override
@@ -227,6 +227,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
@@ -245,5 +246,13 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     @Override
     public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
         return ActionResultType.PASS;
+    }
+
+    public void setRainbowVal(int rainbowVal) {
+        this.rainbowVal = rainbowVal;
+    }
+
+    public int getRainbowVal() {
+        return rainbowVal;
     }
 }
