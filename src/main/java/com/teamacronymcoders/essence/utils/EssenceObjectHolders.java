@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.items.misc.EssencePortableCrafter;
 import com.teamacronymcoders.essence.items.tools.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -104,6 +105,9 @@ public class EssenceObjectHolders {
     public static EssenceIngotItem ESSENCE_INFUSED_METAL_GODLY;
     @ObjectHolder("essence:essence_nugget_godly")
     public static EssenceNuggetItem ESSENCE_INFUSED_METAL_GODLY_NUGGET;
+
+    @ObjectHolder("essence:portable_crafter")
+    public static EssencePortableCrafter PORTABLE_CRAFTER;
 
     // Tier 1 Tools
     @ObjectHolder("essence:essence_axe")

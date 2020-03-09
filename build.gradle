@@ -1,16 +1,19 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {url "https://plugins.gradle.org/m2/"}
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: "java"
 apply plugin: "idea"
+apply plugin: "com.wynprice.cursemaven"
 
 version = "${minecraft_version}-" + "${version}"
 group = "${group}"
@@ -71,12 +74,16 @@ repositories {
     maven {
         url 'https://maven.blamejared.com'
     }
+    maven {
+        url "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compile fg.deobf("com.hrznstudio:titanium:${titanium_version}")
     compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    compile fg.deobf("curse.maven:crafting-tweaks:2863719")
     
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
         // at runtime, use the full JEI jar

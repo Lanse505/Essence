@@ -14,6 +14,7 @@ import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.items.misc.EssencePortableCrafter;
 import com.teamacronymcoders.essence.items.tools.*;
 import com.teamacronymcoders.essence.utils.tiers.EssenceItemTiers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
@@ -94,6 +95,7 @@ public class EssenceModules {
             Feature.builder("tools")
                 .force()
                 .description("Tools")
+                .content(Item.class, new EssencePortableCrafter().setRegistryName(new ResourceLocation(Essence.MODID, "portable_crafter")))
 
                 // Tier 1
                 .content(Item.class, new EssenceAxe(EssenceToolTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe")))

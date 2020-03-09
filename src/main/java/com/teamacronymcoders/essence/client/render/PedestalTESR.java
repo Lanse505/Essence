@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.client;
+package com.teamacronymcoders.essence.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;

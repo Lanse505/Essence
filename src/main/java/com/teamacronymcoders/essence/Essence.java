@@ -1,12 +1,16 @@
 package com.teamacronymcoders.essence;
 
+import com.hrznstudio.titanium.client.screen.container.BasicTileContainerScreen;
+import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.teamacronymcoders.essence.client.PedestalTESR;
+import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
+import com.teamacronymcoders.essence.client.render.PedestalTESR;
+import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
@@ -24,14 +28,17 @@ import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -78,36 +85,7 @@ public class Essence extends ModuleController {
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::setupCuriosIMC);
         EssenceRegistration.register(eventBus);
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    InfusionTableSerializableRecipe.SERIALIZER
-                );
-            }).subscribe();
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
-                );
-            }).subscribe();
-        EventManager.forge(RenderTooltipEvent.Color.class)
-            .process(color -> {
-                boolean isShear = color.getStack().getItem() instanceof EssenceShear;
-                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).containsKey(EssenceRegistration.RAINBOW_MODIFIER.get());
-                if (isShear && hasRainbow) {
-                    EssenceShear shear = (EssenceShear) color.getStack().getItem();
-                    int rainbowVal = shear.getRainbowVal();
-                    if (rainbowVal > 599) rainbowVal = 0;
-                    Color colorVal = EssenceColorHelper.getColor(rainbowVal);
-                    Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
-                    color.setBorderStart(colorVal.getRGB());
-                    color.setBorderEnd(colorVal3.getRGB());
-                    shear.setRainbowVal(rainbowVal + 1);
-
-                }
-            }).subscribe();
+        setupEventManagers();
         if (EssenceGeneralConfig.enableDebugLogging) {
             LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
             for (int i = 0; i < 10; i++) {
@@ -163,6 +141,47 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
+    }
+
+    private void setupEventManagers() {
+        EventManager.mod(RegistryEvent.Register.class)
+            .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
+            .process(register -> {
+                register.getRegistry().registerAll(
+                    InfusionTableSerializableRecipe.SERIALIZER
+                );
+            }).subscribe();
+        EventManager.mod(RegistryEvent.Register.class)
+            .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
+            .process(register -> {
+                register.getRegistry().registerAll(
+                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
+                );
+            }).subscribe();
+        EventManager.mod(RegistryEvent.Register.class)
+            .filter(register -> register.getGenericType().equals(ContainerType.class))
+            .process(register -> {
+                register.getRegistry().registerAll(
+                    IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
+                );
+                Essence.LOGGER.info(new ResourceLocation(MODID, "portable_crafter").toString());
+            }).subscribe();
+        EventManager.forge(RenderTooltipEvent.Color.class)
+            .process(color -> {
+                boolean isShear = color.getStack().getItem() instanceof EssenceShear;
+                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).containsKey(EssenceRegistration.RAINBOW_MODIFIER.get());
+                if (isShear && hasRainbow) {
+                    EssenceShear shear = (EssenceShear) color.getStack().getItem();
+                    int rainbowVal = shear.getRainbowVal();
+                    if (rainbowVal > 599) rainbowVal = 0;
+                    Color colorVal = EssenceColorHelper.getColor(rainbowVal);
+                    Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
+                    color.setBorderStart(colorVal.getRGB());
+                    color.setBorderEnd(colorVal3.getRGB());
+                    shear.setRainbowVal(rainbowVal + 1);
+                }
+            }).subscribe();
     }
 
 }
