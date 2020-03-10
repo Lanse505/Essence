@@ -101,6 +101,9 @@
   "tooltip.essence.modifier.free": "Free Modifiers: %s",
   "tooltip.essence.tool.tier": "Material Tier: ",
 
+  "item.essence.portable_crafter": "Portable Crafter",
+  "container.essence.portable.crafter": "Crafter",
+
   "tier.essence.basic": "Basic",
   "tier.essence.empowered": "Empowered",
   "tier.essence.exalted": "Exalted",

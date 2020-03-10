@@ -165,7 +165,6 @@ public class Essence extends ModuleController {
                 register.getRegistry().registerAll(
                     IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
                 );
-                Essence.LOGGER.info(new ResourceLocation(MODID, "portable_crafter").toString());
             }).subscribe();
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
