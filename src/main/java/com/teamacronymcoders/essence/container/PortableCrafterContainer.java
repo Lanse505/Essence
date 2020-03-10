@@ -2,6 +2,8 @@ package com.teamacronymcoders.essence.container;
 
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
+import com.teamacronymcoders.essence.container.inventory.PortableCraftResultInventory;
+import com.teamacronymcoders.essence.container.inventory.PortableCraftingInventory;
 import com.teamacronymcoders.essence.items.misc.PortableCrafter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -35,8 +37,8 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
     private PlayerInventory inventory;
     private PortableCrafter portableCrafter;
     private IWorldPosCallable callable;
-    private CraftingInventory craftingInventory;
-    private CraftResultInventory resultInventory;
+    private PortableCraftingInventory craftingInventory;
+    private PortableCraftResultInventory resultInventory;
     private Optional<ICraftingRecipe> optional;
 
     public PortableCrafterContainer(int id, PlayerInventory inventory, PacketBuffer buffer) {
@@ -48,8 +50,8 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
         this.inventory = inventory;
         this.portableCrafter = portableCrafter;
         this.callable = IWorldPosCallable.of(inventory.player.world, inventory.player.getPosition());
-        this.craftingInventory = new CraftingInventory(this, 3, 3);
-        this.resultInventory = new CraftResultInventory();
+        this.craftingInventory = new PortableCraftingInventory(this, portableCrafter.getGrid());
+        this.resultInventory = new PortableCraftResultInventory(portableCrafter.getOutput());
         initInventory();
     }
 
@@ -83,7 +85,7 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
 
     @Override
     public void onContainerClosed(PlayerEntity playerIn) {
-        IWorldPosCallable.of(playerIn.world, playerIn.getPosition()).consume((world, pos) -> this.clearContainer(playerIn, world, new RecipeWrapper(this.portableCrafter.getGrid())));
+        this.callable.consume((world, pos) -> this.clearContainer(playerIn, world, this.craftingInventory));
     }
 
     @Override
