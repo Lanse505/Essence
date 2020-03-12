@@ -11,17 +11,17 @@ import java.util.List;
 
 public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListNBT> {
 
-    private List<Knowledge> knowledges;
+    private List<Knowledge> knowledge;
 
     public KnowledgeHolder() {
-        this.knowledges = new ArrayList<>();
+        this.knowledge = new ArrayList<>();
     }
 
     @Override
     public void addKnowledge(Knowledge... knowledge) {
         for (Knowledge instance : knowledge) {
-            if (!this.knowledges.contains(instance)) {
-                this.knowledges.add(instance);
+            if (!this.knowledge.contains(instance)) {
+                this.knowledge.add(instance);
             }
         }
     }
@@ -29,20 +29,20 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     @Override
     public void removeKnowledge(Knowledge... knowledge) {
         for (Knowledge instance : knowledge) {
-            this.knowledges.remove(instance);
+            this.knowledge.remove(instance);
         }
     }
 
     @Override
-    public void clearKnowledges() {
-        this.knowledges.clear();
+    public void clearKnowledge() {
+        this.knowledge.clear();
     }
 
 
     @Override
     public ListNBT serializeNBT() {
         final ListNBT listNBT = new ListNBT();
-        for (Knowledge knowledge : knowledges) {
+        for (Knowledge knowledge : knowledge) {
             listNBT.add(knowledge.serializeNBT());
         }
         return listNBT;
@@ -54,8 +54,8 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
             final CompoundNBT compoundNBT = nbt.getCompound(i);
             final Knowledge knowledge = new Knowledge();
             knowledge.deserializeNBT(compoundNBT);
-            if (knowledges.stream().noneMatch(tracked -> tracked == knowledge)) {
-                knowledges.add(knowledge);
+            if (this.knowledge.stream().noneMatch(tracked -> tracked == knowledge)) {
+                this.knowledge.add(knowledge);
             }
         }
     }
