@@ -5,6 +5,7 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -64,6 +66,23 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     @Override
     public boolean hasEffect(ItemStack stack) {
         return EssenceModifierHelpers.hasEnchantedModifier(stack);
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            ItemStack stack;
+            for (int i = 1; i < 3; i++) {
+                stack = new ItemStack(EssenceObjectHolders.ESSENCE_AXE_EMPOWERED);
+                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get(), i, null);
+                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null);
+                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.FIERY_MODIFIER.get(), 1, null);
+                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.CASCADING_LUMBER_MODIFIER.get(), 1, null);
+                if (!items.contains(stack)) {
+                    items.add(stack);
+                }
+            }
+        }
     }
 
     @Override
@@ -167,12 +186,12 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance).get(0)));
+            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
+            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
             sorting_map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponent) -> list.add(iTextComponent));
+                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
             list.add(new StringTextComponent(""));
         }
     }

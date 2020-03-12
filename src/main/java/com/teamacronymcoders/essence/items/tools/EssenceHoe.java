@@ -157,12 +157,12 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance).get(0)));
+            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
+            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
             sorting_map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponent) -> list.add(iTextComponent));
+                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
             list.add(new StringTextComponent(""));
         }
     }

@@ -78,7 +78,7 @@ public class BrewedModifier extends ArrowCoreModifier implements INBTModifier {
         final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
         final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();
-        if (InputMappings.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
+        if (InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
             textComponents.add(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN));
             textComponents.add(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD));
             for (EffectInstance effect : effects) {

@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.api.modifier;
 
+import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.nbt.CompoundNBT;
@@ -27,9 +28,13 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
     public CompoundNBT serializeNBT() {
         final CompoundNBT compoundNBT = new CompoundNBT();
         compoundNBT.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
-            final CompoundNBT info = new CompoundNBT();
-                 info.putInt(TAG_LEVEL, level);
-                 info.put(TAG_COMPOUND, modifierData);
+        final CompoundNBT info = new CompoundNBT();
+        info.putInt(TAG_LEVEL, level);
+        if (modifierData == null) {
+            info.put(TAG_COMPOUND, new CompoundNBT());
+        } else {
+            info.put(TAG_COMPOUND, modifierData);
+        }
         compoundNBT.put(TAG_INFO, info);
         return compoundNBT;
     }
@@ -44,6 +49,10 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
         this.modifier = modifier;
         this.level = level;
         this.modifierData = modifierData;
+
+        if (this.modifier instanceof INBTModifier) {
+            ((INBTModifier) this.modifier).update(this.modifierData);
+        }
     }
 
     public Modifier getModifier() {

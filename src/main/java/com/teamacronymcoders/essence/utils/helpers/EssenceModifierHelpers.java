@@ -88,6 +88,7 @@ public class EssenceModifierHelpers {
         if (stack.getItem() instanceof IModifiedTool && instances.stream().allMatch(instance -> canApplyModifier(instance.getModifier(), stack, modifier))) {
             instances.add(new ModifierInstance(modifier, level, modifierData));
         }
+        setModifiersToNBT(stack, instances);
     }
 
     /**

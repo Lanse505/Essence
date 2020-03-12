@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
@@ -20,6 +21,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
@@ -75,6 +78,18 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     }
 
     @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            ItemStack stack = new ItemStack(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED);
+            EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(new EffectInstance(Effects.POISON, 1200, 3)));
+            EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.KEEN_MODIFIER.get(), 4, null);
+            if (!items.contains(stack)) {
+                items.add(stack);
+            }
+        }
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
@@ -97,6 +112,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
+        //Essence.LOGGER.info(stack.getTag().toString());
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
         EssenceModifierHelpers.getModifiers(stack).stream()
             .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
@@ -152,12 +168,12 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance).get(0)));
+            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
+            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
             sorting_map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponent) -> list.add(iTextComponent));
+                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
             list.add(new StringTextComponent(""));
         }
     }
