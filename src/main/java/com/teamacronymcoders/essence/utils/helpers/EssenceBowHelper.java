@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.modifier.arrow.ArrowCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
@@ -16,12 +17,13 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.List;
 import java.util.Map;
 
 public class EssenceBowHelper {
 
     public static AbstractArrowEntity getArrowEntity(World world, ItemStack bow, ItemStack arrow, PlayerEntity player, float arrowVelocity) {
-        final Map<Modifier, Pair<Integer, CompoundNBT>> modifierMap = EssenceModifierHelpers.getModifiers(bow);
+        final List<ModifierInstance> instances = EssenceModifierHelpers.getModifiers(bow);
 
         // Flag for if the Bow has Modifiers && has Infinity
         boolean baseCodeCheck = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
@@ -31,10 +33,9 @@ public class EssenceBowHelper {
         AbstractArrowEntity abstractArrowEntity = arrowitem.createArrow(world, arrow, player);
 
         // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
-        modifierMap.entrySet().stream()
-            .filter(entry -> entry.getKey() instanceof ArrowCoreModifier)
-            .map(entry -> Pair.of((ArrowCoreModifier) entry.getKey(), entry.getValue()))
-            .forEach(pair -> pair.getKey().alterArrowEntity(abstractArrowEntity, player, arrowVelocity, pair.getRight().getKey()));
+        instances.stream()
+            .filter(instance -> instance.getModifier() instanceof ArrowCoreModifier)
+            .forEach(instance -> ((ArrowCoreModifier) instance.getModifier()).alterArrowEntity(abstractArrowEntity, player, arrowVelocity, instance));
 
         abstractArrowEntity.shoot(player, player.rotationPitch, player.rotationYaw, 0f, arrowVelocity * 3f, 1f);
         if (baseCodeCheck || player.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {

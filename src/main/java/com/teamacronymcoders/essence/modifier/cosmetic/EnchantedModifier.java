@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.cosmetic;
 
 import com.teamacronymcoders.essence.api.modifier.CosmeticCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -15,8 +16,8 @@ public class EnchantedModifier extends CosmeticCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
-        super.getRenderedText(info).add(0, super.getRenderedText(info).get(0).applyTextStyle(TextFormatting.LIGHT_PURPLE));
-        return super.getRenderedText(info);
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+        super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).applyTextStyle(TextFormatting.LIGHT_PURPLE));
+        return super.getRenderedText(instance);
     }
 }

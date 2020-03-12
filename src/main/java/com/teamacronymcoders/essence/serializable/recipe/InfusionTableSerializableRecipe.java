@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.serializable.recipe;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -98,15 +99,13 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     void resolveOperationBehaviour(ItemStack stack, SerializableModifier modifier) {
         switch (modifier.getOperation()) {
             case ADD:
-                EssenceModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getInfo());
+                EssenceModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getLevel(), modifier.getModifierData());
             case REMOVE:
                 EssenceModifierHelpers.removeModifiers(stack, modifier.getModifier());
-            case REPLACE:
-                EssenceModifierHelpers.replaceModifierValue(stack, modifier.getModifier(), modifier.getInfo());
             case INCREMENT:
-                EssenceModifierHelpers.increaseModifierLevel(stack, modifier.getModifier(), modifier.getInfo().getKey());
+                EssenceModifierHelpers.increaseModifierLevel(stack, new ModifierInstance(modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
             case DECREMENT:
-                EssenceModifierHelpers.decreaseModifierLevel(stack, modifier.getModifier(), modifier.getInfo().getKey());
+                EssenceModifierHelpers.decreaseModifierLevel(stack, new ModifierInstance(modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
         }
     }
 

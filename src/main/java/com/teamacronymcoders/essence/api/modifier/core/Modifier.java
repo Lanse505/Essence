@@ -107,18 +107,18 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     /**
      * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
      */
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
-        if (info == null || info.getKey() == null) {
+        if (instance == null) {
             return textComponents;
         }
 
-        if (info.getKey() == 1) {
+        if (instance.getLevel() == 1) {
             textComponents.add(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
             return textComponents;
         }
 
-        textComponents.add(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(info.getKey())).applyTextStyle(TextFormatting.GRAY));
+        textComponents.add(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(instance.getLevel())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;
     }
 

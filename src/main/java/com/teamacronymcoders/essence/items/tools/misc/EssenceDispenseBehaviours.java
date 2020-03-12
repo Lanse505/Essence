@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.items.tools.misc;
 
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -35,12 +36,12 @@ public class EssenceDispenseBehaviours {
             @SuppressWarnings("deprecation")
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                Pair<Integer, CompoundNBT> info = EssenceModifierHelpers.getModifierInfo(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
+                ModifierInstance instance = EssenceModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos sourcePos = source.getBlockPos();
                 Vec3i dirVec = dir.getDirectionVec();
-                int level = info.getKey();
+                int level = instance.getLevel();
                 Vec3d dirVecXYZ = new Vec3d(sourcePos.offset(dir)).add(new Vec3d(dirVec)).scale(level + 1);
                 Vec3d vec1 = new Vec3d(-level, -level, -level).add(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).add(new Vec3d(dirVec).scale(level + 1));
                 Vec3d vec2 = new Vec3d(level + 1, level + 1, level + 1).subtract(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).subtract(new Vec3d(dirVec).scale(level + 1));

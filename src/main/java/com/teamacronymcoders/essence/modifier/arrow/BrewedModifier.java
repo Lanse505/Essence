@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.modifier.arrow;
 
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
@@ -34,11 +35,11 @@ public class BrewedModifier extends ArrowCoreModifier implements INBTModifier {
     }
 
     @Override
-    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, int level) {
+    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
         if (abstractArrowEntity instanceof ArrowEntity) {
             ArrowEntity arrowEntity = (ArrowEntity) abstractArrowEntity;
-            for (EffectInstance instance : effects) {
-                arrowEntity.addEffect(instance);
+            for (EffectInstance effect : effects) {
+                arrowEntity.addEffect(effect);
             }
         }
     }
@@ -73,22 +74,22 @@ public class BrewedModifier extends ArrowCoreModifier implements INBTModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
         final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
         final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();
         if (InputMappings.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
             textComponents.add(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN));
             textComponents.add(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD));
-            for (EffectInstance instance : effects) {
-                if (instance.getPotion().isBeneficial()) {
-                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(instance.getPotion().getName())).applyTextStyle(TextFormatting.BLUE));
-                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(instance.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE));
-                    textComponents.add(new TranslationTextComponent("brewed.amplifier", instance.getAmplifier()).applyTextStyle(TextFormatting.BLUE));
+            for (EffectInstance effect : effects) {
+                if (effect.getPotion().isBeneficial()) {
+                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.BLUE));
+                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE));
+                    textComponents.add(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.BLUE));
                 } else {
-                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(instance.getPotion().getName())).applyTextStyle(TextFormatting.RED));
-                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(instance.getDuration() / 20)).applyTextStyle(TextFormatting.RED));
-                    textComponents.add(new TranslationTextComponent("brewed.amplifier", instance.getAmplifier()).applyTextStyle(TextFormatting.RED));
+                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.RED));
+                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.RED));
+                    textComponents.add(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.RED));
                 }
             }
         } else {

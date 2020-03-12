@@ -27,20 +27,20 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers.ESSENCE;
 
 public class EssenceHoe extends HoeItem implements IModifiedTool {
 
+    private EssenceToolTiers tier;
     private int freeModifiers;
 
     public EssenceHoe(EssenceToolTiers tier) {
         super(tier, tier.getAttackSpeedHoeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.tier = tier;
         this.freeModifiers = tier.getFreeModifiers();
     }
 
@@ -66,33 +66,42 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
-            .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight().getKey(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
+        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof CoreModifier)
+            .map(instance -> {
+                CoreModifier modifier = (CoreModifier) instance.getModifier();
+                return modifier.getModifiedDurability(stack, instance, tier.getMaxUses());
+            }).reduce(0, Integer::sum);
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
-            .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedEfficiency(stack, modifierPair.getRight().getKey(), super.getDestroySpeed(stack, state))).reduce(0f, Float::sum);
+        return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof CoreModifier)
+            .map(instance -> {
+                CoreModifier modifier = (CoreModifier) instance.getModifier();
+                return modifier.getModifiedEfficiency(stack, instance, super.getDestroySpeed(stack, state));
+            }).reduce(0f, Float::sum);
     }
 
     @Override
     public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
         int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-        return harvestLevel + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
-            .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
-            .map(modifierPair -> modifierPair.getLeft().getModifiedHarvestLevel(stack, modifierPair.getRight().getKey(), harvestLevel)).reduce(0, Integer::sum);
+        return harvestLevel + EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof CoreModifier)
+            .map(instance -> {
+                CoreModifier modifier = (CoreModifier) instance.getModifier();
+                return modifier.getModifiedHarvestLevel(stack, instance, harvestLevel);
+            }).reduce(0, Integer::sum);
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
             Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-            EssenceModifierHelpers.getModifiers(stack).entrySet()
-                .stream()
-                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue().getKey()))
+            EssenceModifierHelpers.getModifiers(stack).stream()
+                .map(instance -> instance.getModifier().getAttributeModifiers(stack, null, instance))
                 .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
             return multimap;
         }
@@ -102,14 +111,12 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType superResult = super.onItemUse(context);
-        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem())
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .map(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onItemUse(context, modifierEntry.getValue().getKey()))
+        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem()).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .map(instance -> ((InteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
             .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
             .findFirst();
-        return modifierResult.orElse(superResult);
+        return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
     }
 
     public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
@@ -121,49 +128,38 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
 
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceModifierHelpers.getModifiers(stack)
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue().getKey()));
+        EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance));
         return super.hitEntity(stack, entity, player);
     }
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        EssenceModifierHelpers.getModifiers(stack)
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onBlockDestroyed(stack, world, state, pos, miner, modifierEntry.getValue().getKey()));
+        EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onBlockDestroyed(stack, world, state, pos, miner, instance));
         return super.onBlockDestroyed(stack, world, state, pos, miner);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceModifierHelpers.getModifiers(stack)
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue().getKey()));
+        EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
         super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        EssenceToolTiers tier = EssenceUtilHelper.getEssenceItemTier(getTier());
-        if (tier != null) {
-            list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
-        }
+        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, ITextComponent> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).get(0).getString(), key.getRenderedText(value).get(0)));
-            sorting_map
-                .entrySet()
-                .stream()
+            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance).get(0)));
+            sorting_map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
                 .forEach((s, iTextComponent) -> list.add(iTextComponent));

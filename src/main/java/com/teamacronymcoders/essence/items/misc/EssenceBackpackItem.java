@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.items.misc;
 import com.hrznstudio.titanium.component.IComponentHarness;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.capabilities.BackpackCapability;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 public class EssenceBackpackItem extends Item implements IComponentHarness {
@@ -52,7 +54,7 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
         if (isSelected) {
             InventoryComponent<EssenceBackpackItem> inventory = getComponent(stack);
             Triple<Integer, Integer, Integer> values = Triple.of(tier.getBackpackSlots(), tier.getBackpackX(), tier.getBackpackY());
-            final Map<Modifier, Pair<Integer, CompoundNBT>> modifierMap = EssenceModifierHelpers.getModifiers(stack);
+            final List<ModifierInstance> instances = EssenceModifierHelpers.getModifiers(stack);
         }
     }
 

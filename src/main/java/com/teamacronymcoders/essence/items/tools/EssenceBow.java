@@ -74,14 +74,13 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         return EssenceModifierHelpers.hasEnchantedModifier(stack);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
+    @SuppressWarnings("deprecation")
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
             Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-            EssenceModifierHelpers.getModifiers(stack).entrySet()
-                .stream()
-                .map(entry -> entry.getKey().getAttributeModifiers(stack, null, entry.getValue().getKey()))
+            EssenceModifierHelpers.getModifiers(stack).stream()
+                .map(instance -> instance.getModifier().getAttributeModifiers(stack, null, instance))
                 .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
             return multimap;
         }
@@ -90,22 +89,18 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceModifierHelpers.getModifiers(stack)
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onHitEntity(stack, entity, player, modifierEntry.getValue().getKey()));
+        EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance));
         return super.hitEntity(stack, entity, player);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
         EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceModifierHelpers.getModifiers(stack)
-            .entrySet()
-            .stream()
-            .filter(modifierEntry -> modifierEntry.getKey() instanceof InteractionCoreModifier)
-            .forEach(modifierEntry -> ((InteractionCoreModifier) modifierEntry.getKey()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, modifierEntry.getValue().getKey()));
+        EssenceModifierHelpers.getModifiers(stack).stream()
+            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
+            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
         super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
     }
 
@@ -157,14 +152,12 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach((key, value) -> sorting_map.put(key.getRenderedText(value).get(0).getString(), key.getRenderedText(value)));
-            sorting_map
-                .entrySet()
-                .stream()
+            Map<String, ITextComponent> sorting_map = new HashMap<>();
+            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance).get(0)));
+            sorting_map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponent) -> list.addAll(iTextComponent));
+                .forEach((s, iTextComponent) -> list.add(iTextComponent));
             list.add(new StringTextComponent(""));
         }
     }

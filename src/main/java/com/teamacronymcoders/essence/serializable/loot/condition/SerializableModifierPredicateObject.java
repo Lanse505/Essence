@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.serializable.loot.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
@@ -14,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 public class SerializableModifierPredicateObject {
@@ -65,9 +67,9 @@ public class SerializableModifierPredicateObject {
     }
 
     public boolean test(ItemStack stack) {
-        final Map<Modifier, Pair<Integer, CompoundNBT>> modifier_map = EssenceModifierHelpers.getModifiers(stack);
-        final int level = modifier_map.containsKey(this.modifier) ? modifier_map.get(modifier).getKey() : 0;
-        return (modifier_map.containsKey(modifier) && !(this.level == null || this.level.isUnbounded())) && this.level.test(level);
+        final List<ModifierInstance> instances = EssenceModifierHelpers.getModifiers(stack);
+        final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
+        return !(this.level == null || this.level.isUnbounded()) && this.level.test(level);
     }
 
     public JsonElement serializer() {

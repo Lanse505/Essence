@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.modifier.backpack;
 
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -25,14 +26,14 @@ public class BackpackExpanderModifier extends BackpackCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
-
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+        int level = instance.getLevel();
         if (level == 1) {
 
         } else if (level == 2) {
 
         }
-        super.onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, level);
+        super.onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance);
     }
 
     @Override

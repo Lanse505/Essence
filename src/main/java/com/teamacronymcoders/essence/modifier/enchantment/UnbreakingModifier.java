@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -15,8 +16,8 @@ public class UnbreakingModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level * 2);
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
     }
 
     @Override

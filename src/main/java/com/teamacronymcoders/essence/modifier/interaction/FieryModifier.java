@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.interaction;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.items.tools.EssenceHoe;
 import com.teamacronymcoders.essence.items.tools.EssenceSword;
@@ -18,9 +19,9 @@ public class FieryModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
         if (stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow) {
-            EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level * 2);
+            EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
         }
     }
 

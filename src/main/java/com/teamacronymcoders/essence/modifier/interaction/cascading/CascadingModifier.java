@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.interaction.cascading;
 
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.modifier.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
@@ -35,7 +36,7 @@ public class CascadingModifier extends InteractionCoreModifier {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, int level) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
         if (state.getBlock().isIn(this.type.getBlockTag())) {
             if (miner instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) miner;
@@ -74,7 +75,7 @@ public class CascadingModifier extends InteractionCoreModifier {
                 }
             }
         }
-        return super.onBlockDestroyed(stack, world, state, pos, miner, level);
+        return super.onBlockDestroyed(stack, world, state, pos, miner, instance);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class CascadingModifier extends InteractionCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
         textComponents.add(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("cascading.type." + this.type.getName()).applyTextStyles(this.type.getFormatting())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;

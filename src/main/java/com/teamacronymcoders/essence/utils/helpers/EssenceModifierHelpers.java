@@ -83,14 +83,7 @@ public class EssenceModifierHelpers {
         return instances.stream().filter(instance -> instance.getModifier() == modifier).findFirst().orElse(null);
     }
 
-    /**
-     * This adds the specified Modifier to the Tool.
-     *
-     * @param stack    The ItemStack holding the Modifiers.
-     * @param modifier The Modifier to remove.
-     * @param info    The Integer level that the Modifier being applied should have.
-     */
-    public static void addModifier(ItemStack stack, Modifier modifier, int level, CompoundNBT modifierData, Pair<Integer, CompoundNBT> info) {
+    public static void addModifier(ItemStack stack, Modifier modifier, int level, CompoundNBT modifierData) {
         final List<ModifierInstance> instances = getModifiers(stack);
         if (stack.getItem() instanceof IModifiedTool && instances.stream().allMatch(instance -> canApplyModifier(instance.getModifier(), stack, modifier))) {
             instances.add(new ModifierInstance(modifier, level, modifierData));

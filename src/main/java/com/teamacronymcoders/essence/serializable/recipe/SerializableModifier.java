@@ -6,12 +6,14 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class SerializableModifier {
     public Modifier modifier;
-    public Pair<Integer, CompoundNBT> info;
+    public int level;
+    public CompoundNBT modifierData;
     public Operation operation;
 
-    public SerializableModifier(Modifier modifier, Pair<Integer, CompoundNBT> level, Operation operation) {
+    public SerializableModifier(Modifier modifier, int level, CompoundNBT modifierData, Operation operation) {
         this.modifier = modifier;
-        this.info = level;
+        this.level = level;
+        this.modifierData = modifierData;
         this.operation = operation;
     }
 
@@ -29,8 +31,12 @@ public class SerializableModifier {
         return modifier;
     }
 
-    public Pair<Integer, CompoundNBT> getInfo() {
-        return info;
+    public int getLevel() {
+        return level;
+    }
+
+    public CompoundNBT getModifierData() {
+        return modifierData;
     }
 
     public Operation getOperation() {
@@ -40,11 +46,10 @@ public class SerializableModifier {
     public enum Operation {
         ADD(0, "add"),
         REMOVE(1, "remove"),
-        REPLACE(2, "replace"),
-        INCREMENT(3, "increment"),
-        DECREMENT(4, "decrement");
+        INCREMENT(2, "increment"),
+        DECREMENT(3, "decrement");
 
-        private static final Operation[] VALUES = new Operation[]{ADD, REMOVE, REPLACE, INCREMENT, DECREMENT};
+        private static final Operation[] VALUES = new Operation[]{ADD, REMOVE, INCREMENT, DECREMENT};
         private final int id;
         private final String name;
 

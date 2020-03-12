@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,9 +26,10 @@ public class EssenceEnchantmentHelper {
      * @param enchantment The Enchantment to add
      * @param level       The level of the Enchantment
      */
-    public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, int level) {
+    public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance, int multiplier) {
         CompoundNBT stackNBT = stack.getOrCreateTag();
         ListNBT enchantments = stack.getEnchantmentTagList();
+        int level = instance.getLevel() * multiplier;
         if (!enchantments.isEmpty()) {
             Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
                 .mapToObj(enchantments::getCompound)
@@ -62,11 +64,10 @@ public class EssenceEnchantmentHelper {
         if (!enchantments.isEmpty()) {
             Map<String, CompoundNBT> enchantmentIDs = new HashMap<>();
             IntStream.range(0, enchantments.size()).mapToObj(enchantments::getCompound).forEach(tag -> enchantmentIDs.put(tag.getString("id"), tag));
-            EssenceModifierHelpers.getModifiers(stack).keySet().stream()
-                .filter(integer -> integer instanceof EnchantmentCoreModifier)
-                .map(integer -> (EnchantmentCoreModifier) integer)
-                .forEach(enchantmentCoreModifier -> {
-                    Enchantment enchantment = enchantmentCoreModifier.getLinkedEnchantment(stack);
+            EssenceModifierHelpers.getModifiers(stack).stream()
+                .filter(instance -> instance.getModifier() instanceof EnchantmentCoreModifier)
+                .forEach(instance -> {
+                    Enchantment enchantment = ((EnchantmentCoreModifier) instance.getModifier()).getLinkedEnchantment(stack);
                     if (enchantment != null) {
                         enchantmentIDs.remove(enchantment.getRegistryName().toString());
                     }

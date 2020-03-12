@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.enchantment.strengthened;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
@@ -31,8 +32,8 @@ public class StrengthenedModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level * 2);
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack),  instance, 2);
     }
 
     @Override
@@ -51,9 +52,9 @@ public class StrengthenedModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
-        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(info.getKey()), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY));
+        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;
     }
 

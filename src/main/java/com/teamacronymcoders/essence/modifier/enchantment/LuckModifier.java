@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.items.tools.EssenceSword;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
@@ -23,8 +24,8 @@ public class LuckModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, int level) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), level);
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 0);
     }
 
     @Override
@@ -38,8 +39,8 @@ public class LuckModifier extends EnchantmentCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(Pair<Integer, CompoundNBT> info) {
-        super.getRenderedText(info).add(0, super.getRenderedText(info).get(0).applyTextStyle(TextFormatting.BLUE));
-        return super.getRenderedText(info);
+    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+        super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).applyTextStyle(TextFormatting.BLUE));
+        return super.getRenderedText(instance);
     }
 }

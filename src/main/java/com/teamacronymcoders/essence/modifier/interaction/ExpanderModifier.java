@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.modifier.interaction;
 
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.items.tools.EssenceBow;
@@ -33,14 +34,14 @@ public class ExpanderModifier extends InteractionCoreModifier {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context, int level) {
+    public ActionResultType onItemUse(ItemUseContext context, ModifierInstance instance) {
         ItemStack stack = context.getItem();
         if (context.getPlayer() != null) {
             PlayerEntity player = context.getPlayer();
             Hand hand = context.getHand();
             BlockPos pos = context.getPos();
             Direction dir = context.getFace();
-            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(level));
+            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
             BlockPos start = pos.add(offset);
             BlockPos end = pos.subtract(offset);
             BlockPos.getAllInBox(start, end)
@@ -53,13 +54,13 @@ public class ExpanderModifier extends InteractionCoreModifier {
                 });
             return ActionResultType.SUCCESS;
         }
-        return super.onItemUse(context, level);
+        return super.onItemUse(context, instance);
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, int level) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
         Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vec3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
-        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(level));
+        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
         BlockPos start = pos.add(offset);
         BlockPos end = pos.subtract(offset);
         BlockPos.getAllInBox(start, end)
@@ -93,8 +94,8 @@ public class ExpanderModifier extends InteractionCoreModifier {
     }
 
     @Override
-    public float getModifiedEfficiency(ItemStack stack, int level, float base) {
-        return (float) -(base * 0.275) * level;
+    public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
+        return (float) -(base * 0.275) * instance.getLevel();
     }
 
     @Override

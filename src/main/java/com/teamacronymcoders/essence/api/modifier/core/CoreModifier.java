@@ -46,35 +46,20 @@ public class CoreModifier extends Modifier {
         return this.maxLevel;
     }
 
-    /**
-     * @param stack The stack being modified.
-     * @param level The current level of the Modifier.
-     * @param base  The base value.
-     * @return The amount to modify the durability by.
-     */
-    public int getModifiedDurability(ItemStack stack, int level, int base, CompoundNBT modifierData) {
+    public int getModifiedDurability(ItemStack stack, ModifierInstance instance, int base) {
         return 0;
     }
 
-    /**
-     * @param stack The stack being modified.
-     * @param level The current level of the Modifier.
-     * @param base  The base value.
-     * @return The amount to modify the efficiency by.
-     */
     public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
         return 0;
     }
-
 
     public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance instance, int base) {
         return 0;
     }
 
-
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, ModifierInstance instance) {
         return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(instance.getLevel(), stack) - 1);
     }
-
 }

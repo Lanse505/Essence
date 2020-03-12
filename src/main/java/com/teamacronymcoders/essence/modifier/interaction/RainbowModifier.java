@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.modifier.interaction;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -21,7 +22,7 @@ public class RainbowModifier extends InteractionCoreModifier {
     }
 
     @Override
-    public List<ItemStack> onSheared(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, int level) {
+    public List<ItemStack> onSheared(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance instance) {
         if (sheared instanceof SheepEntity) {
             List<ItemStack> modifiedList = new ArrayList<>();
             for (ItemStack s : stackList) {

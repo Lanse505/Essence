@@ -22,21 +22,21 @@ public class EssenceSerializableObjectHandler {
         final int level = buffer.readInt();
         final CompoundNBT compound = buffer.readCompoundTag();
         final String operator = buffer.readString(1);
-        return new SerializableModifier(modifier, Pair.of(level, compound), SerializableModifier.Operation.valueOf(operator));
+        return new SerializableModifier(modifier, level, compound, SerializableModifier.Operation.valueOf(operator));
     }
 
     public static void writeSerializableModifier(PacketBuffer buffer, SerializableModifier serializableModifier) {
         buffer.writeString(serializableModifier.getModifier().getRegistryName().toString(), 0);
-        buffer.writeInt(serializableModifier.getInfo().getKey());
-        buffer.writeCompoundTag(serializableModifier.getInfo().getValue());
+        buffer.writeInt(serializableModifier.getLevel());
+        buffer.writeCompoundTag(serializableModifier.getModifierData());
         buffer.writeString(serializableModifier.getOperation().getName(), 1);
     }
 
     public static JsonObject writeSerializableModifier(SerializableModifier serializableModifier) {
         JsonObject object = new JsonObject();
         object.addProperty("modifier", serializableModifier.getModifier().getRegistryName().toString());
-        object.addProperty("level", serializableModifier.getInfo().getKey());
-        object.addProperty("compound", serializableModifier.getInfo().getValue().toString());
+        object.addProperty("level", serializableModifier.getLevel());
+        object.addProperty("compound", serializableModifier.getModifierData().toString());
         object.addProperty("operation", serializableModifier.getOperation().getName());
         return object;
     }
@@ -52,7 +52,7 @@ public class EssenceSerializableObjectHandler {
             e.printStackTrace();
         }
         SerializableModifier.Operation operation = SerializableModifier.Operation.valueOf(object.get("operation").getAsString());
-        return new SerializableModifier(modifier, Pair.of(level, compound), operation);
+        return new SerializableModifier(modifier, level, compound, operation);
     }
 
     // SerializableModifier[]
@@ -63,7 +63,7 @@ public class EssenceSerializableObjectHandler {
             final int level = buffer.readInt();
             final CompoundNBT compound = buffer.readCompoundTag();
             final String operator = buffer.readString(1);
-            serializableModifiers[i] = new SerializableModifier(modifier, Pair.of(level, compound), SerializableModifier.Operation.valueOf(operator));
+            serializableModifiers[i] = new SerializableModifier(modifier, level, compound, SerializableModifier.Operation.valueOf(operator));
         }
         return serializableModifiers;
     }
@@ -72,8 +72,8 @@ public class EssenceSerializableObjectHandler {
         buffer.writeInt(serializableModifiers.length);
         for (SerializableModifier serializableModifier : serializableModifiers) {
             buffer.writeString(serializableModifier.getModifier().getRegistryName().toString(), 0);
-            buffer.writeInt(serializableModifier.getInfo().getKey());
-            buffer.writeCompoundTag(serializableModifier.getInfo().getValue());
+            buffer.writeInt(serializableModifier.getLevel());
+            buffer.writeCompoundTag(serializableModifier.getModifierData());
             buffer.writeString(serializableModifier.getOperation().getName(), 1);
         }
     }
@@ -83,8 +83,8 @@ public class EssenceSerializableObjectHandler {
         for (SerializableModifier serializableModifier : serializableModifiers) {
             JsonObject object = new JsonObject();
             object.addProperty("modifier", serializableModifier.getModifier().getRegistryName().toString());
-            object.addProperty("level", serializableModifier.getInfo().getKey());
-            object.addProperty("compound", serializableModifier.getInfo().getValue().toString());
+            object.addProperty("level", serializableModifier.getLevel());
+            object.addProperty("compound", serializableModifier.getModifierData().toString());
             object.addProperty("operation", serializableModifier.getOperation().getName());
             array.add(object);
         }
@@ -105,7 +105,7 @@ public class EssenceSerializableObjectHandler {
                 e.printStackTrace();
             }
             SerializableModifier.Operation operation = SerializableModifier.Operation.valueOf(object.get("operation").getAsString());
-            serializableModifiers[i] = new SerializableModifier(modifier, Pair.of(level, compound), operation);
+            serializableModifiers[i] = new SerializableModifier(modifier, level, compound, operation);
         }
         return serializableModifiers;
     }
