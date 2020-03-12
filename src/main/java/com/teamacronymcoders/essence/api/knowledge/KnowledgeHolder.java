@@ -18,34 +18,18 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     }
 
     @Override
-    public void addKnowledge(Knowledge knowledge) {
-        if (!this.knowledges.contains(knowledge)) {
-            this.knowledges.add(knowledge);
-        }
-    }
-
-    @Override
-    public void addKnowledges(Knowledge... knowledges) {
-        for (Knowledge knowledge : knowledges) {
-            if (!this.knowledges.contains(knowledge)) {
-                this.knowledges.add(knowledge);
+    public void addKnowledge(Knowledge... knowledge) {
+        for (Knowledge instance : knowledge) {
+            if (!this.knowledges.contains(instance)) {
+                this.knowledges.add(instance);
             }
         }
     }
 
     @Override
-    public void removeKnowledge(Knowledge knowledge) {
-        if (this.knowledges.contains(knowledge)) {
-            this.knowledges.remove(knowledge);
-        }
-    }
-
-    @Override
-    public void removeKnowledges(Knowledge... knowledges) {
-        for (Knowledge knowledge : knowledges) {
-            if (this.knowledges.contains(knowledge)) {
-                this.knowledges.remove(knowledge);
-            }
+    public void removeKnowledge(Knowledge... knowledge) {
+        for (Knowledge instance : knowledge) {
+            this.knowledges.remove(instance);
         }
     }
 
