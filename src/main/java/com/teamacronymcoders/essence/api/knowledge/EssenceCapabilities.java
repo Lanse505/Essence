@@ -4,6 +4,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 public class EssenceCapabilities {
-    @CapabilityInject(KnowledgeHolder.class)
-    public static Capability<KnowledgeHolder> KNOWLEDGE;
+    @CapabilityInject(IKnowledgeHolder.class)
+    public static Capability<IKnowledgeHolder> KNOWLEDGE;
 }

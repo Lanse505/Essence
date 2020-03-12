@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class KnowledgeHolder implements INBTSerializable<ListNBT> {
+public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListNBT> {
 
     private List<Knowledge> knowledges;
 
@@ -17,12 +17,14 @@ public class KnowledgeHolder implements INBTSerializable<ListNBT> {
         this.knowledges = new ArrayList<>();
     }
 
+    @Override
     public void addKnowledge(Knowledge knowledge) {
         if (!this.knowledges.contains(knowledge)) {
             this.knowledges.add(knowledge);
         }
     }
 
+    @Override
     public void addKnowledges(Knowledge... knowledges) {
         for (Knowledge knowledge : knowledges) {
             if (!this.knowledges.contains(knowledge)) {
@@ -31,12 +33,14 @@ public class KnowledgeHolder implements INBTSerializable<ListNBT> {
         }
     }
 
+    @Override
     public void removeKnowledge(Knowledge knowledge) {
         if (this.knowledges.contains(knowledge)) {
             this.knowledges.remove(knowledge);
         }
     }
 
+    @Override
     public void removeKnowledges(Knowledge... knowledges) {
         for (Knowledge knowledge : knowledges) {
             if (this.knowledges.contains(knowledge)) {
@@ -45,6 +49,7 @@ public class KnowledgeHolder implements INBTSerializable<ListNBT> {
         }
     }
 
+    @Override
     public void clearKnowledges() {
         this.knowledges.clear();
     }

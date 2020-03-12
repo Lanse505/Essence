@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nullable;
 
-public class NBTCapabilityStorage<T extends INBT, U extends INBTSerializable<T>> implements Capability.IStorage<U>  {
+public class NBTCapabilityStorage<T extends INBT, U extends INBTSerializable<T>> implements Capability.IStorage<U> {
     private final Class<T> nbtClass;
 
     private NBTCapabilityStorage(Class<T> nbtClass) {

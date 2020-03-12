@@ -8,6 +8,9 @@ import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
+import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
+import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
+import com.teamacronymcoders.essence.api.knowledge.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
@@ -37,10 +40,12 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
@@ -138,6 +143,7 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
         EssenceDispenseBehaviours.init();
+        CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
