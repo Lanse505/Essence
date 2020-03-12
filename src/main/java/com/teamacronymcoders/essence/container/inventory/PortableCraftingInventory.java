@@ -11,6 +11,9 @@ import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PortableCraftingInventory extends CraftingInventory {
 
     private final InventoryComponent<?> component;
@@ -24,9 +27,6 @@ public class PortableCraftingInventory extends CraftingInventory {
         this.component = component;
         this.inventory = new RecipeWrapper(component);
         this.stacks = NonNullList.create();
-        for (int i = 0; i < component.getSlots(); i++) {
-            stacks.add(component.getStackInSlot(i));
-        }
     }
 
     @Override
@@ -45,19 +45,28 @@ public class PortableCraftingInventory extends CraftingInventory {
         return true;
     }
 
+    public List<ItemStack> getStacks() {
+        if (stacks.isEmpty()) {
+            for (int i = 0; i < component.getSlots(); i++) {
+                stacks.add(component.getStackInSlot(i));
+            }
+        }
+        return stacks;
+    }
+
     @Override
     public ItemStack getStackInSlot(int index) {
-        return index >= this.inventory.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(index);
+        return index >= this.inventory.getSizeInventory() ? ItemStack.EMPTY : getStacks().get(index);
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.stacks, index);
+        return ItemStackHelper.getAndRemove(getStacks(), index);
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        ItemStack stack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+        ItemStack stack = ItemStackHelper.getAndSplit(getStacks(), index, count);
         if (!stack.isEmpty()) {
             this.eventHandler.onCraftMatrixChanged(this);
         }
@@ -66,7 +75,7 @@ public class PortableCraftingInventory extends CraftingInventory {
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        this.stacks.set(index, stack);
+        getStacks().set(index, stack);
         this.eventHandler.onCraftMatrixChanged(this);
     }
 
@@ -77,7 +86,7 @@ public class PortableCraftingInventory extends CraftingInventory {
 
     @Override
     public void clear() {
-        this.stacks.clear();
+        getStacks().clear();
     }
 
     @Override
@@ -92,7 +101,7 @@ public class PortableCraftingInventory extends CraftingInventory {
 
     @Override
     public void fillStackedContents(RecipeItemHelper helper) {
-        for (ItemStack stack : this.stacks) {
+        for (ItemStack stack : getStacks()) {
             helper.accountPlainStack(stack);
         }
     }

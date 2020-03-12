@@ -9,6 +9,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PortableCraftResultInventory extends CraftResultInventory {
     private final InventoryComponent<?> component;
@@ -37,22 +39,30 @@ public class PortableCraftResultInventory extends CraftResultInventory {
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return this.result.get(index);
+        return this.component.getStackInSlot(index);
+    }
+
+    public List<ItemStack> getStacks() {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int i = 0; i < component.getSlots(); i++) {
+            stacks.add(component.getStackInSlot(i));
+        }
+        return stacks;
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndRemove(this.result, index);
+        return ItemStackHelper.getAndRemove(this.getStacks(), index);
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.result, index);
+        return ItemStackHelper.getAndRemove(this.getStacks(), index);
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        this.result.set(index, stack);
+        this.component.setStackInSlot(index, stack);
     }
 
     @Override
