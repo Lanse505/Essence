@@ -6,9 +6,9 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
@@ -64,7 +64,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
+        return EssenceModifierHelpers.hasEnchantedModifier(stack);
     }
 
     @Override

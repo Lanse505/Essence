@@ -4,16 +4,12 @@ package com.teamacronymcoders.essence.items.tools.misc;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
-import net.minecraft.dispenser.Position;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,7 +35,7 @@ public class EssenceDispenseBehaviours {
             @SuppressWarnings("deprecation")
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                Pair<Integer, CompoundNBT> info = EssenceModifierHelpers.getModifierInfo(stack, EssenceRegistration.EXPANDER_MODIFIER.get());
+                Pair<Integer, CompoundNBT> info = EssenceModifierHelpers.getModifierInfo(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos sourcePos = source.getBlockPos();

@@ -2,10 +2,12 @@ package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class CoreModifier extends Modifier {
      * @param base  The base value.
      * @return The amount to modify the durability by.
      */
-    public int getModifiedDurability(ItemStack stack, int level, int base) {
+    public int getModifiedDurability(ItemStack stack, int level, int base, CompoundNBT modifierData) {
         return 0;
     }
 
@@ -60,29 +62,19 @@ public class CoreModifier extends Modifier {
      * @param base  The base value.
      * @return The amount to modify the efficiency by.
      */
-    public float getModifiedEfficiency(ItemStack stack, int level, float base) {
+    public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
         return 0;
     }
 
-    /**
-     * @param stack The stack being modified.
-     * @param level The current level of the Modifier.
-     * @param base  The base value.
-     * @return The amount to modify the durability by.
-     */
-    public int getModifiedHarvestLevel(ItemStack stack, int level, int base) {
+
+    public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance instance, int base) {
         return 0;
     }
 
-    /**
-     * @param stack   Essence-Tool ItemStack that provides the AttributeModifiers
-     * @param wielder Wielder of the Essence-Tool
-     * @param level   Modifier-Level
-     * @return Returns a Multimap with the AttributeModifiers that gets added to the tool.
-     */
+
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, int level) {
-        return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(level, stack) - 1);
+    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, ModifierInstance instance) {
+        return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(instance.getLevel(), stack) - 1);
     }
 
 }

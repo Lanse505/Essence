@@ -2,14 +2,12 @@ package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -27,13 +25,8 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
     private static final Multimap<String, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
     private ResourceLocation resourceLocation;
 
-    /**
-     * @param stack   Essence-Tool ItemStack that provides the AttributeModifiers.
-     * @param wielder Wielder of the Essence-Tool.
-     * @param level   Modifier-Level.
-     * @return Default: Returns the empty attribute map.
-     */
-    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, int level) {
+
+    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, ModifierInstance instance) {
         return EMPTY_ATTRIBUTE_MAP;
     }
 

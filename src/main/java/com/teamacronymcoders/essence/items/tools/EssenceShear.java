@@ -1,15 +1,13 @@
 package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
-import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
@@ -34,13 +32,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.ToolType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,22 +85,13 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.getModifiers(stack).containsKey(EssenceRegistration.ENCHANTED_MODIFIER.get());
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
-            ItemStack stack = new ItemStack(this);
-            EssenceModifierHelpers.addModifier(stack, EssenceRegistration.RAINBOW_MODIFIER.get(), Pair.of(1, null));
-            items.add(stack);
-        }
+        return EssenceModifierHelpers.hasEnchantedModifier(stack);
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).entrySet().stream().filter(modifierEntry -> modifierEntry.getKey() instanceof CoreModifier)
-            .map(modifierEntry -> Pair.of(((CoreModifier) modifierEntry.getKey()), modifierEntry.getValue()))
+        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).stream().filter(instance -> instance.getModifier() instanceof CoreModifier)
+            .map(instance -> )
             .map(modifierPair -> modifierPair.getLeft().getModifiedDurability(stack, modifierPair.getRight().getKey(), ESSENCE.getMaxUses())).reduce(0, Integer::sum);
     }
 
