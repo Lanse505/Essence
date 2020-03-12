@@ -4,8 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -48,7 +49,7 @@ public class SerializableModifierPredicateObject {
     public static SerializableModifierPredicateObject deserializer(@Nullable JsonElement element) {
         if (element != null && !element.isJsonNull()) {
             JsonObject object = element.getAsJsonObject();
-            Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
+            Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
             return new SerializableModifierPredicateObject(modifier, MinMaxBounds.IntBound.fromJson(object.get("level")));
         }
         return ANY;

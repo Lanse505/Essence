@@ -13,6 +13,7 @@ import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
+import com.teamacronymcoders.essence.modifier.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
@@ -23,11 +24,13 @@ import com.teamacronymcoders.essence.serializable.recipe.InfusionTableSerializab
 import com.teamacronymcoders.essence.serializable.recipe.SerializableModifier;
 import com.teamacronymcoders.essence.utils.EssenceModules;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -84,7 +87,9 @@ public class Essence extends ModuleController {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::setupCuriosIMC);
-        EssenceRegistration.register(eventBus);
+        EssenceFeatureRegistration.register(eventBus);
+        EssenceKnowledgeRegistration.register(eventBus);
+        EssenceModifierRegistration.register(eventBus);
         setupEventManagers();
         if (EssenceGeneralConfig.enableDebugLogging) {
             LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
@@ -92,7 +97,6 @@ public class Essence extends ModuleController {
                 LOGGER.info(UUID.randomUUID());
             }
         }
-
     }
 
     @Override
@@ -169,7 +173,7 @@ public class Essence extends ModuleController {
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;
-                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).containsKey(EssenceRegistration.RAINBOW_MODIFIER.get());
+                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).stream().anyMatch(instance -> instance.getModifier() instanceof RainbowModifier);
                 if (isShear && hasRainbow) {
                     EssenceShear shear = (EssenceShear) color.getStack().getItem();
                     int rainbowVal = shear.getRainbowVal();

@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.serializable.recipe;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.utils.EssenceRegistration;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -22,55 +21,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
     static {
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "attack_damage_test"),
-            new Ingredient.IItemList[]{
-                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ)),
-            },
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.STRENGTHENED_SHARPNESS_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
-            300
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "attack_damage_test_2"),
-            new Ingredient.IItemList[]{
-                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_BLOCK)),
-                new Ingredient.SingleItemList(new ItemStack(Items.QUARTZ_PILLAR)),
-                new Ingredient.SingleItemList(new ItemStack(Items.CHISELED_QUARTZ_BLOCK)),
-                new Ingredient.SingleItemList(new ItemStack(Items.SMOOTH_QUARTZ))
-            },
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.STRENGTHENED_SHARPNESS_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.INCREMENT)),
-            600
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "fortune_test"),
-            new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.GEMS_LAPIS)},
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
-            300
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "fortune_test_2"),
-            new Ingredient.IItemList[]{new Ingredient.TagList(Tags.Items.STORAGE_BLOCKS_LAPIS)},
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.LUCK_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.INCREMENT)),
-            300
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "expander_test"),
-            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.PISTON))},
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
-            300
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "expander_test_2"),
-            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.EXPANDER_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.INCREMENT)),
-            600
-        ));
-        RECIPES.add(new InfusionTableSerializableRecipe(
-            new ResourceLocation(Essence.MODID, "silk_touch_test"),
-            new Ingredient.IItemList[]{new Ingredient.SingleItemList(new ItemStack(Items.STICKY_PISTON))},
-            SerializableModifier.getNewArray(new SerializableModifier(EssenceRegistration.SILK_TOUCH_MODIFIER.get(), Pair.of(1, null), SerializableModifier.Operation.ADD)),
-            600
-        ));
+
     }
 
     public Ingredient.IItemList[] inputList;

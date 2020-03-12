@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.serializable.recipe.SerializableModifier;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.network.PacketBuffer;
@@ -16,7 +18,7 @@ public class EssenceSerializableObjectHandler {
 
     // SerializableModifier
     public static SerializableModifier readSerializableModifier(PacketBuffer buffer) {
-        final Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(buffer.readString(0)));
+        final Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(buffer.readString(0)));
         final int level = buffer.readInt();
         final CompoundNBT compound = buffer.readCompoundTag();
         final String operator = buffer.readString(1);
@@ -41,7 +43,7 @@ public class EssenceSerializableObjectHandler {
 
     public static SerializableModifier readSerializableModifier(JsonElement element) {
         JsonObject object = element.getAsJsonObject();
-        Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
+        Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
         int level = object.get("level").getAsInt();
         CompoundNBT compound = null;
         try {
@@ -57,7 +59,7 @@ public class EssenceSerializableObjectHandler {
     public static SerializableModifier[] readSerializableModifierArray(PacketBuffer buffer) {
         SerializableModifier[] serializableModifiers = new SerializableModifier[buffer.readInt()];
         for (int i = 0; i < serializableModifiers.length; i++) {
-            final Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(buffer.readString(0)));
+            final Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(buffer.readString(0)));
             final int level = buffer.readInt();
             final CompoundNBT compound = buffer.readCompoundTag();
             final String operator = buffer.readString(1);
@@ -94,7 +96,7 @@ public class EssenceSerializableObjectHandler {
         SerializableModifier[] serializableModifiers = new SerializableModifier[array.size()];
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            Modifier modifier = EssenceRegistration.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
+            Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
             int level = object.get("level").getAsInt();
             CompoundNBT compound = null;
             try {
