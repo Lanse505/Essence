@@ -9,4 +9,6 @@ public interface IKnowledgeHolder extends INBTSerializable<ListNBT> {
     void removeKnowledge(Knowledge... knowledge);
 
     void clearKnowledge();
+
+    Knowledge[] getKnowledge();
 }

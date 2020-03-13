@@ -81,6 +81,7 @@ public class EssenceBrickBlock extends BasicBlock {
         }).orElse(ActionResultType.PASS);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return color.getMapColor();

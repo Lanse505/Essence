@@ -7,6 +7,8 @@ import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.knowledge.*;
+import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
+import com.teamacronymcoders.essence.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
@@ -39,6 +41,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
@@ -48,6 +51,8 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -149,11 +154,12 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
         ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
     }
 
     private void setupEventManagers() {
+        // Registration Handlers
         EventManager.mod(RegistryEvent.Register.class)
             .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
             .process(register -> {
@@ -175,13 +181,26 @@ public class Essence extends ModuleController {
                     IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
                 );
             }).subscribe();
-        EventManager.mod(AttachCapabilitiesEvent.class)
+
+        // Capability Handlers
+        EventManager.forge(AttachCapabilitiesEvent.class)
             .filter(attach -> attach.getObject() instanceof Entity)
             .process(attach -> {
                 if (attach.getObject() instanceof PlayerEntity) {
                     attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
                 }
             }).subscribe();
+        EventManager.forge(PlayerEvent.Clone.class)
+            .filter(PlayerEvent.Clone::isWasDeath)
+            .process(clone -> {
+                clone.getOriginal().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(oldHolder -> {
+                    clone.getPlayer().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(newHolder -> {
+                        newHolder.addKnowledge(oldHolder.getKnowledge());
+                    });
+                });
+            }).subscribe();
+
+        // Raindbow Tooltip Handler
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;

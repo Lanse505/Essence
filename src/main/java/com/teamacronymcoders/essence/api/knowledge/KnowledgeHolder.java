@@ -32,10 +32,14 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     }
 
     @Override
+    public Knowledge[] getKnowledge() {
+        return (Knowledge[]) this.knowledge.toArray();
+    }
+
+    @Override
     public void clearKnowledge() {
         this.knowledge.clear();
     }
-
 
     @Override
     public ListNBT serializeNBT() {
