@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.utils.helpers;
 import com.google.common.collect.Lists;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.modifier.cosmetic.EnchantedModifier;
@@ -13,12 +12,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.List;
 
 public class EssenceModifierHelpers {
     public static final String TAG_MODIFIERS = "Modifiers";

@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.serializable.providers;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.items.tools.EssenceAxe;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import net.minecraft.data.BlockTagsProvider;

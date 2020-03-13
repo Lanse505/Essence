@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.serializable.criterion.knowledge;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.util.ResourceLocation;
 

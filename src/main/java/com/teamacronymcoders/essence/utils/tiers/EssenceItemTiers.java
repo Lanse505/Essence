@@ -1,13 +1,9 @@
 package com.teamacronymcoders.essence.utils.tiers;
 
-import com.teamacronymcoders.essence.blocks.EssenceBlock;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
-import net.minecraft.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 

@@ -11,7 +11,6 @@ import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PortableCraftingInventory extends CraftingInventory {

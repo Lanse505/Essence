@@ -6,17 +6,13 @@ import com.google.gson.JsonObject;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
-import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 
 public class SerializableModifierPredicateObject {
     public static final SerializableModifierPredicateObject ANY = new SerializableModifierPredicateObject();

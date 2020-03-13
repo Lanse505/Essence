@@ -2,11 +2,9 @@ package com.teamacronymcoders.essence.items.essence;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.tiers.EssenceItemTiers;
-import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;

@@ -5,8 +5,6 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListNBT> {

@@ -7,11 +7,8 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.serializable.criterion.EssenceCriterionTrigger;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
-import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.function.Function;
 
 public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowledgeListerners, UnlockKnowledgeCriterionInstance> {
 

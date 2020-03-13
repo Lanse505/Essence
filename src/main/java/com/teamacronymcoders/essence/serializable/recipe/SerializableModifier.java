@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.serializable.recipe;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.nbt.CompoundNBT;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class SerializableModifier {
     public Modifier modifier;

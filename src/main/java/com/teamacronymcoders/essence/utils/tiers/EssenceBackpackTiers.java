@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.utils.tiers;
 
-import net.minecraft.item.IItemTier;
 import net.minecraft.item.Rarity;
-import net.minecraft.item.crafting.Ingredient;
 
 public enum EssenceBackpackTiers {
     ESSENCE("tier.essence.basic", Rarity.COMMON, 9, 3, 3),

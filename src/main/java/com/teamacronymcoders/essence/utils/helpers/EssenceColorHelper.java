@@ -1,20 +1,16 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.blocks.EssenceBrickBlock;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.Tags;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EssenceColorHelper {
     private static List<Color> colors = new ArrayList<>();

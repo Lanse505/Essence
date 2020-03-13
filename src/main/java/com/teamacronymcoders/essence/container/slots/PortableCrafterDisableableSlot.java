@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.container.slots;
 
-import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
 import com.hrznstudio.titanium.container.impl.DisableableSlot;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import net.minecraft.inventory.IInventory;

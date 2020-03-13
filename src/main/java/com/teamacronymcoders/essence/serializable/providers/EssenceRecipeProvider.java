@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.serializable.providers;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumRecipeProvider;
-import com.hrznstudio.titanium.recipe.generator.TitaniumSerializableProvider;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;

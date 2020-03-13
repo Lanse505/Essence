@@ -1,7 +1,5 @@
 package com.teamacronymcoders.essence;
 
-import com.hrznstudio.titanium.client.screen.container.BasicTileContainerScreen;
-import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
@@ -17,12 +15,12 @@ import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.modifier.interaction.RainbowModifier;
+import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
+import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceToolRecipeProvider;
-import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
-import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.recipe.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.SerializableModifier;
 import com.teamacronymcoders.essence.utils.EssenceModules;
