@@ -39,4 +39,4 @@ public class EssenceCriterionListener<T extends ICriterionInstance> {
         }
         toGrant.forEach(listener -> listener.grantCriterion(this.advancements));
     }
- }
+}

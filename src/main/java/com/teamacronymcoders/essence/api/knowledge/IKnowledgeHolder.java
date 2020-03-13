@@ -5,6 +5,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IKnowledgeHolder extends INBTSerializable<ListNBT> {
     void addKnowledge(Knowledge... knowledge);
+
     void removeKnowledge(Knowledge... knowledge);
+
     void clearKnowledge();
 }

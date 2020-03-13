@@ -31,7 +31,7 @@ public class StrengthenedModifier extends EnchantmentCoreModifier {
 
     @Override
     public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack),  instance, 2);
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
     }
 
     @Override

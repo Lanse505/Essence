@@ -37,7 +37,7 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new BackpackCapability(new InventoryComponent<EssenceBackpackItem>("backpackInventory", 0, 0, tier.getBackpackSlots())
-                .setRange(tier.getBackpackX(), tier.getBackpackY()).setComponentHarness(this).setInputFilter((input, integer) -> !(input.getItem() instanceof EssenceBackpackItem)));
+            .setRange(tier.getBackpackX(), tier.getBackpackY()).setComponentHarness(this).setInputFilter((input, integer) -> !(input.getItem() instanceof EssenceBackpackItem)));
     }
 
     @Override
@@ -55,17 +55,18 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
     }
 
 
-
     @Override
     public World getComponentWorld() {
         return null;
     }
 
     @Override
-    public void markComponentForUpdate() {}
+    public void markComponentForUpdate() {
+    }
 
     @Override
-    public void markComponentDirty() {}
+    public void markComponentDirty() {
+    }
 
     public InventoryComponent<EssenceBackpackItem> getComponent(ItemStack stack) {
         InventoryComponent<EssenceBackpackItem> essenceBackpackItemInventoryComponent = (InventoryComponent<EssenceBackpackItem>) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);

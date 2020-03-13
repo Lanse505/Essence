@@ -48,10 +48,10 @@ public class EssenceDispenseBehaviours {
                     EssenceShear shear = (EssenceShear) stack.getItem();
                     world.getEntitiesInAABBexcluding(null, new AxisAlignedBB(vec1, vec2),
                         e -> e instanceof LivingEntity && e instanceof IShearable && !e.isSpectator())
-                            .forEach(e -> {
-                                shear.itemInteractionForEntity(stack, null, (LivingEntity) e, Hand.MAIN_HAND);
-                                Essence.LOGGER.info("Attempted to Shear at " + e.getPosition().toString());
-                            });
+                        .forEach(e -> {
+                            shear.itemInteractionForEntity(stack, null, (LivingEntity) e, Hand.MAIN_HAND);
+                            Essence.LOGGER.info("Attempted to Shear at " + e.getPosition().toString());
+                        });
                 }
                 return stack;
             }

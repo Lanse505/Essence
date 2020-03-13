@@ -98,17 +98,18 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
 
     public void addGridSlots() {
         InventoryComponent<?> grid = this.portableCrafter.getGrid();
-        for (int i = 0; i < grid.getSlots(); i++)
+        for (int i = 0; i < grid.getSlots(); i++) {
             addSlot(new SlotItemHandler(
                 grid, i,
                 grid.getXPos() + grid.getSlotPosition().apply(i).getLeft(),
                 grid.getYPos() + grid.getSlotPosition().apply(i).getRight())
             );
+        }
     }
 
     public void addOutputSlot() {
         InventoryComponent<?> output = this.portableCrafter.getOutput();
-        addSlot(new SlotItemHandler( output, 0,
+        addSlot(new SlotItemHandler(output, 0,
             output.getXPos() + output.getSlotPosition().apply(0).getLeft(),
             output.getYPos() + output.getSlotPosition().apply(0).getRight()));
     }
@@ -124,12 +125,12 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
         return portableCrafter;
     }
 
-    public void setRecipeUsed(IRecipe<?> recipeUsed) {
-        this.recipeUsed = recipeUsed;
-    }
-
     public IRecipe<?> getRecipeUsed() {
         return recipeUsed;
+    }
+
+    public void setRecipeUsed(IRecipe<?> recipeUsed) {
+        this.recipeUsed = recipeUsed;
     }
 
     public boolean canUseRecipe(World worldIn, ServerPlayerEntity player, IRecipe<?> recipe) {

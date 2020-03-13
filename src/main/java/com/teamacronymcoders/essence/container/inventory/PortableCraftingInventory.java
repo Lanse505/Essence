@@ -35,7 +35,7 @@ public class PortableCraftingInventory extends CraftingInventory {
 
     @Override
     public boolean isEmpty() {
-        for (int i = 0; i < this.component.getSlots() ; i++) {
+        for (int i = 0; i < this.component.getSlots(); i++) {
             ItemStack stack = getStackInSlot(i);
             if (!stack.isEmpty()) {
                 return false;

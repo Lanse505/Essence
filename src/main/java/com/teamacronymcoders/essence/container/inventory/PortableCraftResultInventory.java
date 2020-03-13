@@ -75,14 +75,14 @@ public class PortableCraftResultInventory extends CraftResultInventory {
         this.result.clear();
     }
 
-    @Override
-    public void setRecipeUsed(IRecipe<?> recipeUsed) {
-        this.recipeUsed = recipeUsed;
-    }
-
     @Nullable
     @Override
     public IRecipe<?> getRecipeUsed() {
         return recipeUsed;
+    }
+
+    @Override
+    public void setRecipeUsed(IRecipe<?> recipeUsed) {
+        this.recipeUsed = recipeUsed;
     }
 }

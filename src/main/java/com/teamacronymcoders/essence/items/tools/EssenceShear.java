@@ -239,11 +239,11 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         return ActionResultType.PASS;
     }
 
-    public void setRainbowVal(int rainbowVal) {
-        this.rainbowVal = rainbowVal;
-    }
-
     public int getRainbowVal() {
         return rainbowVal;
+    }
+
+    public void setRainbowVal(int rainbowVal) {
+        this.rainbowVal = rainbowVal;
     }
 }

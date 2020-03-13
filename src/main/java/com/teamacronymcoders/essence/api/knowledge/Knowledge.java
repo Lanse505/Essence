@@ -19,7 +19,8 @@ public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSeri
     private ResourceLocation identifier;
     private List<ModifierInstance> modifierInstances;
 
-    public Knowledge() {}
+    public Knowledge() {
+    }
 
     public Knowledge(ResourceLocation identifier, ModifierInstance... modifiers) {
         this.identifier = identifier;

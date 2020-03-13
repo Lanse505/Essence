@@ -11,5 +11,6 @@ public class ArrowCoreModifier extends CoreModifier {
         super(maxLevel);
     }
 
-    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {}
+    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
+    }
 }

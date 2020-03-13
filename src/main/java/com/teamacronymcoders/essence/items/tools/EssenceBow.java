@@ -51,7 +51,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
             if (livingEntity == null) {
                 return 0.0F;
             } else {
-                return !(livingEntity.getActiveItemStack().getItem() instanceof BowItem) ? 0.0F : (float)(stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
+                return !(livingEntity.getActiveItemStack().getItem() instanceof BowItem) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
             }
         });
         this.addPropertyOverride(new ResourceLocation("pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1.0F : 0.0F);

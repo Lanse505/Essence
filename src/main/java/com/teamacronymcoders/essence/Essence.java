@@ -6,9 +6,7 @@ import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
-import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
-import com.teamacronymcoders.essence.api.knowledge.NBTCapabilityStorage;
+import com.teamacronymcoders.essence.api.knowledge.*;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
@@ -35,6 +33,8 @@ import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistrat
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -46,6 +46,7 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -174,6 +175,13 @@ public class Essence extends ModuleController {
                     IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
                 );
             }).subscribe();
+        EventManager.mod(AttachCapabilitiesEvent.class)
+            .filter(attach -> attach.getObject() instanceof Entity)
+            .process(attach -> {
+                if (attach.getObject() instanceof PlayerEntity) {
+                    attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
+                }
+            }).subscribe();
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;
@@ -181,7 +189,9 @@ public class Essence extends ModuleController {
                 if (isShear && hasRainbow) {
                     EssenceShear shear = (EssenceShear) color.getStack().getItem();
                     int rainbowVal = shear.getRainbowVal();
-                    if (rainbowVal > 599) rainbowVal = 0;
+                    if (rainbowVal > 599) {
+                        rainbowVal = 0;
+                    }
                     Color colorVal = EssenceColorHelper.getColor(rainbowVal);
                     Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
                     color.setBorderStart(colorVal.getRGB());

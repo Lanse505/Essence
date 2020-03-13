@@ -16,7 +16,8 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
     private int level;
     private CompoundNBT modifierData;
 
-    public ModifierInstance() {}
+    public ModifierInstance() {
+    }
 
     public ModifierInstance(Modifier modifier, int level, CompoundNBT modifierData) {
         this.modifier = modifier;
@@ -59,12 +60,12 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
         return modifier;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public int getLevel() {
         return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public CompoundNBT getModifierData() {

@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 public class EssenceBrickBlock extends BasicBlock {
 
     private static Map<DyeColor, Supplier<EssenceBrickBlock>> dyeToColorMap = new HashMap<>();
-    public final DyeColor color;
 
     static {
         dyeToColorMap.put(DyeColor.WHITE, () -> EssenceObjectHolders.ESSENCE_BRICKS_WHITE);
@@ -57,6 +56,8 @@ public class EssenceBrickBlock extends BasicBlock {
         dyeToColorMap.put(DyeColor.RED, () -> EssenceObjectHolders.ESSENCE_BRICKS_RED);
         dyeToColorMap.put(DyeColor.BLACK, () -> EssenceObjectHolders.ESSENCE_BRICKS_BLACK);
     }
+
+    public final DyeColor color;
 
     public EssenceBrickBlock(DyeColor color) {
         super(Block.Properties.create(Material.ROCK).harvestLevel(1).harvestTool(ToolType.PICKAXE).hardnessAndResistance(1.5F, 1200F));
