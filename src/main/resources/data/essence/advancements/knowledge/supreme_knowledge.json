@@ -1,30 +1,30 @@
 {
-  "parent": "essence:knowledge/root",
-  "display": {
-    "icon": {
-      "item": "minecraft:nether_star"
+    "parent": "essence:knowledge/root",
+    "display": {
+        "icon": {
+            "item": "minecraft:nether_star"
+        },
+        "title": {
+            "translate": "advancements.essence.knowledge.supreme.knowledge.title"
+        },
+        "description": {
+            "translate": "advancements.essence.knowledge.supreme.knowledge.description"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": false
     },
-    "title": {
-      "translate": "advancements.essence.knowledge.supreme.knowledge.title"
-    },
-    "description": {
-      "translate": "advancements.essence.knowledge.supreme.knowledge.description"
-    },
-    "frame": "task",
-    "show_toast": false,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "crafting_table": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "essence:essence_crystal"
-          }
-        ]
-      }
+    "criteria": {
+        "crafting_table": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "essence:essence_crystal"
+                    }
+                ]
+            }
+        }
     }
-  }
 }

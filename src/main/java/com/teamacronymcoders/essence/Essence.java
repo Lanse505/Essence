@@ -195,7 +195,7 @@ public class Essence extends ModuleController {
             .process(clone -> {
                 clone.getOriginal().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(oldHolder -> {
                     clone.getPlayer().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(newHolder -> {
-                        newHolder.addKnowledge(oldHolder.getKnowledge());
+                        newHolder.addKnowledge(clone.getPlayer(), oldHolder.getKnowledge());
                     });
                 });
             }).subscribe();

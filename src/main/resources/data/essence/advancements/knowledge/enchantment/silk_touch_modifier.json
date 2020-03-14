@@ -1,30 +1,26 @@
 {
-  "parent": "essence:knowledge/enchantment/enchantment_modifier",
-  "display": {
-    "icon": {
-      "item": ""
+    "parent": "essence:knowledge/enchantment/enchantment_modifier",
+    "display": {
+        "icon": {
+            "item": ""
+        },
+        "title": {
+            "translate": "advancements.essence.knowledge.silk_touch.title"
+        },
+        "description": {
+            "translate": "advancements.essence.knowledge.silk_touch.description"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": false
     },
-    "title": {
-      "translate": "advancements.essence.knowledge.silk_touch.title"
-    },
-    "description": {
-      "translate": "advancements.essence.knowledge.silk_touch.description"
-    },
-    "frame": "task",
-    "show_toast": false,
-    "announce_to_chat": false,
-    "hidden": false
-  },
-  "criteria": {
-    "crafting_table": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "essence:essence_crystal"
-          }
-        ]
-      }
+    "criteria": {
+        "silk_touch_knowledge": {
+            "trigger": "essence:knowledge",
+            "conditions": {
+                "knowledge_id": "essence:silk_touch"
+            }
+        }
     }
-  }
 }

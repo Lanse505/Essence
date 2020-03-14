@@ -1,7 +1,12 @@
 package com.teamacronymcoders.essence.api.knowledge;
 
+import com.teamacronymcoders.essence.api.knowledge.event.KnowledgeEvent;
+import com.teamacronymcoders.essence.serializable.criterion.EssenceAdvancements;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
@@ -16,17 +21,29 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     }
 
     @Override
-    public void addKnowledge(Knowledge... knowledge) {
+    public void addKnowledge(PlayerEntity player, Knowledge... knowledge) {
+        ServerPlayerEntity serverPlayer = null;
+        if (player instanceof ServerPlayerEntity) {
+            serverPlayer = (ServerPlayerEntity) player;
+        }
         for (Knowledge instance : knowledge) {
-            if (!this.knowledge.contains(instance)) {
+            boolean notCancelled = false;
+            if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !this.knowledge.contains(instance)) {
                 this.knowledge.add(instance);
+                notCancelled = true;
+            }
+            if (notCancelled) {
+                if (serverPlayer != null) {
+                    MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPost(serverPlayer, instance));
+                }
             }
         }
     }
 
     @Override
-    public void removeKnowledge(Knowledge... knowledge) {
+    public void removeKnowledge(PlayerEntity player, Knowledge... knowledge) {
         for (Knowledge instance : knowledge) {
+            MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
             this.knowledge.remove(instance);
         }
     }
@@ -34,6 +51,10 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     @Override
     public Knowledge[] getKnowledge() {
         return (Knowledge[]) this.knowledge.toArray();
+    }
+
+    public List<Knowledge> getKnowledgeAsList() {
+        return this.knowledge;
     }
 
     @Override

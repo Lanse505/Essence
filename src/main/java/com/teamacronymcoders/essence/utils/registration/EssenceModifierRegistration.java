@@ -41,6 +41,7 @@ public class EssenceModifierRegistration {
     public static RegistryObject<InfinityModifier> INFINITY_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("infinity", InfinityModifier::new);
     public static RegistryObject<KnockbackModifier> KNOCKBACK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("knockback", KnockbackModifier::new);
     public static RegistryObject<LuckModifier> LUCK_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("luck", LuckModifier::new);
+    public static RegistryObject<MendingModifier> MENDING_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("mending", MendingModifier::new);
     public static RegistryObject<SilkTouchModifier> SILK_TOUCH_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("silk_touch", SilkTouchModifier::new);
     public static RegistryObject<UnbreakingModifier> UNBREAKING_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("unbreaking", UnbreakingModifier::new);
     // Strengthened Modifiers

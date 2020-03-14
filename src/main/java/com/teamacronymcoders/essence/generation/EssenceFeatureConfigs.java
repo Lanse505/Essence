@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.generation;
 
 import com.google.common.collect.ImmutableList;
-import com.teamacronymcoders.essence.api.misc.IBlockProvider;
-import com.teamacronymcoders.essence.api.misc.IOreGenConfig;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -25,16 +23,6 @@ public class EssenceFeatureConfigs {
 
     public static void setupWorldGeneration() {
         //ESSENCE_ORE_FEATURE = getOreFeature(EssenceObjectHolders.ESSENCE_ORE, EssenceOreGenConfig.essenceOre, Feature.ORE);
-    }
-
-    @Nullable
-    private static ConfiguredFeature<?, ?> getOreFeature(IBlockProvider blockProvider, IOreGenConfig oreConfig, Feature<OreFeatureConfig> feature) {
-        if (oreConfig.getShouldGenerate()) {
-            return feature.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
-                blockProvider.getBlock().getDefaultState(), oreConfig.getMaxVeinSize())).withPlacement(Placement.COUNT_RANGE.configure(
-                new CountRangeConfig(oreConfig.getChanceToGenerate(), oreConfig.getBottomOffset(), oreConfig.getTopOffset(), oreConfig.getMaxHeight())));
-        }
-        return null;
     }
 }
 
