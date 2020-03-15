@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.base;
+package com.teamacronymcoders.essence.blocks.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.teamacronymcoders.essence.Essence;

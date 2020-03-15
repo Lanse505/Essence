@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.utils.registration;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.generation.FancyEssenceTreeFeature;
-import com.teamacronymcoders.essence.generation.NormalEssenceTreeFeature;
+import com.teamacronymcoders.essence.generation.tree.essence_tree.FancyEssenceTreeFeature;
+import com.teamacronymcoders.essence.generation.tree.essence_tree.NormalEssenceTreeFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.eventbus.api.IEventBus;

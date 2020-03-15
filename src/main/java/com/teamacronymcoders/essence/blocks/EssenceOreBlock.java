@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.blocks;
 
-import com.teamacronymcoders.essence.base.CustomOreBlock;
+import com.teamacronymcoders.essence.blocks.base.CustomOreBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

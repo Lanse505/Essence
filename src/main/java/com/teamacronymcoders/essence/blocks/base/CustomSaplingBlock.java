@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.base;
+package com.teamacronymcoders.essence.blocks.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

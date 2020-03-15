@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.blocks.wood;
 
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.base.CustomSlabBlock;
+import com.teamacronymcoders.essence.blocks.base.CustomSlabBlock;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
