@@ -1,20 +1,21 @@
 package com.teamacronymcoders.essence.modifier.interaction.cascading;
 
 import com.teamacronymcoders.essence.utils.EssenceTags;
-import com.teamacronymcoders.essence.utils.config.modifier.CascadingConfig;
+import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 
 public enum CascadingType {
-    NONE(0, "none", EssenceTags.Modifier.NONE_TOOL, EssenceTags.Modifier.CASCADING_NONE, 0, 0, TextFormatting.GRAY, TextFormatting.ITALIC),
-    LUMBER(1, "lumber", EssenceTags.Modifier.AXE_TOOL, EssenceTags.Modifier.CASCADING_LUMBER, CascadingConfig.Lumber.blockLimit, CascadingConfig.Lumber.searchLimit, TextFormatting.GREEN, TextFormatting.ITALIC),
-    VEIN(2, "vein", EssenceTags.Modifier.PICKAXE_TOOL, EssenceTags.Modifier.CASCADING_VEIN, CascadingConfig.Vein.blockLimit, CascadingConfig.Vein.searchLimit, TextFormatting.BLUE, TextFormatting.ITALIC),
-    EXCAVATION(3, "excavation", EssenceTags.Modifier.SHOVEL_TOOL, EssenceTags.Modifier.CASCADING_EXCAVATION, CascadingConfig.Excavation.blockLimit, CascadingConfig.Excavation.searchLimit, TextFormatting.GOLD, TextFormatting.ITALIC);
+    NONE(0, "none", EssenceTags.Modifier.NONE_TOOL, EssenceTags.Modifier.CASCADING_NONE, () -> 0, () -> 0, TextFormatting.GRAY, TextFormatting.ITALIC),
+    LUMBER(1, "lumber", EssenceTags.Modifier.AXE_TOOL, EssenceTags.Modifier.CASCADING_LUMBER, () -> EssenceModifierConfig.getInstance().getLumber().getBlockLimit().get(), () -> EssenceModifierConfig.getInstance().getLumber().getSearchLimit().get(), TextFormatting.GREEN, TextFormatting.ITALIC),
+    VEIN(2, "vein", EssenceTags.Modifier.PICKAXE_TOOL, EssenceTags.Modifier.CASCADING_VEIN, () -> EssenceModifierConfig.getInstance().getVein().getBlockLimit().get(), () -> EssenceModifierConfig.getInstance().getVein().getSearchLimit().get(), TextFormatting.BLUE, TextFormatting.ITALIC),
+    EXCAVATION(3, "excavation", EssenceTags.Modifier.SHOVEL_TOOL, EssenceTags.Modifier.CASCADING_EXCAVATION, () -> EssenceModifierConfig.getInstance().getExcavation().getBlockLimit().get(), () -> EssenceModifierConfig.getInstance().getExcavation().getSearchLimit().get(), TextFormatting.GOLD, TextFormatting.ITALIC);
 
     private static final CascadingType[] VALUES = new CascadingType[]{VEIN, LUMBER, EXCAVATION};
     private final int id;
@@ -22,10 +23,10 @@ public enum CascadingType {
     private final TextFormatting[] formatting;
     private Tag<Item> toolTag;
     private Tag<Block> blockTag;
-    private int blockLimit;
-    private int searchLimit;
+    private Supplier<Integer> blockLimit;
+    private Supplier<Integer> searchLimit;
 
-    CascadingType(int id, String name, Tag<Item> toolTag, Tag<Block> blockTag, int blockLimit, int searchLimit, TextFormatting... formatting) {
+    CascadingType(int id, String name, Tag<Item> toolTag, Tag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
         this.id = id;
         this.name = name;
         this.toolTag = toolTag;
@@ -63,11 +64,11 @@ public enum CascadingType {
         return blockTag;
     }
 
-    public int getBlockLimit() {
+    public Supplier<Integer> getBlockLimit() {
         return blockLimit;
     }
 
-    public int getSearchLimit() {
+    public Supplier<Integer> getSearchLimit() {
         return searchLimit;
     }
 

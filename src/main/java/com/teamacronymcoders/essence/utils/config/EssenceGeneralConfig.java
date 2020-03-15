@@ -2,9 +2,37 @@ package com.teamacronymcoders.essence.utils.config;
 
 import com.hrznstudio.titanium.annotation.config.ConfigFile;
 import com.hrznstudio.titanium.annotation.config.ConfigVal;
+import net.minecraftforge.common.ForgeConfigSpec;
 
-@ConfigFile("general")
 public class EssenceGeneralConfig {
-    @ConfigVal
-    public static boolean enableDebugLogging = false;
+
+    private static EssenceGeneralConfig instance;
+    private final ForgeConfigSpec spec;
+
+    private final ForgeConfigSpec.BooleanValue enableDebugLogging;
+
+    public EssenceGeneralConfig(ForgeConfigSpec.Builder builder) {
+        builder.push("General");
+        enableDebugLogging = builder.comment("Should Debug-Logging be Enabled?").define("enableDebugLogging", false);
+        builder.pop();
+        this.spec = builder.build();
+    }
+
+    public static ForgeConfigSpec initialize() {
+        EssenceGeneralConfig config = new EssenceGeneralConfig(new ForgeConfigSpec.Builder());
+        instance = config;
+        return config.getSpec();
+    }
+
+    public static EssenceGeneralConfig getInstance() {
+        return instance;
+    }
+
+    public ForgeConfigSpec getSpec() {
+        return spec;
+    }
+
+    public ForgeConfigSpec.BooleanValue getEnableDebugLogging() {
+        return enableDebugLogging;
+    }
 }

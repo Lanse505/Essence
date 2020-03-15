@@ -42,13 +42,13 @@ public class EssenceBlockPosHelper {
         Set<BlockPos> checked = new ObjectOpenHashSet<>();
         found.add(origin);
         Block startBlock = state.getBlock();
-        int maxCount = type.getBlockLimit() - 1;
+        int maxCount = type.getBlockLimit().get() - 1;
         for (int i = 0; i < found.size(); i++) {
             BlockPos blockPos = found.get(i);
             checked.add(blockPos);
             for (BlockPos pos : BlockPos.getAllInBoxMutable(blockPos.add(-1, -1, -1), blockPos.add(1, 1, 1))) {
                 if (!checked.contains(pos)) {
-                    if (type.getSearchLimit() == -1 || Math.sqrt(origin.distanceSq(pos)) <= type.getSearchLimit()) {
+                    if (type.getSearchLimit().get() == -1 || Math.sqrt(origin.distanceSq(pos)) <= type.getSearchLimit().get()) {
                         if (world.isBlockPresent(pos) && startBlock == world.getBlockState(pos).getBlock()) {
                             found.add(pos.toImmutable());
                             if (found.size() > maxCount) {

@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
+import com.teamacronymcoders.essence.generation.EssenceGeneration;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.modifier.interaction.RainbowModifier;
@@ -27,6 +28,8 @@ import com.teamacronymcoders.essence.utils.EssenceModules;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
+import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
+import com.teamacronymcoders.essence.utils.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
@@ -55,8 +58,10 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -96,16 +101,35 @@ public class Essence extends ModuleController {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::setupCuriosIMC);
-        EssenceFeatureRegistration.register(eventBus);
-        EssenceKnowledgeRegistration.register(eventBus);
-        EssenceModifierRegistration.register(eventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
+        initFeatures(eventBus);
+        initModifiers(eventBus);
+        //initKnowledge(eventBus);
         setupEventManagers();
-        if (EssenceGeneralConfig.enableDebugLogging) {
+        if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
             LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
             for (int i = 0; i < 10; i++) {
                 LOGGER.info(UUID.randomUUID());
             }
         }
+    }
+
+    private void initConfig() {
+
+    }
+
+    private void initFeatures(IEventBus eventBus) {
+        EssenceFeatureRegistration.register(eventBus);
+    }
+
+    private void initModifiers(IEventBus eventBus) {
+        EssenceModifierRegistration.register(eventBus);
+    }
+
+    private void initKnowledge(IEventBus eventBus) {
+        EssenceKnowledgeRegistration.register(eventBus);
     }
 
     @Override
@@ -148,6 +172,7 @@ public class Essence extends ModuleController {
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
         EssenceDispenseBehaviours.init();
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
+        EssenceGeneration.addFeaturesToWorldGen();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {

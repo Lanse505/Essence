@@ -20,7 +20,7 @@ public class EssenceTagProvider {
 
         @Override
         protected void registerTags() {
-            if (EssenceGeneralConfig.enableDebugLogging) {
+            if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
                 Essence.LOGGER.info("Registering Tag<Item> tags");
             }
 
@@ -62,7 +62,7 @@ public class EssenceTagProvider {
 
         @Override
         protected void registerTags() {
-            if (EssenceGeneralConfig.enableDebugLogging) {
+            if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
                 Essence.LOGGER.info("Registering Tag<Block> tags");
             }
 
