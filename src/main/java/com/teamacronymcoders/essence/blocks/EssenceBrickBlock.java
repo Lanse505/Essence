@@ -71,14 +71,25 @@ public class EssenceBrickBlock extends BasicBlock {
             return ActionResultType.PASS;
         }
         ItemStack stack = player.getHeldItem(handIn);
-        List<DyeColor> colors = EssenceColorHelper.tagToDye.keySet().stream().filter(stack.getItem()::isIn).map(EssenceColorHelper.tagToDye::get).filter(Objects::nonNull).collect(Collectors.toList());
-        return colors.stream().skip(Essence.RANDOM.nextInt(colors.size())).findFirst().map(dyeToColorMap::get).map(Supplier::get).map(essenceBrickBlock -> {
-            if (!state.equals(essenceBrickBlock.getDefaultState())) {
-                worldIn.setBlockState(pos, essenceBrickBlock.getDefaultState());
-                worldIn.notifyBlockUpdate(pos, state, essenceBrickBlock.getDefaultState(), Constants.BlockFlags.NOTIFY_NEIGHBORS);
-            }
-            return ActionResultType.SUCCESS;
-        }).orElse(ActionResultType.PASS);
+        List<DyeColor> colors = EssenceColorHelper.tagToDye.keySet().stream()
+            .filter(tagToDye -> stack.getItem().getTags().size() > 0)
+            .filter(stack.getItem()::isIn)
+            .map(EssenceColorHelper.tagToDye::get)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+        return colors != null && colors.size() > 0 ? colors.stream()
+            .skip(Essence.RANDOM.nextInt(colors.size()))
+            .findFirst()
+            .map(dyeToColorMap::get)
+            .map(Supplier::get)
+            .map(essenceBrickBlock -> {
+                if (!state.equals(essenceBrickBlock.getDefaultState())) {
+                    worldIn.setBlockState(pos, essenceBrickBlock.getDefaultState());
+                    worldIn.notifyBlockUpdate(pos, state, essenceBrickBlock.getDefaultState(), Constants.BlockFlags.NOTIFY_NEIGHBORS);
+                }
+                return ActionResultType.SUCCESS;
+            })
+            .orElse(ActionResultType.PASS) : ActionResultType.PASS;
     }
 
     @SuppressWarnings("deprecation")
