@@ -8,6 +8,7 @@ import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.BiomeDictionary;
@@ -28,7 +29,7 @@ public class EssenceGeneration {
                     oreGenConfig.getEssence_ore().getMaxHeight().get()));
         }
         if (oreGenConfig.getEssence_crystal_ore().getShouldGenerate().get()) {
-            addOreGeneration(BiomeDictionary.Type.OVERWORLD, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, EssenceObjectHolders.ESSENCE_ORE.getDefaultState(), oreGenConfig.getEssence_crystal_ore().getMaxVeinSize().get()),
+            addOreGeneration(BiomeDictionary.Type.OVERWORLD, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, EssenceObjectHolders.ESSENCE_CRYSTAL_ORE.getDefaultState(), oreGenConfig.getEssence_crystal_ore().getMaxVeinSize().get()),
                 new CountRangeConfig(
                     oreGenConfig.getEssence_crystal_ore().getPerChunk().get(),
                     oreGenConfig.getEssence_crystal_ore().getBottomOffset().get(),
@@ -36,27 +37,25 @@ public class EssenceGeneration {
                     oreGenConfig.getEssence_crystal_ore().getMaxHeight().get()));
         }
         if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) {
-            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.WORLD_ESSENCE_TREE_CONFIG,
-                new CountRangeConfig(
-                    treeGenConfig.getNormalVariant().getPerChunk().get(),
-                    treeGenConfig.getNormalVariant().getBottomOffset().get(),
-                    treeGenConfig.getNormalVariant().getTopOffset().get(),
-                    treeGenConfig.getNormalVariant().getMaxHeight().get()));
+            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.NORMAL_WORLD_ESSENCE_TREE_CONFIG,
+                new AtSurfaceWithExtraConfig(
+                    0,
+                    treeGenConfig.getNormalVariant().getExtraChance().get(),
+                    treeGenConfig.getNormalVariant().getExtraCount().get()));
         }
        if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
-           addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.WORLD_ESSENCE_TREE_CONFIG,
-               new CountRangeConfig(
-                   treeGenConfig.getFancyVariant().getPerChunk().get(),
-                   treeGenConfig.getFancyVariant().getBottomOffset().get(),
-                   treeGenConfig.getFancyVariant().getTopOffset().get(),
-                   treeGenConfig.getFancyVariant().getMaxHeight().get()));
+           addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG,
+               new AtSurfaceWithExtraConfig(
+                   0,
+                   treeGenConfig.getFancyVariant().getExtraChance().get(),
+                   treeGenConfig.getFancyVariant().getExtraCount().get()));
        }
     }
 
-    private static void addTreeGeneration(BiomeDictionary.Type type, Feature<TreeFeatureConfig> feature, TreeFeatureConfig config, CountRangeConfig treeConfig, BiomeDictionary.Type... filteringTypes) {
+    private static void addTreeGeneration(BiomeDictionary.Type type, Feature<TreeFeatureConfig> feature, TreeFeatureConfig config, AtSurfaceWithExtraConfig treeConfig, BiomeDictionary.Type... filteringTypes) {
         EssenceWorldHelper.getBiomes(type, Arrays.asList(filteringTypes)).forEach(biome -> biome.addFeature(
             GenerationStage.Decoration.VEGETAL_DECORATION,
-            feature.withConfiguration(config).withPlacement(Placement.COUNT_RANGE.configure(treeConfig))
+            feature.withConfiguration(config).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(treeConfig))
         ));
     }
 

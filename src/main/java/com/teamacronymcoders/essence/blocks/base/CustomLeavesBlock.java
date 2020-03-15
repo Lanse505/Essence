@@ -20,10 +20,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.IShearable;
 
 import java.util.Random;
 
-public class CustomLeavesBlock extends BasicBlock {
+public class CustomLeavesBlock extends BasicBlock implements IShearable {
     public static final IntegerProperty DISTANCE = BlockStateProperties.DISTANCE_1_7;
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
@@ -45,14 +46,14 @@ public class CustomLeavesBlock extends BasicBlock {
             }
         }
 
-        return state.with(DISTANCE, Integer.valueOf(i));
+        return state.with(DISTANCE, i);
     }
 
     private static int getDistance(BlockState neighbor) {
         if (BlockTags.LOGS.contains(neighbor.getBlock())) {
             return 0;
         } else {
-            return neighbor.getBlock() instanceof LeavesBlock ? neighbor.get(DISTANCE) : 7;
+            return neighbor.getBlock() instanceof LeavesBlock || neighbor.getBlock() instanceof CustomLeavesBlock ? neighbor.get(DISTANCE) : 7;
         }
     }
 
@@ -137,7 +138,7 @@ public class CustomLeavesBlock extends BasicBlock {
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return updateDistance(this.getDefaultState().with(PERSISTENT, Boolean.valueOf(true)), context.getWorld(), context.getPos());
+        return updateDistance(this.getDefaultState().with(PERSISTENT, Boolean.TRUE), context.getWorld(), context.getPos());
     }
 
     @Override

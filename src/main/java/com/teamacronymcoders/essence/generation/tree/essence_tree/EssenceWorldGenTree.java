@@ -14,6 +14,6 @@ public class EssenceWorldGenTree extends Tree {
     @Nullable
     @Override
     protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-        return random.nextInt(10) >= 8 ? EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.WORLD_ESSENCE_TREE_CONFIG) : EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.WORLD_ESSENCE_TREE_CONFIG);
+        return random.nextInt(10) >= 8 ? EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.NORMAL_WORLD_ESSENCE_TREE_CONFIG) : EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG);
     }
 }
