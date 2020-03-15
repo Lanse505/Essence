@@ -21,8 +21,5 @@ public class EssenceFeatureConfigs {
     private static ConfiguredFeature<?, ?> ESSENCE_ORE_FEATURE;
     private static ConfiguredFeature<?, ?> ESSENCE_CRYSTAL_ORE_FEATURE;
 
-    public static void setupWorldGeneration() {
-        //ESSENCE_ORE_FEATURE = getOreFeature(EssenceObjectHolders.ESSENCE_ORE, EssenceOreGenConfig.essenceOre, Feature.ORE);
-    }
 }
 

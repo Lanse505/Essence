@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.generation;
+package com.teamacronymcoders.essence.generation.tree.essence_tree;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.world.gen.feature.TreeFeature;
