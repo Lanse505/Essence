@@ -1,82 +1,44 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
+import com.google.common.collect.ImmutableSet;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
+import com.teamacronymcoders.essence.items.base.EssenceToolItem;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
+public class EssencePickaxe extends EssenceToolItem {
 
-    private EssenceToolTiers tier;
-    private int freeModifiers;
+    public static final Set<Block> EFFECTIVE_ON = ImmutableSet.of(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.POWERED_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CUT_SANDSTONE, Blocks.CHISELED_RED_SANDSTONE, Blocks.CUT_RED_SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.GRANITE, Blocks.POLISHED_GRANITE, Blocks.DIORITE, Blocks.POLISHED_DIORITE, Blocks.ANDESITE, Blocks.POLISHED_ANDESITE, Blocks.STONE_SLAB, Blocks.SMOOTH_STONE_SLAB, Blocks.SANDSTONE_SLAB, Blocks.PETRIFIED_OAK_SLAB, Blocks.COBBLESTONE_SLAB, Blocks.BRICK_SLAB, Blocks.STONE_BRICK_SLAB, Blocks.NETHER_BRICK_SLAB, Blocks.QUARTZ_SLAB, Blocks.RED_SANDSTONE_SLAB, Blocks.PURPUR_SLAB, Blocks.SMOOTH_QUARTZ, Blocks.SMOOTH_RED_SANDSTONE, Blocks.SMOOTH_SANDSTONE, Blocks.SMOOTH_STONE, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE, Blocks.POLISHED_GRANITE_SLAB, Blocks.SMOOTH_RED_SANDSTONE_SLAB, Blocks.MOSSY_STONE_BRICK_SLAB, Blocks.POLISHED_DIORITE_SLAB, Blocks.MOSSY_COBBLESTONE_SLAB, Blocks.END_STONE_BRICK_SLAB, Blocks.SMOOTH_SANDSTONE_SLAB, Blocks.SMOOTH_QUARTZ_SLAB, Blocks.GRANITE_SLAB, Blocks.ANDESITE_SLAB, Blocks.RED_NETHER_BRICK_SLAB, Blocks.POLISHED_ANDESITE_SLAB, Blocks.DIORITE_SLAB, Blocks.SHULKER_BOX, Blocks.BLACK_SHULKER_BOX, Blocks.BLUE_SHULKER_BOX, Blocks.BROWN_SHULKER_BOX, Blocks.CYAN_SHULKER_BOX, Blocks.GRAY_SHULKER_BOX, Blocks.GREEN_SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX, Blocks.LIGHT_GRAY_SHULKER_BOX, Blocks.LIME_SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.RED_SHULKER_BOX, Blocks.WHITE_SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX);
 
     public EssencePickaxe(EssenceToolTiers tier) {
-        super(tier, tier.getAttackDamagePickaxeMod(), tier.getAttackSpeedPickaxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
-        this.tier = tier;
-        this.freeModifiers = tier.getFreeModifiers();
+        super(tier.getAttackDamagePickaxeMod(), tier.getAttackSpeedPickaxeMod(), tier, EFFECTIVE_ON, new Item.Properties().addToolType(ToolType.PICKAXE, tier.getHarvestLevel()));
     }
 
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
+    /**
+     * Check whether this Item can harvest the given Block
+     */
+    public boolean canHarvestBlock(BlockState blockIn) {
+        int i = this.getTier().getHarvestLevel();
+        if (blockIn.getHarvestTool() == net.minecraftforge.common.ToolType.PICKAXE) {
+            return i >= blockIn.getHarvestLevel();
+        }
+        Material material = blockIn.getMaterial();
+        return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
     }
 
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean isRepairable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof CoreModifier)
-            .map(instance -> {
-                CoreModifier modifier = (CoreModifier) instance.getModifier();
-                return modifier.getModifiedDurability(stack, instance, tier.getMaxUses());
-            }).reduce(0, Integer::sum);
-    }
-
-    @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).stream()
+        Material material = state.getMaterial();
+        float base = material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
+        return base + EssenceModifierHelpers.getModifiers(stack).stream()
             .filter(instance -> instance.getModifier() instanceof CoreModifier)
             .map(instance -> {
                 CoreModifier modifier = (CoreModifier) instance.getModifier();
@@ -84,86 +46,4 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
             }).reduce(0f, Float::sum);
     }
 
-    @Override
-    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-        int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-        return harvestLevel + EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof CoreModifier)
-            .map(instance -> {
-                CoreModifier modifier = (CoreModifier) instance.getModifier();
-                return modifier.getModifiedHarvestLevel(stack, instance, harvestLevel);
-            }).reduce(0, Integer::sum);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) {
-            Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-            EssenceModifierHelpers.getModifiers(stack).stream()
-                .map(instance -> instance.getModifier().getAttributeModifiers(stack, null, instance))
-                .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
-            return multimap;
-        }
-        return super.getAttributeModifiers(slot, stack);
-    }
-
-    @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        ActionResultType superResult = super.onItemUse(context);
-        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem()).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .map(instance -> ((InteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
-            .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
-            .findFirst();
-        return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
-    }
-
-    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-        if (isRecursive) {
-            return super.onItemUse(context);
-        }
-        return onItemUse(context);
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance));
-        return super.hitEntity(stack, entity, player);
-    }
-
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onBlockDestroyed(stack, world, state, pos, miner, instance));
-        return super.onBlockDestroyed(stack, world, state, pos, miner);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
-        EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
-        super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
-        if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
-            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
-            sorting_map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
-            list.add(new StringTextComponent(""));
-        }
-    }
 }

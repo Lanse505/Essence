@@ -4,7 +4,7 @@ import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
 import com.hrznstudio.titanium.component.progress.ProgressBarComponent;
-import com.teamacronymcoders.essence.serializable.recipe.InfusionTableSerializableRecipe;
+import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import it.unimi.dsi.fastutil.ints.IntArrayList;

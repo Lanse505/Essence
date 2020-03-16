@@ -1,84 +1,29 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.Essence;
+import com.google.common.collect.Sets;
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
+import com.teamacronymcoders.essence.items.base.EssenceToolItem;
+import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
-import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.Set;
 
-public class EssenceAxe extends AxeItem implements IModifiedTool {
+public class EssenceAxe extends EssenceToolItem {
 
-    private EssenceToolTiers tier;
-    private int freeModifiers;
+    public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BOOKSHELF, Blocks.OAK_WOOD, Blocks.SPRUCE_WOOD, Blocks.BIRCH_WOOD, Blocks.JUNGLE_WOOD, Blocks.ACACIA_WOOD, Blocks.DARK_OAK_WOOD, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.BIRCH_LOG, Blocks.JUNGLE_LOG, Blocks.ACACIA_LOG, Blocks.DARK_OAK_LOG, Blocks.CHEST, Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.OAK_PRESSURE_PLATE, Blocks.SPRUCE_PRESSURE_PLATE, Blocks.BIRCH_PRESSURE_PLATE, Blocks.JUNGLE_PRESSURE_PLATE, Blocks.DARK_OAK_PRESSURE_PLATE, Blocks.ACACIA_PRESSURE_PLATE);
 
     public EssenceAxe(EssenceToolTiers tier) {
-        super(tier, tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
-        this.tier = tier;
-        this.freeModifiers = tier.getFreeModifiers();
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean isRepairable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
-            ItemStack stack;
-            for (int i = 1; i < 3; i++) {
-                stack = new ItemStack(EssenceObjectHolders.ESSENCE_AXE_EMPOWERED);
-                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get(), i, null);
-                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null);
-                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.FIERY_MODIFIER.get(), 1, null);
-                EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.CASCADING_LUMBER_MODIFIER.get(), 1, null);
-                if (!items.contains(stack)) {
-                    items.add(stack);
-                }
-            }
-        }
+        super(tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), tier, EFFECTIVE_ON, new Item.Properties().addToolType(ToolType.AXE, tier.getHarvestLevel()));
     }
 
     @Override
@@ -89,106 +34,32 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
         return super.canHarvestBlock(state);
     }
 
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof CoreModifier)
-            .map(instance -> {
-                CoreModifier modifier = (CoreModifier) instance.getModifier();
-                return modifier.getModifiedDurability(stack, instance, tier.getMaxUses());
-            }).reduce(0, Integer::sum);
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof CoreModifier)
-            .map(instance -> {
-                CoreModifier modifier = (CoreModifier) instance.getModifier();
-                return modifier.getModifiedEfficiency(stack, instance, super.getDestroySpeed(stack, state));
-            }).reduce(0f, Float::sum);
-    }
-
-    @Override
-    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-        int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-        return harvestLevel + EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof CoreModifier)
-            .map(instance -> {
-                CoreModifier modifier = (CoreModifier) instance.getModifier();
-                return modifier.getModifiedHarvestLevel(stack, instance, harvestLevel);
-            }).reduce(0, Integer::sum);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) {
-            Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-            EssenceModifierHelpers.getModifiers(stack).stream()
-                .map(instance -> instance.getModifier().getAttributeModifiers(stack, null, instance))
-                .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
-            return multimap;
-        }
-        return super.getAttributeModifiers(slot, stack);
+    public ActionResultType onItemBehaviour(ItemUseContext context) {
+        World world = context.getWorld();
+        Block block = world.getBlockState(context.getPos()).getBlock();
+        return world.getRecipeManager().getRecipes().stream()
+            .filter(iRecipe -> iRecipe.getType() == AxeStrippingRecipe.SERIALIZER.getRecipeType())
+            .map(iRecipe -> (AxeStrippingRecipe) iRecipe)
+            .filter(recipe -> recipe.matches(block))
+            .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(ActionResultType.PASS);
     }
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        ActionResultType superResult = super.onItemUse(context);
+        ActionResultType resultType = onItemBehaviour(context);
         Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem()).stream()
             .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
             .map(instance -> ((InteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
             .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
             .findFirst();
-        return superResult == ActionResultType.SUCCESS ? superResult : modifierResult.orElse(superResult);
+        return resultType == ActionResultType.SUCCESS ? resultType : modifierResult.orElse(resultType);
     }
 
+    @Override
     public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
         if (isRecursive) {
-            return super.onItemUse(context);
+            onItemBehaviour(context);
         }
         return onItemUse(context);
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance));
-        return super.hitEntity(stack, entity, player);
-    }
-
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onBlockDestroyed(stack, world, state, pos, miner, instance));
-        return super.onBlockDestroyed(stack, world, state, pos, miner);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
-        EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
-        super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
-        if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
-            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
-            sorting_map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
-            list.add(new StringTextComponent(""));
-        }
     }
 }

@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:oak_log",
+  "to": "minecraft:stripped_oak_log",
+  "type": "essence:axe_stripping"
+}

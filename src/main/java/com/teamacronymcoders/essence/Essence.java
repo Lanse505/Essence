@@ -6,9 +6,14 @@ import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.knowledge.*;
+import com.teamacronymcoders.essence.api.tool.IModifierHolder;
+import com.teamacronymcoders.essence.api.tool.ModifierHolder;
+import com.teamacronymcoders.essence.api.tool.ModifierProvider;
+import com.teamacronymcoders.essence.api.tool.legacy.IModifiedTool;
 import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
-import com.teamacronymcoders.essence.capabilities.NBTCapabilityStorage;
+import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
@@ -22,8 +27,11 @@ import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvide
 import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceToolRecipeProvider;
-import com.teamacronymcoders.essence.serializable.recipe.InfusionTableSerializableRecipe;
-import com.teamacronymcoders.essence.serializable.recipe.SerializableModifier;
+import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
+import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableModifier;
+import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
+import com.teamacronymcoders.essence.serializable.recipe.tool.HoeTillingRecipe;
+import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.EssenceModules;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
@@ -54,7 +62,6 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -150,15 +157,7 @@ public class Essence extends ModuleController {
     }
 
     private void setupCuriosIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("head").setSize(1).setEnabled(true).setHidden(false));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("necklace").setSize(1).setEnabled(true).setHidden(false));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("hands").setSize(1).setEnabled(true).setHidden(false));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("ring").setSize(2).setEnabled(true).setHidden(false));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("head", new ResourceLocation(CuriosAPI.MODID, "item/empty_head_slot")));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("necklace", new ResourceLocation(CuriosAPI.MODID, "item/empty_necklace_slot")));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("hands", new ResourceLocation(CuriosAPI.MODID, "item/empty_hands_slot")));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("ring", new ResourceLocation(CuriosAPI.MODID, "item/empty_ring_slot")));
         InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MODID, "items/curios/empty_backpack_slot")));
     }
 
@@ -169,10 +168,11 @@ public class Essence extends ModuleController {
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
-        LootConditionManager.registerCondition(new MatchModifier.Serializer());
-        EssenceDispenseBehaviours.init();
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
+        CapabilityManager.INSTANCE.register(IModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ModifierHolder::new);
+        LootConditionManager.registerCondition(new MatchModifier.Serializer());
         EssenceGeneration.addFeaturesToWorldGen();
+        EssenceDispenseBehaviours.init();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -189,7 +189,10 @@ public class Essence extends ModuleController {
             .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
             .process(register -> {
                 register.getRegistry().registerAll(
-                    InfusionTableSerializableRecipe.SERIALIZER
+                    AxeStrippingRecipe.SERIALIZER,
+                    HoeTillingRecipe.SERIALIZER,
+                    InfusionTableSerializableRecipe.SERIALIZER,
+                    ShovelPathingRecipe.SERIALIZER
                 );
             }).subscribe();
         EventManager.mod(RegistryEvent.Register.class)
@@ -213,6 +216,14 @@ public class Essence extends ModuleController {
             .process(attach -> {
                 if (attach.getObject() instanceof PlayerEntity) {
                     attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
+                }
+            }).subscribe();
+        EventManager.forge(AttachCapabilitiesEvent.class)
+            .filter(attach -> attach.getObject() instanceof ItemStack)
+            .process(attach -> {
+                ItemStack stack = (ItemStack) attach.getObject();
+                if (stack.getItem() instanceof IModifiedTool) {
+                    attach.addCapability(new ResourceLocation(MODID, "modifier_holder"), new ModifierProvider());
                 }
             }).subscribe();
         EventManager.forge(PlayerEvent.Clone.class)

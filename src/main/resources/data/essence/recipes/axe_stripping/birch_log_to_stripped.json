@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:birch_log",
+  "to": "minecraft:stripped_birch_log",
+  "type": "essence:axe_stripping"
+}

@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.api.knowledge;
 
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -11,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerializable<ListNBT> {
+
     private IKnowledgeHolder knowledgeHolder = EssenceCapabilities.KNOWLEDGE.getDefaultInstance();
     private final LazyOptional<IKnowledgeHolder> optional = LazyOptional.of(() -> knowledgeHolder);
 

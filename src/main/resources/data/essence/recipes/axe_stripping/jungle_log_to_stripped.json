@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:jungle_log",
+  "to": "minecraft:stripped_jungle_log",
+  "type": "essence:axe_stripping"
+}

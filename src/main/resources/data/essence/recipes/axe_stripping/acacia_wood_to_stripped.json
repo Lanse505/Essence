@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:acacia_wood",
+  "to": "minecraft:stripped_acacia_wood",
+  "type": "essence:axe_stripping"
+}

@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:acacia_log",
+  "to": "minecraft:stripped_acacia_log",
+  "type": "essence:axe_stripping"
+}

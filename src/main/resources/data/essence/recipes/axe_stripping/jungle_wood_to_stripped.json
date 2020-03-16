@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:jungle_wood",
+  "to": "minecraft:stripped_jungle_wood",
+  "type": "essence:axe_stripping"
+}

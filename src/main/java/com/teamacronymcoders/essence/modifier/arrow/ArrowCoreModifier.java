@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.modifier.arrow;
 
-import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;

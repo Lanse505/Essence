@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:spruce_log",
+  "to": "minecraft:stripped_spruce_log",
+  "type": "essence:axe_stripping"
+}

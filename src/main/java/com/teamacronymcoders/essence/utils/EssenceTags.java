@@ -11,6 +11,8 @@ import net.minecraft.util.ResourceLocation;
 public class EssenceTags {
 
     public static class Items {
+        public static Tag<Item> AMMO_HOLDER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "ammo_holder"));
+
         public static Tag<Item> ESSENCE_WOOD_LOG = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_logs"));
         public static Tag<Item> ESSENCE_WOOD_PLANKS = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_planks"));
         public static Tag<Item> ESSENCE_CRYSTAL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "infused_crystal"));

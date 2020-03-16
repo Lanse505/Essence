@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.recipe;
+package com.teamacronymcoders.essence.serializable.recipe.infusion;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.nbt.CompoundNBT;

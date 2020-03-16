@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.serializable.loot.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;

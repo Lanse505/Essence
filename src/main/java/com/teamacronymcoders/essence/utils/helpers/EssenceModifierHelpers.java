@@ -2,9 +2,9 @@ package com.teamacronymcoders.essence.utils.helpers;
 
 import com.google.common.collect.Lists;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.legacy.IModifiedTool;
 import com.teamacronymcoders.essence.modifier.cosmetic.EnchantedModifier;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.item.ItemStack;

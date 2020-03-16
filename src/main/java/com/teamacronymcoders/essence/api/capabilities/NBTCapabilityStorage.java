@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.capabilities;
+package com.teamacronymcoders.essence.api.capabilities;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;

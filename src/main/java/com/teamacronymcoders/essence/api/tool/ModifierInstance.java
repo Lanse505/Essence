@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier;
+package com.teamacronymcoders.essence.api.tool;
 
 import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
@@ -16,8 +16,7 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
     private int level;
     private CompoundNBT modifierData;
 
-    public ModifierInstance() {
-    }
+    public ModifierInstance() {}
 
     public ModifierInstance(Modifier modifier, int level, CompoundNBT modifierData) {
         this.modifier = modifier;

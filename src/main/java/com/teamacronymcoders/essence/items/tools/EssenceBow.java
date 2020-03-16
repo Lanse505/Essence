@@ -1,131 +1,89 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
+import com.google.common.collect.Sets;
+import com.teamacronymcoders.essence.items.base.EssenceToolItem;
+import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
-import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
-public class EssenceBow extends BowItem implements IModifiedTool {
+public class EssenceBow extends EssenceToolItem {
 
-    private int freeModifiers;
-    private EssenceToolTiers tier;
+    public static final Predicate<ItemStack> ARROWS = (p_220002_0_) -> p_220002_0_.getItem().isIn(ItemTags.ARROWS);
 
     public EssenceBow(EssenceToolTiers tier) {
-        super(new Item.Properties().maxDamage(tier.getMaxUsesBow()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
-        this.freeModifiers = tier.getFreeModifiers();
-        this.tier = tier;
+        super(0f, 0f, tier, Sets.newHashSet(), new Item.Properties());
         this.addPropertyOverride(new ResourceLocation("pull"), (stack, world, livingEntity) -> {
             if (livingEntity == null) {
                 return 0.0F;
             } else {
-                return !(livingEntity.getActiveItemStack().getItem() instanceof BowItem) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
+                return !(livingEntity.getActiveItemStack().getItem() instanceof EssenceBow) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
             }
         });
         this.addPropertyOverride(new ResourceLocation("pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
 
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean isRepairable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
-            ItemStack stack = new ItemStack(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED);
-            EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(new EffectInstance(Effects.POISON, 1200, 3)));
-            EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.KEEN_MODIFIER.get(), 4, null);
-            if (!items.contains(stack)) {
-                items.add(stack);
+    /**
+     * If you're a Mod-Author and reading this, Hi.
+     * If you wish to have your inventory item (Backpack, Satchel, Quiver, Dank Null, etc...) support providing arrows to my bow.
+     * Then simply just add the tag of "essence:ammo_holder" to your item, and I'll be able to loop through the ItemHandlerCapability.
+     * @param player Player to get Ammo from.
+     * @return Returns the Ammo.
+     */
+    public ItemStack findAmmo(PlayerEntity player) {
+        Predicate<ItemStack> predicate = getAmmoPredicate();
+        ItemStack stack = getHeldAmmo(player, predicate);
+        if (!stack.isEmpty()) {
+            return stack;
+        } else {
+            for(int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+                ItemStack itemstack1 = player.inventory.getStackInSlot(i);
+                if (predicate.test(itemstack1)) {
+                    return itemstack1;
+                }
+                if (itemstack1.getItem().isIn(EssenceTags.Items.AMMO_HOLDER)) {
+                    if (itemstack1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
+                        LazyOptional<IItemHandler> handler = itemstack1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                        return handler.map(stackHandler -> {
+                            for (int j = 0; j < stackHandler.getSlots(); j++) {
+                                ItemStack internalStack = stackHandler.getStackInSlot(j);
+                                if (predicate.test(internalStack)) {
+                                    return internalStack;
+                                }
+                            }
+                            return ItemStack.EMPTY;
+                        }).orElse(ItemStack.EMPTY);
+                    }
+                }
             }
+            return player.abilities.isCreativeMode ? new ItemStack(Items.ARROW) : ItemStack.EMPTY;
         }
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) {
-            Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-            EssenceModifierHelpers.getModifiers(stack).stream()
-                .map(instance -> instance.getModifier().getAttributeModifiers(stack, null, instance))
-                .forEach(modifierMultimap -> modifierMultimap.entries().forEach(entry -> multimap.put(entry.getKey(), entry.getValue())));
-            return multimap;
-        }
-        return super.getAttributeModifiers(slot, stack);
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity entity, LivingEntity player) {
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance));
-        return super.hitEntity(stack, entity, player);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
-        //Essence.LOGGER.info(stack.getTag().toString());
-        EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack);
-        EssenceModifierHelpers.getModifiers(stack).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .forEach(instance -> ((InteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
-        super.inventoryTick(stack, world, entity, inventorySlot, isCurrentItem);
-    }
-
-    @Override
-    public void onPlayerStoppedUsing(ItemStack bow, World world, LivingEntity livingEntity, int timeLeft) {
-        if (livingEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) livingEntity;
+    /**
+     * Called when the player stops using an Item (stops holding the right mouse button).
+     */
+    public void onPlayerStoppedUsing(ItemStack bow, World world, LivingEntity entityLiving, int timeLeft) {
+        if (entityLiving instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entityLiving;
             boolean flag = player.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow) > 0;
-            ItemStack arrow = player.findAmmo(bow);
+            ItemStack arrow = findAmmo(player);
 
             int i = this.getUseDuration(bow) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bow, world, player, i, !arrow.isEmpty() || flag);
@@ -162,24 +120,65 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         }
     }
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocalName()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
-        if (stack.getOrCreateTag().contains(EssenceModifierHelpers.TAG_MODIFIERS)) {
-            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
-            Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
-            EssenceModifierHelpers.getModifiers(stack).forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance)));
-            sorting_map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
-                .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
-            list.add(new StringTextComponent(""));
+    /**
+     * Gets the velocity of the arrow entity from the bow's charge
+     */
+    public static float getArrowVelocity(int charge) {
+        float f = (float)charge / 20.0F;
+        f = (f * f + f * 2.0F) / 3.0F;
+        if (f > 1.0F) {
+            f = 1.0F;
+        }
+
+        return f;
+    }
+
+    /**
+     * How long it takes to use or consume an item
+     */
+    public int getUseDuration(ItemStack stack) {
+        return 72000;
+    }
+
+    /**
+     * returns the action that specifies what animation to play when the items is being used
+     */
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BOW;
+    }
+
+    /**
+     * Called to trigger the item's "innate" right click behavior. To handle when this item is used on a Block, see
+     * {@link #onItemUse}.
+     */
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack itemstack = playerIn.getHeldItem(handIn);
+        boolean flag = !playerIn.findAmmo(itemstack).isEmpty();
+
+        ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn, playerIn, handIn, flag);
+        if (ret != null) return ret;
+
+        if (!playerIn.abilities.isCreativeMode && !flag) {
+            return ActionResult.resultFail(itemstack);
+        } else {
+            playerIn.setActiveHand(handIn);
+            return ActionResult.resultConsume(itemstack);
         }
     }
 
-    @Override
-    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-        return ActionResultType.PASS;
+    public static ItemStack getHeldAmmo(PlayerEntity living, Predicate<ItemStack> isAmmo) {
+        if (isAmmo.test(living.getHeldItem(Hand.OFF_HAND))) {
+            return living.getHeldItem(Hand.OFF_HAND);
+        } else {
+            return isAmmo.test(living.getHeldItem(Hand.MAIN_HAND)) ? living.getHeldItem(Hand.MAIN_HAND) : ItemStack.EMPTY;
+        }
     }
+
+    /**
+     * Get the predicate to match ammunition when searching the player's inventory, not their main/offhand
+     */
+    public Predicate<ItemStack> getAmmoPredicate() {
+        return ARROWS;
+    }
+
 }

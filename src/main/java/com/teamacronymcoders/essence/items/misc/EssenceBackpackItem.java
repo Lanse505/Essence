@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.items.misc;
 import com.hrznstudio.titanium.component.IComponentHarness;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.ModifierInstance;
 import com.teamacronymcoders.essence.capabilities.BackpackCapability;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceBackpackTiers;

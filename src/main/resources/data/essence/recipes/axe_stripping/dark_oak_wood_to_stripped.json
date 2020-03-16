@@ -1,0 +1,5 @@
+{
+  "from": "minecraft:dark_oak_wood",
+  "to": "minecraft:stripped_dark_oak_wood",
+  "type": "essence:axe_stripping"
+}

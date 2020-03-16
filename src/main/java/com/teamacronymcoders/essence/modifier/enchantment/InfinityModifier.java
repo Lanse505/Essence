@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.modifier.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
-import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
