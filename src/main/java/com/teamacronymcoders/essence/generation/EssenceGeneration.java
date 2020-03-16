@@ -40,14 +40,14 @@ public class EssenceGeneration {
             addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.NORMAL_WORLD_ESSENCE_TREE_CONFIG,
                 new AtSurfaceWithExtraConfig(
                     0,
-                    treeGenConfig.getNormalVariant().getExtraChance().get(),
+                    treeGenConfig.getNormalVariant().getExtraChance().get().floatValue(),
                     treeGenConfig.getNormalVariant().getExtraCount().get()));
         }
        if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG,
                new AtSurfaceWithExtraConfig(
                    0,
-                   treeGenConfig.getFancyVariant().getExtraChance().get(),
+                   treeGenConfig.getFancyVariant().getExtraChance().get().floatValue(),
                    treeGenConfig.getFancyVariant().getExtraCount().get()));
        }
     }

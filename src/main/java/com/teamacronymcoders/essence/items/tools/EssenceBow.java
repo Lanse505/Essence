@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Sets;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.items.base.EssenceToolItem;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
@@ -18,9 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class EssenceBow extends EssenceToolItem {
@@ -36,7 +35,7 @@ public class EssenceBow extends EssenceToolItem {
                 return !(livingEntity.getActiveItemStack().getItem() instanceof EssenceBow) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
             }
         });
-        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
     }
 
     /**
@@ -79,6 +78,7 @@ public class EssenceBow extends EssenceToolItem {
     /**
      * Called when the player stops using an Item (stops holding the right mouse button).
      */
+    @Override
     public void onPlayerStoppedUsing(ItemStack bow, World world, LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entityLiving;
@@ -136,6 +136,7 @@ public class EssenceBow extends EssenceToolItem {
     /**
      * How long it takes to use or consume an item
      */
+    @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
     }
@@ -143,6 +144,7 @@ public class EssenceBow extends EssenceToolItem {
     /**
      * returns the action that specifies what animation to play when the items is being used
      */
+    @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.BOW;
     }
@@ -151,9 +153,10 @@ public class EssenceBow extends EssenceToolItem {
      * Called to trigger the item's "innate" right click behavior. To handle when this item is used on a Block, see
      * {@link #onItemUse}.
      */
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        boolean flag = !playerIn.findAmmo(itemstack).isEmpty();
+        boolean flag = !findAmmo(playerIn).isEmpty();
 
         ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn, playerIn, handIn, flag);
         if (ret != null) return ret;
