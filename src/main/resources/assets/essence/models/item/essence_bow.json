@@ -28,21 +28,21 @@
   "overrides": [
     {
       "predicate": {
-        "essence:pulling": 1
+        "pulling": 1
       },
       "model": "essence:item/essence_bow_pulling_0"
     },
     {
       "predicate": {
-        "essence:pulling": 1,
-        "essence:pull": 0.65
+        "pulling": 1,
+        "pull": 0.65
       },
       "model": "essence:item/essence_bow_pulling_1"
     },
     {
       "predicate": {
-        "essence:pulling": 1,
-        "essence:pull": 0.9
+        "pulling": 1,
+        "pull": 0.9
       },
       "model": "essence:item/essence_bow_pulling_2"
     }
