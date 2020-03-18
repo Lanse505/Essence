@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.serializable.recipe.infusion;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

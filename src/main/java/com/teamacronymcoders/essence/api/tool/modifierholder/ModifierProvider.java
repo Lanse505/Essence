@@ -1,6 +1,8 @@
-package com.teamacronymcoders.essence.api.tool;
+package com.teamacronymcoders.essence.api.tool.modifierholder;
 
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
+import com.teamacronymcoders.essence.utils.tiers.IEssenceBaseTier;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -11,10 +13,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ModifierProvider implements ICapabilityProvider, ICapabilitySerializable<ListNBT> {
+public class ModifierProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
 
-    private IModifierHolder modifierHolder = EssenceCapabilities.MODIFIER_HOLDER.getDefaultInstance();
+    private IModifierHolder modifierHolder;
     private final LazyOptional<IModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
+
+    public ModifierProvider(IEssenceBaseTier tier) {
+        modifierHolder = new ModifierHolder(tier);
+    }
 
     @Nonnull
     @Override
@@ -26,12 +32,12 @@ public class ModifierProvider implements ICapabilityProvider, ICapabilitySeriali
     }
 
     @Override
-    public ListNBT serializeNBT() {
+    public CompoundNBT serializeNBT() {
         return modifierHolder.serializeNBT();
     }
 
     @Override
-    public void deserializeNBT(ListNBT nbt) {
+    public void deserializeNBT(CompoundNBT nbt) {
         modifierHolder.deserializeNBT(nbt);
     }
 }

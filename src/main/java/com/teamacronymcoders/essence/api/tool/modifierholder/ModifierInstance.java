@@ -1,10 +1,12 @@
-package com.teamacronymcoders.essence.api.tool;
+package com.teamacronymcoders.essence.api.tool.modifierholder;
 
 import com.teamacronymcoders.essence.api.modifier.core.INBTModifier;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.Objects;
 
 public class ModifierInstance implements INBTSerializable<CompoundNBT> {
     public static final String TAG_MODIFIER = "Modifier";
@@ -27,7 +29,7 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
     @Override
     public CompoundNBT serializeNBT() {
         final CompoundNBT compoundNBT = new CompoundNBT();
-        compoundNBT.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
+        compoundNBT.putString(TAG_MODIFIER, Objects.requireNonNull(modifier.getRegistryName()).toString());
         final CompoundNBT info = new CompoundNBT();
         info.putInt(TAG_LEVEL, level);
         if (modifierData == null) {
@@ -41,7 +43,7 @@ public class ModifierInstance implements INBTSerializable<CompoundNBT> {
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        final Modifier modifier = EssenceModifierHelpers.getModifierByName(nbt.getString(TAG_MODIFIER));
+        final Modifier modifier = EssenceModifierHelpers.getModifierByRegistryName(nbt.getString(TAG_MODIFIER));
         final CompoundNBT info = nbt.getCompound(TAG_INFO);
         final int level = info.getInt(TAG_LEVEL);
         final CompoundNBT modifierData = info.getCompound(TAG_COMPOUND);

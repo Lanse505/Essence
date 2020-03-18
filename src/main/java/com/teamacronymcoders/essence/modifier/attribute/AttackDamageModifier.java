@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.modifier.attribute;
 
 import com.teamacronymcoders.essence.api.modifier.core.CoreModifier;
-import com.teamacronymcoders.essence.api.tool.legacy.IModifiedCurio;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,6 @@ public class AttackDamageModifier extends CoreModifier {
 
     @Override
     public boolean canApplyOnItemStack(ItemStack stack) {
-        return stack.getItem() instanceof IModifiedCurio;
+        return true;
     }
 }

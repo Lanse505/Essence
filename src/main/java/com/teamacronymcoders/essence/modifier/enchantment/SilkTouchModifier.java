@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.modifier.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.EnchantmentCoreModifier;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.items.tools.EssencePickaxe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;

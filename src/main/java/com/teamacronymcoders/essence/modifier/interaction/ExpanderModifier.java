@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.modifier.interaction;
 
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.api.tool.legacy.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.items.tools.EssenceSword;
 import com.teamacronymcoders.essence.modifier.interaction.cascading.CascadingModifier;

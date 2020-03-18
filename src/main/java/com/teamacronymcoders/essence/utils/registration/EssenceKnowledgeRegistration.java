@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.utils.registration;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;

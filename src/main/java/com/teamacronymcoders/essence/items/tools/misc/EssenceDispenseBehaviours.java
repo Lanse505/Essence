@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.items.tools.misc;
 
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;

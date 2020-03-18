@@ -8,7 +8,7 @@ import net.minecraft.util.LazyValue;
 
 import java.util.function.Supplier;
 
-public enum EssenceToolTiers implements IItemTier {
+public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
     ESSENCE("tier.essence.basic", 3, 2, 256, 384, 6.0F,
         2.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
         0, Rarity.COMMON, () -> {
@@ -72,10 +72,7 @@ public enum EssenceToolTiers implements IItemTier {
         this.repairMaterial = new LazyValue<>(repairMaterial);
     }
 
-    public String getLocalName() {
-        return localName;
-    }
-
+    @Override
     public int getFreeModifiers() {
         return freeModifiers;
     }
@@ -145,6 +142,12 @@ public enum EssenceToolTiers implements IItemTier {
         return this.enchantability;
     }
 
+    @Override
+    public String getLocaleString() {
+        return localName;
+    }
+
+    @Override
     public Rarity getRarity() {
         return rarity;
     }

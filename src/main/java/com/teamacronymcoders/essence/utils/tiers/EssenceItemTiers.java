@@ -7,7 +7,7 @@ import net.minecraft.item.Rarity;
 
 import java.util.function.Supplier;
 
-public enum EssenceItemTiers {
+public enum EssenceItemTiers implements IEssenceBaseTier {
     ESSENCE("tier.essence.basic", Rarity.COMMON, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL),
     EMPOWERED_ESSENCE("tier.essence.empowered", Rarity.UNCOMMON, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED),
     EXALTED_ESSENCE("tier.essence.exalted", Rarity.RARE, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EXALTED_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EXALTED),
@@ -25,12 +25,18 @@ public enum EssenceItemTiers {
         this.ingot = ingot;
     }
 
-    public String getLocalString() {
+    @Override
+    public String getLocaleString() {
         return localString;
     }
 
     public Rarity getRarity() {
         return rarity;
+    }
+
+    @Override
+    public int getFreeModifiers() {
+        return 0;
     }
 
     public Supplier<EssenceNuggetItem> getNugget() {

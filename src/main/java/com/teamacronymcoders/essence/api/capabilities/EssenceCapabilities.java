@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.api.capabilities;
 
 import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
-import com.teamacronymcoders.essence.api.tool.IModifierHolder;
+import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 

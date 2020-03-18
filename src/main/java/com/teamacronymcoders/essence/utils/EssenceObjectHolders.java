@@ -10,6 +10,7 @@ import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.items.misc.PortableCrafter;
 import com.teamacronymcoders.essence.items.tools.*;
+import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;

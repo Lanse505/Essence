@@ -2,21 +2,23 @@ package com.teamacronymcoders.essence.utils.tiers;
 
 import net.minecraft.item.Rarity;
 
-public enum EssenceBackpackTiers {
-    ESSENCE("tier.essence.basic", Rarity.COMMON, 9, 3, 3),
-    EMPOWERED_ESSENCE("tier.essence.empowered", Rarity.UNCOMMON, 18, 6, 3),
-    EXALTED_ESSENCE("tier.essence.exalted", Rarity.RARE, 27, 9, 3),
-    GODLY_ESSENCE("tier.essence.godly", Rarity.EPIC, 36, 9, 4);
+public enum EssenceBackpackTiers implements IEssenceBaseTier {
+    ESSENCE("tier.essence.basic", Rarity.COMMON, 3, 9, 3, 3),
+    EMPOWERED_ESSENCE("tier.essence.empowered", Rarity.UNCOMMON, 4,18, 6, 3),
+    EXALTED_ESSENCE("tier.essence.exalted", Rarity.RARE, 5,27, 9, 3),
+    GODLY_ESSENCE("tier.essence.godly", Rarity.EPIC, 6,36, 9, 4);
 
     private final String localString;
     private final Rarity rarity;
+    private final int freeModifiers;
     private final int backpackSlots;
     private final int backpackX;
     private final int backpackY;
 
-    EssenceBackpackTiers(String localString, Rarity rarity, int backpackSlots, int backpackX, int backpackY) {
+    EssenceBackpackTiers(String localString, Rarity rarity, int freeModifiers, int backpackSlots, int backpackX, int backpackY) {
         this.localString = localString;
         this.rarity = rarity;
+        this.freeModifiers = freeModifiers;
         this.backpackSlots = backpackSlots;
         this.backpackX = backpackX;
         this.backpackY = backpackY;
@@ -26,8 +28,18 @@ public enum EssenceBackpackTiers {
         return localString;
     }
 
+    @Override
+    public String getLocaleString() {
+        return localString;
+    }
+
     public Rarity getRarity() {
         return rarity;
+    }
+
+    @Override
+    public int getFreeModifiers() {
+        return freeModifiers;
     }
 
     public int getBackpackSlots() {

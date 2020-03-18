@@ -8,10 +8,10 @@ import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.knowledge.*;
-import com.teamacronymcoders.essence.api.tool.IModifierHolder;
-import com.teamacronymcoders.essence.api.tool.ModifierHolder;
-import com.teamacronymcoders.essence.api.tool.ModifierProvider;
-import com.teamacronymcoders.essence.api.tool.legacy.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierHolder;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
 import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
@@ -20,7 +20,6 @@ import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.generation.EssenceGeneration;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
-import com.teamacronymcoders.essence.modifier.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
@@ -51,6 +50,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -169,7 +169,7 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
-        CapabilityManager.INSTANCE.register(IModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ModifierHolder::new);
+        CapabilityManager.INSTANCE.register(IModifierHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), ModifierHolder::new);
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
         EssenceGeneration.addFeaturesToWorldGen();
         EssenceDispenseBehaviours.init();
@@ -218,14 +218,6 @@ public class Essence extends ModuleController {
                     attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
                 }
             }).subscribe();
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof ItemStack)
-            .process(attach -> {
-                ItemStack stack = (ItemStack) attach.getObject();
-                if (stack.getItem() instanceof IModifiedTool) {
-                    attach.addCapability(new ResourceLocation(MODID, "modifier_holder"), new ModifierProvider());
-                }
-            }).subscribe();
         EventManager.forge(PlayerEvent.Clone.class)
             .filter(PlayerEvent.Clone::isWasDeath)
             .process(clone -> {
@@ -240,7 +232,7 @@ public class Essence extends ModuleController {
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;
-                boolean hasRainbow = EssenceModifierHelpers.getModifiers(color.getStack()).stream().anyMatch(instance -> instance.getModifier() instanceof RainbowModifier);
+                boolean hasRainbow = EssenceModifierHelpers.hasRainbowModifier(color.getStack());
                 if (isShear && hasRainbow) {
                     EssenceShear shear = (EssenceShear) color.getStack().getItem();
                     int rainbowVal = shear.getRainbowVal();

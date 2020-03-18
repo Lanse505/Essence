@@ -1,41 +1,63 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.items.base.EssenceToolItem;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
+import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Predicate;
 
-public class EssenceBow extends EssenceToolItem {
+public class EssenceBow extends BowItem implements IModifiedTool {
 
-    public static final Predicate<ItemStack> ARROWS = (p_220002_0_) -> p_220002_0_.getItem().isIn(ItemTags.ARROWS);
+    private final EssenceToolTiers tier;
+    private final int freeModifiers;
 
     public EssenceBow(EssenceToolTiers tier) {
-        super(0f, 0f, tier, Sets.newHashSet(), new Item.Properties());
-        this.addPropertyOverride(new ResourceLocation("pull"), (stack, world, livingEntity) -> {
+        super(new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.tier = tier;
+        this.freeModifiers = tier.getFreeModifiers();
+        this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pull"), (stack, world, livingEntity) -> {
             if (livingEntity == null) {
                 return 0.0F;
             } else {
                 return !(livingEntity.getActiveItemStack().getItem() instanceof EssenceBow) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
             }
         });
-        this.addPropertyOverride(new ResourceLocation("pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
+        this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        return new ModifierProvider(tier);
     }
 
     /**
@@ -121,35 +143,6 @@ public class EssenceBow extends EssenceToolItem {
     }
 
     /**
-     * Gets the velocity of the arrow entity from the bow's charge
-     */
-    public static float getArrowVelocity(int charge) {
-        float f = (float)charge / 20.0F;
-        f = (f * f + f * 2.0F) / 3.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        return f;
-    }
-
-    /**
-     * How long it takes to use or consume an item
-     */
-    @Override
-    public int getUseDuration(ItemStack stack) {
-        return 72000;
-    }
-
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
-    }
-
-    /**
      * Called to trigger the item's "innate" right click behavior. To handle when this item is used on a Block, see
      * {@link #onItemUse}.
      */
@@ -169,19 +162,72 @@ public class EssenceBow extends EssenceToolItem {
         }
     }
 
-    public static ItemStack getHeldAmmo(PlayerEntity living, Predicate<ItemStack> isAmmo) {
-        if (isAmmo.test(living.getHeldItem(Hand.OFF_HAND))) {
-            return living.getHeldItem(Hand.OFF_HAND);
-        } else {
-            return isAmmo.test(living.getHeldItem(Hand.MAIN_HAND)) ? living.getHeldItem(Hand.MAIN_HAND) : ItemStack.EMPTY;
-        }
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 
-    /**
-     * Get the predicate to match ammunition when searching the player's inventory, not their main/offhand
-     */
-    public Predicate<ItemStack> getAmmoPredicate() {
-        return ARROWS;
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
     }
 
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+        return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        hitEntityFromModifiers(stack, target, attacker);
+        return super.hitEntity(stack, target, attacker);
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
+        return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
+    }
+
+    @Override
+    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
+        return ActionResultType.PASS;
+    }
 }

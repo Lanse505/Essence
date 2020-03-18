@@ -1,29 +1,48 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Sets;
-import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.items.base.EssenceToolItem;
+import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-public class EssenceAxe extends EssenceToolItem {
+public class EssenceAxe extends AxeItem implements IModifiedTool {
 
-    public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BOOKSHELF, Blocks.OAK_WOOD, Blocks.SPRUCE_WOOD, Blocks.BIRCH_WOOD, Blocks.JUNGLE_WOOD, Blocks.ACACIA_WOOD, Blocks.DARK_OAK_WOOD, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.BIRCH_LOG, Blocks.JUNGLE_LOG, Blocks.ACACIA_LOG, Blocks.DARK_OAK_LOG, Blocks.CHEST, Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.OAK_PRESSURE_PLATE, Blocks.SPRUCE_PRESSURE_PLATE, Blocks.BIRCH_PRESSURE_PLATE, Blocks.JUNGLE_PRESSURE_PLATE, Blocks.DARK_OAK_PRESSURE_PLATE, Blocks.ACACIA_PRESSURE_PLATE);
-
+    private final EssenceToolTiers tier;
     public EssenceAxe(EssenceToolTiers tier) {
-        super(tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), tier, EFFECTIVE_ON, new Item.Properties().addToolType(ToolType.AXE, tier.getHarvestLevel()));
+        super(tier, tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        this.tier = tier;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        return new ModifierProvider(tier);
     }
 
     @Override
@@ -47,11 +66,7 @@ public class EssenceAxe extends EssenceToolItem {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType resultType = onItemBehaviour(context);
-        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem()).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .map(instance -> ((InteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
-            .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
-            .findFirst();
+        Optional<ActionResultType> modifierResult = onItemUseFromModifiers(context);
         return resultType == ActionResultType.SUCCESS ? resultType : modifierResult.orElse(resultType);
     }
 
@@ -61,5 +76,68 @@ public class EssenceAxe extends EssenceToolItem {
             onItemBehaviour(context);
         }
         return onItemUse(context);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+        return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        hitEntityFromModifiers(stack, target, attacker);
+        return super.hitEntity(stack, target, attacker);
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
+        return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
     }
 }

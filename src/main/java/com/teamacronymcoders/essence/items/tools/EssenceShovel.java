@@ -1,41 +1,49 @@
 package com.teamacronymcoders.essence.items.tools;
 
-import com.google.common.collect.Sets;
-import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.items.base.EssenceToolItem;
+import com.google.common.collect.Multimap;
+import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-public class EssenceShovel extends EssenceToolItem {
+public class EssenceShovel extends ShovelItem implements IModifiedTool {
 
-    public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.FARMLAND, Blocks.GRASS_BLOCK, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.RED_SAND, Blocks.SNOW_BLOCK, Blocks.SNOW, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.WHITE_CONCRETE_POWDER, Blocks.ORANGE_CONCRETE_POWDER, Blocks.MAGENTA_CONCRETE_POWDER, Blocks.LIGHT_BLUE_CONCRETE_POWDER, Blocks.YELLOW_CONCRETE_POWDER, Blocks.LIME_CONCRETE_POWDER, Blocks.PINK_CONCRETE_POWDER, Blocks.GRAY_CONCRETE_POWDER, Blocks.LIGHT_GRAY_CONCRETE_POWDER, Blocks.CYAN_CONCRETE_POWDER, Blocks.PURPLE_CONCRETE_POWDER, Blocks.BLUE_CONCRETE_POWDER, Blocks.BROWN_CONCRETE_POWDER, Blocks.GREEN_CONCRETE_POWDER, Blocks.RED_CONCRETE_POWDER, Blocks.BLACK_CONCRETE_POWDER);
+    private final EssenceToolTiers tier;
+    private final int freeModifiers;
 
     public EssenceShovel(EssenceToolTiers tier) {
-        super(tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), tier, EFFECTIVE_ON, new Item.Properties().addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
+        super(tier, tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
+        this.tier = tier;
+        this.freeModifiers = tier.getFreeModifiers();
     }
 
+    @Nullable
     @Override
-    public boolean canHarvestBlock(BlockState state) {
-        if (state.getHarvestTool() == ToolType.SHOVEL) {
-            return getTier().getHarvestLevel() >= state.getHarvestLevel();
-        }
-        return super.canHarvestBlock(state);
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        return new ModifierProvider(tier);
     }
 
     public ActionResultType onItemBehaviour(ItemUseContext context) {
@@ -68,11 +76,7 @@ public class EssenceShovel extends EssenceToolItem {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         ActionResultType resultType = onItemBehaviour(context);
-        Optional<ActionResultType> modifierResult = EssenceModifierHelpers.getModifiers(context.getItem()).stream()
-            .filter(instance -> instance.getModifier() instanceof InteractionCoreModifier)
-            .map(instance -> ((InteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
-            .filter(actionResultType -> actionResultType == ActionResultType.SUCCESS)
-            .findFirst();
+        Optional<ActionResultType> modifierResult = onItemUseFromModifiers(context);
         return resultType == ActionResultType.SUCCESS ? resultType : modifierResult.orElse(resultType);
     }
 
@@ -82,5 +86,68 @@ public class EssenceShovel extends EssenceToolItem {
             onItemBehaviour(context);
         }
         return onItemUse(context);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+        return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        hitEntityFromModifiers(stack, target, attacker);
+        return super.hitEntity(stack, target, attacker);
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+        onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
+        return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
     }
 }

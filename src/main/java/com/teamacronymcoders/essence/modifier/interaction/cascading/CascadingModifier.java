@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.modifier.interaction.cascading;
 
 import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.api.tool.ModifierInstance;
+import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.modifier.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
