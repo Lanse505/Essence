@@ -22,8 +22,8 @@ public class LuckModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 0);
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class LuckModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).applyTextStyle(TextFormatting.BLUE));
         return super.getRenderedText(instance);
     }

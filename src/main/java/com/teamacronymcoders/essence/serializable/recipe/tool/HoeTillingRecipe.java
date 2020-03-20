@@ -81,7 +81,9 @@ public class HoeTillingRecipe extends SerializableRecipe {
         World world = context.getWorld();
         BlockPos blockpos = context.getPos();
         int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(context);
-        if (hook != 0) return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+        if (hook != 0) {
+            return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+        }
         if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
             if (to != null) {
                 PlayerEntity playerentity = context.getPlayer();

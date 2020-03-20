@@ -27,12 +27,12 @@ public class EssenceModifierConfig {
         return config.getSpec();
     }
 
-    public ForgeConfigSpec getSpec() {
-        return spec;
-    }
-
     public static EssenceModifierConfig getInstance() {
         return instance;
+    }
+
+    public ForgeConfigSpec getSpec() {
+        return spec;
     }
 
     public EssenceCascadingConfig getExcavation() {

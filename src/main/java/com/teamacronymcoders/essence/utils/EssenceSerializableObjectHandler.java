@@ -1,16 +1,25 @@
 package com.teamacronymcoders.essence.utils;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.datafixers.Dynamic;
+import com.mojang.datafixers.types.DynamicOps;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableModifier;
+import com.teamacronymcoders.essence.utils.helpers.EssenceJsonHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.*;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.state.IProperty;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.JsonUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceSerializableObjectHandler {
 
@@ -82,7 +91,7 @@ public class EssenceSerializableObjectHandler {
             JsonObject object = new JsonObject();
             object.addProperty("modifier", serializableModifier.getModifier().getRegistryName().toString());
             object.addProperty("level", serializableModifier.getLevel());
-            object.addProperty("compound", serializableModifier.getModifierData().toString());
+            object.addProperty("compound", serializableModifier.getModifierData() != null ? serializableModifier.modifierData.toString() : new CompoundNBT().toString());
             object.addProperty("operation", serializableModifier.getOperation().getName());
             array.add(object);
         }
@@ -106,5 +115,21 @@ public class EssenceSerializableObjectHandler {
             serializableModifiers[i] = new SerializableModifier(modifier, level, compound, operation);
         }
         return serializableModifiers;
+    }
+
+    public static void writeBlockState(PacketBuffer buffer, BlockState state) {
+        buffer.writeCompoundTag(NBTUtil.writeBlockState(state));
+    }
+
+    public static BlockState readBlockState(PacketBuffer buffer) {
+        return NBTUtil.readBlockState(buffer.readCompoundTag());
+    }
+
+    public static JsonElement writeBlockState(BlockState state) {
+        return EssenceJsonHelper.serializeBlockState(state);
+    }
+
+    public static BlockState readBlockState(JsonElement element) {
+        return EssenceJsonHelper.deserializeBlockState(element.getAsJsonObject());
     }
 }

@@ -15,7 +15,7 @@ public class EnchantedModifier extends ItemCosmeticCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).applyTextStyle(TextFormatting.LIGHT_PURPLE));
         return super.getRenderedText(instance);
     }

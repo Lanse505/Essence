@@ -31,9 +31,11 @@ public abstract class ItemCoreModifier extends Modifier<ItemStack> {
     public int getModifiedDurability(ItemStack stack, ModifierInstance<ItemStack> instance, int base) {
         return 0;
     }
+
     public float getModifiedEfficiency(ItemStack stack, ModifierInstance<ItemStack> instance, float base) {
         return 0;
     }
+
     public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance<ItemStack> instance, int base) {
         return 0;
     }

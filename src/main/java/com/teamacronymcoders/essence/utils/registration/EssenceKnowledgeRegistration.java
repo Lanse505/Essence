@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.utils.registration;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

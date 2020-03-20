@@ -1,4 +1,8 @@
 {
   "from": "minecraft:grass_block",
+  "to": {
+    "block": "minecraft:grass_path",
+    "properties": {}
+  },
   "type": "essence:shovel_pathing"
 }

@@ -18,7 +18,7 @@ import java.util.List;
 public class RainbowModifier extends ItemInteractionCoreModifier {
 
     @Override
-    public List<ItemStack> onSheared(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance instance) {
+    public List<ItemStack> onSheared(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance<ItemStack> instance) {
         if (sheared instanceof SheepEntity) {
             List<ItemStack> modifiedList = new ArrayList<>();
             for (ItemStack s : stackList) {

@@ -7,7 +7,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +31,8 @@ public class Knowledge<T> extends ForgeRegistryEntry<Knowledge<?>> implements IN
         Collections.addAll(this.modifierInstances, modifiers);
     }
 
-    public Knowledge() {}
+    public Knowledge() {
+    }
 
     @Override
     public CompoundNBT serializeNBT() {

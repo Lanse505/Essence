@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.core.impl.block;
 
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
-import com.teamacronymcoders.essence.api.holder.IModifierHolder;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,7 +16,8 @@ public class BlockModifierProvider implements ICapabilityProvider, ICapabilitySe
     private BlockModifierHolder modifierHolder = new BlockModifierHolder();
     private LazyOptional<BlockModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
-    public BlockModifierProvider() {}
+    public BlockModifierProvider() {
+    }
 
     @Nonnull
     @Override

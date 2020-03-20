@@ -34,7 +34,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance<ItemStack> instance) {
         if (state.getBlock().isIn(this.type.getBlockTag())) {
             if (miner instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) miner;
@@ -92,7 +92,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
         textComponents.add(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("cascading.type." + this.type.getName()).applyTextStyles(this.type.getFormatting())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;

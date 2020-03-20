@@ -2,9 +2,10 @@ package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
@@ -19,11 +20,13 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -32,31 +35,29 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     private static final Set<Block> EFFECTIVE_ON = mergeSet(AxeItem.EFFECTIVE_ON, PickaxeItem.EFFECTIVE_ON, ShovelItem.EFFECTIVE_ON);
     private static final List<Item> tools = new ArrayList<>(Arrays.asList(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_SHOVEL));
-
-
-    public static Set<Block> mergeSet(Set<Block> a, Set<Block> b, Set<Block> c) {
-        return new HashSet<Block>() {{
-            addAll(a);
-            addAll(b);
-            addAll(c);
-        }
-        };
-    }
-
     private final EssenceToolTiers tier;
     private final int baseModifiers;
     private int freeModifiers;
     private int additionalModifiers;
-
     public EssenceOmniTool(EssenceToolTiers tier) {
         super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity())
-                .addToolType(ToolType.AXE, tier.getHarvestLevel())
-                .addToolType(ToolType.PICKAXE, tier.getHarvestLevel())
-                .addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
+            .addToolType(ToolType.AXE, tier.getHarvestLevel())
+            .addToolType(ToolType.PICKAXE, tier.getHarvestLevel())
+            .addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
         this.tier = tier;
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
+    }
+
+    public static Set<Block> mergeSet(Set<Block> a, Set<Block> b, Set<Block> c) {
+        return new HashSet<Block>() {
+            {
+                addAll(a);
+                addAll(b);
+                addAll(c);
+            }
+        };
     }
 
     @Override
@@ -95,7 +96,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     @Override
     public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
         if (isRecursive) {
-            onItemBehaviour(context);
+            return onItemBehaviour(context);
         }
         return onItemUse(context);
     }
@@ -202,5 +203,14 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     @Override
     public Class<ItemStack> getType() {
         return ItemStack.class;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (!stack.isEmpty() && nbt != null) {
+            return new ItemModifierProvider(stack, nbt);
+        }
+        return new ItemModifierProvider();
     }
 }

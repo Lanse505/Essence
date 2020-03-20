@@ -37,7 +37,7 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
         }
         if (object instanceof IModified && ((IModified) object).getType() == type) {
             IModified<T> modified = (IModified<T>) object;
-            for (ModifierInstance<T>  instance : instances) {
+            for (ModifierInstance<T> instance : instances) {
                 if (instance.getModifier().getType() == type) {
                     if (!modifiers.contains(instance)) {
                         modifiers.add(instance);
@@ -101,7 +101,7 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
                         int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
                         instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
                         if (x < y) {
-                            modified.decreaseFreeModifiers(y-x);
+                            modified.decreaseFreeModifiers(y - x);
                         }
                     }
                 });
@@ -136,7 +136,7 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
                         int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
                         instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
                         if (x < y) {
-                            modified.decreaseFreeModifiers(y-x);
+                            modified.decreaseFreeModifiers(y - x);
                         }
                     }
                 });
@@ -235,7 +235,7 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
             IModified<T> modified = (IModified<T>) object;
             List<ModifierInstance<T>> sim = this.modifiers;
             sim.stream()
-                .filter(instance ->  Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
+                .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
                 .forEach(instance -> {
                     if (instance.getModifier().getType() == type) {
                         instance.setLevel(level);
@@ -251,8 +251,12 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
                     if (instance.getModifier().getType() == type) {
                         int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
                         instance.setLevel(level);
-                        if (x > 0) modified.addModifierWithoutIncreasingAdditional(x);
-                        if (x < 0) modified.decreaseFreeModifiers(x);
+                        if (x > 0) {
+                            modified.addModifierWithoutIncreasingAdditional(x);
+                        }
+                        if (x < 0) {
+                            modified.decreaseFreeModifiers(x);
+                        }
                     }
                 });
             return true;
@@ -266,7 +270,7 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
             IModified<T> modified = (IModified<T>) object;
             List<ModifierInstance<T>> sim = this.modifiers;
             sim.stream()
-                .filter(instance ->  Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
+                .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
                 .forEach(instance -> {
                     if (instance.getModifier().getType() == type) {
                         instance.setLevel(level);
@@ -282,8 +286,12 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
                     if (instance.getModifier().getType() == type) {
                         int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
                         instance.setLevel(level);
-                        if (x > 0) modified.addModifierWithoutIncreasingAdditional(x);
-                        if (x < 0) modified.decreaseFreeModifiers(x);
+                        if (x > 0) {
+                            modified.addModifierWithoutIncreasingAdditional(x);
+                        }
+                        if (x < 0) {
+                            modified.decreaseFreeModifiers(x);
+                        }
                     }
                 });
             return true;
@@ -309,9 +317,9 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
     @Override
     public ListNBT serializeNBT() {
         final ListNBT listNBT = new ListNBT();
-            for (ModifierInstance<T> instance : modifiers) {
-                listNBT.add(instance.serializeNBT());
-            }
+        for (ModifierInstance<T> instance : modifiers) {
+            listNBT.add(instance.serializeNBT());
+        }
         return listNBT;
     }
 

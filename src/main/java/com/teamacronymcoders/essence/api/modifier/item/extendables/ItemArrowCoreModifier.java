@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.item.ItemStack;
 
 public abstract class ItemArrowCoreModifier extends ItemCoreModifier {
 
@@ -19,5 +20,5 @@ public abstract class ItemArrowCoreModifier extends ItemCoreModifier {
         super(maxLevel, minLevel);
     }
 
-    public abstract void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance);
+    public abstract void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance);
 }

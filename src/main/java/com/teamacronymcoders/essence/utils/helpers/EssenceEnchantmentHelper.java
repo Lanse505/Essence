@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemEnchantmentCoreModifier;
 import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
@@ -32,6 +31,40 @@ public class EssenceEnchantmentHelper {
         CompoundNBT stackNBT = stack.getOrCreateTag();
         ListNBT enchantments = stack.getEnchantmentTagList();
         int level = instance.getLevel() * multiplier;
+        if (!enchantments.isEmpty()) {
+            Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
+                .mapToObj(enchantments::getCompound)
+                .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) <= level).findAny();
+            if (nbtOptional.isPresent()) {
+                if (nbtOptional.get().getInt(lvl) != level) {
+                    nbtOptional.get().putInt(lvl, level);
+                }
+            } else {
+                CompoundNBT nbt = new CompoundNBT();
+                nbt.putString(id, enchantment.getRegistryName().toString());
+                nbt.putInt(lvl, level);
+                enchantments.add(nbt);
+            }
+        } else {
+            CompoundNBT nbt = new CompoundNBT();
+            nbt.putString(id, enchantment.getRegistryName().toString());
+            nbt.putInt(lvl, level);
+            enchantments.add(nbt);
+            stackNBT.put(enchantment_list, enchantments);
+        }
+    }
+
+    /**
+     * Either creates a new enchantment matching the values of "enchantment" and "level.
+     * Or grabs the current matching enchantment and updates the level to match the value of "level"
+     *
+     * @param stack       The ItemStack to Enchant
+     * @param enchantment The Enchantment to add
+     */
+    public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance) {
+        CompoundNBT stackNBT = stack.getOrCreateTag();
+        ListNBT enchantments = stack.getEnchantmentTagList();
+        int level = instance.getLevel();
         if (!enchantments.isEmpty()) {
             Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
                 .mapToObj(enchantments::getCompound)

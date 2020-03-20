@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.serializable.recipe.tool;
 
-import com.google.common.collect.ImmutableMap;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;

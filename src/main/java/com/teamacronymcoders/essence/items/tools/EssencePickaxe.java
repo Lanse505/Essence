@@ -2,10 +2,12 @@ package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -16,11 +18,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,6 +43,49 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
+        if (this.isInGroup(group)) {
+            ItemStack stack;
+            stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.EXPANDER_MODIFIER.get(), 2, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.LUCK_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
+            ));
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.EXPANDER_MODIFIER.get(), 2, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.SILK_TOUCH_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
+            ));
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.CASCADING_VEIN_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.SILK_TOUCH_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
+            ));
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+            stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.CASCADING_VEIN_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.SILK_TOUCH_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
+            ));
+            if (!list.contains(stack)) {
+                list.add(stack);
+            }
+        }
     }
 
     @Override
@@ -157,5 +205,14 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
     @Override
     public Class<ItemStack> getType() {
         return ItemStack.class;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (!stack.isEmpty() && nbt != null) {
+            return new ItemModifierProvider(stack, nbt);
+        }
+        return new ItemModifierProvider();
     }
 }

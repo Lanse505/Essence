@@ -7,7 +7,9 @@ import com.teamacronymcoders.essence.utils.config.subconfigs.EssenceTreeGenConfi
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.Placement;
@@ -43,13 +45,13 @@ public class EssenceGeneration {
                     treeGenConfig.getNormalVariant().getExtraChance().get().floatValue(),
                     treeGenConfig.getNormalVariant().getExtraCount().get()));
         }
-       if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
-           addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG,
-               new AtSurfaceWithExtraConfig(
-                   0,
-                   treeGenConfig.getFancyVariant().getExtraChance().get().floatValue(),
-                   treeGenConfig.getFancyVariant().getExtraCount().get()));
-       }
+        if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
+            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG,
+                new AtSurfaceWithExtraConfig(
+                    0,
+                    treeGenConfig.getFancyVariant().getExtraChance().get().floatValue(),
+                    treeGenConfig.getFancyVariant().getExtraCount().get()));
+        }
     }
 
     private static void addTreeGeneration(BiomeDictionary.Type type, Feature<TreeFeatureConfig> feature, TreeFeatureConfig config, AtSurfaceWithExtraConfig treeConfig, BiomeDictionary.Type... filteringTypes) {

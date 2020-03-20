@@ -2,9 +2,9 @@ package com.teamacronymcoders.essence.utils.registration;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.modifier.curio.attribute.*;
 import com.teamacronymcoders.essence.modifier.item.arrow.BrewedModifier;
 import com.teamacronymcoders.essence.modifier.item.arrow.KeenModifier;
-import com.teamacronymcoders.essence.modifier.curio.attribute.*;
 import com.teamacronymcoders.essence.modifier.item.cosmetic.EnchantedModifier;
 import com.teamacronymcoders.essence.modifier.item.enchantment.*;
 import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedModifier;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class EssenceModifierRegistration {
-    private static final DeferredRegister<Modifier<?>> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<Modifier<?>>(EssenceRegistries.MODIFIER, Essence.MODID);
+    private static final DeferredRegister<Modifier<?>> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<>(EssenceRegistries.MODIFIER, Essence.MODID);
 
     // Modifier RegistryObjects
     // Arrow Modifiers

@@ -60,11 +60,11 @@ public class EssenceWorldHelper {
 
     public static Set<Biome> getBiomes(BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
         Set<Biome> biomes = BiomeDictionary.getBiomes(type);
-        if(filterTypes.length == 0) {
+        if (filterTypes.length == 0) {
             return biomes;
         }
         Set<Biome> filtering = new HashSet<>(biomes);
-        for (BiomeDictionary.Type fType: filterTypes) {
+        for (BiomeDictionary.Type fType : filterTypes) {
             Set<Biome> filterBiomes = BiomeDictionary.getBiomes(fType);
             filtering.retainAll(filterBiomes);
         }
@@ -73,11 +73,11 @@ public class EssenceWorldHelper {
 
     public static Set<Biome> getBiomes(BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
         Set<Biome> biomes = BiomeDictionary.getBiomes(type);
-        if(filterTypes.size() == 0) {
+        if (filterTypes.size() == 0) {
             return biomes;
         }
         Set<Biome> filtering = new HashSet<>(biomes);
-        for (BiomeDictionary.Type fType: filterTypes) {
+        for (BiomeDictionary.Type fType : filterTypes) {
             Set<Biome> filterBiomes = BiomeDictionary.getBiomes(fType);
             filtering.retainAll(filterBiomes);
         }

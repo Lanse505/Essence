@@ -59,7 +59,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
     /**
      * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
      */
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<T> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
         if (instance == null) {
             return textComponents;
@@ -75,13 +75,14 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
     }
 
     @Override
-    public void update(CompoundNBT compoundNBT) {}
+    public void update(CompoundNBT compoundNBT) {
+    }
 
     public abstract boolean countsTowardsLimit(int level, T object);
+
     public abstract int getModifierCountValue(int level, T object);
 
     public abstract boolean canApplyOnObject(T object);
-
 
 
     public int getMinLevel(T object) {
@@ -94,9 +95,13 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
 
     public int getLevelInRange(int level, T object) {
         return Math.max(Math.min(level, this.getMaxLevel(object)), this.getMinLevel(object));
-    };
+    }
+
+    ;
 
     public Class<T> getType() {
         return type;
-    };
+    }
+
+    ;
 }

@@ -26,7 +26,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
         EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
     }
 
@@ -46,7 +46,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
         textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;

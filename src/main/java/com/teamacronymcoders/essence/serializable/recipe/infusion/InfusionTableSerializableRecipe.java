@@ -4,11 +4,16 @@ import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -18,6 +23,26 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
     public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
+
+    static {
+        RECIPES.add(new InfusionTableSerializableRecipe(
+            new ResourceLocation(Essence.MODID, "test_recipe_infusion"),
+            new Ingredient.TagList[] {
+                new Ingredient.TagList(ItemTags.WOOL),
+                new Ingredient.TagList(ItemTags.ANVIL),
+                new Ingredient.TagList(ItemTags.ARROWS)
+            },
+            new SerializableModifier[] {
+                new SerializableModifier(EssenceModifierRegistration.MENDING_MODIFIER.get(), 4, null, SerializableModifier.Operation.ADD),
+                new SerializableModifier(EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
+                    new EffectInstance(Effects.POISON, 200, 2, false, false),
+                    new EffectInstance(Effects.WITHER, 200, 2, false, false),
+                    new EffectInstance(Effects.GLOWING, 200, 2, false, false)
+                ), SerializableModifier.Operation.ADD)
+            },
+            2000
+        ));
+    }
 
     public Ingredient.IItemList[] inputList;
     public SerializableModifier[] modifiers;

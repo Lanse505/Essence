@@ -44,22 +44,22 @@ public abstract class ItemInteractionCoreModifier extends ItemAttributeModifier 
         super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
     }
 
-    public ActionResultType onItemUse(ItemUseContext context, ModifierInstance instance) {
+    public ActionResultType onItemUse(ItemUseContext context, ModifierInstance<ItemStack> instance) {
         return ActionResultType.PASS;
     }
 
-    public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance instance) {
+    public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance<ItemStack> instance) {
         return false;
     }
 
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance<ItemStack> instance) {
         return false;
     }
 
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
     }
 
-    public List<ItemStack> onSheared(ItemStack stack, @Nullable PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance instance) {
+    public List<ItemStack> onSheared(ItemStack stack, @Nullable PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance<ItemStack> instance) {
         return stackList;
     }
 

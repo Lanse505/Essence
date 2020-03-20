@@ -21,7 +21,6 @@ public class KnowledgeEvent extends PlayerEvent {
     }
 
 
-
     /**
      *
      */
@@ -41,7 +40,6 @@ public class KnowledgeEvent extends PlayerEvent {
             EssenceAdvancements.UNLOCK_KNOWLEDGE.trigger(player, knowledge);
         }
     }
-
 
 
     /**

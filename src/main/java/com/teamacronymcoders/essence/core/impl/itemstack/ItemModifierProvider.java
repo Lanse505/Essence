@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.core.impl.itemstack;
 
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
-import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,7 +20,8 @@ public class ItemModifierProvider implements ICapabilityProvider, ICapabilitySer
     private ItemStackModifierHolder modifierHolder = new ItemStackModifierHolder();
     private LazyOptional<ItemStackModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
-    public ItemModifierProvider() {}
+    public ItemModifierProvider() {
+    }
 
     public ItemModifierProvider(ItemStack stack, CompoundNBT nbt) {
         modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));

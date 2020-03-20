@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.items.tools.EssenceBow;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -29,10 +28,11 @@ public class BrewedModifier extends ItemArrowCoreModifier {
     public static final String TAG_EFFECTS = "Effects";
     private List<EffectInstance> effects = new ArrayList<>();
 
-    public BrewedModifier() {}
+    public BrewedModifier() {
+    }
 
     @Override
-    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
+    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance) {
         if (abstractArrowEntity instanceof ArrowEntity) {
             ArrowEntity arrowEntity = (ArrowEntity) abstractArrowEntity;
             for (EffectInstance effect : effects) {
@@ -61,7 +61,7 @@ public class BrewedModifier extends ItemArrowCoreModifier {
     }
 
     @Override
-    public List<ITextComponent> getRenderedText(ModifierInstance instance) {
+    public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
         final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();

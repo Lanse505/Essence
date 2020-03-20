@@ -1,4 +1,10 @@
 {
   "from": "minecraft:grass_path",
+  "to": {
+    "block": "minecraft:farmland",
+    "properties": {
+      "moisture": "0"
+    }
+  },
   "type": "essence:hoe_tilling"
 }

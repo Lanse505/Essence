@@ -14,7 +14,7 @@ public class KeenModifier extends ItemArrowCoreModifier {
     }
 
     @Override
-    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
+    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance) {
         if (velocity >= (1f - (0.25f * instance.getLevel()))) {
             abstractArrowEntity.setIsCritical(true);
         }

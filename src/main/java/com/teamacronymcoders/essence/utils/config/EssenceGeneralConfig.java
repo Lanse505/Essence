@@ -1,7 +1,5 @@
 package com.teamacronymcoders.essence.utils.config;
 
-import com.hrznstudio.titanium.annotation.config.ConfigFile;
-import com.hrznstudio.titanium.annotation.config.ConfigVal;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class EssenceGeneralConfig {

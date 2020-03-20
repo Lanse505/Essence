@@ -4,7 +4,10 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryManager;
 
 public class EssenceRegistries {
 
@@ -14,7 +17,7 @@ public class EssenceRegistries {
 
     public static IForgeRegistry<Modifier<?>> MODIFIER = RegistryManager.ACTIVE.getRegistry(Modifier.class);
     public static IForgeRegistry<Knowledge<?>> KNOWLEDGE = RegistryManager.ACTIVE.getRegistry(Knowledge.class);
-
+    
     @SuppressWarnings("unchecked")
     private static void init() {
         makeRegistry("modifier", Modifier.class).create();

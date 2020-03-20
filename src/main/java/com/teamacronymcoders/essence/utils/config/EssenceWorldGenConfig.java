@@ -9,10 +9,9 @@ import java.util.Objects;
 public class EssenceWorldGenConfig {
 
     private static EssenceWorldGenConfig instance;
-    private final ForgeConfigSpec spec;
-
     private static EssenceOreGenConfig oreGenConfig;
     private static EssenceTreeGenConfig treeGenConfig;
+    private final ForgeConfigSpec spec;
 
     public EssenceWorldGenConfig(ForgeConfigSpec.Builder builder) {
         builder.push("WorldGen");
@@ -32,15 +31,15 @@ public class EssenceWorldGenConfig {
         return Objects.requireNonNull(instance, "Called for Worldgen Config before it's Initialization");
     }
 
-    public ForgeConfigSpec getSpec() {
-        return spec;
-    }
-
     public static EssenceOreGenConfig getOreGenConfig() {
         return oreGenConfig;
     }
 
     public static EssenceTreeGenConfig getTreeGenConfig() {
         return treeGenConfig;
+    }
+
+    public ForgeConfigSpec getSpec() {
+        return spec;
     }
 }

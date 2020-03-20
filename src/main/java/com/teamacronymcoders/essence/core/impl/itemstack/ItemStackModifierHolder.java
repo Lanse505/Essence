@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.core.impl.itemstack;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.tool.IModified;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         }
         if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
             IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-            for (ModifierInstance<ItemStack>  instance : instances) {
+            for (ModifierInstance<ItemStack> instance : instances) {
                 if (instance.getModifier().getType() == getType()) {
                     if (!getModifierInstances().contains(instance)) {
                         getModifierInstances().add(instance);
@@ -95,7 +95,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
                         int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
                         instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
                         if (x < y) {
-                            modified.decreaseFreeModifiers(y-x);
+                            modified.decreaseFreeModifiers(y - x);
                         }
                     }
                 });
@@ -130,7 +130,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
                         int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
                         instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
                         if (x < y) {
-                            modified.decreaseFreeModifiers(y-x);
+                            modified.decreaseFreeModifiers(y - x);
                         }
                     }
                 });
@@ -229,7 +229,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
             IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
             List<ModifierInstance<ItemStack>> sim = getModifierInstances();
             sim.stream()
-                .filter(instance ->  Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
+                .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
                 .forEach(instance -> {
                     if (instance.getModifier().getType() == getType()) {
                         instance.setLevel(level);
@@ -245,8 +245,12 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
                     if (instance.getModifier().getType() == getType()) {
                         int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
                         instance.setLevel(level);
-                        if (x > 0) modified.addModifierWithoutIncreasingAdditional(x);
-                        if (x < 0) modified.decreaseFreeModifiers(x);
+                        if (x > 0) {
+                            modified.addModifierWithoutIncreasingAdditional(x);
+                        }
+                        if (x < 0) {
+                            modified.decreaseFreeModifiers(x);
+                        }
                     }
                 });
             return true;
@@ -260,7 +264,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
             IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
             List<ModifierInstance<ItemStack>> sim = getModifierInstances();
             sim.stream()
-                .filter(instance ->  Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
+                .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
                 .forEach(instance -> {
                     if (instance.getModifier().getType() == getType()) {
                         instance.setLevel(level);
@@ -276,8 +280,12 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
                     if (instance.getModifier().getType() == getType()) {
                         int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
                         instance.setLevel(level);
-                        if (x > 0) modified.addModifierWithoutIncreasingAdditional(x);
-                        if (x < 0) modified.decreaseFreeModifiers(x);
+                        if (x > 0) {
+                            modified.addModifierWithoutIncreasingAdditional(x);
+                        }
+                        if (x < 0) {
+                            modified.decreaseFreeModifiers(x);
+                        }
                     }
                 });
             return true;

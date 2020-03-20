@@ -1,4 +1,8 @@
 {
   "from": "minecraft:coarse_dirt",
+  "to": {
+    "block": "minecraft:grass_path",
+    "properties": {}
+  },
   "type": "essence:shovel_pathing"
 }
