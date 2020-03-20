@@ -1,7 +1,7 @@
-package com.teamacronymcoders.essence.api.modifier_new.item.extendables;
+package com.teamacronymcoders.essence.api.modifier.item.extendables;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier_new.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 

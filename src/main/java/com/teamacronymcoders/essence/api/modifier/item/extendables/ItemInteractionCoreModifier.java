@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier_new.item.extendables;
+package com.teamacronymcoders.essence.api.modifier.item.extendables;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import net.minecraft.block.BlockState;

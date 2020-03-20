@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier_new.core;
+package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
@@ -14,7 +14,29 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Modifier extends ForgeRegistryEntry<Modifier> implements IModifier {
+public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implements IModifier {
+
+    private final Class<T> type;
+    private final int maxLevel;
+    private int minLevel;
+
+    public Modifier(Class<T> type) {
+        this.type = type;
+        this.maxLevel = 1;
+        this.minLevel = 0;
+    }
+
+    public Modifier(Class<T> type, int maxLevel) {
+        this.type = type;
+        this.maxLevel = maxLevel;
+        this.minLevel = 0;
+    }
+
+    public Modifier(Class<T> type, int maxLevel, int minLevel) {
+        this.type = type;
+        this.maxLevel = maxLevel;
+        this.minLevel = minLevel;
+    }
 
     /**
      * @param modifier Modifier to check against
@@ -55,5 +77,26 @@ public class Modifier extends ForgeRegistryEntry<Modifier> implements IModifier 
     @Override
     public void update(CompoundNBT compoundNBT) {}
 
+    public abstract boolean countsTowardsLimit(int level, T object);
+    public abstract int getModifierCountValue(int level, T object);
 
+    public abstract boolean canApplyOnObject(T object);
+
+
+
+    public int getMinLevel(T object) {
+        return minLevel;
+    }
+
+    public int getMaxLevel(T object) {
+        return maxLevel;
+    }
+
+    public int getLevelInRange(int level, T object) {
+        return Math.max(Math.min(level, this.getMaxLevel(object)), this.getMinLevel(object));
+    };
+
+    public Class<T> getType() {
+        return type;
+    };
 }

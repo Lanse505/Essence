@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.modifier.item.rewrite.enchantment.strengthened;
+package com.teamacronymcoders.essence.modifier.item.enchantment.strengthened;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;

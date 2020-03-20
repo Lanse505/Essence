@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.api.modifier_new.item.extendables;
+package com.teamacronymcoders.essence.api.modifier.item.extendables;
 
-import com.teamacronymcoders.essence.api.modifier_new.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.item.ItemStack;
 
 public abstract class ItemCosmeticCoreModifier extends ItemCoreModifier {
@@ -20,5 +20,10 @@ public abstract class ItemCosmeticCoreModifier extends ItemCoreModifier {
     @Override
     public boolean countsTowardsLimit(int level, ItemStack stack) {
         return false;
+    }
+
+    @Override
+    public int getModifierCountValue(int level, ItemStack object) {
+        return 0;
     }
 }

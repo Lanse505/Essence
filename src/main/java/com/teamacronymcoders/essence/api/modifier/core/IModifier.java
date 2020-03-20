@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.modifier_new.core;
+package com.teamacronymcoders.essence.api.modifier.core;
 
 import net.minecraft.nbt.CompoundNBT;
 

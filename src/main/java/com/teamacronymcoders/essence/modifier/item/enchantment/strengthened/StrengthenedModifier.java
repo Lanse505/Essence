@@ -1,10 +1,8 @@
-package com.teamacronymcoders.essence.modifier.item.rewrite.enchantment.strengthened;
+package com.teamacronymcoders.essence.modifier.item.enchantment.strengthened;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.api.modifier_new.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier_new.item.ItemEnchantmentCoreModifier;
-import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedType;
+import com.teamacronymcoders.essence.api.modifier.core.IModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemEnchantmentCoreModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -54,7 +52,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
         return textComponents;
     }
 
-    public StrengthenedType getType() {
+    public StrengthenedType getStrengthenedType() {
         return type;
     }
 }

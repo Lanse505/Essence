@@ -1,9 +1,9 @@
-package com.teamacronymcoders.essence.api.modifier_new.item.extendables;
+package com.teamacronymcoders.essence.api.modifier.item.extendables;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier_new.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
@@ -63,5 +63,10 @@ public abstract class ItemAttributeModifier extends ItemCoreModifier {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, @Nullable LivingEntity wielder, ModifierInstance instance) {
         return this.modifiers.isEmpty() ? HashMultimap.create() : this.modifiers.get(this.getLevelInRange(instance.getLevel(), stack) - 1);
+    }
+
+    @Override
+    public int getLevelInRange(int level, ItemStack object) {
+        return 0;
     }
 }

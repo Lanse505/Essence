@@ -1,9 +1,9 @@
-package com.teamacronymcoders.essence.modifier.item.rewrite.interaction.cascading;
+package com.teamacronymcoders.essence.modifier.item.interaction.cascading;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier_new.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier_new.item.ItemInteractionCoreModifier;
-import com.teamacronymcoders.essence.modifier.item.rewrite.interaction.ExpanderModifier;
+import com.teamacronymcoders.essence.api.modifier.core.IModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
 import net.minecraft.block.Block;
@@ -82,8 +82,8 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     }
 
     @Override
-    public boolean canApplyOnItemStack(ItemStack stack) {
-        return stack.getItem().isIn(this.type.getToolTag());
+    public boolean canApplyOnObject(ItemStack object) {
+        return object.getItem().isIn(this.type.getToolTag());
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
         return textComponents;
     }
 
-    public CascadingType getType() {
+    public CascadingType getCascadingType() {
         return this.type;
     }
 }

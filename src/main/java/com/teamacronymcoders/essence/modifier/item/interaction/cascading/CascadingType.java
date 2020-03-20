@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.modifier.item.rewrite.interaction.cascading;
+package com.teamacronymcoders.essence.modifier.item.interaction.cascading;
 
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
