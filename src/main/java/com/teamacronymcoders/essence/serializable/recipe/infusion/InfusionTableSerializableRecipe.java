@@ -3,8 +3,8 @@ package com.teamacronymcoders.essence.serializable.recipe.infusion;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
@@ -93,13 +93,13 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     void resolveOperationBehaviour(ItemStack stack, SerializableModifier modifier) {
         switch (modifier.getOperation()) {
             case ADD:
-                EssenceModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getLevel(), modifier.getModifierData());
+                EssenceItemstackModifierHelpers.addModifier(stack, modifier.getModifier(), modifier.getLevel(), modifier.getModifierData());
             case REMOVE:
-                EssenceModifierHelpers.removeModifiers(stack, modifier.getModifier());
+                EssenceItemstackModifierHelpers.removeModifiers(stack, modifier.getModifier());
             case INCREMENT:
-                EssenceModifierHelpers.increaseModifierLevel(stack, new ModifierInstance(modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
+                EssenceItemstackModifierHelpers.increaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
             case DECREMENT:
-                EssenceModifierHelpers.decreaseModifierLevel(stack, new ModifierInstance(modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
+                EssenceItemstackModifierHelpers.decreaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
         }
     }
 

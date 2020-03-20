@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
-import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
-import com.teamacronymcoders.essence.modifier.arrow.ArrowCoreModifier;
-import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
+import com.teamacronymcoders.essence.api.holder.IModifierHolder;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.modifier.item.arrow.BrewedModifier;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +23,7 @@ import java.util.List;
 public class EssenceBowHelper {
 
     public static AbstractArrowEntity getArrowEntity(World world, ItemStack bow, ItemStack arrow, PlayerEntity player, float arrowVelocity) {
-        final List<ModifierInstance> instances = bow.getCapability(EssenceCapabilities.MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance<ItemStack>> instances = bow.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
 
         // Flag for if the Bow has Modifiers && has Infinity
         boolean baseCodeCheck = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
@@ -34,8 +34,8 @@ public class EssenceBowHelper {
 
         // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
         instances.stream()
-            .filter(instance -> instance.getModifier() instanceof ArrowCoreModifier)
-            .forEach(instance -> ((ArrowCoreModifier) instance.getModifier()).alterArrowEntity(abstractArrowEntity, player, arrowVelocity, instance));
+            .filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)
+            .forEach(instance -> ((ItemArrowCoreModifier) instance.getModifier()).alterArrowEntity(abstractArrowEntity, player, arrowVelocity, instance));
 
         abstractArrowEntity.shoot(player, player.rotationPitch, player.rotationYaw, 0f, arrowVelocity * 3f, 1f);
         if (baseCodeCheck || player.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {

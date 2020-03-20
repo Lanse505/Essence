@@ -3,11 +3,12 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,13 +19,11 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -45,7 +44,9 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     }
 
     private final EssenceToolTiers tier;
-    private final int freeModifiers;
+    private final int baseModifiers;
+    private int freeModifiers;
+    private int additionalModifiers;
 
     public EssenceOmniTool(EssenceToolTiers tier) {
         super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity())
@@ -53,13 +54,9 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
                 .addToolType(ToolType.PICKAXE, tier.getHarvestLevel())
                 .addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
         this.tier = tier;
+        this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ModifierProvider(tier);
+        this.additionalModifiers = 0;
     }
 
     @Override
@@ -120,7 +117,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+        return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
     }
 
     @Override
@@ -166,4 +163,44 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
         addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
     }
 
+    @Override
+    public void addModifierWithoutIncreasingAdditional(int increase) {
+        freeModifiers += increase;
+    }
+
+    @Override
+    public void increaseFreeModifiers(int increase) {
+        freeModifiers += increase;
+        additionalModifiers += increase;
+    }
+
+    @Override
+    public boolean decreaseFreeModifiers(int decrease) {
+        if (freeModifiers - decrease < 0) {
+            return false;
+        }
+        freeModifiers = freeModifiers - decrease;
+        return true;
+    }
+
+    @Override
+    public int getFreeModifiers() {
+        return freeModifiers;
+    }
+
+    @Override
+    public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+        int cmc = 0;
+        for (ModifierInstance<ItemStack> instance : modifierInstances) {
+            if (instance.getModifier() instanceof ItemCoreModifier) {
+                cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+            }
+        }
+        return cmc <= baseModifiers + additionalModifiers;
+    }
+
+    @Override
+    public Class<ItemStack> getType() {
+        return ItemStack.class;
+    }
 }

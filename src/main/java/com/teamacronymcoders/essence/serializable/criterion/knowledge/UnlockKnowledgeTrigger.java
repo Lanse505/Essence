@@ -16,7 +16,7 @@ public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowle
         super(new ResourceLocation(Essence.MODID, "knowledge"), UnlockKnowledgeListerners::new);
     }
 
-    public void trigger(ServerPlayerEntity playerEntity, Knowledge knowledge) {
+    public void trigger(ServerPlayerEntity playerEntity, Knowledge<?> knowledge) {
         UnlockKnowledgeListerners listerners = this.getListeners(playerEntity.getAdvancements());
         if (listerners != null) {
             listerners.trigger(knowledge);
@@ -27,7 +27,7 @@ public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowle
     public UnlockKnowledgeCriterionInstance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         if (json.has("knowledge_id")) {
             String knowledgeID = json.get("knowledge_id").getAsString();
-            Knowledge knowledge = EssenceRegistries.KNOWLEDGE_REGISTRY.getValue(new ResourceLocation(knowledgeID));
+            Knowledge<?> knowledge = EssenceRegistries.KNOWLEDGE.getValue(new ResourceLocation(knowledgeID));
             if (knowledge != null) {
                 return new UnlockKnowledgeCriterionInstance(knowledge);
             }

@@ -2,10 +2,10 @@ package com.teamacronymcoders.essence.items.tools.misc;
 
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IBlockSource;
@@ -34,7 +34,7 @@ public class EssenceDispenseBehaviours {
             @SuppressWarnings("deprecation")
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                ModifierInstance instance = EssenceModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
+                ModifierInstance instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos sourcePos = source.getBlockPos();

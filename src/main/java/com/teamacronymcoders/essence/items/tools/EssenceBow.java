@@ -3,10 +3,11 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,14 +20,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -38,12 +37,16 @@ import java.util.function.Predicate;
 public class EssenceBow extends BowItem implements IModifiedTool {
 
     private final EssenceToolTiers tier;
-    private final int freeModifiers;
+    private final int baseModifiers;
+    private int freeModifiers;
+    private int additionalModifiers;
 
     public EssenceBow(EssenceToolTiers tier) {
         super(new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
+        this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
+        this.additionalModifiers = 0;
         this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pull"), (stack, world, livingEntity) -> {
             if (livingEntity == null) {
                 return 0.0F;
@@ -52,12 +55,6 @@ public class EssenceBow extends BowItem implements IModifiedTool {
             }
         });
         this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ModifierProvider(tier);
     }
 
     /**
@@ -179,7 +176,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+        return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
     }
 
     @Override
@@ -230,4 +227,46 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
         return ActionResultType.PASS;
     }
+
+    @Override
+    public void addModifierWithoutIncreasingAdditional(int increase) {
+        freeModifiers += increase;
+    }
+
+    @Override
+    public void increaseFreeModifiers(int increase) {
+        freeModifiers += increase;
+        additionalModifiers += increase;
+    }
+
+    @Override
+    public boolean decreaseFreeModifiers(int decrease) {
+        if (freeModifiers - decrease < 0) {
+            return false;
+        }
+        freeModifiers = freeModifiers - decrease;
+        return true;
+    }
+
+    @Override
+    public int getFreeModifiers() {
+        return freeModifiers;
+    }
+
+    @Override
+    public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+        int cmc = 0;
+        for (ModifierInstance<ItemStack> instance : modifierInstances) {
+            if (instance.getModifier() instanceof ItemCoreModifier) {
+                cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+            }
+        }
+        return cmc <= baseModifiers + additionalModifiers;
+    }
+
+    @Override
+    public Class<ItemStack> getType() {
+        return ItemStack.class;
+    }
+
 }

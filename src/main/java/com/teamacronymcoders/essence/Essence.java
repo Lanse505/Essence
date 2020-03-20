@@ -8,15 +8,18 @@ import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.knowledge.*;
-import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierHolder;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
+import com.teamacronymcoders.essence.api.tool.IModified;
+import com.teamacronymcoders.essence.api.holder.IModifierHolder;
+import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
 import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
+import com.teamacronymcoders.essence.core.impl.block.BlockModifierHolder;
+import com.teamacronymcoders.essence.core.impl.block.BlockModifierProvider;
+import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
+import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.generation.EssenceGeneration;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
 import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
@@ -38,10 +41,11 @@ import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.utils.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -169,7 +173,8 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
-        CapabilityManager.INSTANCE.register(IModifierHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), ModifierHolder::new);
+        CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
+        CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
         EssenceGeneration.addFeaturesToWorldGen();
         EssenceDispenseBehaviours.init();
@@ -212,6 +217,20 @@ public class Essence extends ModuleController {
 
         // Capability Handlers
         EventManager.forge(AttachCapabilitiesEvent.class)
+            .filter(attach -> attach.getObject() instanceof ItemStack)
+            .process(attach -> {
+                if (attach.getObject() instanceof IModified) {
+                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemModifierProvider());
+                }
+            }).subscribe();
+        EventManager.forge(AttachCapabilitiesEvent.class)
+            .filter(attach -> attach.getObject() instanceof Block)
+            .process(attach -> {
+                if (attach.getObject() instanceof IModified) {
+                    attach.addCapability(new ResourceLocation(MODID, "block_modifier_holder"), new BlockModifierProvider());
+                }
+            }).subscribe();
+        EventManager.forge(AttachCapabilitiesEvent.class)
             .filter(attach -> attach.getObject() instanceof Entity)
             .process(attach -> {
                 if (attach.getObject() instanceof PlayerEntity) {
@@ -232,7 +251,7 @@ public class Essence extends ModuleController {
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;
-                boolean hasRainbow = EssenceModifierHelpers.hasRainbowModifier(color.getStack());
+                boolean hasRainbow = EssenceItemstackModifierHelpers.hasRainbowModifier(color.getStack());
                 if (isShear && hasRainbow) {
                     EssenceShear shear = (EssenceShear) color.getStack().getItem();
                     int rainbowVal = shear.getRainbowVal();

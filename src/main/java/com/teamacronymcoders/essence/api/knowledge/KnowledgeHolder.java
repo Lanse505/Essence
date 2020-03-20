@@ -14,14 +14,14 @@ import java.util.List;
 
 public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListNBT> {
 
-    private List<Knowledge> knowledge;
+    private List<Knowledge<?>> knowledge;
 
     public KnowledgeHolder() {
         this.knowledge = new ArrayList<>();
     }
 
     @Override
-    public void addKnowledge(PlayerEntity player, Knowledge... knowledge) {
+    public void addKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
         ServerPlayerEntity serverPlayer = null;
         if (player instanceof ServerPlayerEntity) {
             serverPlayer = (ServerPlayerEntity) player;
@@ -41,19 +41,19 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     }
 
     @Override
-    public void removeKnowledge(PlayerEntity player, Knowledge... knowledge) {
-        for (Knowledge instance : knowledge) {
+    public void removeKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
+        for (Knowledge<?> instance : knowledge) {
             MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
             this.knowledge.remove(instance);
         }
     }
 
     @Override
-    public Knowledge[] getKnowledge() {
-        return (Knowledge[]) this.knowledge.toArray();
+    public Knowledge<?>[] getKnowledge() {
+        return (Knowledge<?>[]) this.knowledge.toArray();
     }
 
-    public List<Knowledge> getKnowledgeAsList() {
+    public List<Knowledge<?>> getKnowledgeAsList() {
         return this.knowledge;
     }
 
@@ -65,7 +65,7 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     @Override
     public ListNBT serializeNBT() {
         final ListNBT listNBT = new ListNBT();
-        for (Knowledge knowledge : knowledge) {
+        for (Knowledge<?> knowledge : knowledge) {
             listNBT.add(knowledge.serializeNBT());
         }
         return listNBT;
@@ -75,7 +75,7 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
     public void deserializeNBT(ListNBT nbt) {
         for (int i = 0; i < nbt.size(); i++) {
             final CompoundNBT compoundNBT = nbt.getCompound(i);
-            final Knowledge knowledge = new Knowledge();
+            final Knowledge<?> knowledge = new Knowledge();
             knowledge.deserializeNBT(compoundNBT);
             if (this.knowledge.stream().noneMatch(tracked -> tracked == knowledge)) {
                 this.knowledge.add(knowledge);

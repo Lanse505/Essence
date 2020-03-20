@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
-import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
+import com.teamacronymcoders.essence.api.holder.IModifierHolder;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.advancements.criterion.MinMaxBounds;
@@ -49,7 +49,7 @@ public class SerializableModifierPredicateObject {
     public static SerializableModifierPredicateObject deserializer(@Nullable JsonElement element) {
         if (element != null && !element.isJsonNull()) {
             JsonObject object = element.getAsJsonObject();
-            Modifier modifier = EssenceRegistries.MODIFIER_REGISTRY.getValue(new ResourceLocation(object.get("modifier").getAsString()));
+            Modifier<?> modifier = EssenceRegistries.MODIFIER.getValue(new ResourceLocation(object.get("modifier").getAsString()));
             return new SerializableModifierPredicateObject(modifier, MinMaxBounds.IntBound.fromJson(object.get("level")));
         }
         return ANY;
@@ -65,7 +65,7 @@ public class SerializableModifierPredicateObject {
     }
 
     public boolean test(ItemStack stack) {
-        final List<ModifierInstance> instances = stack.getCapability(EssenceCapabilities.MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance<ItemStack>> instances = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
         final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
         return !(this.level == null || this.level.isUnbounded()) && this.level.test(level);
     }

@@ -1,12 +1,8 @@
-package com.teamacronymcoders.essence.api.modifier.core;
+package com.teamacronymcoders.essence.api.modifier_new.core;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -18,79 +14,15 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Modifier extends ForgeRegistryEntry<Modifier> {
-
-    private static final Multimap<String, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
-    private ResourceLocation resourceLocation;
-
-
-    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, ModifierInstance instance) {
-        return EMPTY_ATTRIBUTE_MAP;
-    }
-
-    /**
-     * @return Returns the Max Level of the Modifier.
-     */
-    public int getMaxLevel(ItemStack stack) {
-        return 1;
-    }
-
-
-    /**
-     * @return Returns the Min level of the Modifier.
-     */
-    public int getMinLevel(ItemStack stack) {
-        return 0;
-    }
-
-    /**
-     * @param stack The ItemStack that holds the Modifier.
-     * @param level Level of Modifier.
-     * @return Returns a boolean, equal to if the Modifier should count towards the Max Amount.
-     */
-    public boolean countsTowardsLimit(ItemStack stack, int level) {
-        return true;
-    }
-
-    /**
-     * @return Returns how many modifiers, this modifier counts towards
-     */
-    public int getModifierCountValue(ItemStack stack, int level) {
-        return 1;
-    }
-
-    /**
-     * @param level The current level.
-     * @return Gets the minimum value, and caps it at 0.
-     */
-    public int getLevelInRange(int level, ItemStack stack) {
-        return Math.max(Math.min(level, this.getMaxLevel(stack)), this.getMinLevel(stack));
-    }
-
-    /**
-     * @param stack The ItemStack that will hold the Modifier.
-     * @return Returns if the Modifier can be applied to the ItemStack.
-     */
-    public boolean canApplyOnItemStack(ItemStack stack) {
-        return true;
-    }
+public class Modifier extends ForgeRegistryEntry<Modifier> implements IModifier {
 
     /**
      * @param modifier Modifier to check against
      * @return Returns if the provided Modifier can be applied with this one.
      */
-    public boolean canApplyTogether(Modifier modifier) {
+    @Override
+    public boolean canApplyTogether(IModifier modifier) {
         return true;
-    }
-
-    /**
-     * This returns a boolean check against both Modifiers not just this Modifier.
-     *
-     * @param modifier Modifier to check against.
-     * @return Returns the final value if this can be applied together with the other Modifier.
-     */
-    public final boolean isCompatibleWith(Modifier modifier) {
-        return this.canApplyTogether(modifier) && modifier.canApplyTogether(this);
     }
 
     /**
@@ -119,5 +51,9 @@ public class Modifier extends ForgeRegistryEntry<Modifier> {
         textComponents.add(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(instance.getLevel())).applyTextStyle(TextFormatting.GRAY));
         return textComponents;
     }
+
+    @Override
+    public void update(CompoundNBT compoundNBT) {}
+
 
 }

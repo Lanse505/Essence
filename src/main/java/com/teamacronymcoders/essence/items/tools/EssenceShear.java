@@ -3,13 +3,14 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
-import com.teamacronymcoders.essence.api.modifier.InteractionCoreModifier;
-import com.teamacronymcoders.essence.api.tool.modifierholder.IModifierHolder;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierInstance;
+import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.api.tool.modifierholder.ModifierProvider;
+import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.helpers.EssenceModifierHelpers;
+import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
@@ -41,20 +42,21 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import javax.annotation.Nullable;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     private EssenceToolTiers tier;
+    private final int baseModifiers;
+    private int freeModifiers;
+    private int additionalModifiers;
     private int rainbowVal = 0;
 
     public EssenceShear(EssenceToolTiers tier) {
         super(new Item.Properties().maxDamage(tier.getMaxUses()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ModifierProvider(tier);
+        this.baseModifiers = tier.getFreeModifiers();
+        this.freeModifiers = tier.getFreeModifiers();
+        this.additionalModifiers = 0;
     }
 
     private static List<ItemStack> handleShearingSheep(SheepEntity sheep, ItemStack item, IWorld world, BlockPos pos, int fortune) {
@@ -87,14 +89,25 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return EssenceModifierHelpers.hasEnchantedModifier(stack);
+        return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (!stack.isEmpty() && nbt != null) {
+            return new ItemModifierProvider(stack, nbt);
+        }
+        return new ItemModifierProvider();
     }
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            ItemStack stack = new ItemStack(EssenceObjectHolders.ESSENCE_SHEAR_EMPOWERED);
-            EssenceModifierHelpers.addModifier(stack, EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null);
+            items.add(new ItemStack(this));
+            ItemStack stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null)
+            ));
             if (!items.contains(stack)) {
                 items.add(stack);
             }
@@ -143,7 +156,6 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        //Essence.LOGGER.info(stack.getTag().toString());
         inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
     }
@@ -161,11 +173,17 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 List<ItemStack> dropList = sheared instanceof SheepEntity ? handleShearingSheep((SheepEntity) sheared, stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)) : target.onSheared(stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
 
                 // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
-                List<ModifierInstance> matchingEntries = stack.getCapability(EssenceCapabilities.MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+                List<? extends ModifierInstance<?>> unchecked = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+                List<ModifierInstance<ItemStack>> matchingEntries = new ArrayList<>();
+                for (ModifierInstance<?> instance : unchecked) {
+                    if (instance.getType() == ItemStack.class) {
+                        matchingEntries.add((ModifierInstance<ItemStack>) instance);
+                    }
+                }
 
                 // Loops over and Gathers the final modified list
-                for (ModifierInstance instance : matchingEntries) {
-                    InteractionCoreModifier interactionCoreModifier = (InteractionCoreModifier) instance.getModifier();
+                for (ModifierInstance<ItemStack> instance : matchingEntries) {
+                    ItemInteractionCoreModifier interactionCoreModifier = (ItemInteractionCoreModifier) instance.getModifier();
                     dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
                 }
 
@@ -205,5 +223,46 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     public void setRainbowVal(int rainbowVal) {
         this.rainbowVal = rainbowVal;
+    }
+
+    @Override
+    public void addModifierWithoutIncreasingAdditional(int increase) {
+        freeModifiers += increase;
+    }
+
+    @Override
+    public void increaseFreeModifiers(int increase) {
+        freeModifiers += increase;
+        additionalModifiers += increase;
+    }
+
+    @Override
+    public boolean decreaseFreeModifiers(int decrease) {
+        if (freeModifiers - decrease < 0) {
+            return false;
+        }
+        freeModifiers = freeModifiers - decrease;
+        return true;
+    }
+
+    @Override
+    public int getFreeModifiers() {
+        return freeModifiers;
+    }
+
+    @Override
+    public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+        int cmc = 0;
+        for (ModifierInstance<ItemStack> instance : modifierInstances) {
+            if (instance.getModifier() instanceof ItemCoreModifier) {
+                cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+            }
+        }
+        return cmc <= baseModifiers + additionalModifiers;
+    }
+
+    @Override
+    public Class<ItemStack> getType() {
+        return ItemStack.class;
     }
 }

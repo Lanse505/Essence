@@ -2,24 +2,24 @@ package com.teamacronymcoders.essence.utils.registration;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.modifier.arrow.BrewedModifier;
-import com.teamacronymcoders.essence.modifier.arrow.KeenModifier;
-import com.teamacronymcoders.essence.modifier.attribute.*;
-import com.teamacronymcoders.essence.modifier.cosmetic.EnchantedModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.*;
-import com.teamacronymcoders.essence.modifier.enchantment.strengthened.StrengthenedModifier;
-import com.teamacronymcoders.essence.modifier.enchantment.strengthened.StrengthenedType;
-import com.teamacronymcoders.essence.modifier.interaction.ExpanderModifier;
-import com.teamacronymcoders.essence.modifier.interaction.FieryModifier;
-import com.teamacronymcoders.essence.modifier.interaction.RainbowModifier;
-import com.teamacronymcoders.essence.modifier.interaction.cascading.CascadingModifier;
-import com.teamacronymcoders.essence.modifier.interaction.cascading.CascadingType;
+import com.teamacronymcoders.essence.modifier.item.arrow.BrewedModifier;
+import com.teamacronymcoders.essence.modifier.item.arrow.KeenModifier;
+import com.teamacronymcoders.essence.modifier.curio.attribute.*;
+import com.teamacronymcoders.essence.modifier.item.cosmetic.EnchantedModifier;
+import com.teamacronymcoders.essence.modifier.item.enchantment.*;
+import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedModifier;
+import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedType;
+import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
+import com.teamacronymcoders.essence.modifier.item.interaction.FieryModifier;
+import com.teamacronymcoders.essence.modifier.item.interaction.RainbowModifier;
+import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingModifier;
+import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class EssenceModifierRegistration {
-    private static final DeferredRegister<Modifier> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<>(EssenceRegistries.MODIFIER_REGISTRY, Essence.MODID);
+    private static final DeferredRegister<Modifier<?>> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<Modifier<?>>(EssenceRegistries.MODIFIER, Essence.MODID);
 
     // Modifier RegistryObjects
     // Arrow Modifiers
