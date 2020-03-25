@@ -192,7 +192,7 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
-        ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
+        //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
     }
 
     private void setupEventManagers() {

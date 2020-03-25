@@ -37,9 +37,7 @@ public class EssenceFurnaceWorkerBlock extends EssenceWorkerBlock<EssenceFurnace
 
     @Override
     public IFactory<EssenceFurnaceWorkerTile> getTileEntityFactory() {
-        BlockModifierHolder holder = new BlockModifierHolder();
-
-        return EssenceFurnaceWorkerTile.create();
+        return null;
     }
 
 }
