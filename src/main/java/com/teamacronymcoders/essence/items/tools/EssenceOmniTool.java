@@ -3,8 +3,8 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
@@ -39,6 +39,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     private final int baseModifiers;
     private int freeModifiers;
     private int additionalModifiers;
+
     public EssenceOmniTool(EssenceToolTiers tier) {
         super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity())
             .addToolType(ToolType.AXE, tier.getHarvestLevel())

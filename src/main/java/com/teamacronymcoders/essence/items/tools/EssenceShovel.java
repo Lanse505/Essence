@@ -3,8 +3,8 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
@@ -93,7 +93,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
                 }
             }
             return ActionResultType.SUCCESS;
-        } else  {
+        } else {
             return world.getRecipeManager().getRecipes().stream()
                 .filter(iRecipe -> iRecipe.getType() == ShovelPathingRecipe.SERIALIZER.getRecipeType())
                 .map(iRecipe -> (ShovelPathingRecipe) iRecipe)

@@ -25,7 +25,8 @@ public class PortableCrafterContainer extends WorkbenchContainer {
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity playerEntity) {}
+    public void onContainerClosed(PlayerEntity playerEntity) {
+    }
 
     @Override
     public boolean canInteractWith(PlayerEntity p_75145_1_) {

@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.api.modified;
 
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.modifier.block.BlockCoreModifier;
 import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
@@ -20,7 +19,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

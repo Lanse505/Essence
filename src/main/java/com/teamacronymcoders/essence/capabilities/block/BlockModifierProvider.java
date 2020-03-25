@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.core.capabilities.block;
+package com.teamacronymcoders.essence.capabilities.block;
 
-import com.teamacronymcoders.essence.core.capabilities.EssenceCoreCapabilities;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;

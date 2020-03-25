@@ -5,7 +5,6 @@ import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedBlock;
 import com.teamacronymcoders.essence.api.modifier.block.BlockCoreModifier;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.utils.tiers.IEssenceBaseTier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -49,7 +48,9 @@ public abstract class EssenceWorkerBlock<T extends ActiveTile<T>> extends BasicT
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
         ActionResultType result = ActionResultType.PASS;
         Optional<T> tile = getTile(worldIn, pos);
-        if (worldIn.isRemote() || !tile.isPresent()) return result;
+        if (worldIn.isRemote() || !tile.isPresent()) {
+            return result;
+        }
         result = tile.map(T -> {
             T.openGui(player);
             return ActionResultType.SUCCESS;

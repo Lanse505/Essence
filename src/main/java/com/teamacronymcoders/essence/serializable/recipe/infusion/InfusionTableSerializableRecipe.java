@@ -27,12 +27,12 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     static {
         RECIPES.add(new InfusionTableSerializableRecipe(
             new ResourceLocation(Essence.MODID, "test_recipe_infusion"),
-            new Ingredient.TagList[] {
+            new Ingredient.TagList[]{
                 new Ingredient.TagList(ItemTags.WOOL),
                 new Ingredient.TagList(ItemTags.ANVIL),
                 new Ingredient.TagList(ItemTags.ARROWS)
             },
-            new SerializableModifier[] {
+            new SerializableModifier[]{
                 new SerializableModifier(EssenceModifierRegistration.MENDING_MODIFIER.get(), 4, null, SerializableModifier.Operation.ADD),
                 new SerializableModifier(EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
                     new EffectInstance(Effects.POISON, 200, 2, false, false),

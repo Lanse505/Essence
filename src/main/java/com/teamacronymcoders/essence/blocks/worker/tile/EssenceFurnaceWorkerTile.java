@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.blocks.worker.tile;
 
-import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 

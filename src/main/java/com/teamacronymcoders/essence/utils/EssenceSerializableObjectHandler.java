@@ -1,25 +1,19 @@
 package com.teamacronymcoders.essence.utils;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceJsonHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.IProperty;
-import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.JsonUtils;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceSerializableObjectHandler {
 

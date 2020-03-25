@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.api.holder;
 
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.modified.IModified;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.INBTSerializable;

@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Potion;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -25,16 +24,15 @@ public class EssenceJsonHelper {
     /**
      * Credit for the following Methods goes to Darkhax and his library mod Bookshelf <3
      */
-    public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonObject json, String memberName, IForgeRegistry<T> registry) {
+    public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(JsonObject json, String memberName, IForgeRegistry<T> registry) {
         if (json.has(memberName)) {
             return getRegistryEntry(json.get(memberName), memberName, registry);
-        }
-        else {
+        } else {
             throw new JsonSyntaxException("Missing required value " + memberName);
         }
     }
 
-    public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry (JsonElement json, String memberName, IForgeRegistry<T> registry) {
+    public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(JsonElement json, String memberName, IForgeRegistry<T> registry) {
         if (json == null) {
             throw new JsonSyntaxException("The property " + memberName + " is missing.");
         }
@@ -45,25 +43,22 @@ public class EssenceJsonHelper {
                 final T registryEntry = registry.getValue(registryId);
                 if (registryEntry != null) {
                     return registryEntry;
-                }
-                else {
+                } else {
                     throw new JsonSyntaxException("No entry found for id " + rawId);
                 }
-            }
-            else {
+            } else {
                 throw new JsonSyntaxException("Registry id " + rawId + " for property " + memberName + " was not a valid format.");
             }
-        }
-        else {
+        } else {
             throw new JsonSyntaxException("Expected " + memberName + " to be a JSON primitive. was " + JSONUtils.toString(json));
         }
     }
 
-    public static Block getBlock (JsonObject json, String memberName) {
+    public static Block getBlock(JsonObject json, String memberName) {
         return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.BLOCKS);
     }
 
-    public static Effect getPotion (JsonObject json, String memberName) {
+    public static Effect getPotion(JsonObject json, String memberName) {
         return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.POTIONS);
     }
 
@@ -80,7 +75,7 @@ public class EssenceJsonHelper {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static BlockState deserializeBlockState (JsonObject json) {
+    public static BlockState deserializeBlockState(JsonObject json) {
         // Read the block from the forge registry.
         final Block block = getBlock(json, "block");
         // Start off with the default state.
@@ -141,7 +136,7 @@ public class EssenceJsonHelper {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static EffectInstance deserializeEffectInstance (JsonObject json) {
+    public static EffectInstance deserializeEffectInstance(JsonObject json) {
         // Read the effect from the forge registry.
         final Effect effect = getPotion(json, "effect");
         final int duration = json.get("duration").getAsInt();

@@ -2,7 +2,10 @@ package com.teamacronymcoders.essence.utils;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.blocks.*;
+import com.teamacronymcoders.essence.blocks.EssenceBlock;
+import com.teamacronymcoders.essence.blocks.EssenceBrickBlock;
+import com.teamacronymcoders.essence.blocks.EssenceCrystalOreBlock;
+import com.teamacronymcoders.essence.blocks.EssenceOreBlock;
 import com.teamacronymcoders.essence.blocks.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.blocks.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.blocks.wood.*;

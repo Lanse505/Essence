@@ -40,7 +40,7 @@ public class PortableCrafterContainerScreen extends ContainerScreen<PortableCraf
             this.recipeBookGui.initSearchBar(this.widthTooNarrow);
             this.recipeBookGui.toggleVisibility();
             this.guiLeft = this.recipeBookGui.updateScreenPosition(this.widthTooNarrow, this.width, this.xSize);
-            ((ImageButton)p_214076_1_).setPosition(this.guiLeft + 5, this.height / 2 - 49);
+            ((ImageButton) p_214076_1_).setPosition(this.guiLeft + 5, this.height / 2 - 49);
         }));
     }
 
@@ -70,7 +70,7 @@ public class PortableCrafterContainerScreen extends ContainerScreen<PortableCraf
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         this.font.drawString(this.title.getFormattedText(), 28.0F, 6.0F, 4210752);
-        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float)(this.ySize - 96 + 2), 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 96 + 2), 4210752);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class PortableCrafterContainerScreen extends ContainerScreen<PortableCraf
 
     @Override
     protected boolean hasClickedOutside(double p_195361_1_, double p_195361_3_, int p_195361_5_, int p_195361_6_, int p_195361_7_) {
-        boolean lvt_8_1_ = p_195361_1_ < (double)p_195361_5_ || p_195361_3_ < (double)p_195361_6_ || p_195361_1_ >= (double)(p_195361_5_ + this.xSize) || p_195361_3_ >= (double)(p_195361_6_ + this.ySize);
+        boolean lvt_8_1_ = p_195361_1_ < (double) p_195361_5_ || p_195361_3_ < (double) p_195361_6_ || p_195361_1_ >= (double) (p_195361_5_ + this.xSize) || p_195361_3_ >= (double) (p_195361_6_ + this.ySize);
         return this.recipeBookGui.func_195604_a(p_195361_1_, p_195361_3_, this.guiLeft, this.guiTop, this.xSize, this.ySize, p_195361_7_) && lvt_8_1_;
     }
 
