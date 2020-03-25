@@ -3,10 +3,10 @@ package com.teamacronymcoders.essence.serializable.loot.condition;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SerializableModifierPredicateObject {
     public static final SerializableModifierPredicateObject ANY = new SerializableModifierPredicateObject();
-    private final Modifier modifier;
+    private final Modifier<?> modifier;
     @Nullable
     private final MinMaxBounds.IntBound level;
 
@@ -27,7 +27,7 @@ public class SerializableModifierPredicateObject {
         this.level = MinMaxBounds.IntBound.UNBOUNDED;
     }
 
-    public SerializableModifierPredicateObject(Modifier modifier, @Nullable MinMaxBounds.IntBound level) {
+    public SerializableModifierPredicateObject(Modifier<?> modifier, @Nullable MinMaxBounds.IntBound level) {
         this.modifier = modifier;
         if (level == null) {
             this.level = MinMaxBounds.IntBound.UNBOUNDED;
@@ -55,7 +55,7 @@ public class SerializableModifierPredicateObject {
         return ANY;
     }
 
-    public Modifier getModifier() {
+    public Modifier<?> getModifier() {
         return modifier;
     }
 
@@ -65,7 +65,7 @@ public class SerializableModifierPredicateObject {
     }
 
     public boolean test(ItemStack stack) {
-        final List<ModifierInstance<ItemStack>> instances = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance<ItemStack>> instances = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
         final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
         return !(this.level == null || this.level.isUnbounded()) && this.level.test(level);
     }

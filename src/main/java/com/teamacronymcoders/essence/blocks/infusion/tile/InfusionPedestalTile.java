@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.blocks.tiles;
+package com.teamacronymcoders.essence.blocks.infusion.tile;
 
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
@@ -14,7 +14,7 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
     private InventoryComponent<InfusionPedestalTile> inventory;
 
     public InfusionPedestalTile() {
-        super(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL);
+        super(EssenceObjectHolders.INFUSION_PEDESTAL);
         addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1).setComponentHarness(this));
     }
 

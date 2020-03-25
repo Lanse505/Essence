@@ -1,9 +1,9 @@
-package com.teamacronymcoders.essence.blocks;
+package com.teamacronymcoders.essence.blocks.infusion;
 
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.blocks.tiles.InfusionTableTile;
+import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionTableTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

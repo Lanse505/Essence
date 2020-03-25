@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemEnchantmentCoreModifier;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

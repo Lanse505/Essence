@@ -11,18 +11,16 @@ import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
-import com.teamacronymcoders.essence.api.tool.IModified;
-import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
+import com.teamacronymcoders.essence.api.modified.IModified;
+import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
-import com.teamacronymcoders.essence.core.impl.block.BlockModifierHolder;
-import com.teamacronymcoders.essence.core.impl.block.BlockModifierProvider;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
-import com.teamacronymcoders.essence.generation.EssenceGeneration;
+import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
+import com.teamacronymcoders.essence.capabilities.block.BlockModifierProvider;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
-import com.teamacronymcoders.essence.items.tools.misc.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
@@ -45,7 +43,6 @@ import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpe
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
-import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.ScreenManager;
@@ -86,7 +83,6 @@ import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
 import java.awt.*;
 import java.util.Random;
-import java.util.UUID;
 
 @Mod("essence")
 public class Essence extends ModuleController {
@@ -100,11 +96,34 @@ public class Essence extends ModuleController {
         public boolean hasScrollbar() {
             return true;
         }
+
+        @Override
+        public void addIconStacks(ItemStack... icons) {
+            super.addIconStacks(
+                new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()),
+                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING),
+                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES),
+                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG),
+                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS)
+            );
+        }
     };
     public static final AdvancedTitaniumTab TOOL_TAB = new AdvancedTitaniumTab("essence_tools", true) {
         @Override
         public boolean hasScrollbar() {
             return true;
+        }
+
+        @Override
+        public void addIconStacks(ItemStack... icons) {
+            super.addIconStacks(
+                new ItemStack(EssenceObjectHolders.ESSENCE_AXE),
+                new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE),
+                new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL),
+                new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
+                new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
+                new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL)
+            );
         }
     };
 
@@ -122,28 +141,10 @@ public class Essence extends ModuleController {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
-        initFeatures(eventBus);
-        initModifiers(eventBus);
+        EssenceFeatureRegistration.register(eventBus);
+        EssenceModifierRegistration.register(eventBus);
         //initKnowledge(eventBus);
         setupEventManagers();
-        if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
-            LOGGER.info("Printing 10 new UUIDs to Log for Modifier-Use");
-            for (int i = 0; i < 10; i++) {
-                LOGGER.info(UUID.randomUUID());
-            }
-        }
-    }
-
-    private void initConfig() {
-
-    }
-
-    private void initFeatures(IEventBus eventBus) {
-        EssenceFeatureRegistration.register(eventBus);
-    }
-
-    private void initModifiers(IEventBus eventBus) {
-        EssenceModifierRegistration.register(eventBus);
     }
 
     private void initKnowledge(IEventBus eventBus) {
@@ -173,21 +174,24 @@ public class Essence extends ModuleController {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        CORE_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG), new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS));
-        TOOL_TAB.addIconStacks(new ItemStack(EssenceObjectHolders.ESSENCE_AXE), new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE), new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL), new ItemStack(EssenceObjectHolders.ESSENCE_SWORD), new ItemStack(EssenceObjectHolders.ESSENCE_HOE), new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
         CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
+
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
-        EssenceGeneration.addFeaturesToWorldGen();
-        EssenceDispenseBehaviours.init();
+
+        // TODO: Rework Worldgen Configs...
+        //EssenceGeneration.addFeaturesToWorldGen();
+
+        // TODO: Fix Dispenser Behaviour
+        //EssenceDispenseBehaviours.init();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
+        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
         ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
     }
 
@@ -223,7 +227,7 @@ public class Essence extends ModuleController {
             .filter(attach -> attach.getObject() instanceof ItemStack)
             .process(attach -> {
                 if (attach.getObject() instanceof IModified) {
-                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemModifierProvider());
+                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider());
                 }
             }).subscribe();
         EventManager.forge(AttachCapabilitiesEvent.class)
@@ -233,6 +237,7 @@ public class Essence extends ModuleController {
                     attach.addCapability(new ResourceLocation(MODID, "block_modifier_holder"), new BlockModifierProvider());
                 }
             }).subscribe();
+
         EventManager.forge(AttachCapabilitiesEvent.class)
             .filter(attach -> attach.getObject() instanceof Entity)
             .process(attach -> {
@@ -249,7 +254,6 @@ public class Essence extends ModuleController {
                     });
                 });
             }).subscribe();
-
         // Raindbow Tooltip Handler
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
@@ -269,5 +273,4 @@ public class Essence extends ModuleController {
                 }
             }).subscribe();
     }
-
 }

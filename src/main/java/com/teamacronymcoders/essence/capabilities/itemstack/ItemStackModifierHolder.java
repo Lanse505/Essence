@@ -1,9 +1,9 @@
-package com.teamacronymcoders.essence.core.impl.itemstack;
+package com.teamacronymcoders.essence.capabilities.itemstack;
 
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.api.tool.IModified;
+import com.teamacronymcoders.essence.api.modified.IModified;
 import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;

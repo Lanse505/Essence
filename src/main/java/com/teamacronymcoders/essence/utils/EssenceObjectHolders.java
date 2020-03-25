@@ -3,7 +3,10 @@ package com.teamacronymcoders.essence.utils;
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.blocks.*;
+import com.teamacronymcoders.essence.blocks.infusion.InfusionPedestalBlock;
+import com.teamacronymcoders.essence.blocks.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.blocks.wood.*;
+import com.teamacronymcoders.essence.blocks.worker.EssenceFurnaceWorkerBlock;
 import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
@@ -71,11 +74,13 @@ public class EssenceObjectHolders {
     @ObjectHolder("essence:essence_bricks_black")
     public static EssenceBrickBlock ESSENCE_BRICKS_BLACK;
 
+    @ObjectHolder("essence:furnace_worker")
+    public static EssenceFurnaceWorkerBlock FURNACE_WORKER_BLOCK;
 
     @ObjectHolder("essence:essence_infusion_table")
-    public static InfusionTableBlock ESSENCE_INFUSION_TABLE;
+    public static InfusionTableBlock INFUSION_TABLE;
     @ObjectHolder("essence:essence_infusion_pedestal")
-    public static InfusionPedestalBlock ESSENCE_INFUSION_PEDESTAL;
+    public static InfusionPedestalBlock INFUSION_PEDESTAL;
 
     @ObjectHolder("essence:essence_crystal")
     public static EssenceCrystal ESSENCE_INFUSED_CRYSTAL;

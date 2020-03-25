@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.core.impl.block;
+package com.teamacronymcoders.essence.core.capabilities.block;
 
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import net.minecraft.block.Block;

@@ -2,13 +2,13 @@ package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
+import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
@@ -97,9 +97,9 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         if (!stack.isEmpty() && nbt != null) {
-            return new ItemModifierProvider(stack, nbt);
+            return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemModifierProvider();
+        return new ItemStackModifierProvider();
     }
 
     @Override
@@ -174,7 +174,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
                 List<ItemStack> dropList = sheared instanceof SheepEntity ? handleShearingSheep((SheepEntity) sheared, stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)) : target.onSheared(stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
 
                 // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
-                List<? extends ModifierInstance<?>> unchecked = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+                List<? extends ModifierInstance<?>> unchecked = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
                 List<ModifierInstance<ItemStack>> matchingEntries = new ArrayList<>();
                 for (ModifierInstance<?> instance : unchecked) {
                     if (instance.getType() == ItemStack.class) {

@@ -4,8 +4,8 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
+import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
@@ -271,7 +271,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         if (freeModifiers - decrease < 0) {
             return false;
         }
-        freeModifiers = freeModifiers - decrease;
+        freeModifiers -= decrease;
         return true;
     }
 
@@ -300,9 +300,9 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         if (!stack.isEmpty() && nbt != null) {
-            return new ItemModifierProvider(stack, nbt);
+            return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemModifierProvider();
+        return new ItemStackModifierProvider();
     }
 
 }

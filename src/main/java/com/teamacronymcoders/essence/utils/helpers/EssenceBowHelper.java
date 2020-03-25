@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.modifier.item.arrow.BrewedModifier;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -23,7 +23,7 @@ import java.util.List;
 public class EssenceBowHelper {
 
     public static AbstractArrowEntity getArrowEntity(World world, ItemStack bow, ItemStack arrow, PlayerEntity player, float arrowVelocity) {
-        final List<ModifierInstance<ItemStack>> instances = bow.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance<ItemStack>> instances = bow.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
 
         // Flag for if the Bow has Modifiers && has Infinity
         boolean baseCodeCheck = player.abilities.isCreativeMode || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));

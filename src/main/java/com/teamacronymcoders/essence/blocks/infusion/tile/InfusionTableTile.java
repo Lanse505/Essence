@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.blocks.tiles;
+package com.teamacronymcoders.essence.blocks.infusion.tile;
 
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
@@ -58,7 +58,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     private ProgressBarComponent<InfusionTableTile> progressBar;
 
     public InfusionTableTile() {
-        super(EssenceObjectHolders.ESSENCE_INFUSION_TABLE);
+        super(EssenceObjectHolders.INFUSION_TABLE);
         addInventory(infusable = (SidedInventoryComponent<InfusionTableTile>) new SidedInventoryComponent<InfusionTableTile>("input", 80, 20, 1, 0)
             .setColor(DyeColor.CYAN)
             .setComponentHarness(this)

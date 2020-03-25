@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.api.tool;
+package com.teamacronymcoders.essence.api.modified;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 
@@ -16,4 +16,5 @@ public interface IModified<T> {
     boolean recheck(T object, List<ModifierInstance<T>> instances);
 
     Class<T> getType();
+
 }

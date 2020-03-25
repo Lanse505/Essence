@@ -4,8 +4,8 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemModifierProvider;
+import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
@@ -71,7 +71,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
             }
             stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
                 new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.CASCADING_LUMBER_MODIFIER.get(), 1, null),
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.SILK_TOUCH_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.LUCK_MODIFIER.get(), 5, null),
                 new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
                 new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null)
             ));
@@ -231,8 +231,8 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         if (!stack.isEmpty() && nbt != null) {
-            return new ItemModifierProvider(stack, nbt);
+            return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemModifierProvider();
+        return new ItemStackModifierProvider();
     }
 }

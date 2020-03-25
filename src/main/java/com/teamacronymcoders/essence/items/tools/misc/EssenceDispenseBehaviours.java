@@ -34,7 +34,7 @@ public class EssenceDispenseBehaviours {
             @SuppressWarnings("deprecation")
             @Override
             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                ModifierInstance instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
+                ModifierInstance<?> instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos sourcePos = source.getBlockPos();

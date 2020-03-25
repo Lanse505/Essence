@@ -5,6 +5,8 @@ import com.hrznstudio.titanium.module.Feature;
 import com.hrznstudio.titanium.module.Module;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.blocks.*;
+import com.teamacronymcoders.essence.blocks.infusion.InfusionPedestalBlock;
+import com.teamacronymcoders.essence.blocks.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.blocks.wood.*;
 import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;

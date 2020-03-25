@@ -1,15 +1,15 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
-import com.teamacronymcoders.essence.api.tool.IModified;
-import com.teamacronymcoders.essence.api.tool.IModifiedTool;
-import com.teamacronymcoders.essence.core.impl.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modified.IModified;
+import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
+import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.modifier.item.cosmetic.EnchantedModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
@@ -57,7 +57,7 @@ public class EssenceItemstackModifierHelpers {
      * @return Returns the level of the modifier on the tool.
      */
     public static ModifierInstance<ItemStack> getModifierInstance(ItemStack stack, Modifier<ItemStack> modifier) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         if (holderLazyOptional.isPresent()) {
             holderLazyOptional.ifPresent(holder -> holder.deserializeNBT(stack.getOrCreateTag().getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND)));
             return holderLazyOptional.map(holder -> Objects.requireNonNull(holder.getModifierInstances().stream().filter(instance -> instance.getModifier() == modifier).findAny().orElse(null))).orElse(null);
@@ -66,7 +66,7 @@ public class EssenceItemstackModifierHelpers {
     }
 
     public static void addModifier(ItemStack stack, Modifier<ItemStack> modifier, int level, CompoundNBT modifierData) {
-        final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         if (stack.getItem() instanceof IModified && instances.isPresent()) {
             instances.ifPresent(holder -> {
                 if (modifier != null && holder.addModifierInstance(true, stack, new ModifierInstance<>(ItemStack.class, modifier, level, modifierData))) {
@@ -89,7 +89,7 @@ public class EssenceItemstackModifierHelpers {
      * @param modifiers The Modifier to remove.
      */
     public static void addModifiers(ItemStack stack, Modifier<ItemStack>... modifiers) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         if (stack.getItem() instanceof IModifiedTool && holderLazyOptional.isPresent()) {
             holderLazyOptional.ifPresent(holder -> {
                 if (((ModifierHolder<?>) holder).getType() == ItemStack.class) {
@@ -114,7 +114,7 @@ public class EssenceItemstackModifierHelpers {
 
 
     public static void removeModifiers(ItemStack stack, Modifier<ItemStack>... modifiersToRemove) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
             holder.getModifierInstances().stream().filter(instance -> Arrays.stream(modifiersToRemove).anyMatch(modifier -> instance.getModifier() == modifier)).forEach(instance -> {
                 if (holder.removeModifierInstance(true, stack, instance)) {
@@ -126,7 +126,7 @@ public class EssenceItemstackModifierHelpers {
     }
 
     public static void setModifierLevel(ItemStack stack, ModifierInstance<ItemStack> replacement) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
             holder.getModifierInstances().stream()
                 .filter(modifierInstance -> modifierInstance.getModifier() == replacement.getModifier() && modifierInstance.getModifierData() == replacement.getModifierData())
@@ -143,7 +143,7 @@ public class EssenceItemstackModifierHelpers {
 
     @SuppressWarnings("unchecked")
     public static void increaseModifierLevel(ItemStack stack, ModifierInstance<ItemStack> checkInstance, int increase) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
             if (holder.levelUpModifier(true, stack, increase, checkInstance)) {
                 holder.levelUpModifier(false, stack, increase, checkInstance);
@@ -160,7 +160,7 @@ public class EssenceItemstackModifierHelpers {
 
     @SuppressWarnings("unchecked")
     public static void decreaseModifierLevel(ItemStack stack, ModifierInstance<ItemStack> checkInstance, int decrease) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
             if (holder.levelDownModifier(true, stack, decrease, checkInstance)) {
                 holder.levelDownModifier(false, stack, decrease, checkInstance);
@@ -174,7 +174,7 @@ public class EssenceItemstackModifierHelpers {
      * @return Returns an random modifier from the modifiers on the ItemStack
      */
     public static ModifierInstance<ItemStack> getRandomModifierInstance(ItemStack stack) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().skip(Essence.RANDOM.nextInt(holder.getModifierInstances().size())).findFirst()).orElse(null).orElse(null);
     }
 
@@ -185,17 +185,17 @@ public class EssenceItemstackModifierHelpers {
      * @param stack The ItemStack to be cleared of Modifiers
      */
     public static void clearModifiers(ItemStack stack) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(IModifierHolder::clearModifiers);
     }
 
     public static boolean hasEnchantedModifier(ItemStack stack) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof EnchantedModifier)).orElse(false);
     }
 
     public static boolean hasRainbowModifier(ItemStack stack) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof RainbowModifier)).orElse(false);
     }
 

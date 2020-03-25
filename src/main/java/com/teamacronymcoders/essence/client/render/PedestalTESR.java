@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.teamacronymcoders.essence.blocks.tiles.InfusionPedestalTile;
+import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,7 @@ public class PedestalTESR extends TileEntityRenderer<InfusionPedestalTile> {
     @SuppressWarnings("deprecation")
     public void render(InfusionPedestalTile tile, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay, int light) {
         BlockState state = tile.getWorld().getBlockState(tile.getPos());
-        if (state.getBlock() != EssenceObjectHolders.ESSENCE_INFUSION_PEDESTAL) {
+        if (state.getBlock() != EssenceObjectHolders.INFUSION_PEDESTAL) {
             return;
         }
         ItemStack stack = tile.getStack();

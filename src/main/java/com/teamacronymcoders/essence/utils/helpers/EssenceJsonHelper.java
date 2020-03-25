@@ -7,6 +7,9 @@ import com.google.gson.JsonSyntaxException;
 import com.teamacronymcoders.essence.Essence;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Potion;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -58,6 +61,10 @@ public class EssenceJsonHelper {
 
     public static Block getBlock (JsonObject json, String memberName) {
         return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.BLOCKS);
+    }
+
+    public static Effect getPotion (JsonObject json, String memberName) {
+        return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.POTIONS);
     }
 
     public static JsonElement serializeBlockState(BlockState state) {
@@ -116,5 +123,51 @@ public class EssenceJsonHelper {
             }
         }
         return state;
+    }
+
+    public static JsonElement serializeEffectInstance(EffectInstance instance) {
+        final JsonObject object = new JsonObject();
+        object.addProperty("effect", instance.getPotion().getRegistryName().toString());
+        object.addProperty("duration", instance.getDuration());
+        final JsonObject propertiesElement = new JsonObject();
+        if (instance.getAmplifier() > 0) {
+            propertiesElement.addProperty("amplifier", instance.getAmplifier());
+            propertiesElement.addProperty("ambient", instance.isAmbient());
+            propertiesElement.addProperty("showParticles", instance.doesShowParticles());
+            propertiesElement.addProperty("showIcon", instance.isShowIcon());
+        }
+        object.add("properties", propertiesElement);
+        return object;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static EffectInstance deserializeEffectInstance (JsonObject json) {
+        // Read the effect from the forge registry.
+        final Effect effect = getPotion(json, "effect");
+        final int duration = json.get("duration").getAsInt();
+        if (json.has("properties")) {
+            final JsonElement propertiesElement = json.get("properties");
+            if (propertiesElement.isJsonObject()) {
+                final JsonObject properties = propertiesElement.getAsJsonObject();
+                if (properties.has("amplifier")) {
+                    final int amplifier = properties.getAsJsonObject("amplifier").getAsInt();
+                    if (properties.has("ambient")) {
+                        final boolean ambient = properties.getAsJsonObject("ambient").getAsBoolean();
+                        if (properties.has("showParticles")) {
+                            final boolean showParticles = properties.getAsJsonObject("showParticles").getAsBoolean();
+                            if (properties.has("showIcon")) {
+                                final boolean showIcon = properties.getAsJsonObject("showIcon").getAsBoolean();
+                                return new EffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon);
+                            }
+                            return new EffectInstance(effect, duration, amplifier, ambient, showParticles);
+                        } else {
+                            throw new JsonSyntaxException("EffectInstance requires both Value for 'ambient' and Value for 'showParticles'");
+                        }
+                    }
+                    return new EffectInstance(effect, duration, amplifier);
+                }
+            }
+        }
+        return new EffectInstance(effect, duration);
     }
 }

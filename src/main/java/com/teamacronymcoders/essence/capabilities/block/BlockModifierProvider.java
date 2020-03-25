@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.core.impl.block;
+package com.teamacronymcoders.essence.core.capabilities.block;
 
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
+import com.teamacronymcoders.essence.core.capabilities.EssenceCoreCapabilities;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,7 +22,7 @@ public class BlockModifierProvider implements ICapabilityProvider, ICapabilitySe
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == EssenceCapabilities.BLOCK_MODIFIER_HOLDER) {
+        if (cap == EssenceCoreCapabilities.BLOCK_MODIFIER_HOLDER) {
             return optional.cast();
         }
         return LazyOptional.empty();

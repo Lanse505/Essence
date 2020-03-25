@@ -25,7 +25,7 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<ListN
         if (player instanceof ServerPlayerEntity) {
             serverPlayer = (ServerPlayerEntity) player;
         }
-        for (Knowledge instance : knowledge) {
+        for (Knowledge<?> instance : knowledge) {
             boolean notCancelled = false;
             if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !this.knowledge.contains(instance)) {
                 this.knowledge.add(instance);

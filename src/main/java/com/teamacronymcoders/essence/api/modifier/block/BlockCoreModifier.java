@@ -2,6 +2,14 @@ package com.teamacronymcoders.essence.api.modifier.block;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+
+import javax.annotation.Nullable;
 
 public abstract class BlockCoreModifier extends Modifier<Block> {
 
@@ -15,6 +23,18 @@ public abstract class BlockCoreModifier extends Modifier<Block> {
 
     public BlockCoreModifier(int maxLevel, int minLevel) {
         super(Block.class, maxLevel, minLevel);
+    }
+
+    public float getModifiedBlockHardness(BlockState state, IBlockReader world, BlockPos pos) {
+        return 0f;
+    }
+
+    public float getModifiedExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+        return 0f;
+    }
+
+    public int getModifiedLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return 0;
     }
 
 }
