@@ -10,6 +10,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -82,6 +83,8 @@ public class EssenceWrench extends Item implements IItemNetwork {
                 itemEntity.setDefaultPickupDelay();
                 world.addEntity(itemEntity);
 
+                stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+
                 return ActionResultType.SUCCESS;
             }
         }
@@ -100,7 +103,7 @@ public class EssenceWrench extends Item implements IItemNetwork {
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         list.add(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(mode.getLocaleName())));
-        if (flag == ITooltipFlag.TooltipFlags.ADVANCED) {
+        if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
             list.add(new StringTextComponent(" "));
             list.add(new TranslationTextComponent("wrench.disclaimer"));
         }

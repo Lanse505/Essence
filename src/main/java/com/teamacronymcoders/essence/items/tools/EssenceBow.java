@@ -2,13 +2,16 @@ package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceBowHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.utils.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.BlockState;
@@ -23,15 +26,19 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -61,24 +68,6 @@ public class EssenceBow extends BowItem implements IModifiedTool {
             }
         });
         this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
-        if (this.isInGroup(group)) {
-            ItemStack stack;
-            stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.KEEN_MODIFIER.get(), 4, null),
-                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
-                    new EffectInstance(Effects.POISON, 200, 2, false, false),
-                    new EffectInstance(Effects.WITHER, 200, 2, false, false),
-                    new EffectInstance(Effects.GLOWING, 200, 2, false, false)
-                ))
-            ));
-            if (!list.contains(stack)) {
-                list.add(stack);
-            }
-        }
     }
 
     /**
@@ -302,7 +291,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         if (!stack.isEmpty() && nbt != null) {
             return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemStackModifierProvider();
+        return new ItemStackModifierProvider(stack);
     }
 
 }

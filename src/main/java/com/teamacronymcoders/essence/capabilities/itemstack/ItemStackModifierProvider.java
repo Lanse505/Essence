@@ -17,15 +17,18 @@ import javax.annotation.Nullable;
 
 public class ItemStackModifierProvider implements ICapabilityProvider, ICapabilitySerializable<ListNBT> {
 
-    private ItemStackModifierHolder modifierHolder = new ItemStackModifierHolder();
+    private ItemStackModifierHolder modifierHolder;
     private LazyOptional<ItemStackModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
-    public ItemStackModifierProvider() {
+    public ItemStackModifierProvider(ItemStack stack) {
+        modifierHolder = new ItemStackModifierHolder(stack);
+        modifierHolder.serializeNBT();
     }
 
     public ItemStackModifierProvider(ItemStack stack, CompoundNBT nbt) {
+        modifierHolder = new ItemStackModifierHolder(stack);
         modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-        stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, modifierHolder.serializeNBT());
+        modifierHolder.serializeNBT();
     }
 
     @Nonnull

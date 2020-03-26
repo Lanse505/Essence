@@ -64,6 +64,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -87,6 +88,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
@@ -115,11 +117,17 @@ public class Essence extends ModuleController {
             return true;
         }
     };
-    public static Minecraft minecraft = Minecraft.getInstance();
+
     public static Essence instance;
-    public static EssenceCommonProxy proxy = DistExecutor.runForDist(Essence::getClientProxy, () -> EssenceCommonProxy::new);
+    public static EssenceCommonProxy proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> EssenceCommonProxy::new);
     public static PacketHandler handler = new PacketHandler();
     public final String versionNumber;
+
+    @OnlyIn(Dist.CLIENT)
+    private static Supplier<EssenceCommonProxy> getClientProxy() {
+        return EssenceClientProxy::new;
+    }
+
     public Essence() {
         instance = this;
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
@@ -133,7 +141,9 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
+
         eventBus.addListener(this::setupCuriosIMC);
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
@@ -141,15 +151,12 @@ public class Essence extends ModuleController {
         EssenceFeatureRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
+        EssenceAdvancements.setup();
 
-        setupAdvancementCriterion();
         setupCreativeTabIcons();
         setupEventManagers();
-    }
 
-    @OnlyIn(Dist.CLIENT)
-    private static Supplier<EssenceCommonProxy> getClientProxy() {
-        return EssenceClientProxy::new;
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setupClientEventHandlers);
     }
 
     @Override
@@ -188,17 +195,14 @@ public class Essence extends ModuleController {
         //EssenceDispenseBehaviours.init();
     }
 
+    @SuppressWarnings("unchecked")
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
-    }
-
-    private void setupAdvancementCriterion() {
-        EssenceAdvancements.setup();
     }
 
     private void setupCreativeTabIcons() {
@@ -251,7 +255,7 @@ public class Essence extends ModuleController {
             .filter(attach -> attach.getObject() instanceof ItemStack)
             .process(attach -> {
                 if (attach.getObject() instanceof IModified) {
-                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider());
+                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) attach.getObject()));
                 }
             }).subscribe();
         EventManager.forge(AttachCapabilitiesEvent.class)
@@ -278,7 +282,10 @@ public class Essence extends ModuleController {
                     });
                 });
             }).subscribe();
+    }
 
+    @OnlyIn(Dist.CLIENT)
+    private void setupClientEventHandlers() {
         // Rainbow Tooltip Handler
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
@@ -301,6 +308,7 @@ public class Essence extends ModuleController {
         // Wrench-Mode Handler
         EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
+                Minecraft minecraft = Minecraft.getInstance();
                 if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
                     ItemStack stack = minecraft.player.getHeldItemMainhand();
                     if (stack.getItem() instanceof EssenceWrench) {
@@ -316,6 +324,7 @@ public class Essence extends ModuleController {
                             }
                             WrenchModeEnum newMode = WrenchModeEnum.cycleMode(newVal);
                             wrench.setMode(newMode);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
                             handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
                             scroll.setCanceled(true);
                         }

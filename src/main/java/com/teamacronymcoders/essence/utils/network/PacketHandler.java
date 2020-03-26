@@ -101,11 +101,6 @@ public class PacketHandler {
         }
     }
 
-    public static String readString(PacketBuffer buffer) {
-        //TODO: Re-evaluate, this method is currently used because buffer.readString() is clientside only, so it mimics its behaviour so that servers don't crash
-        return buffer.readString(Short.MAX_VALUE);
-    }
-
     public static void log(String log) {
         if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
             Essence.LOGGER.info(log);
@@ -139,46 +134,12 @@ public class PacketHandler {
     }
 
     /**
-     * Send this message to everyone connected to the server.
-     *
-     * @param message - message to send
-     */
-    public <MSG> void sendToAll(MSG message) {
-        handler.send(PacketDistributor.ALL.noArg(), message);
-    }
-
-    /**
-     * Send this message to everyone within the supplied dimension.
-     *
-     * @param message   - the message to send
-     * @param dimension - the dimension to target
-     */
-    public <MSG> void sendToDimension(MSG message, DimensionType dimension) {
-        handler.send(PacketDistributor.DIMENSION.with(() -> dimension), message);
-    }
-
-    /**
      * Send this message to the server.
      *
      * @param message - the message to send
      */
     public <MSG> void sendToServer(MSG message) {
         handler.sendToServer(message);
-    }
-
-    public <MSG> void sendToAllTracking(MSG message, TileEntity tile) {
-        sendToAllTracking(message, tile.getWorld(), tile.getPos());
-    }
-
-    public <MSG> void sendToAllTracking(MSG message, World world, BlockPos pos) {
-        if (world instanceof ServerWorld) {
-            //If we have a ServerWorld just directly figure out the ChunkPos so as to not require looking up the chunk
-            // This provides a decent performance boost over using the packet distributor
-            ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false).forEach(p -> sendTo(message, p));
-        } else {
-            //Otherwise fallback to entities tracking the chunk if some mod did something odd and our world is not a ServerWorld
-            handler.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX() >> 4, pos.getZ() >> 4)), message);
-        }
     }
 
 }
