@@ -2,11 +2,14 @@ package com.teamacronymcoders.essence.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.utils.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -20,12 +23,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -157,9 +164,10 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if (!stack.isEmpty() && nbt != null) {
+        if (nbt != null) {
             return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemStackModifierProvider();
+        return new ItemStackModifierProvider(stack);
     }
+
 }

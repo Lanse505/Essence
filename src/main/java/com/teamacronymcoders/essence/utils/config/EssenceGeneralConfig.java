@@ -9,6 +9,7 @@ public class EssenceGeneralConfig {
 
     private final ForgeConfigSpec.BooleanValue enableDebugLogging;
 
+
     public EssenceGeneralConfig(ForgeConfigSpec.Builder builder) {
         builder.push("General");
         enableDebugLogging = builder.comment("Should Debug-Logging be Enabled?").define("enableDebugLogging", false);

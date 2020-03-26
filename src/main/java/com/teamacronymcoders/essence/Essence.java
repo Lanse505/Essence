@@ -17,10 +17,13 @@ import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.capabilities.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
+import com.teamacronymcoders.essence.client.EssenceClientProxy;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
+import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.items.misc.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
+import com.teamacronymcoders.essence.serializable.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
@@ -32,6 +35,7 @@ import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableMo
 import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
+import com.teamacronymcoders.essence.utils.EssenceCommonProxy;
 import com.teamacronymcoders.essence.utils.EssenceModules;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
 import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
@@ -40,12 +44,14 @@ import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.utils.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.utils.network.PacketHandler;
+import com.teamacronymcoders.essence.utils.network.message.PacketItemStack;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.Entity;
@@ -55,9 +61,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -66,6 +77,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -76,13 +88,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
 import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Random;
+import java.util.function.Supplier;
 
 @Mod("essence")
 public class Essence extends ModuleController {
@@ -90,22 +105,10 @@ public class Essence extends ModuleController {
     public static final String MODID = "essence";
     public static final Random RANDOM = new Random();
     public static final Logger LOGGER = LogManager.getLogger("Essence");
-
     public static final AdvancedTitaniumTab CORE_TAB = new AdvancedTitaniumTab("essence_core", true) {
         @Override
         public boolean hasScrollbar() {
             return true;
-        }
-
-        @Override
-        public void addIconStacks(ItemStack... icons) {
-            super.addIconStacks(
-                new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()),
-                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING),
-                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES),
-                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG),
-                new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS)
-            );
         }
     };
     public static final AdvancedTitaniumTab TOOL_TAB = new AdvancedTitaniumTab("essence_tools", true) {
@@ -113,21 +116,22 @@ public class Essence extends ModuleController {
         public boolean hasScrollbar() {
             return true;
         }
-
-        @Override
-        public void addIconStacks(ItemStack... icons) {
-            super.addIconStacks(
-                new ItemStack(EssenceObjectHolders.ESSENCE_AXE),
-                new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE),
-                new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL),
-                new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
-                new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
-                new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL)
-            );
-        }
     };
 
+    public static Essence instance;
+    public static EssenceCommonProxy proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> EssenceCommonProxy::new);
+    public static PacketHandler handler = new PacketHandler();
+    public final String versionNumber;
+
+    @OnlyIn(Dist.CLIENT)
+    private static Supplier<EssenceCommonProxy> getClientProxy() {
+        return EssenceClientProxy::new;
+    }
+
     public Essence() {
+        instance = this;
+        versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
+        handler.init();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
@@ -137,18 +141,22 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
+
         eventBus.addListener(this::setupCuriosIMC);
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
+
         EssenceFeatureRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
-        //initKnowledge(eventBus);
-        setupEventManagers();
-    }
-
-    private void initKnowledge(IEventBus eventBus) {
         EssenceKnowledgeRegistration.register(eventBus);
+        EssenceAdvancements.setup();
+
+        setupCreativeTabIcons();
+        setupEventManagers();
+
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setupClientEventHandlers);
     }
 
     @Override
@@ -187,12 +195,32 @@ public class Essence extends ModuleController {
         //EssenceDispenseBehaviours.init();
     }
 
+    @SuppressWarnings("unchecked")
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer((TileEntityType<InfusionPedestalTile>) EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
+    }
+
+    private void setupCreativeTabIcons() {
+        CORE_TAB.addIconStacks(
+            new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()),
+            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING),
+            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES),
+            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG),
+            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS)
+        );
+
+        TOOL_TAB.addIconStacks(
+            new ItemStack(EssenceObjectHolders.ESSENCE_AXE),
+            new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE),
+            new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL),
+            new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
+            new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
+            new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
     }
 
     private void setupEventManagers() {
@@ -227,7 +255,7 @@ public class Essence extends ModuleController {
             .filter(attach -> attach.getObject() instanceof ItemStack)
             .process(attach -> {
                 if (attach.getObject() instanceof IModified) {
-                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider());
+                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) attach.getObject()));
                 }
             }).subscribe();
         EventManager.forge(AttachCapabilitiesEvent.class)
@@ -254,7 +282,11 @@ public class Essence extends ModuleController {
                     });
                 });
             }).subscribe();
-        // Raindbow Tooltip Handler
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void setupClientEventHandlers() {
+        // Rainbow Tooltip Handler
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
                 boolean isShear = color.getStack().getItem() instanceof EssenceShear;
@@ -270,6 +302,33 @@ public class Essence extends ModuleController {
                     color.setBorderStart(colorVal.getRGB());
                     color.setBorderEnd(colorVal3.getRGB());
                     shear.setRainbowVal(rainbowVal + 1);
+                }
+            }).subscribe();
+
+        // Wrench-Mode Handler
+        EventManager.forge(InputEvent.MouseScrollEvent.class)
+            .process(scroll -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                    ItemStack stack = minecraft.player.getHeldItemMainhand();
+                    if (stack.getItem() instanceof EssenceWrench) {
+                        double scrolling = scroll.getScrollDelta();
+                        if (scrolling != 0) {
+                            EssenceWrench wrench = (EssenceWrench) stack.getItem();
+                            WrenchModeEnum mode = wrench.getMode();
+                            int newVal = mode.getId() + ((int) scrolling) % WrenchModeEnum.VALUES.length;
+                            if (newVal > 0) {
+                                newVal = newVal % WrenchModeEnum.VALUES.length;
+                            } else if (newVal < 0) {
+                                newVal = WrenchModeEnum.VALUES.length;
+                            }
+                            WrenchModeEnum newMode = WrenchModeEnum.cycleMode(newVal);
+                            wrench.setMode(newMode);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
+                            handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
+                            scroll.setCanceled(true);
+                        }
+                    }
                 }
             }).subscribe();
     }

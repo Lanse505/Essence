@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.items.tools;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
+import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
@@ -11,6 +12,7 @@ import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
+import com.teamacronymcoders.essence.utils.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.BlockState;
@@ -26,6 +28,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -37,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -99,20 +104,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         if (!stack.isEmpty() && nbt != null) {
             return new ItemStackModifierProvider(stack, nbt);
         }
-        return new ItemStackModifierProvider();
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
-            items.add(new ItemStack(this));
-            ItemStack stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null)
-            ));
-            if (!items.contains(stack)) {
-                items.add(stack);
-            }
-        }
+        return new ItemStackModifierProvider(stack);
     }
 
     @Override
@@ -266,4 +258,5 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     public Class<ItemStack> getType() {
         return ItemStack.class;
     }
+
 }

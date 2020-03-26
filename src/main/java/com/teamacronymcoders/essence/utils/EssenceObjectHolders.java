@@ -15,6 +15,7 @@ import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.tools.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -112,6 +113,8 @@ public class EssenceObjectHolders {
 
     @ObjectHolder("essence:portable_crafter")
     public static PortableCrafter PORTABLE_CRAFTER;
+    @ObjectHolder("essence:wrench")
+    public static EssenceWrench WRENCH;
 
     // Tier 1 Tools
     @ObjectHolder("essence:essence_axe")

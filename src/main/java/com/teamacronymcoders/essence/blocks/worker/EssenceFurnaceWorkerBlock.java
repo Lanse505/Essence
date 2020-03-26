@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.blocks.worker;
 
 import com.hrznstudio.titanium.api.IFactory;
 import com.teamacronymcoders.essence.blocks.worker.tile.EssenceFurnaceWorkerTile;
-import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.utils.tiers.IEssenceBaseTier;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;

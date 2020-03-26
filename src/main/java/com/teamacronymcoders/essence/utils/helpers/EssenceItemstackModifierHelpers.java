@@ -69,8 +69,8 @@ public class EssenceItemstackModifierHelpers {
         final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
         if (stack.getItem() instanceof IModified && instances.isPresent()) {
             instances.ifPresent(holder -> {
-                if (modifier != null && holder.addModifierInstance(true, stack, new ModifierInstance<>(ItemStack.class, modifier, level, modifierData))) {
-                    holder.addModifierInstance(false, stack, new ModifierInstance<>(ItemStack.class, modifier, level, modifierData));
+                if (modifier != null && holder.addModifierInstance(true, stack, new ModifierInstance<>(ItemStack.class, () -> modifier, level, modifierData))) {
+                    holder.addModifierInstance(false, stack, new ModifierInstance<>(ItemStack.class, () -> modifier, level, modifierData));
                     if (modifier instanceof ItemCoreModifier) {
                         IModified<ItemStack> modified = (IModified<ItemStack>) stack.getItem();
                         ItemCoreModifier itemCoreModifier = (ItemCoreModifier) modifier;
@@ -103,7 +103,7 @@ public class EssenceItemstackModifierHelpers {
                         }
                         if (instances.stream().allMatch(instance -> Arrays.stream(modifiers).allMatch(modifier -> instance.getModifier().isCompatibleWith(modifier)))) {
                             Arrays.stream(modifiers)
-                                .filter(modifier -> instances.contains(new ModifierInstance<>(ItemStack.class, modifier, 1, null)))
+                                .filter(modifier -> instances.contains(new ModifierInstance<>(ItemStack.class, () -> modifier, 1, null)))
                                 .forEach(modifier -> addModifier(stack, modifier, 1, null));
                         }
                     }

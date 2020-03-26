@@ -5,6 +5,8 @@ import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpe
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.function.Supplier;
+
 public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
     public static final String TAG_MODIFIER = "Modifier";
     public static final String TAG_TYPE = "Type";
@@ -13,7 +15,7 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
     public static final String TAG_COMPOUND = "ModifierCompound";
 
     private final Class<T> type;
-    private Modifier<T> modifier;
+    private Supplier<Modifier<T>> modifier;
     private int level;
     private CompoundNBT modifierData;
 
@@ -21,7 +23,7 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
         this.type = type;
     }
 
-    public ModifierInstance(Class<T> type, Modifier<T> modifier, int level, CompoundNBT modifierData) {
+    public ModifierInstance(Class<T> type, Supplier<Modifier<T>> modifier, int level, CompoundNBT modifierData) {
         this.type = type;
         this.modifier = modifier;
         this.level = level;
@@ -31,7 +33,7 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
     @Override
     public CompoundNBT serializeNBT() {
         final CompoundNBT compoundNBT = new CompoundNBT();
-        compoundNBT.putString(TAG_MODIFIER, modifier.getRegistryName().toString());
+        compoundNBT.putString(TAG_MODIFIER, modifier.get().getRegistryName().toString());
         final CompoundNBT info = new CompoundNBT();
         info.putInt(TAG_LEVEL, level);
         if (modifierData == null) {
@@ -50,10 +52,10 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
         final int level = info.getInt(TAG_LEVEL);
         final CompoundNBT modifierData = info.getCompound(TAG_COMPOUND);
 
-        this.modifier = modifier;
+        this.modifier = () -> modifier;
         this.level = level;
         this.modifierData = modifierData;
-        this.modifier.update(this.modifierData);
+        this.modifier.get().update(this.modifierData);
     }
 
     public Class<T> getType() {
@@ -61,7 +63,7 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
     }
 
     public Modifier<T> getModifier() {
-        return modifier;
+        return modifier.get();
     }
 
     public int getLevel() {

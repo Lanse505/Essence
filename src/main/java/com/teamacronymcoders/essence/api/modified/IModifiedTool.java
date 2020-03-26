@@ -27,6 +27,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
@@ -109,7 +110,7 @@ public interface IModifiedTool extends IModified<ItemStack> {
         int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
         list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocaleString()).applyTextStyle(tier.getRarity().color)));
         list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
-        if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
+        if ((stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND).size() > 0) || flag.isAdvanced()) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
             stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER)
