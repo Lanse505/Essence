@@ -52,9 +52,9 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
         if (this.isInGroup(group)) {
             ItemStack stack;
             stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.EXPANDER_MODIFIER.get(), 2, null),
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EXPANDER_MODIFIER.get(), 2, null),
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null)
             ));
             if (!list.contains(stack)) {
                 list.add(stack);

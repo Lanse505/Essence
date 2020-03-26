@@ -107,7 +107,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         if (this.isInGroup(group)) {
             items.add(new ItemStack(this));
             ItemStack stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null)
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null)
             ));
             if (!items.contains(stack)) {
                 items.add(stack);

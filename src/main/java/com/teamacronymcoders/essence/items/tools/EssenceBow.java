@@ -68,8 +68,8 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         if (this.isInGroup(group)) {
             ItemStack stack;
             stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.KEEN_MODIFIER.get(), 4, null),
-                new ModifierInstance<>(ItemStack.class, EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.KEEN_MODIFIER.get(), 4, null),
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
                     new EffectInstance(Effects.POISON, 200, 2, false, false),
                     new EffectInstance(Effects.WITHER, 200, 2, false, false),
                     new EffectInstance(Effects.GLOWING, 200, 2, false, false)
