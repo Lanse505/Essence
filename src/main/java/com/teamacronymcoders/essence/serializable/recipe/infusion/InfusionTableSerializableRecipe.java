@@ -122,9 +122,9 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
             case REMOVE:
                 EssenceItemstackModifierHelpers.removeModifiers(stack, modifier.getModifier());
             case INCREMENT:
-                EssenceItemstackModifierHelpers.increaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, () -> modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
+                EssenceItemstackModifierHelpers.increaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, modifier::getModifier, modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
             case DECREMENT:
-                EssenceItemstackModifierHelpers.decreaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, () -> modifier.getModifier(), modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
+                EssenceItemstackModifierHelpers.decreaseModifierLevel(stack, new ModifierInstance<ItemStack>(ItemStack.class, modifier::getModifier, modifier.getLevel(), modifier.getModifierData()), modifier.getLevel());
         }
     }
 

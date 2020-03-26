@@ -42,6 +42,8 @@ public class EssenceWrench extends Item implements IItemNetwork {
         this.mode = WrenchModeEnum.SERIALIZE;
     }
 
+    // TODO: Implement proper standardized tag handling once we figure out what we want to do with it.
+    // BLACKLIST vs WHITELIST?
     @Override
     public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
         World world = context.getWorld();
