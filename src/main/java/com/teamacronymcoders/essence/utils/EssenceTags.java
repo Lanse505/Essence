@@ -36,6 +36,8 @@ public class EssenceTags {
     }
 
     public static class Blocks {
+        public static Tag<Block> FORGE_MOVEABLE = new BlockTags.Wrapper(new ResourceLocation("forge:moveable"));
+
         public static Tag<Block> ESSENCE_CRYSTAL_ORE = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_crystal_ore"));
         public static Tag<Block> ESSENCE_WOOD_LOG = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_logs"));
         public static Tag<Block> ESSENCE_ORE = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_ore"));

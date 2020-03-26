@@ -16,6 +16,7 @@ import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.tools.*;
 import com.teamacronymcoders.essence.utils.tiers.EssenceItemTiers;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
@@ -97,6 +98,7 @@ public class EssenceModules {
                 .force()
                 .description("Tools")
                 .content(Item.class, new PortableCrafter().setRegistryName(new ResourceLocation(Essence.MODID, "portable_crafter")))
+                .content(Item.class, new EssenceWrench().setRegistryName(new ResourceLocation(Essence.MODID, "wrench")))
 
                 // Tier 1
                 .content(Item.class, new EssenceAxe(EssenceToolTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe")))
