@@ -14,6 +14,9 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Credit for most of this code goes to Mekanism.
+ */
 public class PacketItemStack {
 
     private List<Object> parameters;

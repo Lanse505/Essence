@@ -4,10 +4,9 @@ public enum WrenchModeEnum {
     SERIALIZE("mode.wrench.serialize", 0),
     ROTATE("mode.wrench.rotate", 1);
 
+    public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{ROTATE, SERIALIZE};
     private final String localeName;
     private final int id;
-
-    public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{ROTATE, SERIALIZE};
 
     WrenchModeEnum(String localeName, int id) {
         this.localeName = localeName;

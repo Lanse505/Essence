@@ -3,14 +3,10 @@ package com.teamacronymcoders.essence.serializable.providers;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 
 import static com.teamacronymcoders.essence.utils.EssenceObjectHolders.*;

@@ -18,7 +18,6 @@ import com.teamacronymcoders.essence.capabilities.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
-import com.teamacronymcoders.essence.client.gui.PortableCrafterContainerScreen;
 import com.teamacronymcoders.essence.client.render.PedestalTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
@@ -53,7 +52,6 @@ import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistrat
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.Entity;
@@ -62,9 +60,6 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.stats.StatType;
-import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -96,8 +91,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
 import top.theillusivec4.curios.api.imc.CurioIMCMessage;
-import vazkii.patchouli.client.base.ClientProxy;
-import vazkii.patchouli.common.base.CommonProxy;
 
 import java.awt.*;
 import java.util.Collections;
@@ -110,18 +103,6 @@ public class Essence extends ModuleController {
     public static final String MODID = "essence";
     public static final Random RANDOM = new Random();
     public static final Logger LOGGER = LogManager.getLogger("Essence");
-
-    public static Minecraft minecraft = Minecraft.getInstance();
-    public static Essence instance;
-    public final String versionNumber;
-    public static EssenceCommonProxy proxy = DistExecutor.runForDist(Essence::getClientProxy, () -> EssenceCommonProxy::new);
-    public static PacketHandler handler = new PacketHandler();
-
-    @OnlyIn(Dist.CLIENT)
-    private static Supplier<EssenceCommonProxy> getClientProxy() {
-        return EssenceClientProxy::new;
-    }
-
     public static final AdvancedTitaniumTab CORE_TAB = new AdvancedTitaniumTab("essence_core", true) {
         @Override
         public boolean hasScrollbar() {
@@ -134,7 +115,11 @@ public class Essence extends ModuleController {
             return true;
         }
     };
-
+    public static Minecraft minecraft = Minecraft.getInstance();
+    public static Essence instance;
+    public static EssenceCommonProxy proxy = DistExecutor.runForDist(Essence::getClientProxy, () -> EssenceCommonProxy::new);
+    public static PacketHandler handler = new PacketHandler();
+    public final String versionNumber;
     public Essence() {
         instance = this;
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
@@ -160,6 +145,11 @@ public class Essence extends ModuleController {
         setupAdvancementCriterion();
         setupCreativeTabIcons();
         setupEventManagers();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static Supplier<EssenceCommonProxy> getClientProxy() {
+        return EssenceClientProxy::new;
     }
 
     @Override

@@ -11,25 +11,24 @@ import net.minecraft.util.registry.Registry;
 import java.util.List;
 
 /**
- *
+ * Credit for most of this code goes to 'Bookshelf'.
  */
 public class EssenceStats {
 
     public static final EssenceStats INSTANCE = new EssenceStats();
 
     public final ResourceLocation SERIALIZED;
+    private final List<ResourceLocation> stats = NonNullList.create();
 
     public EssenceStats() {
         SERIALIZED = registerStat("serialized");
     }
 
-    private final List<ResourceLocation> stats = NonNullList.create();
-
-    public ResourceLocation registerStat (String key) {
+    public ResourceLocation registerStat(String key) {
         return this.registerStat(key, IStatFormatter.DEFAULT);
     }
 
-    public ResourceLocation registerStat (String key, IStatFormatter formatter) {
+    public ResourceLocation registerStat(String key, IStatFormatter formatter) {
         final ResourceLocation statIdentifier = new ResourceLocation(Essence.MODID, key);
         Registry.register(Registry.CUSTOM_STAT, key, statIdentifier);
         Stats.CUSTOM.get(statIdentifier, formatter);
@@ -37,7 +36,7 @@ public class EssenceStats {
         return statIdentifier;
     }
 
-    public List<ResourceLocation> getStatIdentifiers () {
+    public List<ResourceLocation> getStatIdentifiers() {
         return ImmutableList.copyOf(this.stats);
     }
 

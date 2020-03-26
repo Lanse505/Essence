@@ -42,6 +42,11 @@ public class EssenceWrench extends Item implements IItemNetwork {
         this.mode = WrenchModeEnum.SERIALIZE;
     }
 
+    private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, IProperty<T> property) {
+        T prop = state.get(property);
+        return property.getName(prop);
+    }
+
     // TODO: Implement proper standardized tag handling once we figure out what we want to do with it.
     // BLACKLIST vs WHITELIST?
     @Override
@@ -60,7 +65,7 @@ public class EssenceWrench extends Item implements IItemNetwork {
                 TileEntity te = world.getTileEntity(pos);
                 ItemStack drop = new ItemStack(state.getBlock());
                 CompoundNBT stateNBT = new CompoundNBT();
-                state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(),  getStatePropertyValue(state, iProperty)));
+                state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
                 drop.setTagInfo("BlockStateTag", stateNBT);
 
                 if (te != null) {
@@ -92,11 +97,6 @@ public class EssenceWrench extends Item implements IItemNetwork {
         return ActionResultType.PASS;
     }
 
-    private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, IProperty<T> property) {
-        T prop = state.get(property);
-        return property.getName(prop);
-    }
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         list.add(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(mode.getLocaleName())));
@@ -111,12 +111,12 @@ public class EssenceWrench extends Item implements IItemNetwork {
         return true;
     }
 
-    public void setMode(WrenchModeEnum mode) {
-        this.mode = mode;
-    }
-
     public WrenchModeEnum getMode() {
         return mode;
+    }
+
+    public void setMode(WrenchModeEnum mode) {
+        this.mode = mode;
     }
 
     @Override
