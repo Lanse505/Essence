@@ -52,6 +52,34 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
         this.additionalModifiers = 0;
     }
 
+    @Nullable
+    @Override
+    public CompoundNBT getShareTag(ItemStack stack) {
+        CompoundNBT tag = super.getShareTag(stack);
+        ListNBT capTag = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(cap -> cap.serializeNBT()).orElse(null);
+        if (capTag != null) {
+            if (tag == null) {
+                tag = new CompoundNBT();
+            }
+            tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
+        }
+        return tag;
+    }
+
+    @Override
+    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (nbt != null && nbt.contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
+            ListNBT capTag = nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
+            stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).ifPresent(cap -> cap.deserializeNBT(capTag));
+        }
+        super.readShareTag(stack, nbt);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack p_77613_1_) {
+        return tier.getRarity();
+    }
+
     @Override
     public boolean canHarvestBlock(BlockState blockIn) {
         int i = this.getTier().getHarvestLevel();

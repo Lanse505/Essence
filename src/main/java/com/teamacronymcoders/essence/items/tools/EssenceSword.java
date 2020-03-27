@@ -18,10 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.PacketBuffer;
@@ -50,6 +47,34 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
+    }
+
+    @Nullable
+    @Override
+    public CompoundNBT getShareTag(ItemStack stack) {
+        CompoundNBT tag = super.getShareTag(stack);
+        ListNBT capTag = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(cap -> cap.serializeNBT()).orElse(null);
+        if (capTag != null) {
+            if (tag == null) {
+                tag = new CompoundNBT();
+            }
+            tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
+        }
+        return tag;
+    }
+
+    @Override
+    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (nbt != null && nbt.contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
+            ListNBT capTag = nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
+            stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).ifPresent(cap -> cap.deserializeNBT(capTag));
+        }
+        super.readShareTag(stack, nbt);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack p_77613_1_) {
+        return tier.getRarity();
     }
 
     @Override

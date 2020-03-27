@@ -14,6 +14,7 @@ import com.teamacronymcoders.essence.utils.EssenceTags;
 import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.utils.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import com.teamacronymcoders.essence.utils.tiers.EssenceToolTiers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -54,6 +55,47 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
+    }
+
+    @Nullable
+    @Override
+    public CompoundNBT getShareTag(ItemStack stack) {
+        CompoundNBT tag = super.getShareTag(stack);
+        ListNBT capTag = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(cap -> cap.serializeNBT()).orElse(null);
+        if (capTag != null) {
+            if (tag == null) {
+                tag = new CompoundNBT();
+            }
+            tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
+        }
+        return tag;
+    }
+
+    @Override
+    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+        if (nbt != null && nbt.contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
+            ListNBT capTag = nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
+            stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).ifPresent(cap -> cap.deserializeNBT(capTag));
+        }
+        super.readShareTag(stack, nbt);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack p_77613_1_) {
+        return tier.getRarity();
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
+        if (this.isInGroup(group)) {
+            list.add(new ItemStack(this));
+            ItemStack stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null),
+                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null)
+            ));
+            list.add(stack);
+        }
     }
 
     @Override
