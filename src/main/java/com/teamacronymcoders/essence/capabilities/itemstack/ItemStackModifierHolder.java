@@ -315,6 +315,6 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
     @Override
     public void deserializeNBT(ListNBT nbt) {
-        super.deserializeNBT(nbt.size() > 0 ? nbt : stack.getTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
+        super.deserializeNBT(nbt.size() > 0 ? nbt : stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
     }
 }
