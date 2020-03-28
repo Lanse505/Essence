@@ -23,16 +23,13 @@ public class EssenceTags {
         public static Tag<Item> ESSENCE_BRICKS = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_bricks"));
 
         public static Tag<Item> ESSENCE_AXE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_axe"));
-        public static Tag<Item> ESSENCE_PICKAXE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_pickaxe"));
-        public static Tag<Item> ESSENCE_SHOVEL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_shovel"));
+        public static Tag<Item> ESSENCE_BOW = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_bow"));
         public static Tag<Item> ESSENCE_HOE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_hoe"));
-        public static Tag<Item> ESSENCE_SWORD = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_sword"));
         public static Tag<Item> ESSENCE_OMNITOOL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_omnitool"));
-
-        public static Tag<Item> ATTACK_DAMAGE_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "modifier_attack_damage"));
-        public static Tag<Item> EXPANDER_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "modifier_expander"));
-        public static Tag<Item> FORTUNE_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "fortune_modifier"));
-        public static Tag<Item> SILK_TOUCH_MODIFIER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "silk_touch_modifier"));
+        public static Tag<Item> ESSENCE_PICKAXE = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_pickaxe"));
+        public static Tag<Item> ESSENCE_SHEAR = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_shears"));
+        public static Tag<Item> ESSENCE_SHOVEL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_shovel"));
+        public static Tag<Item> ESSENCE_SWORD = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_sword"));
     }
 
     public static class Blocks {

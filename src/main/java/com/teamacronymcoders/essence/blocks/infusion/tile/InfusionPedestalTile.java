@@ -11,11 +11,24 @@ import javax.annotation.Nonnull;
 public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
 
     @Save
+    private Integer ticksExisted = 0;
+
+    @Save
     private InventoryComponent<InfusionPedestalTile> inventory;
 
     public InfusionPedestalTile() {
         super(EssenceObjectHolders.INFUSION_PEDESTAL);
-        addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1).setComponentHarness(this));
+        addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
+            .setComponentHarness(this)
+            .setOnSlotChanged((stack, integer) -> markComponentForUpdate())
+            .setSlotLimit(1)
+        );
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        ticksExisted++;
     }
 
     @Nonnull
@@ -30,5 +43,9 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
 
     public ItemStack getStack() {
         return this.inventory.getStackInSlot(0);
+    }
+
+    public Integer getTicksExisted() {
+        return ticksExisted;
     }
 }

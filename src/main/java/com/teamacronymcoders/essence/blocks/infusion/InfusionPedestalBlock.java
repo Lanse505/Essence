@@ -29,16 +29,21 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
 
     private static final VoxelShape[] bounds = new VoxelShape[]{
         EssenceVoxelHelper.combine(
-            makeCuboidShape(4, 0, 4, 12, 2, 12),
+            makeCuboidShape(4,0, 4, 12, 2, 12),
+            makeCuboidShape(3, 1, 3, 13, 1.5, 13),
             makeCuboidShape(5, 2, 5, 11, 12, 11),
-            makeCuboidShape(3, 12, 3, 13, 13, 13)
+            makeCuboidShape(4, 11.6, 4, 12, 12, 12),
+            makeCuboidShape(3, 12, 3, 13, 12.6, 13),
+            makeCuboidShape(4, 12.6, 4, 12, 12.8, 12),
+            makeCuboidShape(3, 0, 3, 13, 1, 13),
+            makeCuboidShape(4.5, 2, 6, 11.5, 12, 10),
+            makeCuboidShape(6, 2, 4.5, 10, 12, 8),
+            makeCuboidShape(6, 2, 4.5, 10, 12, 11.5)
         )
     };
-    public static VoxelShape shape;
-    public static List<VoxelShape> shapes;
 
     public InfusionPedestalBlock() {
-        super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestLevel(2).harvestTool(ToolType.PICKAXE).notSolid(), InfusionPedestalTile.class);
+        super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid(), InfusionPedestalTile.class);
         setItemGroup(Essence.CORE_TAB);
     }
 

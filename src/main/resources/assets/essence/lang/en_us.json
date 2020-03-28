@@ -193,6 +193,8 @@
   "tooltip.essence.modifier.free": "Free Modifiers: %s",
   "tooltip.essence.tool.tier": "Material Tier: ",
 
+  "tooltip.titanium.facing_handler.input": "Infusable",
+
   "patchouli.book.essence.knowledge.tome.name": "Tome of Knowledge",
   "patchouli.book.essence.knowledge.tome.landingtext": "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'",
 

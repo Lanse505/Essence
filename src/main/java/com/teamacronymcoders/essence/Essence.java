@@ -12,13 +12,13 @@ import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
 import com.teamacronymcoders.essence.api.modified.IModified;
-import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.capabilities.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
-import com.teamacronymcoders.essence.client.render.PedestalTESR;
+import com.teamacronymcoders.essence.client.render.InfusionPedestalTESR;
+import com.teamacronymcoders.essence.client.render.InfusionTableTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.misc.wrench.WrenchModeEnum;
@@ -52,15 +52,16 @@ import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistrat
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
@@ -70,6 +71,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -88,7 +90,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosAPI;
@@ -199,8 +200,10 @@ public class Essence extends ModuleController {
     private void clientSetup(final FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_TABLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
-        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), PedestalTESR::new);
+        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
+        ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
     }
@@ -286,6 +289,12 @@ public class Essence extends ModuleController {
 
     @OnlyIn(Dist.CLIENT)
     private void setupClientEventHandlers() {
+        // Atlas Texture Handler
+        EventManager.mod(TextureStitchEvent.Pre.class)
+            .filter(stitch -> stitch.getMap().getTextureLocation().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE))
+            .process(stitch -> {
+              stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
+            }).subscribe();
         // Rainbow Tooltip Handler
         EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
