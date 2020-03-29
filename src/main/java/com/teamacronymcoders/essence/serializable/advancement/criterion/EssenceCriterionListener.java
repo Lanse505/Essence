@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.criterion;
+package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.ICriterionInstance;

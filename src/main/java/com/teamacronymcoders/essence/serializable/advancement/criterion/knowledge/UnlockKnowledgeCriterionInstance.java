@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.criterion.knowledge;
+package com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;

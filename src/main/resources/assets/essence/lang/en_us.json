@@ -177,6 +177,9 @@
   "modifier.essence.strengthened": "  Strengthened %s [%s]",
   "modifier.essence.unbreaking": "  Unbreaking",
 
+  "sound.essence.subtitle.crafting.infusion": "Magically Infusing",
+  "sound.essence.subtitle.ambient.infusion_book": "Pages Turning",
+
   "stat.essence.serialized": "Amount of Blocks Statis'd using the Wrench",
 
   "strengthened.type.arthropod": "Arthropods",

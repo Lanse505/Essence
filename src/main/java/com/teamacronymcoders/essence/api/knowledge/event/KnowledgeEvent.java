@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.api.knowledge.event;
 
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.serializable.criterion.EssenceAdvancements;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;

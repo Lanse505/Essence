@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.criterion;
+package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;

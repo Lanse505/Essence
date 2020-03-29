@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.recipe.tool;
+package com.teamacronymcoders.essence.api.recipe.tool;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;

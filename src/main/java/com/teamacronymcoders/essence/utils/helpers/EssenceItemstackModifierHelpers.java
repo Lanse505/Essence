@@ -169,6 +169,20 @@ public class EssenceItemstackModifierHelpers {
         });
     }
 
+    public static void mergeModifierTags(ItemStack stack, ModifierInstance<ItemStack> mergeInstance) {
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER);
+        holderLazyOptional.ifPresent(holder -> {
+            holder.getModifierInstances().stream()
+                .filter(instance -> instance.getModifier() == mergeInstance.getModifier())
+                .findFirst().ifPresent(instance -> {
+                    CompoundNBT tagOnItem = instance.getModifierData();
+                    tagOnItem.merge(mergeInstance.getModifierData());
+                    instance.setModifierData(tagOnItem);
+            });
+            stack.getOrCreateTag().put(TAG_MODIFIERS, holder.serializeNBT());
+        });
+    }
+
     /**
      * @param stack The ItemStack holding the Modifiers.
      * @return Returns an random modifier from the modifiers on the ItemStack

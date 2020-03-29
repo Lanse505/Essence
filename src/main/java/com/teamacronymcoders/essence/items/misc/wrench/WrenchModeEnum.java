@@ -1,30 +1,26 @@
 package com.teamacronymcoders.essence.items.misc.wrench;
 
 public enum WrenchModeEnum {
-    SERIALIZE("mode.wrench.serialize", 0),
-    ROTATE("mode.wrench.rotate", 1);
+    SERIALIZE("mode.wrench.serialize"),
+    ROTATE("mode.wrench.rotate");
 
-    public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{ROTATE, SERIALIZE};
+    public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{SERIALIZE, ROTATE};
     private final String localeName;
-    private final int id;
 
-    WrenchModeEnum(String localeName, int id) {
+    WrenchModeEnum(String localeName) {
         this.localeName = localeName;
-        this.id = id;
     }
 
     public static WrenchModeEnum cycleMode(int id) {
-        if (id == VALUES.length) {
+        if (id == 0) {
+            return VALUES[1];
+        } else {
             return VALUES[0];
         }
-        return VALUES[id + 1];
     }
 
     public String getLocaleName() {
         return localeName;
     }
 
-    public int getId() {
-        return id;
-    }
 }

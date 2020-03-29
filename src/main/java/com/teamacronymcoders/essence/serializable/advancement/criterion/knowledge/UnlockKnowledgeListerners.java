@@ -1,7 +1,7 @@
-package com.teamacronymcoders.essence.serializable.criterion.knowledge;
+package com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge;
 
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.serializable.criterion.EssenceCriterionListener;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceCriterionListener;
 import net.minecraft.advancements.PlayerAdvancements;
 
 public class UnlockKnowledgeListerners extends EssenceCriterionListener<UnlockKnowledgeCriterionInstance> {

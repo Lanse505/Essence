@@ -5,7 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableModifier;
+import com.teamacronymcoders.essence.api.recipe.infusion.InfusionOperation;
+import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.utils.helpers.EssenceJsonHelper;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.block.BlockState;
@@ -23,7 +24,7 @@ public class EssenceSerializableObjectHandler {
         final int level = buffer.readInt();
         final CompoundNBT compound = buffer.readCompoundTag();
         final String operator = buffer.readString(1);
-        return new SerializableModifier(modifier, level, compound, SerializableModifier.Operation.valueOf(operator));
+        return new SerializableModifier(modifier, level, compound, InfusionOperation.valueOf(operator));
     }
 
     public static void writeSerializableModifier(PacketBuffer buffer, SerializableModifier serializableModifier) {
@@ -52,7 +53,7 @@ public class EssenceSerializableObjectHandler {
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
-        SerializableModifier.Operation operation = SerializableModifier.Operation.valueOf(object.get("operation").getAsString());
+        InfusionOperation operation = InfusionOperation.valueOf(object.get("operation").getAsString());
         return new SerializableModifier(modifier, level, compound, operation);
     }
 
@@ -64,7 +65,7 @@ public class EssenceSerializableObjectHandler {
             final int level = buffer.readInt();
             final CompoundNBT compound = buffer.readCompoundTag();
             final String operator = buffer.readString(1);
-            serializableModifiers[i] = new SerializableModifier(modifier, level, compound, SerializableModifier.Operation.valueOf(operator));
+            serializableModifiers[i] = new SerializableModifier(modifier, level, compound, InfusionOperation.valueOf(operator));
         }
         return serializableModifiers;
     }
@@ -105,7 +106,7 @@ public class EssenceSerializableObjectHandler {
             } catch (CommandSyntaxException e) {
                 e.printStackTrace();
             }
-            SerializableModifier.Operation operation = SerializableModifier.Operation.valueOf(object.get("operation").getAsString());
+            InfusionOperation operation = InfusionOperation.valueOf(object.get("operation").getAsString());
             serializableModifiers[i] = new SerializableModifier(modifier, level, compound, operation);
         }
         return serializableModifiers;

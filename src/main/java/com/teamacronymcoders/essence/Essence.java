@@ -23,7 +23,7 @@ import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.misc.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.items.tools.EssenceShear;
-import com.teamacronymcoders.essence.serializable.criterion.EssenceAdvancements;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
@@ -31,10 +31,10 @@ import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableP
 import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
 import com.teamacronymcoders.essence.serializable.providers.EssenceToolRecipeProvider;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
-import com.teamacronymcoders.essence.serializable.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.serializable.recipe.tool.AxeStrippingRecipe;
-import com.teamacronymcoders.essence.serializable.recipe.tool.HoeTillingRecipe;
-import com.teamacronymcoders.essence.serializable.recipe.tool.ShovelPathingRecipe;
+import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
+import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
+import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
+import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.utils.EssenceCommonProxy;
 import com.teamacronymcoders.essence.utils.EssenceModules;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
@@ -49,10 +49,10 @@ import com.teamacronymcoders.essence.utils.network.message.PacketItemStack;
 import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.utils.registration.EssenceSoundRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.Entity;
@@ -142,7 +142,6 @@ public class Essence extends ModuleController {
         CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
-
         eventBus.addListener(this::setupCuriosIMC);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
@@ -152,6 +151,7 @@ public class Essence extends ModuleController {
         EssenceFeatureRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
+        EssenceSoundRegistration.register(eventBus);
         EssenceAdvancements.setup();
 
         setupCreativeTabIcons();
@@ -201,7 +201,7 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_TABLE, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getTranslucent());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
         // TODO: Reimplement once I get this working
@@ -325,13 +325,7 @@ public class Essence extends ModuleController {
                         if (scrolling != 0) {
                             EssenceWrench wrench = (EssenceWrench) stack.getItem();
                             WrenchModeEnum mode = wrench.getMode();
-                            int newVal = mode.getId() + ((int) scrolling) % WrenchModeEnum.VALUES.length;
-                            if (newVal > 0) {
-                                newVal = newVal % WrenchModeEnum.VALUES.length;
-                            } else if (newVal < 0) {
-                                newVal = WrenchModeEnum.VALUES.length;
-                            }
-                            WrenchModeEnum newMode = WrenchModeEnum.cycleMode(newVal);
+                            WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
                             wrench.setMode(newMode);
                             minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
                             handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));

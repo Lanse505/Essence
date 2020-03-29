@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.serializable.criterion;
+package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
-import com.teamacronymcoders.essence.serializable.criterion.knowledge.UnlockKnowledgeTrigger;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 
 public class EssenceAdvancements {

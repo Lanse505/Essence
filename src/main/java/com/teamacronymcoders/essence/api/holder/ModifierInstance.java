@@ -77,4 +77,8 @@ public class ModifierInstance<T> implements INBTSerializable<CompoundNBT> {
     public CompoundNBT getModifierData() {
         return modifierData;
     }
+
+    public void setModifierData(CompoundNBT modifierData) {
+        this.modifierData = modifierData;
+    }
 }

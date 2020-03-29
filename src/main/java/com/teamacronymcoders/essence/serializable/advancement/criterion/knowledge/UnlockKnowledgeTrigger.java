@@ -1,11 +1,11 @@
-package com.teamacronymcoders.essence.serializable.criterion.knowledge;
+package com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.serializable.criterion.EssenceCriterionTrigger;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceCriterionTrigger;
 import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
