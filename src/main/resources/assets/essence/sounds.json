@@ -1,0 +1,22 @@
+{
+    "crafting_infusion": {
+        "category": "block",
+        "subtitle": "sound.essence.subtitle.crafting.infusion",
+        "sounds": [
+            {
+                "name": "essence:sounds/crafting_infusion",
+                "preload": true
+            }
+        ]
+    },
+    "ambient_infusion_book": {
+        "category": "ambient",
+        "subtitle": "sound.essence.subtitle.ambient.infusion_book",
+        "sounds": [
+            {
+                "name": "essence:sounds/ambient_book",
+                "preload": true
+            }
+        ]
+    }
+}

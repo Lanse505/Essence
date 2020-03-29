@@ -1,7 +1,10 @@
 package com.teamacronymcoders.essence.utils.helpers;
 
+import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionTableTile;
+import com.teamacronymcoders.essence.effects.sounds.InfusionSound;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
@@ -9,8 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -82,6 +86,19 @@ public class EssenceWorldHelper {
             filtering.retainAll(filterBiomes);
         }
         return filtering;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void playInfusionSound(@Nonnull InfusionTableTile tableTile, boolean distanceDelay) {
+        double sqdt = Minecraft.getInstance().gameRenderer.getActiveRenderInfo()
+            .getProjectedView().squareDistanceTo(tableTile.getPos().getX(), tableTile.getPos().getY(), tableTile.getPos().getZ());
+        InfusionSound sound = new InfusionSound(tableTile);
+        if (distanceDelay && sqdt > 100.0F) {
+            double sqrt = Math.sqrt(sqdt) / 40.0D;
+            Minecraft.getInstance().getSoundHandler().playDelayed(sound, (int)(sqrt * 20.0D));
+        } else {
+            Minecraft.getInstance().getSoundHandler().play(sound);
+        }
     }
 
 }
