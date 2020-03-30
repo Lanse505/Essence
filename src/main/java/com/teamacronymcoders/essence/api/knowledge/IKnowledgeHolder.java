@@ -10,7 +10,7 @@ public interface IKnowledgeHolder extends INBTSerializable<CompoundNBT> {
 
     void removeKnowledge(PlayerEntity player, Knowledge<?>... knowledge);
 
-    void clearKnowledge();
+    void clearKnowledge(PlayerEntity player);
 
-    Knowledge<?>[] getKnowledge();
+    Knowledge<?>[] getKnowledge(PlayerEntity player);
 }

@@ -18,7 +18,6 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     private static final String PLAYER_INSTANCES = "Player_Knowledge_Instances";
 
     private Map<UUID, List<Knowledge<?>>> playerToKnowledgeMap;
-    private List<Knowledge<?>> knowledge;
 
     public KnowledgeHolder() {
         this.playerToKnowledgeMap = new HashMap<>();
@@ -27,13 +26,13 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     @Override
     public void addKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
         ServerPlayerEntity serverPlayer = null;
+        List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
         if (player instanceof ServerPlayerEntity) {
             serverPlayer = (ServerPlayerEntity) player;
         }
         for (Knowledge<?> instance : knowledge) {
             boolean notCancelled = false;
-            if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !this.knowledge.contains(instance)) {
-                List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
+            if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !knowledges.contains(instance)) {
                 knowledges.add(instance);
                 notCancelled = true;
             }
@@ -47,24 +46,25 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
 
     @Override
     public void removeKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
+        List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
         for (Knowledge<?> instance : knowledge) {
             MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
-            this.knowledge.remove(instance);
+            knowledges.remove(instance);
         }
     }
 
     @Override
-    public Knowledge<?>[] getKnowledge() {
-        return (Knowledge<?>[]) this.knowledge.toArray();
+    public Knowledge<?>[] getKnowledge(PlayerEntity player) {
+        return (Knowledge<?>[]) playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>()).toArray();
     }
 
-    public List<Knowledge<?>> getKnowledgeAsList() {
-        return this.knowledge;
+    public List<Knowledge<?>> getKnowledgeAsList(PlayerEntity player) {
+        return playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>());
     }
 
     @Override
-    public void clearKnowledge() {
-        this.knowledge.clear();
+    public void clearKnowledge(PlayerEntity player) {
+        playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>()).clear();
     }
 
     @Override
@@ -101,5 +101,5 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
             }
         }
     }
-    
+
 }

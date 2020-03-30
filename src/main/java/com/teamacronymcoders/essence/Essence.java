@@ -61,6 +61,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -183,7 +184,7 @@ public class Essence extends ModuleController {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(ListNBT.class), KnowledgeHolder::new);
+        CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
         CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
 
@@ -281,7 +282,7 @@ public class Essence extends ModuleController {
             .process(clone -> {
                 clone.getOriginal().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(oldHolder -> {
                     clone.getPlayer().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(newHolder -> {
-                        newHolder.addKnowledge(clone.getPlayer(), oldHolder.getKnowledge());
+                        newHolder.deserializeNBT(oldHolder.serializeNBT());
                     });
                 });
             }).subscribe();
