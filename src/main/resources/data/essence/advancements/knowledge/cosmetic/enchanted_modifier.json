@@ -2,7 +2,7 @@
     "parent": "essence:knowledge/cosmetic/cosmetic_modifier",
     "display": {
         "icon": {
-            "item": ""
+            "item": "essence:essence_crystal"
         },
         "title": {
             "translate": "advancements.essence.knowledge.enchanted.title"
