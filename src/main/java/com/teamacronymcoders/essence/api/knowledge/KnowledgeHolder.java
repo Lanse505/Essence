@@ -101,4 +101,5 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
             }
         }
     }
+    
 }
