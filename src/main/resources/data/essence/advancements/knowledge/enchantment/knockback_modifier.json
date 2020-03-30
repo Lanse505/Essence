@@ -2,7 +2,7 @@
     "parent": "essence:knowledge/enchantment/enchantment_modifier",
     "display": {
         "icon": {
-            "item": ""
+            "item": "essence:essence_crystal"
         },
         "title": {
             "translate": "advancements.essence.knowledge.knockback.title"
