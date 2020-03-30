@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.client.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
+import com.teamacronymcoders.essence.utils.helpers.EssenceRenderHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -41,26 +42,7 @@ public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTil
         ItemStack stack = tile.getStack();
 
         if (!stack.isEmpty()) {
-            matrixStack.push();
-            ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
-            int i = stack.isEmpty() ? 187 : Item.getIdFromItem(stack.getItem()) + stack.getDamage();
-            random.setSeed(i);
-            IBakedModel ibakedmodel = renderer.getItemModelWithOverrides(stack, tile.getWorld(), null);
-            boolean flag = ibakedmodel.isGui3d();
-            float f1 = MathHelper.sin(((float)tile.getTicksExisted() + partial) / 10.0F) * 0.05F + 0.1F;
-            float f3 = tile.getTicksExisted() + partial * 0.7F;
-            matrixStack.translate(0.5D, f1 + 0.9F, 0.5D);
-            matrixStack.rotate(new Quaternion(0, -f3, 0, true));
-
-            matrixStack.push();
-            renderer.renderItem(stack, ItemCameraTransforms.TransformType.GROUND, WorldRenderer.getCombinedLight(tile.getWorld(), tile.getPos().up()), overlay, matrixStack, buffer);
-            matrixStack.pop();
-
-            if (!flag) {
-                matrixStack.translate(0.0, 0.0, 0.09375F);
-            }
-
-            matrixStack.pop();
+            EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer, overlay);
         }
     }
 }

@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.container;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
 import com.teamacronymcoders.essence.container.inventory.PortableCraftingInventory;
-import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.PortableCrafterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -31,7 +31,7 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
     public static ContainerType<PortableCrafterContainer> type;
 
     private PlayerInventory inventory;
-    private PortableCrafter portableCrafter;
+    private PortableCrafterItem portableCrafter;
     private IWorldPosCallable callable;
     private RecipeWrapper grid;
     private RecipeWrapper result;
@@ -39,10 +39,10 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
     private IRecipe<?> recipeUsed;
 
     public PortableCrafterContainer(int id, PlayerInventory inventory, PacketBuffer buffer) {
-        this((PortableCrafter) inventory.player.getHeldItem(Hand.valueOf(buffer.readString())).getItem(), inventory, id);
+        this((PortableCrafterItem) inventory.player.getHeldItem(Hand.valueOf(buffer.readString())).getItem(), inventory, id);
     }
 
-    public PortableCrafterContainer(PortableCrafter portableCrafter, PlayerInventory inventory, int id) {
+    public PortableCrafterContainer(PortableCrafterItem portableCrafter, PlayerInventory inventory, int id) {
         super(type, inventory, id);
         this.inventory = inventory;
         this.portableCrafter = portableCrafter;
@@ -121,7 +121,7 @@ public class PortableCrafterContainer extends BasicInventoryContainer {
         addGridSlots();
     }
 
-    public PortableCrafter getPortableCrafter() {
+    public PortableCrafterItem getPortableCrafter() {
         return portableCrafter;
     }
 

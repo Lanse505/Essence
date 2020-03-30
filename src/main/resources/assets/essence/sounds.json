@@ -4,7 +4,7 @@
         "subtitle": "sound.essence.subtitle.crafting.infusion",
         "sounds": [
             {
-                "name": "essence:sounds/crafting_infusion",
+                "name": "essence:crafting_infusion",
                 "preload": true
             }
         ]
@@ -14,7 +14,7 @@
         "subtitle": "sound.essence.subtitle.ambient.infusion_book",
         "sounds": [
             {
-                "name": "essence:sounds/ambient_book",
+                "name": "essence:ambient_book",
                 "preload": true
             }
         ]

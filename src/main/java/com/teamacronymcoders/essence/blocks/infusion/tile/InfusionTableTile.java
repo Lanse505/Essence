@@ -7,6 +7,7 @@ import com.hrznstudio.titanium.component.inventory.SidedInventoryComponent;
 import com.hrznstudio.titanium.component.progress.ProgressBarComponent;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.blocks.infusion.InfusionPedestalBlock;
+import com.teamacronymcoders.essence.items.misc.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.ExtendableInfusionRecipe;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
@@ -52,6 +53,8 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     private Integer totalWorkDuration = 0;
     @Save
     private Boolean hasFiredSound = false;
+    @Save
+    private Integer ticksExisted = 0;
 
     @Save
     private InventoryComponent<InfusionTableTile> infusable;
@@ -74,19 +77,24 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
 
     public InfusionTableTile() {
         super(EssenceObjectHolders.INFUSION_TABLE);
-        addInventory(infusable = (InventoryComponent<InfusionTableTile>) new InventoryComponent<InfusionTableTile>("input", 80, 20, 1)
+        addInventory(infusable = new InventoryComponent<InfusionTableTile>("input", 80, 20, 1)
             .setComponentHarness(this)
             .setOutputFilter(this::canExtractInfusable)
+            .setSlotLimit(1)
         );
         addInventory(tome = new InventoryComponent<InfusionTableTile>("tome", 9, 10, 1)
             .setComponentHarness(this)
             .setOnSlotChanged((stack, integer) -> markComponentForUpdate())
+            .setInputFilter((stack, integer) -> false)
+            .setOutputFilter((stack, integer) -> false)
+            .setSlotLimit(1)
         );
     }
 
     @Override
     public void tick() {
         super.tick();
+        ticksExisted++;
         handleBookRender();
         if (shouldBeWorking || isWorking) {
             if (!recipe.isValid(getPedestalStacks())) {
@@ -95,16 +103,16 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
                 totalWorkDuration = recipe.duration;
             }
             isWorking = true;
-            if (isWorking && !hasFiredSound) {
-                EssenceWorldHelper.playInfusionSound(this, true);
-                hasFiredSound = true;
-            }
             if (workDuration >= totalWorkDuration) {
                 ItemStack infusable = this.infusable.getStackInSlot(0);
                 recipe.resolveRecipe(infusable);
                 shouldBeWorking = false;
                 isWorking = false;
                 hasFiredSound = false;
+            }
+            if (isWorking && !hasFiredSound) {
+                EssenceWorldHelper.playInfusionSound(this, true);
+                hasFiredSound = true;
             }
         }
     }
@@ -216,7 +224,23 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
         return isWorking;
     }
 
+    public InventoryComponent<InfusionTableTile> getTome() {
+        return tome;
+    }
+
+    public InventoryComponent<InfusionTableTile> getInfusable() {
+        return infusable;
+    }
+
+    public void setShouldBeWorking(Boolean shouldBeWorking) {
+        this.shouldBeWorking = shouldBeWorking;
+    }
+
     public boolean hasTome() {
-        return true; //tome.getStackInSlot(0).getItem() instanceof TomeOfKnowledge;
+        return !tome.getStackInSlot(0).isEmpty() && tome.getStackInSlot(0).getItem() instanceof TomeOfKnowledgeItem;
+    }
+
+    public Integer getTicksExisted() {
+        return ticksExisted;
     }
 }

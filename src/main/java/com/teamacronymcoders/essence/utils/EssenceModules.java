@@ -15,7 +15,8 @@ import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.items.misc.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.tools.*;
 import com.teamacronymcoders.essence.utils.tiers.EssenceItemTiers;
@@ -43,6 +44,7 @@ public class EssenceModules {
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.EXALTED_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_exalted")))
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_godly")))
                 .content(Item.class, new EssenceStickItem().setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_sticks")))
+                .content(Item.class, new TomeOfKnowledgeItem().setRegistryName(new ResourceLocation(Essence.MODID, "tome_of_knowledge")))
         )
         .feature(
             Feature.builder("blocks")
@@ -97,7 +99,7 @@ public class EssenceModules {
             Feature.builder("tools")
                 .force()
                 .description("Tools")
-                .content(Item.class, new PortableCrafter().setRegistryName(new ResourceLocation(Essence.MODID, "portable_crafter")))
+                .content(Item.class, new PortableCrafterItem().setRegistryName(new ResourceLocation(Essence.MODID, "portable_crafter")))
                 .content(Item.class, new EssenceWrench().setRegistryName(new ResourceLocation(Essence.MODID, "wrench")))
 
                 // Tier 1

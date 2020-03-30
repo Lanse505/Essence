@@ -4,14 +4,22 @@ import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.blocks.infusion.tile.InfusionTableTile;
+import com.teamacronymcoders.essence.items.misc.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.items.misc.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.utils.helpers.EssenceVoxelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -55,11 +63,48 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
             return ActionResultType.SUCCESS;
         }
         InfusionTableTile te = worldIn.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) worldIn.getTileEntity(pos) : null;
-        if (te == null) {
-            return ActionResultType.PASS;
+        if (te != null) {
+            ItemStack stack = player.getHeldItem(hand);
+
+            if (!stack.isEmpty() && stack.getItem() instanceof EssenceWrench) {
+                EssenceWrench wrench = (EssenceWrench) stack.getItem();
+                if (wrench.getMode() == WrenchModeEnum.TRIGGER) {
+                    te.setShouldBeWorking(true);
+                }
+                return ActionResultType.SUCCESS;
+            }
+
+            // Handle Player Inventory -> Block Inventory
+            if (!stack.isEmpty() && stack.getItem() instanceof TomeOfKnowledgeItem && !te.hasTome()) {
+                ItemStack copy = stack.copy();
+                te.getTome().setStackInSlot(0, copy);
+                stack.shrink(1);
+                te.markComponentForUpdate();
+                return ActionResultType.SUCCESS;
+            } else if (!stack.isEmpty() && te.getInfusable().getStackInSlot(0).isEmpty()) {
+                ItemStack copy = stack.copy();
+                te.getInfusable().setStackInSlot(0, copy);
+                stack.shrink(1);
+                te.markComponentForUpdate();
+                return ActionResultType.SUCCESS;
+            }
+
+            // Handle Block Inventory -> Player Inventory
+            if (stack.isEmpty() && te.hasTome()) {
+                ItemStack copy = te.getTome().getStackInSlot(0);
+                player.addItemStackToInventory(copy);
+                te.getTome().setStackInSlot(0, ItemStack.EMPTY);
+                te.markComponentForUpdate();
+                return ActionResultType.SUCCESS;
+            } else if (stack.isEmpty() && !te.getInfusable().getStackInSlot(0).isEmpty()) {
+                ItemStack copy = te.getInfusable().getStackInSlot(0).copy();
+                player.addItemStackToInventory(copy);
+                te.getInfusable().setStackInSlot(0, ItemStack.EMPTY);
+                te.markComponentForUpdate();
+                return ActionResultType.SUCCESS;
+            }
         }
-        te.openGui(player);
-        return ActionResultType.SUCCESS;
+        return ActionResultType.PASS;
     }
 
     @Override
@@ -67,19 +112,18 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
         return InfusionTableTile::new;
     }
 
-    // TODO: Figure out this Black Magic, might CC Squid or Nooby for help :S
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
         super.animateTick(state, world, pos, random);
-        for(int i = -2; i <= 2; ++i) {
-            for(int j = -2; j <= 2; ++j) {
-                if (i > -2 && i < 2 && j == -1) {
-                    j = 2;
-                }
-                if (random.nextInt(16) == 0) {
-                    for(int k = 0; k <= 1; ++k) {
-                        BlockPos blockpos = pos.add(i, k, j);
-                        if (world.getBlockState(blockpos).getEnchantPowerBonus(world, pos) > 0) {
+        InfusionTableTile te = world.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) world.getTileEntity(pos) : null;
+        if (te != null && te.getWorking()) {
+            for(int i = -2; i <= 2; ++i) {
+                for(int j = -2; j <= 2; ++j) {
+                    if (i > -2 && i < 2 && j == -1) {
+                        j = 2;
+                    }
+                    if (random.nextInt(16) == 0) {
+                        for(int k = 0; k <= 1; ++k) {
                             if (!world.isAirBlock(pos.add(i / 2, 0, j / 2))) {
                                 break;
                             }

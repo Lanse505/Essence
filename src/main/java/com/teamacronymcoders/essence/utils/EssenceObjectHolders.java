@@ -14,7 +14,8 @@ import com.teamacronymcoders.essence.items.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.items.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.items.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.items.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.items.misc.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.items.tools.*;
 import net.minecraft.util.ResourceLocation;
@@ -112,9 +113,11 @@ public class EssenceObjectHolders {
     public static EssenceNuggetItem ESSENCE_INFUSED_METAL_GODLY_NUGGET;
 
     @ObjectHolder("essence:portable_crafter")
-    public static PortableCrafter PORTABLE_CRAFTER;
+    public static PortableCrafterItem PORTABLE_CRAFTER;
     @ObjectHolder("essence:wrench")
     public static EssenceWrench WRENCH;
+    @ObjectHolder("essence:tome_of_knowledge")
+    public static TomeOfKnowledgeItem tomeOfKnowledge;
 
     // Tier 1 Tools
     @ObjectHolder("essence:essence_axe")

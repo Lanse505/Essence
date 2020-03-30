@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.container.portablecrafter;
 
-import com.teamacronymcoders.essence.items.misc.PortableCrafter;
+import com.teamacronymcoders.essence.items.misc.PortableCrafterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.WorkbenchContainer;
@@ -14,7 +14,7 @@ public class PortableCrafterContainer extends WorkbenchContainer {
     private final ItemStack stack;
 
     public PortableCrafterContainer(int id, PlayerInventory inventory, PacketBuffer buffer) {
-        this(inventory.player.getHeldItem(Hand.valueOf(buffer.readString())).getItem() instanceof PortableCrafter ?
+        this(inventory.player.getHeldItem(Hand.valueOf(buffer.readString())).getItem() instanceof PortableCrafterItem ?
                 inventory.player.getHeldItem(Hand.valueOf(buffer.readString())) : ItemStack.EMPTY,
             id, inventory, IWorldPosCallable.of(inventory.player.world, inventory.player.getPosition()));
     }

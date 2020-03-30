@@ -28,12 +28,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PortableCrafter extends Item implements IScreenAddonProvider, INamedContainerProvider {
+public class PortableCrafterItem extends Item implements IScreenAddonProvider, INamedContainerProvider {
 
     private final InventoryComponent<?> grid;
     private final InventoryComponent<?> output;
 
-    public PortableCrafter() {
+    public PortableCrafterItem() {
         super(new Item.Properties().maxStackSize(1).group(Essence.TOOL_TAB).rarity(Rarity.RARE));
         grid = new InventoryComponent<>("grid", 26, 25, 9).setRange(3, 3);
         output = new InventoryComponent<>("grid", 133, 43, 1);
