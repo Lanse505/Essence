@@ -1,10 +1,11 @@
 package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -50,10 +51,21 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
     /**
      * @return Returns the Translation Key for the Modifier.
      */
-    @OnlyIn(Dist.CLIENT)
     public String getTranslationName() {
         final ResourceLocation id = this.getRegistryName();
         return "modifier." + id.getNamespace() + "." + id.getPath();
+    }
+
+    /**
+     * Override this and use Level -1 as a dump value!
+     * @param level Level of the Modifier
+     * @return Returns the formatted TextComponent
+     */
+    public ITextComponent getTextComponentName(int level) {
+        if (level == 1) {
+            return new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
+        }
+        return new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level)).applyTextStyle(TextFormatting.GRAY));
     }
 
     /**
@@ -64,13 +76,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
         if (instance == null) {
             return textComponents;
         }
-
-        if (instance.getLevel() == 1) {
-            textComponents.add(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
-            return textComponents;
-        }
-
-        textComponents.add(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(instance.getLevel())).applyTextStyle(TextFormatting.GRAY));
+        textComponents.add(getTextComponentName(instance.getLevel()));
         return textComponents;
     }
 

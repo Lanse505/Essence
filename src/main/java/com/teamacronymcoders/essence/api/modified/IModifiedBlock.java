@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.api.modified;
 
 import com.teamacronymcoders.essence.api.modifier.block.BlockCoreModifier;
-import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
-import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
-import com.teamacronymcoders.essence.utils.tiers.IEssenceBaseTier;
+import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
+import com.teamacronymcoders.essence.util.tier.IEssenceBaseTier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public interface IModifiedBlock extends IModified<Block> {
 
     default float getBlockHardnessFromModifiers(BlockState state, IBlockReader world, BlockPos pos, TileEntity te, float defaultHardness) {
-        return te.getCapability(EssenceCoreCapabilities.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
+        return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
                 BlockCoreModifier modifier = (BlockCoreModifier) instance.getModifier();
@@ -39,7 +39,7 @@ public interface IModifiedBlock extends IModified<Block> {
     }
 
     default float getExplosionResistanceFromModifiers(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion, TileEntity te, float defaultExplosionResistance) {
-        return te.getCapability(EssenceCoreCapabilities.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
+        return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
                 BlockCoreModifier modifier = (BlockCoreModifier) instance.getModifier();
@@ -48,7 +48,7 @@ public interface IModifiedBlock extends IModified<Block> {
     }
 
     default int getLightValueFromModifiers(BlockState state, IBlockReader world, BlockPos pos, TileEntity te, int defaultLightValue) {
-        return te.getCapability(EssenceCoreCapabilities.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
+        return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
                 BlockCoreModifier modifier = (BlockCoreModifier) instance.getModifier();
@@ -63,7 +63,7 @@ public interface IModifiedBlock extends IModified<Block> {
         if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
-            stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER)
+            stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER)
                 .ifPresent(holder -> holder.getModifierInstances()
                     .forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance))));
             sorting_map.entrySet().stream()

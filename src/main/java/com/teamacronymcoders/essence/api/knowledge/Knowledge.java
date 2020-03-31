@@ -17,27 +17,29 @@ public class Knowledge<T> extends ForgeRegistryEntry<Knowledge<?>> implements IN
     private static final String TAG_MODIFIER_INSTANCES = "ModifierInstances";
 
     private Class<T> type;
-    private ResourceLocation identifier;
     private List<ModifierInstance<T>> modifierInstances;
 
     public Knowledge(Class<T> type) {
         this.type = type;
+        this.modifierInstances = new ArrayList<>();
     }
 
-    public Knowledge(Class<T> type, ResourceLocation identifier, ModifierInstance<T>... modifiers) {
+    public Knowledge(Class<T> type, ModifierInstance<T>... modifiers) {
         this.type = type;
-        this.identifier = identifier;
         this.modifierInstances = new ArrayList<>();
         Collections.addAll(this.modifierInstances, modifiers);
     }
 
-    public Knowledge() {
+    public Knowledge() {}
+
+    public String getTranslationString() {
+        return "knowledge." + getRegistryName().getNamespace() + "." + getRegistryName().getPath();
     }
 
     @Override
     public CompoundNBT serializeNBT() {
         final CompoundNBT nbt = new CompoundNBT();
-        nbt.putString(TAG_KNOWLEDGE, identifier.toString());
+        nbt.putString(TAG_KNOWLEDGE, getRegistryName().toString());
         final ListNBT modifierInstances = new ListNBT();
         for (ModifierInstance<T> instance : this.modifierInstances) {
             modifierInstances.add(instance.serializeNBT());
@@ -48,7 +50,6 @@ public class Knowledge<T> extends ForgeRegistryEntry<Knowledge<?>> implements IN
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        final ResourceLocation identifier = new ResourceLocation(nbt.getString(TAG_KNOWLEDGE));
         final List<ModifierInstance<T>> modifierInstances = new ArrayList<>();
         final ListNBT listNBT = nbt.getList(TAG_MODIFIER_INSTANCES, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listNBT.size(); i++) {
@@ -57,7 +58,14 @@ public class Knowledge<T> extends ForgeRegistryEntry<Knowledge<?>> implements IN
             instance.deserializeNBT(subCNBT);
             modifierInstances.add(instance);
         }
-        this.identifier = identifier;
         this.modifierInstances = modifierInstances;
+    }
+
+    public Class<T> getType() {
+        return type;
+    }
+
+    public String getTypeString() {
+        return type.getSimpleName();
     }
 }

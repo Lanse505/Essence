@@ -24,6 +24,36 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     }
 
     @Override
+    public void addPlayerUUID(PlayerEntity player) {
+        if (!playerToKnowledgeMap.containsKey(player.getUniqueID())) {
+            playerToKnowledgeMap.put(player.getUniqueID(), new ArrayList<>());
+        }
+    }
+
+    @Override
+    public void addPlayerUUID(UUID player) {
+        if (!playerToKnowledgeMap.containsKey(player)) {
+            playerToKnowledgeMap.put(player, new ArrayList<>());
+        }
+    }
+
+    /**
+     * This should only be called from code where you don't have a player input context for the input!
+     * THIS VERSION DOES NOT FIRE EVENTS!
+     * @param player UUID to remove Knowledge from
+     * @param knowledge Knowledge VarArg to remove.
+     */
+    @Override
+    public void addKnowledge(UUID player, Knowledge<?>... knowledge) {
+        List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player);
+        for (Knowledge<?> instance : knowledge) {
+            if (!knowledges.contains(instance)) {
+                knowledges.add(instance);
+            }
+        }
+    }
+
+    @Override
     public void addKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
         ServerPlayerEntity serverPlayer = null;
         List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
@@ -44,6 +74,20 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
         }
     }
 
+    /**
+     * This should only be called from code where you don't have a player input context for the input!
+     * @param player UUID to remove Knowledge from
+     * @param knowledge Knowledge VarArg to remove.
+     * THIS VERSION DOES NOT FIRE EVENTS!
+     */
+    @Override
+    public void removeKnowledge(UUID player, Knowledge<?>... knowledge) {
+        List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player);
+        for (Knowledge<?> instance : knowledge) {
+            knowledges.remove(instance);
+        }
+    }
+
     @Override
     public void removeKnowledge(PlayerEntity player, Knowledge<?>... knowledge) {
         List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
@@ -54,17 +98,32 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     }
 
     @Override
-    public Knowledge<?>[] getKnowledge(PlayerEntity player) {
-        return (Knowledge<?>[]) playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>()).toArray();
+    public List<Knowledge<?>> getKnowledgeAsList(UUID uuid) {
+        return playerToKnowledgeMap.get(uuid);
     }
 
     public List<Knowledge<?>> getKnowledgeAsList(PlayerEntity player) {
-        return playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>());
+        return playerToKnowledgeMap.get(player.getUniqueID());
+    }
+
+    @Override
+    public Knowledge<?>[] getKnowledgeAsArray(UUID uuid) {
+        return (Knowledge<?>[]) playerToKnowledgeMap.get(uuid).toArray();
+    }
+
+    @Override
+    public Knowledge<?>[] getKnowledgeAsArray(PlayerEntity player) {
+        return (Knowledge<?>[]) playerToKnowledgeMap.get(player.getUniqueID()).toArray();
+    }
+
+    @Override
+    public void clearKnowledge(UUID player) {
+        playerToKnowledgeMap.get(player).clear();
     }
 
     @Override
     public void clearKnowledge(PlayerEntity player) {
-        playerToKnowledgeMap.getOrDefault(player.getUniqueID(), new ArrayList<>()).clear();
+        playerToKnowledgeMap.get(player.getUniqueID()).clear();
     }
 
     @Override
