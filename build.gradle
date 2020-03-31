@@ -37,6 +37,20 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            if (project.hasProperty('mc_uuid')) {
+                //Your uuid without any dashes in the middle
+                args '--uuid', project.getProperty('mc_uuid')
+            }
+            if (project.hasProperty('mc_username')) {
+                //Your username/display name, this is the name that shows up in chat
+                // Note: This is not your email, even if you have a Mojang account
+                args '--username', project.getProperty('mc_username')
+            }
+            if (project.hasProperty('mc_accessToken')) {
+                //Your access token, you can find it in your '.minecraft/launcher_profiles.json' file
+                args '--accessToken', project.getProperty('mc_accessToken')
+            }
+
             mods {
                 examplemod {
                     source sourceSets.main
