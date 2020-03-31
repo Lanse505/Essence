@@ -1,11 +1,11 @@
 package com.teamacronymcoders.essence.generation;
 
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.config.EssenceWorldGenConfig;
-import com.teamacronymcoders.essence.utils.config.subconfigs.EssenceOreGenConfig;
-import com.teamacronymcoders.essence.utils.config.subconfigs.EssenceTreeGenConfig;
-import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
-import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
+import com.teamacronymcoders.essence.util.EssenceObjectHolders;
+import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
+import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
+import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
+import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
+import com.teamacronymcoders.essence.util.registration.EssenceFeatureRegistration;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -39,14 +39,14 @@ public class EssenceGeneration {
                     oreGenConfig.getEssence_crystal_ore().getMaxHeight().get()));
         }
         if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) {
-            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.NORMAL_WORLD_ESSENCE_TREE_CONFIG,
+            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfig.NORMAL_WORLD_ESSENCE_TREE_CONFIG,
                 new AtSurfaceWithExtraConfig(
                     0,
                     treeGenConfig.getNormalVariant().getExtraChance().get().floatValue(),
                     treeGenConfig.getNormalVariant().getExtraCount().get()));
         }
         if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
-            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfigs.FANCY_WORLD_ESSENCE_TREE_CONFIG,
+            addTreeGeneration(BiomeDictionary.Type.OVERWORLD, EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get(), EssenceFeatureConfig.FANCY_WORLD_ESSENCE_TREE_CONFIG,
                 new AtSurfaceWithExtraConfig(
                     0,
                     treeGenConfig.getFancyVariant().getExtraChance().get().floatValue(),

@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.modifier.item.interaction.cascading;
 
-import com.teamacronymcoders.essence.utils.EssenceTags;
-import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
+import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;

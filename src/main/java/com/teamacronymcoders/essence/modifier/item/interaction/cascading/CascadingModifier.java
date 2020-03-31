@@ -2,10 +2,10 @@ package com.teamacronymcoders.essence.modifier.item.interaction.cascading;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
-import com.teamacronymcoders.essence.utils.helpers.EssenceBlockPosHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceWorldHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceBlockPosHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -89,6 +89,14 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     @Override
     public boolean canApplyTogether(IModifier modifier) {
         return !(modifier instanceof CascadingModifier && !(((CascadingModifier) modifier).getType().equals(this.type))) && !(modifier instanceof ExpanderModifier);
+    }
+
+    @Override
+    public ITextComponent getTextComponentName(int level) {
+        if (level == -1) {
+            return new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("cascading.type." + this.type.getName()));
+        }
+        return super.getTextComponentName(level);
     }
 
     @Override

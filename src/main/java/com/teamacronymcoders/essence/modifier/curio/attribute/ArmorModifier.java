@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.modifier.curio.attribute;
 
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemAttributeModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 

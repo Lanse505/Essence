@@ -6,61 +6,42 @@ import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapabilities;
 import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
-import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
-import com.teamacronymcoders.essence.api.modified.IModified;
-import com.teamacronymcoders.essence.capabilities.block.BlockModifierHolder;
-import com.teamacronymcoders.essence.capabilities.block.BlockModifierProvider;
-import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierHolder;
-import com.teamacronymcoders.essence.capabilities.itemstack.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
+import com.teamacronymcoders.essence.capability.block.BlockModifierHolder;
+import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
 import com.teamacronymcoders.essence.client.render.InfusionPedestalTESR;
 import com.teamacronymcoders.essence.client.render.InfusionTableTESR;
-import com.teamacronymcoders.essence.container.PortableCrafterContainer;
-import com.teamacronymcoders.essence.items.misc.wrench.EssenceWrench;
-import com.teamacronymcoders.essence.items.misc.wrench.WrenchModeEnum;
-import com.teamacronymcoders.essence.items.tools.EssenceShear;
+import com.teamacronymcoders.essence.item.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
-import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
-import com.teamacronymcoders.essence.serializable.providers.EssenceRecipeProvider;
-import com.teamacronymcoders.essence.serializable.providers.EssenceSerializableProvider;
-import com.teamacronymcoders.essence.serializable.providers.EssenceTagProvider;
-import com.teamacronymcoders.essence.serializable.providers.EssenceToolRecipeProvider;
-import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
-import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
-import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
-import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.utils.EssenceCommonProxy;
-import com.teamacronymcoders.essence.utils.EssenceModules;
-import com.teamacronymcoders.essence.utils.EssenceObjectHolders;
-import com.teamacronymcoders.essence.utils.EssenceSerializableObjectHandler;
-import com.teamacronymcoders.essence.utils.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.utils.config.EssenceModifierConfig;
-import com.teamacronymcoders.essence.utils.config.EssenceWorldGenConfig;
-import com.teamacronymcoders.essence.utils.helpers.EssenceColorHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.utils.network.PacketHandler;
-import com.teamacronymcoders.essence.utils.network.message.PacketItemStack;
-import com.teamacronymcoders.essence.utils.registration.EssenceFeatureRegistration;
-import com.teamacronymcoders.essence.utils.registration.EssenceKnowledgeRegistration;
-import com.teamacronymcoders.essence.utils.registration.EssenceModifierRegistration;
-import com.teamacronymcoders.essence.utils.registration.EssenceSoundRegistration;
-import net.minecraft.block.Block;
+import com.teamacronymcoders.essence.serializable.provider.EssenceRecipeProvider;
+import com.teamacronymcoders.essence.serializable.provider.EssenceSerializableProvider;
+import com.teamacronymcoders.essence.serializable.provider.EssenceTagProvider;
+import com.teamacronymcoders.essence.serializable.provider.EssenceToolRecipeProvider;
+import com.teamacronymcoders.essence.util.*;
+import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
+import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
+import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
+import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.network.PacketHandler;
+import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
+import com.teamacronymcoders.essence.util.registration.EssenceFeatureRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Hand;
@@ -74,11 +55,6 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -154,9 +130,9 @@ public class Essence extends ModuleController {
         EssenceKnowledgeRegistration.register(eventBus);
         EssenceSoundRegistration.register(eventBus);
         EssenceAdvancements.setup();
+        EssenceEventHandlers.setup();
 
         setupCreativeTabIcons();
-        setupEventManagers();
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setupClientEventHandlers);
     }
@@ -225,67 +201,6 @@ public class Essence extends ModuleController {
             new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
             new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
             new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
-    }
-
-    private void setupEventManagers() {
-        // Registration Handlers
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    AxeStrippingRecipe.SERIALIZER,
-                    HoeTillingRecipe.SERIALIZER,
-                    InfusionTableSerializableRecipe.SERIALIZER,
-                    ShovelPathingRecipe.SERIALIZER
-                );
-            }).subscribe();
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
-                );
-            }).subscribe();
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(ContainerType.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
-                );
-            }).subscribe();
-
-        // Capability Handlers
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof ItemStack)
-            .process(attach -> {
-                if (attach.getObject() instanceof IModified) {
-                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) attach.getObject()));
-                }
-            }).subscribe();
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof Block)
-            .process(attach -> {
-                if (attach.getObject() instanceof IModified) {
-                    attach.addCapability(new ResourceLocation(MODID, "block_modifier_holder"), new BlockModifierProvider());
-                }
-            }).subscribe();
-
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof Entity)
-            .process(attach -> {
-                if (attach.getObject() instanceof PlayerEntity) {
-                    attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
-                }
-            }).subscribe();
-        EventManager.forge(PlayerEvent.Clone.class)
-            .filter(PlayerEvent.Clone::isWasDeath)
-            .process(clone -> {
-                clone.getOriginal().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(oldHolder -> {
-                    clone.getPlayer().getCapability(EssenceCapabilities.KNOWLEDGE).ifPresent(newHolder -> {
-                        newHolder.deserializeNBT(oldHolder.serializeNBT());
-                    });
-                });
-            }).subscribe();
     }
 
     @OnlyIn(Dist.CLIENT)

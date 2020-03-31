@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -61,22 +61,30 @@ public class BrewedModifier extends ItemArrowCoreModifier {
     }
 
     @Override
+    public ITextComponent getTextComponentName(int level) {
+        if (level == -1) {
+            return new TranslationTextComponent(getTranslationName() + ".cleaned");
+        }
+        return super.getTextComponentName(level);
+    }
+
+    @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
         final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();
         if (InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
-            textComponents.add(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN));
-            textComponents.add(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD));
+            textComponents.add(new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN)));
+            textComponents.add(new StringTextComponent("    ").appendSibling(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD)));
             for (EffectInstance effect : effects) {
                 if (effect.getPotion().isBeneficial()) {
                     textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.BLUE));
-                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE));
-                    textComponents.add(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.BLUE));
+                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE)));
+                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.BLUE)));
                 } else {
                     textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.RED));
-                    textComponents.add(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.RED));
-                    textComponents.add(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.RED));
+                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.RED)));
+                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.RED)));
                 }
             }
         } else {
