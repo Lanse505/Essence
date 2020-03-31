@@ -6,7 +6,7 @@ import com.google.gson.JsonParseException;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceCriterionTrigger;
-import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
+import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 

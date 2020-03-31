@@ -1,12 +1,12 @@
 package com.teamacronymcoders.essence.modifier.item.enchantment;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemEnchantmentCoreModifier;
-import com.teamacronymcoders.essence.items.tools.EssenceAxe;
-import com.teamacronymcoders.essence.items.tools.EssenceOmniTool;
-import com.teamacronymcoders.essence.items.tools.EssencePickaxe;
-import com.teamacronymcoders.essence.items.tools.EssenceShovel;
-import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
+import com.teamacronymcoders.essence.item.tool.EssenceAxe;
+import com.teamacronymcoders.essence.item.tool.EssenceOmniTool;
+import com.teamacronymcoders.essence.item.tool.EssencePickaxe;
+import com.teamacronymcoders.essence.item.tool.EssenceShovel;
+import com.teamacronymcoders.essence.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;

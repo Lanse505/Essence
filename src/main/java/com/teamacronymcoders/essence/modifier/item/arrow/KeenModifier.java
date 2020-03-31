@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;

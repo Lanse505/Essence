@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.modifier.item.cosmetic;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemCosmeticCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemCosmeticCoreModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;

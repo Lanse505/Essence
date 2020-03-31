@@ -2,9 +2,9 @@ package com.teamacronymcoders.essence.modifier.item.enchantment.strengthened;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemEnchantmentCoreModifier;
-import com.teamacronymcoders.essence.utils.helpers.EssenceEnchantmentHelper;
-import com.teamacronymcoders.essence.utils.helpers.EssenceUtilHelper;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
+import com.teamacronymcoders.essence.util.helper.EssenceEnchantmentHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -43,6 +43,14 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     @Override
     public String getTranslationName() {
         return "modifier.essence.strengthened";
+    }
+
+    @Override
+    public ITextComponent getTextComponentName(int level) {
+        if (level == -1) {
+            return new TranslationTextComponent(getTranslationName() + ".cleaned", new TranslationTextComponent("strengthened.type." + this.type.getName()));
+        }
+        return super.getTextComponentName(level);
     }
 
     @Override

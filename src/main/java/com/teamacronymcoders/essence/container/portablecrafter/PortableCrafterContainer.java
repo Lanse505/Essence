@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.container.portablecrafter;
 
-import com.teamacronymcoders.essence.items.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.misc.PortableCrafterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.WorkbenchContainer;

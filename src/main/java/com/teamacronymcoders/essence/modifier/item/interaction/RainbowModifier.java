@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.modifier.item.interaction;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
-import com.teamacronymcoders.essence.items.tools.EssenceShear;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;

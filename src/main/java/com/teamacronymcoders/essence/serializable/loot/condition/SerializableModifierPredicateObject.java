@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.capabilities.EssenceCoreCapabilities;
-import com.teamacronymcoders.essence.utils.registration.EssenceRegistries;
+import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -65,7 +65,7 @@ public class SerializableModifierPredicateObject {
     }
 
     public boolean test(ItemStack stack) {
-        final List<ModifierInstance<ItemStack>> instances = stack.getCapability(EssenceCoreCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance<ItemStack>> instances = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
         final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
         return !(this.level == null || this.level.isUnbounded()) && this.level.test(level);
     }

@@ -4,17 +4,14 @@ import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.utils.helpers.recipe.EssenceModifierRecipeHelper;
-import net.minecraft.inventory.IInventory;
+import com.teamacronymcoders.essence.util.helper.recipe.EssenceModifierRecipeHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InfusionRecipeModifier extends ExtendableInfusionRecipe {

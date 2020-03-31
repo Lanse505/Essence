@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.modifier.item.interaction;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendables.ItemInteractionCoreModifier;
-import com.teamacronymcoders.essence.items.tools.EssencePickaxe;
+import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.item.tool.EssencePickaxe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
