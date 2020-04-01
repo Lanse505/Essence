@@ -71,23 +71,13 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
                     )
                 )
             )
-            .then(Commands.literal("level-up")
+            .then(Commands.literal("alter-level")
                 .then(Commands.argument("hand", EssenceHandArgumentType.hand())
                     .then(Commands.argument("modifier", EssenceModifierArgumentType.modifier())
                         .then(Commands.argument("increment", IntegerArgumentType.integer())
-                            .executes(context -> levelUpModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), IntegerArgumentType.getInteger(context, "increment")))
+                            .executes(context -> alterLevelModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), IntegerArgumentType.getInteger(context, "increment")))
                         )
-                        .executes(context -> levelUpModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), 1))
-                    )
-                )
-            )
-            .then(Commands.literal("level-down")
-                .then(Commands.argument("hand", EssenceHandArgumentType.hand())
-                    .then(Commands.argument("modifier", EssenceModifierArgumentType.modifier())
-                        .then(Commands.argument("decrement", IntegerArgumentType.integer())
-                            .executes(context -> levelDownModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), IntegerArgumentType.getInteger(context, "decrement")))
-                        )
-                        .executes(context -> levelDownModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), 1))
+                        .executes(context -> alterLevelModifierOnTool(context, EssenceHandArgumentType.getHand(context, "hand"), EssenceModifierArgumentType.getModifier(context, "modifier"), 1))
                     )
                 )
             );
@@ -157,14 +147,18 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
     }
 
     @SuppressWarnings({"unchecked"})
-    public static int levelUpModifierOnTool(CommandContext<CommandSource> context, Hand hand, Modifier<?> modifier, int increment) throws CommandSyntaxException {
+    public static int alterLevelModifierOnTool(CommandContext<CommandSource> context, Hand hand, Modifier<?> modifier, int alter) throws CommandSyntaxException {
         CommandSource source = context.getSource();
         ServerPlayerEntity playerEntity = source.asPlayer();
         ItemStack stack = playerEntity.getHeldItem(hand);
         LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
         if (holder.isPresent() && modifier.getType().isAssignableFrom(ItemStack.class)) {
             holder.ifPresent(presentHolder -> {
-                presentHolder.levelUpModifier(false, stack, increment, (Modifier<ItemStack>) modifier);
+                if (alter > 0) {
+                    presentHolder.levelUpModifier(false, stack, alter, (Modifier<ItemStack>) modifier);
+                } else if (alter < 0) {
+                    presentHolder.levelDownModifier(false, stack, alter, (Modifier<ItemStack>) modifier);
+                }
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
                 source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
@@ -173,25 +167,6 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
         }
         return 0;
     }
-
-    @SuppressWarnings({"unchecked"})
-    public static int levelDownModifierOnTool(CommandContext<CommandSource> context, Hand hand, Modifier<?> modifier, int decrement) throws CommandSyntaxException {
-        CommandSource source = context.getSource();
-        ServerPlayerEntity playerEntity = source.asPlayer();
-        ItemStack stack = playerEntity.getHeldItem(hand);
-        LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
-        if (holder.isPresent() && modifier.getType().isAssignableFrom(ItemStack.class)) {
-            holder.ifPresent(presentHolder -> {
-                presentHolder.levelDownModifier(false, stack, decrement, (Modifier<ItemStack>) modifier);
-                stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
-                presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-                source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.level_down", modifier.getTextComponentName(-1)), true);
-            });
-            return 1;
-        }
-        return 0;
-    }
-
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
