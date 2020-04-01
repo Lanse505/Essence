@@ -6,6 +6,7 @@ import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
 import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
@@ -25,6 +26,11 @@ import com.teamacronymcoders.essence.serializable.provider.EssenceSerializablePr
 import com.teamacronymcoders.essence.serializable.provider.EssenceTagProvider;
 import com.teamacronymcoders.essence.serializable.provider.EssenceToolRecipeProvider;
 import com.teamacronymcoders.essence.util.*;
+import com.teamacronymcoders.essence.util.command.argument.EssenceHandArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.EssenceKnowledgeArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.EssenceModifierArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.extendable.EssenceEnumArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.extendable.EssenceRegistryArgumentType;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
@@ -40,6 +46,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.command.arguments.ArgumentSerializer;
+import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -110,31 +118,31 @@ public class Essence extends ModuleController {
         instance = this;
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
         handler.init();
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
         JSONSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::writeBlockState, EssenceSerializableObjectHandler::readBlockState);
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
-        eventBus.addListener(this::setup);
-        eventBus.addListener(this::clientSetup);
-        eventBus.addListener(this::setupCuriosIMC);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
 
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        eventBus.addListener(this::setup);
+        eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::setupCuriosIMC);
         EssenceFeatureRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
         EssenceSoundRegistration.register(eventBus);
+
         EssenceAdvancements.setup();
         EssenceEventHandlers.setup();
 
         setupCreativeTabIcons();
-
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::setupClientEventHandlers);
     }
 
     @Override
@@ -155,11 +163,14 @@ public class Essence extends ModuleController {
     }
 
     private void setupCuriosIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MODID, "items/curios/empty_backpack_slot")));
+        //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
+        //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MODID, "items/curios/empty_backpack_slot")));
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new ArgumentSerializer<>(EssenceHandArgumentType::new));
+        ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new ArgumentSerializer<>(EssenceModifierArgumentType::new));
+        ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new ArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
         CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);

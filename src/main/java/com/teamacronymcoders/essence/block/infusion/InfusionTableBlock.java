@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
 import com.teamacronymcoders.essence.item.misc.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.misc.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.misc.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.util.EssenceBlockModels;
 import com.teamacronymcoders.essence.util.helper.EssenceVoxelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -28,25 +29,11 @@ import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
-
-    private static final VoxelShape[] bounds = new VoxelShape[]{
-        EssenceVoxelHelper.combine(
-            makeCuboidShape(1, 0, 1, 15, 9, 15),
-            makeCuboidShape(0, 4, 0, 2, 10, 2),
-            makeCuboidShape(0, 4, 14, 2, 10, 16),
-            makeCuboidShape(14, 4, 14, 16, 10, 16),
-            makeCuboidShape(14, 4, 0, 16, 10, 2),
-            makeCuboidShape(5, 0.1, 0.5, 11, 9.5, 3.5),
-            makeCuboidShape(5, 0.1, 12.5, 11, 9.5, 15.5),
-            makeCuboidShape(12.5, 0.1, 5, 15.5, 9.5, 11),
-            makeCuboidShape(0.5, 0.1, 5, 3.5, 9.5, 11),
-            makeCuboidShape(3, 9, 3, 13, 10, 13)
-        )
-    };
 
     public InfusionTableBlock() {
         super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity(), InfusionTableTile.class);
@@ -139,17 +126,17 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
     @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
-        return bounds[0];
+        return EssenceBlockModels.INFUSION_TABLE[0];
     }
 
     @Nonnull
     @Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
-        return bounds[0];
+        return EssenceBlockModels.INFUSION_TABLE[0];
     }
 
     @Override
     public List<VoxelShape> getBoundingBoxes(BlockState state, IBlockReader source, BlockPos pos) {
-        return Arrays.asList(bounds);
+        return Collections.singletonList(EssenceBlockModels.INFUSION_TABLE[0]);
     }
 }

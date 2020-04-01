@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.util.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.util.command.impl.ItemStackModifierCommand;
 import com.teamacronymcoders.essence.util.command.impl.KnowledgeCommand;
 import com.teamacronymcoders.essence.util.command.impl.RegistryCommand;
 import com.teamacronymcoders.essence.util.command.impl.SetupDevWorldCommand;
@@ -16,6 +17,7 @@ public class EssenceCommands {
             Commands.literal(Essence.MODID)
                 .then(SetupDevWorldCommand.register(dispatcher))
                 .then(KnowledgeCommand.register(dispatcher))
+                .then(ItemStackModifierCommand.register(dispatcher))
                 .then(RegistryCommand.register(dispatcher))
         );
     }

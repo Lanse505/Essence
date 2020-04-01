@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.util;
 
 import com.hrznstudio.titanium.event.handler.EventManager;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
 import com.teamacronymcoders.essence.api.modified.IModifiedBlock;
@@ -10,34 +11,57 @@ import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.client.render.InfusionTableTESR;
 import com.teamacronymcoders.essence.container.PortableCrafterContainer;
+import com.teamacronymcoders.essence.item.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.util.command.EssenceCommands;
+import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.OverworldDimension;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+
+import java.awt.*;
+import java.util.Collections;
 
 import static com.teamacronymcoders.essence.Essence.MODID;
 
 public class EssenceEventHandlers {
+
+    public static EssenceEventHandlers handlers = new EssenceEventHandlers();
 
     public static void setup() {
         setupRegistries();
         setupModifierCapabilities();
         setupKnowledgeCapabilities();
         setupServer();
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     }
 
     // Registration Handlers
@@ -105,5 +129,54 @@ public class EssenceEventHandlers {
         EventManager.forge(FMLServerStartingEvent.class)
             .process(starting -> EssenceCommands.registerCommands(starting.getCommandDispatcher()))
             .subscribe();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static void setupClientEventHandlers() {
+        // Atlas Texture Handler
+        EventManager.mod(TextureStitchEvent.Pre.class)
+            .filter(stitch -> stitch.getMap().getTextureLocation().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE))
+            .process(stitch -> {
+                stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
+            }).subscribe();
+        // Rainbow Tooltip Handler
+        EventManager.forge(RenderTooltipEvent.Color.class)
+            .process(color -> {
+                boolean isShear = color.getStack().getItem() instanceof EssenceShear;
+                boolean hasRainbow = EssenceItemstackModifierHelpers.hasRainbowModifier(color.getStack());
+                if (isShear && hasRainbow) {
+                    EssenceShear shear = (EssenceShear) color.getStack().getItem();
+                    int rainbowVal = shear.getRainbowVal();
+                    if (rainbowVal > 599) {
+                        rainbowVal = 0;
+                    }
+                    Color colorVal = EssenceColorHelper.getColor(rainbowVal);
+                    Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
+                    color.setBorderStart(colorVal.getRGB());
+                    color.setBorderEnd(colorVal3.getRGB());
+                    shear.setRainbowVal(rainbowVal + 1);
+                }
+            }).subscribe();
+
+        // Wrench-Mode Handler
+        EventManager.forge(InputEvent.MouseScrollEvent.class)
+            .process(scroll -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                    ItemStack stack = minecraft.player.getHeldItemMainhand();
+                    if (stack.getItem() instanceof EssenceWrench) {
+                        double scrolling = scroll.getScrollDelta();
+                        if (scrolling != 0) {
+                            EssenceWrench wrench = (EssenceWrench) stack.getItem();
+                            WrenchModeEnum mode = wrench.getMode();
+                            WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
+                            wrench.setMode(newMode);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
+                            Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
+                            scroll.setCanceled(true);
+                        }
+                    }
+                }
+            }).subscribe();
     }
 }

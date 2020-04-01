@@ -9,7 +9,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.util.command.argument.EssenceRegistryArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.EssenceKnowledgeArgumentType;
+import com.teamacronymcoders.essence.util.command.argument.extendable.EssenceRegistryArgumentType;
 import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -29,28 +30,28 @@ public class KnowledgeCommand implements Command<CommandSource> {
                 .requires(cs -> cs.hasPermissionLevel(4))
                     .then(Commands.literal("add")
                         .then(Commands.argument("target", EntityArgument.player())
-                            .then(Commands.argument("knowledge", new EssenceRegistryArgumentType<>(EssenceRegistries.KNOWLEDGE))
-                                .executes(context -> addPlayerKnowledge(context, EntityArgument.getPlayer(context, "target"), context.getArgument("knowledge", Knowledge.class))
+                            .then(Commands.argument("knowledge", EssenceKnowledgeArgumentType.knowledge())
+                                .executes(context -> addPlayerKnowledge(context, EntityArgument.getPlayer(context, "target"), EssenceKnowledgeArgumentType.getKnowledge(context, "knowledge"))
                                 )
                             )
                         )
                         .then(Commands.argument("uuid", StringArgumentType.string())
-                            .then(Commands.argument("knowledge", new EssenceRegistryArgumentType<>(EssenceRegistries.KNOWLEDGE))
-                                .executes(context -> addPlayerKnowledge(context, StringArgumentType.getString(context, "uuid"), context.getArgument("knowledge", Knowledge.class))
+                            .then(Commands.argument("knowledge", EssenceKnowledgeArgumentType.knowledge())
+                                .executes(context -> addPlayerKnowledge(context, StringArgumentType.getString(context, "uuid"), EssenceKnowledgeArgumentType.getKnowledge(context, "knowledge"))
                                 )
                             )
                         )
                     )
                     .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())
-                            .then(Commands.argument("knowledge", new EssenceRegistryArgumentType<>(EssenceRegistries.KNOWLEDGE))
-                                .executes(context -> removePlayerKnowledge(context, EntityArgument.getPlayer(context, "target"), context.getArgument("knowledge", Knowledge.class))
+                            .then(Commands.argument("knowledge", EssenceKnowledgeArgumentType.knowledge())
+                                .executes(context -> removePlayerKnowledge(context, EntityArgument.getPlayer(context, "target"), EssenceKnowledgeArgumentType.getKnowledge(context, "knowledge"))
                                 )
                             )
                         )
                         .then(Commands.argument("uuid", StringArgumentType.string())
-                            .then(Commands.argument("knowledge", new EssenceRegistryArgumentType<>(EssenceRegistries.KNOWLEDGE))
-                                .executes(context -> removePlayerKnowledge(context, StringArgumentType.getString(context, "uuid"), context.getArgument("knowledge", Knowledge.class))
+                            .then(Commands.argument("knowledge", EssenceKnowledgeArgumentType.knowledge())
+                                .executes(context -> removePlayerKnowledge(context, StringArgumentType.getString(context, "uuid"), EssenceKnowledgeArgumentType.getKnowledge(context, "knowledge"))
                                 )
                             )
                         )

@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.util.command.argument;
+package com.teamacronymcoders.essence.util.command.argument.extendable;
 
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.StringReader;
@@ -11,28 +11,34 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public class EssenceMapRegistryArgumentType<T> implements ArgumentType<T> {
-
-    private final Map<ResourceLocation, T> registry;
+public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> implements ArgumentType<T> {
+    private final IForgeRegistry<T> registry;
     private final List<String> examples;
     private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
         new TranslationTextComponent("command.argument.essence.registry.invalid", input));
 
-    public EssenceMapRegistryArgumentType(Map<ResourceLocation, T> registry) {
+    public EssenceRegistryArgumentType() {
+        this.registry = null;
+        this.examples = new ArrayList<>();
+    }
+
+    public EssenceRegistryArgumentType(IForgeRegistry<T> registry) {
         this.registry = registry;
         this.examples = createExamples(registry);
     }
 
-    private static <U> List<String> createExamples(Map<ResourceLocation, U> registry) {
+    private static <T extends IForgeRegistryEntry<T>> List<String> createExamples(IForgeRegistry<T> registry) {
         List<String> examples = Lists.newArrayList();
-        Iterator<ResourceLocation> iterator = registry.keySet().iterator();
+        Iterator<ResourceLocation> iterator = registry.getKeys().iterator();
         int i = 0;
         while (iterator.hasNext() & i < 5) {
             i++;
@@ -44,13 +50,13 @@ public class EssenceMapRegistryArgumentType<T> implements ArgumentType<T> {
     @Override
     public T parse(StringReader reader) throws CommandSyntaxException {
         ResourceLocation resourceLocation = ResourceLocation.read(reader);
-        return Optional.ofNullable(registry.get(resourceLocation))
+        return Optional.ofNullable(registry.getValue(resourceLocation))
             .orElseThrow(() -> exceptionType.create(resourceLocation));
     }
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        return ISuggestionProvider.func_212476_a(registry.keySet().stream(), builder);
+        return ISuggestionProvider.func_212476_a(registry.getKeys().stream(), builder);
     }
 
     @Override
