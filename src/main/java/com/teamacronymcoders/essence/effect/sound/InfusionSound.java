@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.effect.sound;
 
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
 import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
-import net.minecraft.client.audio.*;
+import net.minecraft.client.audio.TickableSound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;

@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.item.infusion;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +8,6 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.world.World;
 
 public class TomeOfKnowledgeItem extends Item {
 

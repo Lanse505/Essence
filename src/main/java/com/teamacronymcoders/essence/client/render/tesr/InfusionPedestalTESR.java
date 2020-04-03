@@ -5,7 +5,7 @@ import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceRenderHelper;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;

@@ -15,15 +15,15 @@ import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolde
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
+import com.teamacronymcoders.essence.datagen.*;
+import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.entity.render.*;
+import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
-import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
-import com.teamacronymcoders.essence.serializable.provider.*;
-import com.teamacronymcoders.essence.serializable.provider.recipe.EssenceVanillaRecipeProvider;
-import com.teamacronymcoders.essence.serializable.provider.recipe.EssenceSerializableProvider;
-import com.teamacronymcoders.essence.serializable.provider.recipe.EssenceToolRecipeProvider;
 import com.teamacronymcoders.essence.util.*;
 import com.teamacronymcoders.essence.util.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.util.command.argument.EssenceKnowledgeArgumentType;
@@ -39,8 +39,11 @@ import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
 import com.teamacronymcoders.essence.util.registration.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -60,6 +63,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -150,6 +154,10 @@ public class Essence extends ModuleController {
         EssenceRecipeProvider.addRecipeProviders(event.getGenerator());
         event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MODID));
         event.getGenerator().addProvider(new EssenceLootTableProvider(event.getGenerator()));
+        event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
+        event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
+        event.getGenerator().addProvider(new KnowledgeAdvancementProvider(event.getGenerator()));
+        EssenceLangProvider.registerLangProviders(event.getGenerator());
     }
 
     private void setupCuriosIMC(final InterModEnqueueEvent event) {
@@ -176,12 +184,19 @@ public class Essence extends ModuleController {
 
     @SuppressWarnings("unchecked")
     private void clientSetup(final FMLClientSetupEvent event) {
+        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_TABLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getTranslucent());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.GLUE_BALL.get(), manager -> new SpriteRenderer<>(manager, renderer, 0.75F, true));
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_COW.get(), ShearedCowRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_PIG.get(), ShearedPigRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ShearedChickenRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CREEPER.get(), ShearedCreeperRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_GHAST.get(), ShearedGhastRenderer::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
     }

@@ -10,8 +10,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.util.command.argument.EssenceKnowledgeArgumentType;
-import com.teamacronymcoders.essence.util.command.argument.extendable.EssenceRegistryArgumentType;
-import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;

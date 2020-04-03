@@ -5,8 +5,8 @@ import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration
 import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

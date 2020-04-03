@@ -1,6 +1,3 @@
 {
-  "parent": "essence:item/item",
-  "textures": {
-    "layer0": "essence:items/essence_wood_sapling"
-  }
+  "parent": "essence:block/essence_wood_sapling"
 }

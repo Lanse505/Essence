@@ -11,7 +11,8 @@ import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.util.ResourceLocationException;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {

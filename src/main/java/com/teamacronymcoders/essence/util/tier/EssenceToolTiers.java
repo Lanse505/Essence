@@ -22,7 +22,7 @@ public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
     SUPREME_ESSENCE("tier.essence.supreme", 5, 4, 2031, 3047, 9.0F,
         4.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
         0, Rarity.RARE, () -> {
-        return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_EXALTED);
+        return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME);
     }),
     GODLY_ESSENCE("tier.essence.godly", 6, 6, 4062, 6093, 10.0F,
         6.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,

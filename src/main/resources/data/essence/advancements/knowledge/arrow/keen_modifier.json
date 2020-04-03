@@ -1,26 +1,42 @@
 {
-    "parent": "essence:knowledge/arrow/arrow_modifier",
-    "display": {
-        "icon": {
-            "item": "minecraft:book"
-        },
-        "title": {
-            "translate": "advancements.essence.knowledge.keen.title"
-        },
-        "description": {
-            "translate": "advancements.essence.knowledge.keen.description"
-        },
-        "frame": "task",
-        "show_toast": false,
-        "announce_to_chat": false,
-        "hidden": false
+  "parent": "essence:arrow_modifier",
+  "display": {
+    "icon": {
+      "item": "essence:essence_crystal"
     },
-    "criteria": {
-        "keen_knowledge": {
-            "trigger": "essence:knowledge",
-            "conditions": {
-                "knowledge_id": "essence:keen"
-            }
-        }
+    "title": {
+      "translate": "advancements.essence.knowledge.keen_modifier.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.keen_modifier.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "knowledge": {
+      "trigger": "essence:knowledge"
+    },
+    "essence_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:essence_ore"
+          }
+        ]
+      }
     }
+  },
+  "requirements": [
+    [
+      "knowledge"
+    ],
+    [
+      "essence_ore"
+    ]
+  ]
 }

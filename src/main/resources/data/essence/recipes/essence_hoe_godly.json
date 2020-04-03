@@ -6,7 +6,7 @@
         {
           "values": [
             {
-              "item": "essence:essence_hoe",
+              "item": "essence:essence_hoe_godly",
               "type": "forge:item_exists"
             }
           ],
@@ -29,7 +29,7 @@
           }
         },
         "result": {
-          "item": "essence:essence_hoe"
+          "item": "essence:essence_hoe_godly"
         }
       }
     }

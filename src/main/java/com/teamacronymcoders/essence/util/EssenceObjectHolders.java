@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.util;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.block.EssenceBlock;
 import com.teamacronymcoders.essence.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.block.EssenceCrystalOreBlock;
@@ -14,16 +15,15 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.misc.GlueBallItem;
-import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
-import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.*;
+import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,15 +33,15 @@ public class EssenceObjectHolders {
     public static EssenceBlock ESSENCE_INFUSED_METAL_BLOCK;
     @ObjectHolder("essence:essence_infused_block_empowered")
     public static EssenceBlock ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK;
-    @ObjectHolder("essence:essence_infused_block_exalted")
-    public static EssenceBlock ESSENCE_INFUSED_METAL_EXALTED_BLOCK;
+    @ObjectHolder("essence:essence_infused_block_supreme")
+    public static EssenceBlock ESSENCE_INFUSED_METAL_SUPREME_BLOCK;
     @ObjectHolder("essence:essence_infused_block_godly")
     public static EssenceBlock ESSENCE_INFUSED_METAL_GODLY_BLOCK;
 
     public static final List<Supplier<EssenceBlock>> ESSENCE_BLOCKS = Arrays.asList(
         () -> ESSENCE_INFUSED_METAL_BLOCK,
         () -> ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK,
-        () -> ESSENCE_INFUSED_METAL_EXALTED_BLOCK,
+        () -> ESSENCE_INFUSED_METAL_SUPREME_BLOCK,
         () -> ESSENCE_INFUSED_METAL_GODLY_BLOCK
     );
 
@@ -135,10 +135,10 @@ public class EssenceObjectHolders {
     @ObjectHolder("essence:essence_nugget_empowered")
     public static EssenceNuggetItem ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET;
 
-    @ObjectHolder("essence:essence_ingot_exalted")
-    public static EssenceIngotItem ESSENCE_INFUSED_METAL_EXALTED;
-    @ObjectHolder("essence:essence_nugget_exalted")
-    public static EssenceNuggetItem ESSENCE_INFUSED_METAL_EXALTED_NUGGET;
+    @ObjectHolder("essence:essence_ingot_supreme")
+    public static EssenceIngotItem ESSENCE_INFUSED_METAL_SUPREME;
+    @ObjectHolder("essence:essence_nugget_supreme")
+    public static EssenceNuggetItem ESSENCE_INFUSED_METAL_SUPREME_NUGGET;
 
     @ObjectHolder("essence:essence_ingot_godly")
     public static EssenceIngotItem ESSENCE_INFUSED_METAL_GODLY;
@@ -191,22 +191,22 @@ public class EssenceObjectHolders {
     public static EssenceBow ESSENCE_BOW_EMPOWERED;
 
     // Tier 3 Tools
-    @ObjectHolder("essence:essence_axe_exalted")
-    public static EssenceAxe ESSENCE_AXE_EXALTED;
-    @ObjectHolder("essence:essence_pickaxe_exalted")
-    public static EssencePickaxe ESSENCE_PICKAXE_EXALTED;
-    @ObjectHolder("essence:essence_shovel_exalted")
-    public static EssenceShovel ESSENCE_SHOVEL_EXALTED;
-    @ObjectHolder("essence:essence_sword_exalted")
-    public static EssenceSword ESSENCE_SWORD_EXALTED;
-    @ObjectHolder("essence:essence_hoe_exalted")
-    public static EssenceHoe ESSENCE_HOE_EXALTED;
-    @ObjectHolder("essence:essence_omnitool_exalted")
-    public static EssenceOmniTool ESSENCE_OMNITOOL_EXALTED;
-    @ObjectHolder("essence:essence_shear_exalted")
-    public static EssenceShear ESSENCE_SHEAR_EXALTED;
-    @ObjectHolder("essence:essence_bow_exalted")
-    public static EssenceBow ESSENCE_BOW_EXALTED;
+    @ObjectHolder("essence:essence_axe_supreme")
+    public static EssenceAxe ESSENCE_AXE_SUPREME;
+    @ObjectHolder("essence:essence_pickaxe_supreme")
+    public static EssencePickaxe ESSENCE_PICKAXE_SUPREME;
+    @ObjectHolder("essence:essence_shovel_supreme")
+    public static EssenceShovel ESSENCE_SHOVEL_SUPREME;
+    @ObjectHolder("essence:essence_sword_supreme")
+    public static EssenceSword ESSENCE_SWORD_SUPREME;
+    @ObjectHolder("essence:essence_hoe_supreme")
+    public static EssenceHoe ESSENCE_HOE_SUPREME;
+    @ObjectHolder("essence:essence_omnitool_supreme")
+    public static EssenceOmniTool ESSENCE_OMNITOOL_SUPREME;
+    @ObjectHolder("essence:essence_shear_supreme")
+    public static EssenceShear ESSENCE_SHEAR_SUPREME;
+    @ObjectHolder("essence:essence_bow_supreme")
+    public static EssenceBow ESSENCE_BOW_SUPREME;
 
     // Tier 4 Tools
     @ObjectHolder("essence:essence_axe_godly")

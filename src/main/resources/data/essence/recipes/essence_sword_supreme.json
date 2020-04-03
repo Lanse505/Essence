@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "values": [
+            {
+              "item": "essence:essence_sword_supreme",
+              "type": "forge:item_exists"
+            }
+          ],
+          "type": "forge:and"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " i ",
+          " i ",
+          " s "
+        ],
+        "key": {
+          "i": {
+            "item": "essence:essence_ingot_supreme"
+          },
+          "s": {
+            "item": "essence:essence_wood_sticks"
+          }
+        },
+        "result": {
+          "item": "essence:essence_sword_supreme"
+        }
+      }
+    }
+  ]
+}

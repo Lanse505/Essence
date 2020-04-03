@@ -15,11 +15,11 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.misc.GlueBallItem;
-import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
-import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.*;
+import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import net.minecraft.block.Block;
@@ -38,11 +38,11 @@ public class EssenceModules {
                 .content(Item.class, new EssenceCrystal().setRegistryName(new ResourceLocation(Essence.MODID, "essence_crystal")))
                 .content(Item.class, new EssenceIngotItem(EssenceItemTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_ingot")))
                 .content(Item.class, new EssenceIngotItem(EssenceItemTiers.EMPOWERED_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_ingot_empowered")))
-                .content(Item.class, new EssenceIngotItem(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_ingot_exalted")))
+                .content(Item.class, new EssenceIngotItem(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_ingot_supreme")))
                 .content(Item.class, new EssenceIngotItem(EssenceItemTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_ingot_godly")))
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget")))
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.EMPOWERED_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_empowered")))
-                .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_exalted")))
+                .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_supreme")))
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_godly")))
                 .content(Item.class, new EssenceStickItem().setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_sticks")))
                 .content(Item.class, new TomeOfKnowledgeItem().setRegistryName(new ResourceLocation(Essence.MODID, "tome_of_knowledge")))
@@ -53,7 +53,7 @@ public class EssenceModules {
                 .description("Core-Blocks")
                 .content(Block.class, new EssenceBlock(EssenceItemTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block")))
                 .content(Block.class, new EssenceBlock(EssenceItemTiers.EMPOWERED_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block_empowered")))
-                .content(Block.class, new EssenceBlock(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block_exalted")))
+                .content(Block.class, new EssenceBlock(EssenceItemTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block_supreme")))
                 .content(Block.class, new EssenceBlock(EssenceItemTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_infused_block_godly")))
                 .content(Block.class, new EssenceCrystalOreBlock().setRegistryName(new ResourceLocation(Essence.MODID, "essence_crystal_ore")))
                 .content(Block.class, new EssenceLeavesBlock().setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_leaves")))
@@ -125,14 +125,14 @@ public class EssenceModules {
                 .content(Item.class, new EssenceBow(EssenceToolTiers.EMPOWERED_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_bow_empowered")))
 
                 // Tier 3
-                .content(Item.class, new EssenceAxe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe_exalted")))
-                .content(Item.class, new EssencePickaxe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_pickaxe_exalted")))
-                .content(Item.class, new EssenceShovel(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_shovel_exalted")))
-                .content(Item.class, new EssenceSword(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_sword_exalted")))
-                .content(Item.class, new EssenceHoe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_hoe_exalted")))
-                .content(Item.class, new EssenceOmniTool(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_omnitool_exalted")))
-                .content(Item.class, new EssenceShear(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_shear_exalted")))
-                .content(Item.class, new EssenceBow(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_bow_exalted")))
+                .content(Item.class, new EssenceAxe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe_supreme")))
+                .content(Item.class, new EssencePickaxe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_pickaxe_supreme")))
+                .content(Item.class, new EssenceShovel(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_shovel_supreme")))
+                .content(Item.class, new EssenceSword(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_sword_supreme")))
+                .content(Item.class, new EssenceHoe(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_hoe_supreme")))
+                .content(Item.class, new EssenceOmniTool(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_omnitool_supreme")))
+                .content(Item.class, new EssenceShear(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_shear_supreme")))
+                .content(Item.class, new EssenceBow(EssenceToolTiers.SUPREME_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_bow_supreme")))
 
                 // Tier 4
                 .content(Item.class, new EssenceAxe(EssenceToolTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe_godly")))

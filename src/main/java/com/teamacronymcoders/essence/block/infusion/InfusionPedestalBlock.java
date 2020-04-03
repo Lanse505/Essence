@@ -5,7 +5,6 @@ import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;
-import com.teamacronymcoders.essence.util.helper.EssenceVoxelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -23,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

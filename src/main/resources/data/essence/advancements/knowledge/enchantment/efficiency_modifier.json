@@ -1,30 +1,42 @@
 {
-    "parent": "essence:knowledge/enchantment/enchantment_modifier",
-    "display": {
-        "icon": {
-            "item": "essence:essence_crystal"
-        },
-        "title": {
-            "translate": "advancements.essence.knowledge.efficiency.title"
-        },
-        "description": {
-            "translate": "advancements.essence.knowledge.efficiency.description"
-        },
-        "frame": "task",
-        "show_toast": false,
-        "announce_to_chat": false,
-        "hidden": false
+  "parent": "essence:enchantment_modifier",
+  "display": {
+    "icon": {
+      "item": "essence:essence_crystal"
     },
-    "criteria": {
-        "crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "essence:essence_crystal"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.essence.knowledge.efficiency_modifier.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.efficiency_modifier.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "knowledge": {
+      "trigger": "essence:knowledge"
+    },
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:tome_of_knowledge"
+          }
+        ]
+      }
     }
+  },
+  "requirements": [
+    [
+      "knowledge"
+    ],
+    [
+      "tome_of_knowledge"
+    ]
+  ]
 }

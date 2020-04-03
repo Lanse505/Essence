@@ -1,30 +1,35 @@
 {
-    "parent": "essence:knowledge/root_modifier",
-    "display": {
-        "icon": {
-            "item": "essence:essence_crystal"
-        },
-        "title": {
-            "translate": "advancements.essence.knowledge.interaction_modifier.title"
-        },
-        "description": {
-            "translate": "advancements.essence.knowledge.interaction_modifier.description"
-        },
-        "frame": "goal",
-        "show_toast": true,
-        "announce_to_chat": true,
-        "hidden": false
+  "display": {
+    "icon": {
+      "item": "essence:essence_crystal"
     },
-    "criteria": {
-        "crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "essence:essence_crystal"
-                    }
-                ]
-            }
-        }
+    "title": {
+      "translate": "advancements.essence.knowledge.interaction_modifier.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.interaction_modifier.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:tome_of_knowledge"
+          }
+        ]
+      }
     }
+  },
+  "requirements": [
+    [
+      "tome_of_knowledge"
+    ]
+  ]
 }

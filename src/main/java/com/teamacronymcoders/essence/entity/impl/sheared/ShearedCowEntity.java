@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.entity.impl.sheared;
 
-import com.teamacronymcoders.essence.serializable.provider.loottable.EssenceEntityLootTables;
+import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.util.ResourceLocation;

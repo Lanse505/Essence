@@ -4,6 +4,7 @@ import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumLootTableProvider;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
@@ -34,7 +35,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class EssenceBrickBlock extends BasicBlock {
+public class EssenceBrickBlock extends BasicBlock implements IColorProvider {
 
     private static Map<DyeColor, Supplier<EssenceBrickBlock>> dyeToColorMap = new HashMap<>();
 
@@ -111,7 +112,8 @@ public class EssenceBrickBlock extends BasicBlock {
             .build(consumer, new ResourceLocation(getRegistryName().getNamespace(), getRegistryName().getPath() + "_recolor"));
     }
 
-    public DyeColor getColor() {
+    @Override
+    public DyeColor hasColor() {
         return this.color;
     }
 }

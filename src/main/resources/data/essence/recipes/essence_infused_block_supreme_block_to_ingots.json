@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "essence:essence_infused_block_supreme"
+    }
+  ],
+  "result": {
+    "item": "essence:essence_ingot_supreme",
+    "count": 9
+  }
+}

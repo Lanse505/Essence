@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class UnlockKnowledgeCriterionInstance extends CriterionInstance {
     private final Knowledge knowledge;
 
-    public UnlockKnowledgeCriterionInstance(Knowledge knowledge) {
+    public UnlockKnowledgeCriterionInstance(Knowledge<?> knowledge) {
         super(new ResourceLocation(Essence.MODID, "knowledge"));
         this.knowledge = knowledge;
     }
