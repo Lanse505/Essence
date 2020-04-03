@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.capability;
 
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
-import com.teamacronymcoders.essence.item.misc.EssenceBackpackItem;
+import com.teamacronymcoders.essence.item.tool.misc.EssenceBackpackItem;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;

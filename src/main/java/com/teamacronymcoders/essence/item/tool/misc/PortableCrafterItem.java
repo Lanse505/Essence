@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.misc;
+package com.teamacronymcoders.essence.item.tool.misc;
 
 import com.google.common.collect.Lists;
 import com.hrznstudio.titanium.api.IFactory;

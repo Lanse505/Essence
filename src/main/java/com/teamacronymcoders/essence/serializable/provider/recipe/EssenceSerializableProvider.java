@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.provider;
+package com.teamacronymcoders.essence.serializable.provider.recipe;
 
 import com.hrznstudio.titanium.recipe.generator.IJSONGenerator;
 import com.hrznstudio.titanium.recipe.generator.IJsonFile;

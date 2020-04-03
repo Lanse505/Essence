@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.misc.wrench;
+package com.teamacronymcoders.essence.item.wrench;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.EssenceStats;

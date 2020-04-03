@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.tool.misc;
+package com.teamacronymcoders.essence.item.tool.misc.behaviour;
 
 
 import com.teamacronymcoders.essence.Essence;

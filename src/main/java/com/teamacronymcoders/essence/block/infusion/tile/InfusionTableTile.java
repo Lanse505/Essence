@@ -5,7 +5,7 @@ import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
-import com.teamacronymcoders.essence.item.misc.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.ExtendableInfusionRecipe;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;

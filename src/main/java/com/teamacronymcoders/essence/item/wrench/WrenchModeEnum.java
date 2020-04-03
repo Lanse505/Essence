@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.misc.wrench;
+package com.teamacronymcoders.essence.item.wrench;
 
 public enum WrenchModeEnum {
     SERIALIZE("mode.wrench.serialize"),

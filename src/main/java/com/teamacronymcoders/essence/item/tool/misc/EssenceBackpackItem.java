@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.misc;
+package com.teamacronymcoders.essence.item.tool.misc;
 
 import com.hrznstudio.titanium.component.IComponentHarness;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;

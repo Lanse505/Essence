@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.container;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.hrznstudio.titanium.container.impl.BasicInventoryContainer;
 import com.teamacronymcoders.essence.container.inventory.PortableCraftingInventory;
-import com.teamacronymcoders.essence.item.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

@@ -15,9 +15,10 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.misc.PortableCrafterItem;
-import com.teamacronymcoders.essence.item.misc.TomeOfKnowledgeItem;
-import com.teamacronymcoders.essence.item.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.GlueBallItem;
+import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
@@ -89,6 +90,7 @@ public class EssenceModules {
             Feature.builder("misc")
                 .force()
                 .description("Core-Misc")
+                .content(Item.class, new GlueBallItem().setRegistryName(new ResourceLocation(Essence.MODID, "glue_ball")))
                 .content(TitaniumFluidInstance.class, EssenceObjectHolders.ESSENCE_FLUID)
         );
 

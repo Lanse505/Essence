@@ -14,9 +14,10 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.misc.PortableCrafterItem;
-import com.teamacronymcoders.essence.item.misc.TomeOfKnowledgeItem;
-import com.teamacronymcoders.essence.item.misc.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.misc.GlueBallItem;
+import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
+import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.tool.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -117,7 +118,9 @@ public class EssenceObjectHolders {
     @ObjectHolder("essence:wrench")
     public static EssenceWrench WRENCH;
     @ObjectHolder("essence:tome_of_knowledge")
-    public static TomeOfKnowledgeItem tomeOfKnowledge;
+    public static TomeOfKnowledgeItem TOME_OF_KNOWLEDGE;
+    @ObjectHolder("essence:glue_ball")
+    public static GlueBallItem GLUE_BALL;
 
     // Tier 1 Tools
     @ObjectHolder("essence:essence_axe")
