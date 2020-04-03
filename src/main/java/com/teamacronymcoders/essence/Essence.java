@@ -18,6 +18,7 @@ import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.datagen.*;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.entity.render.*;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;

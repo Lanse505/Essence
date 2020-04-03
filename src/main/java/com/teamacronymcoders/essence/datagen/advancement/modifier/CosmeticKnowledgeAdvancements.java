@@ -1,7 +1,8 @@
-package com.teamacronymcoders.essence.serializable.provider.advancement.modifier;
+package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
+import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
-import com.teamacronymcoders.essence.serializable.provider.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import net.minecraft.advancements.Advancement;
@@ -15,13 +16,16 @@ import java.util.function.Consumer;
 
 public class CosmeticKnowledgeAdvancements extends ExtendableAdvancementProvider {
 
+    private static Advancement cosmetic;
+    private static Advancement enchanted;
+
     public CosmeticKnowledgeAdvancements(DataGenerator generator) {
         super(generator, "/knowledge/cosmetic");
     }
 
     @Override
     protected void addAdvancements(Consumer<Advancement> consumer) {
-        Advancement.Builder.builder()
+        cosmetic = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.title"),
@@ -29,9 +33,10 @@ public class CosmeticKnowledgeAdvancements extends ExtendableAdvancementProvider
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:cosmetic_modifier");
-        Advancement.Builder.builder()
+        enchanted = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.title"),
@@ -39,6 +44,7 @@ public class CosmeticKnowledgeAdvancements extends ExtendableAdvancementProvider
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(cosmetic)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ENCHANTED_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:enchanted_modifier");
@@ -47,5 +53,13 @@ public class CosmeticKnowledgeAdvancements extends ExtendableAdvancementProvider
     @Override
     public String getName() {
         return "Essence Advancements: [Knowledge/Modifier/Cosmetic]";
+    }
+
+    public static Advancement getCosmetic() {
+        return cosmetic;
+    }
+
+    public static Advancement getEnchanted() {
+        return enchanted;
     }
 }

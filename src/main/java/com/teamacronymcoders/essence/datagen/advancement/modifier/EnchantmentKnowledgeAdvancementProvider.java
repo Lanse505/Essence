@@ -1,7 +1,8 @@
-package com.teamacronymcoders.essence.serializable.provider.advancement.modifier;
+package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
+import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
-import com.teamacronymcoders.essence.serializable.provider.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import net.minecraft.advancements.Advancement;
@@ -15,24 +16,23 @@ import java.util.function.Consumer;
 
 public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvancementProvider {
 
+    private static Advancement enchantment;
+    private static Advancement efficiency;
+    private static Advancement infinity;
+    private static Advancement knockback;
+    private static Advancement luck;
+    private static Advancement mending;
+    private static Advancement silkTouch;
+    private static Advancement strengthened;
+    private static Advancement unbreaking;
+
     public EnchantmentKnowledgeAdvancementProvider(DataGenerator generator) {
         super(generator, "/knowledge/enchantment");
     }
 
     @Override
     protected void addAdvancements(Consumer<Advancement> consumer) {
-        Advancement.Builder.builder()
-            .withDisplay(
-                getDefaultIcon(),
-                new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.title"),
-                new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.description"),
-                new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
-                FrameType.CHALLENGE, true, false, true
-            )
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EFFICIENCY_MODIFIER_KNOWLEDGE.get()))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:efficiency_modifier");
-        Advancement.Builder.builder()
+        enchantment = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.enchantment_modifier.title"),
@@ -40,9 +40,22 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:enchantment_modifier");
-        Advancement.Builder.builder()
+        efficiency = Advancement.Builder.builder()
+            .withDisplay(
+                getDefaultIcon(),
+                new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.title"),
+                new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.description"),
+                new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
+                FrameType.CHALLENGE, true, false, true
+            )
+            .withParent(enchantment)
+            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EFFICIENCY_MODIFIER_KNOWLEDGE.get()))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .register(consumer, "essence:efficiency_modifier");
+        infinity = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.infinity_modifier.title"),
@@ -50,10 +63,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.INFINITY_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:infinity_modifier");
-        Advancement.Builder.builder()
+        knockback = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.knockback_modifier.title"),
@@ -61,10 +75,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.KNOCKBACK_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:knockback_modifier");
-        Advancement.Builder.builder()
+        luck = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.luck_modifier.title"),
@@ -72,10 +87,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.LUCK_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:luck_modifier");
-        Advancement.Builder.builder()
+        mending = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.mending_modifier.title"),
@@ -83,10 +99,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MENDING_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:mending_modifier");
-        Advancement.Builder.builder()
+        silkTouch = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.silk_touch_modifier.title"),
@@ -94,10 +111,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.SILK_TOUCH_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:silk_touch_modifier");
-        Advancement.Builder.builder()
+        strengthened = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.strengthened_modifier.title"),
@@ -105,10 +123,11 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.STRENGTHENED_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:strengthened_modifier");
-        Advancement.Builder.builder()
+        unbreaking = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.unbreaking_modifier.title"),
@@ -116,6 +135,7 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
+            .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.UNBREAKING_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:unbreaking_modifier");
@@ -124,5 +144,41 @@ public class EnchantmentKnowledgeAdvancementProvider extends ExtendableAdvanceme
     @Override
     public String getName() {
         return "Essence Advancements: [Knowledge/Modifier/Enchantment]";
+    }
+
+    public static Advancement getEnchantment() {
+        return enchantment;
+    }
+
+    public static Advancement getEfficiency() {
+        return efficiency;
+    }
+
+    public static Advancement getInfinity() {
+        return infinity;
+    }
+
+    public static Advancement getKnockback() {
+        return knockback;
+    }
+
+    public static Advancement getLuck() {
+        return luck;
+    }
+
+    public static Advancement getMending() {
+        return mending;
+    }
+
+    public static Advancement getSilkTouch() {
+        return silkTouch;
+    }
+
+    public static Advancement getStrengthened() {
+        return strengthened;
+    }
+
+    public static Advancement getUnbreaking() {
+        return unbreaking;
     }
 }

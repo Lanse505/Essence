@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.provider.advancement;
+package com.teamacronymcoders.essence.datagen.advancement;
 
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.advancements.Advancement;
@@ -12,13 +12,15 @@ import java.util.function.Consumer;
 
 public class CoreAdvancementProvider extends ExtendableAdvancementProvider {
 
+    private static Advancement core;
+
     public CoreAdvancementProvider(DataGenerator generator) {
         super(generator, "/core");
     }
 
     @Override
     protected void addAdvancements(Consumer<Advancement> consumer) {
-        Advancement.Builder.builder()
+        core = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.core.root.title"),
@@ -33,5 +35,9 @@ public class CoreAdvancementProvider extends ExtendableAdvancementProvider {
     @Override
     public String getName() {
         return "Essence Advancements: [Core]";
+    }
+
+    public static Advancement getCore() {
+        return core;
     }
 }

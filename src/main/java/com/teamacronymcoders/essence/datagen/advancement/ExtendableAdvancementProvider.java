@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.provider.advancement;
+package com.teamacronymcoders.essence.datagen.advancement;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

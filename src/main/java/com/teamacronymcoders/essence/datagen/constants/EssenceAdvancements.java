@@ -1,4 +1,5 @@
-package com.teamacronymcoders.essence.datagen.lang.constants;
+package com.teamacronymcoders.essence.datagen.constants;
 
 public class EssenceAdvancements {
+
 }

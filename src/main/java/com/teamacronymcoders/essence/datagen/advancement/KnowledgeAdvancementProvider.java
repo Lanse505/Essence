@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.serializable.provider.advancement;
+package com.teamacronymcoders.essence.datagen.advancement;
 
-import com.teamacronymcoders.essence.serializable.provider.advancement.modifier.*;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -13,6 +13,10 @@ import java.util.function.Consumer;
 
 public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
 
+    private static Advancement knowledge_root;
+    private static Advancement knowledge_modifier_root;
+    private static Advancement knowledge_tool_root;
+
     public KnowledgeAdvancementProvider(DataGenerator generatorIn) {
         super(generatorIn, "/knowledge");
         generatorIn.addProvider(new ArrowKnowledgeAdvancements(generatorIn));
@@ -24,7 +28,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
 
     @Override
     protected void addAdvancements(Consumer<Advancement> consumer) {
-        Advancement.Builder.builder()
+        knowledge_root = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.root.title"),
@@ -34,7 +38,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
             )
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:root");
-        Advancement.Builder.builder()
+        knowledge_modifier_root = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.root_modifier.title"),
@@ -42,9 +46,10 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, false, false, true
             )
+            .withParent(knowledge_root)
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:root_modifier");
-        Advancement.Builder.builder()
+        knowledge_tool_root = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.root_tools.title"),
@@ -52,6 +57,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, false, false, true
             )
+            .withParent(knowledge_root)
             .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:root_tools");
     }
@@ -59,5 +65,17 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
     @Override
     public String getName() {
         return "Essence Advancements: [Knowledge]";
+    }
+
+    public static Advancement getKnowledgeRoot() {
+        return knowledge_root;
+    }
+
+    public static Advancement getKnowledgeModifierRoot() {
+        return knowledge_modifier_root;
+    }
+
+    public static Advancement getKnowledgeToolRoot() {
+        return knowledge_tool_root;
     }
 }
