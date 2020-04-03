@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_infused_block"
+    "essence:essence_infused_block",
+    "essence:essence_infused_block_empowered",
+    "essence:essence_infused_block_exalted",
+    "essence:essence_infused_block_godly"
   ]
 }

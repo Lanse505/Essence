@@ -23,6 +23,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+
 public class EssenceObjectHolders {
     @ObjectHolder("essence:essence_infused_block")
     public static EssenceBlock ESSENCE_INFUSED_METAL_BLOCK;
@@ -32,6 +37,14 @@ public class EssenceObjectHolders {
     public static EssenceBlock ESSENCE_INFUSED_METAL_EXALTED_BLOCK;
     @ObjectHolder("essence:essence_infused_block_godly")
     public static EssenceBlock ESSENCE_INFUSED_METAL_GODLY_BLOCK;
+
+    public static final List<Supplier<EssenceBlock>> ESSENCE_BLOCKS = Arrays.asList(
+        () -> ESSENCE_INFUSED_METAL_BLOCK,
+        () -> ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK,
+        () -> ESSENCE_INFUSED_METAL_EXALTED_BLOCK,
+        () -> ESSENCE_INFUSED_METAL_GODLY_BLOCK
+    );
+
     @ObjectHolder("essence:essence_crystal_ore")
     public static EssenceCrystalOreBlock ESSENCE_CRYSTAL_ORE;
     @ObjectHolder("essence:essence_wood_leaves")
@@ -79,6 +92,25 @@ public class EssenceObjectHolders {
     public static EssenceBrickBlock ESSENCE_BRICKS_RED;
     @ObjectHolder("essence:essence_bricks_black")
     public static EssenceBrickBlock ESSENCE_BRICKS_BLACK;
+
+    public static final List<Supplier<EssenceBrickBlock>> BRICK_BLOCK_LIST = Arrays.asList(
+        () -> ESSENCE_BRICKS_WHITE,
+        () -> ESSENCE_BRICKS_ORANGE,
+        () -> ESSENCE_BRICKS_MAGENTA,
+        () -> ESSENCE_BRICKS_LIGHT_BLUE,
+        () -> ESSENCE_BRICKS_YELLOW,
+        () -> ESSENCE_BRICKS_LIME,
+        () -> ESSENCE_BRICKS_PINK,
+        () -> ESSENCE_BRICKS_GRAY,
+        () -> ESSENCE_BRICKS_LIGHT_GRAY,
+        () -> ESSENCE_BRICKS_CYAN,
+        () -> ESSENCE_BRICKS_PURPLE,
+        () -> ESSENCE_BRICKS_BLUE,
+        () -> ESSENCE_BRICKS_BROWN,
+        () -> ESSENCE_BRICKS_GREEN,
+        () -> ESSENCE_BRICKS_RED,
+        () -> ESSENCE_BRICKS_BLACK
+    );
 
     @ObjectHolder("essence:furnace_worker")
     public static EssenceFurnaceWorkerBlock FURNACE_WORKER_BLOCK;

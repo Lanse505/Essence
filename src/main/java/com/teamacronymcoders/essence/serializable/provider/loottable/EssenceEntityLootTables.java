@@ -31,11 +31,11 @@ public class EssenceEntityLootTables extends EntityLootTables {
     public static final ResourceLocation SHEARED_GHAST = new ResourceLocation(Essence.MODID, "entities/sheared_ghast");
 
     // Horse -> Zombie Horse
-    public static final ResourceLocation SHEARING_HORSE = new ResourceLocation(Essence.MODID, "entities/sheared_horse");
+    public static final ResourceLocation SHEARING_HORSE = new ResourceLocation(Essence.MODID, "entities/shearing_horse");
     // Zombie Horse -> Skeleton Horse
-    public static final ResourceLocation SHEARING_ZOMBIE_HORSE = new ResourceLocation(Essence.MODID, "entities/sheared_zombie_horse");
+    public static final ResourceLocation SHEARING_ZOMBIE_HORSE = new ResourceLocation(Essence.MODID, "entities/shearing_zombie_horse");
     // Zombie -> Skeleton
-    public static final ResourceLocation SHEARING_ZOMBIE = new ResourceLocation(Essence.MODID, "entities/sheared_zombie");
+    public static final ResourceLocation SHEARING_ZOMBIE = new ResourceLocation(Essence.MODID, "entities/shearing_zombie");
 
     private static final EntityPredicate.Builder ON_FIRE = EntityPredicate.Builder.create().flags(EntityFlagsPredicate.Builder.create().onFire(true).build());
 
