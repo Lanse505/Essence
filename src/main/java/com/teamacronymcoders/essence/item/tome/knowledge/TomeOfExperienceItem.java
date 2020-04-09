@@ -7,10 +7,12 @@ import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.tank.ModifiableTankProvider;
 import com.teamacronymcoders.essence.item.tome.TomeItem;
+import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
+import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,11 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
@@ -39,14 +44,14 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class TomeOfExperience extends TomeItem implements IModifiedTank {
+public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IItemNetwork {
 
     private ExperienceModeEnum mode;
     private final int baseModifiers;
     private int freeModifiers;
     private int additionalModifiers;
 
-    public TomeOfExperience() {
+    public TomeOfExperienceItem() {
         mode = ExperienceModeEnum.FILL;
         this.baseModifiers = 3;
         this.freeModifiers = 3;
@@ -57,17 +62,21 @@ public class TomeOfExperience extends TomeItem implements IModifiedTank {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (!EssenceInformationHelper.isSneakKeyDown()) {
-            tooltip.add(EssenceInformationHelper.shiftForDetails);
+            tooltip.add(EssenceInformationHelper.shiftForDetails.applyTextStyle(TextFormatting.GREEN));
             return;
         }
+
         //Amount
         stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
             int currentAmount = handler.getFluidInTank(0).getAmount();
             int capacityAmount = handler.getTankCapacity(0);
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding"));
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels", NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount))));
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount", NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount), NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount)));
+            tooltip.add(new TranslationTextComponent("essence.tome.mode.tooltip").appendText(" ").appendSibling(new TranslationTextComponent(mode.getLocaleString())));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding").applyTextStyle(TextFormatting.GREEN));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels", NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount))).applyTextStyle(TextFormatting.LIGHT_PURPLE));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount", NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount), NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount)).applyTextStyle(TextFormatting.LIGHT_PURPLE));
         });
+
+        addInformationFromModifiers(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -210,6 +219,11 @@ public class TomeOfExperience extends TomeItem implements IModifiedTank {
     }
 
     @Override
+    public int getMaxModifiers() {
+        return baseModifiers + additionalModifiers;
+    }
+
+    @Override
     public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
         int cmc = 0;
         for (ModifierInstance<ItemStack> instance : modifierInstances) {
@@ -223,5 +237,16 @@ public class TomeOfExperience extends TomeItem implements IModifiedTank {
     @Override
     public Class<ItemStack> getType() {
         return ItemStack.class;
+    }
+
+    public void setMode(ExperienceModeEnum mode) {
+        this.mode = mode;
+    }
+
+    @Override
+    public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer dataStream) {
+        if (!world.isRemote()) {
+            setMode(dataStream.readEnumValue(ExperienceModeEnum.class));
+        }
     }
 }

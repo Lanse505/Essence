@@ -5,10 +5,10 @@ import com.hrznstudio.titanium.client.screen.addon.BasicScreenAddon;
 import com.hrznstudio.titanium.client.screen.asset.IAssetProvider;
 import net.minecraft.client.gui.screen.Screen;
 
-public class ListScreenAddon extends BasicScreenAddon {
+public class ScrollableListScreenAddon extends BaseScrollableScreenAddon {
 
-    protected ListScreenAddon(int posX, int posY) {
-        super(posX, posY);
+    protected ScrollableListScreenAddon(int posX, int posY) {
+        super(0, 0, 0, 0, 0, 0, 0);
     }
 
     @Override
@@ -29,5 +29,15 @@ public class ListScreenAddon extends BasicScreenAddon {
     @Override
     public void drawForegroundLayer(Screen screen, IAssetProvider iAssetProvider, int i, int i1, int i2, int i3) {
 
+    }
+
+    @Override
+    protected int getMaxElements() {
+        return 0;
+    }
+
+    @Override
+    protected int getFocusedElements() {
+        return 0;
     }
 }
