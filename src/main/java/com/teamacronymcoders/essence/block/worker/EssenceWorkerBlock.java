@@ -119,6 +119,11 @@ public abstract class EssenceWorkerBlock<T extends ActiveTile<T>> extends BasicT
     }
 
     @Override
+    public int getMaxModifiers() {
+        return baseModifiers + additionalModifiers;
+    }
+
+    @Override
     public boolean recheck(Block object, List<ModifierInstance<Block>> modifierInstances) {
         int cmc = 0;
         for (ModifierInstance<Block> instance : modifierInstances) {

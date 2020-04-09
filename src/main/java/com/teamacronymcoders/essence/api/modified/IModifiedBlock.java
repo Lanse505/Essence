@@ -58,8 +58,9 @@ public interface IModifiedBlock extends IModified<Block> {
 
     default void addInformation(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
         int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
+        int maxModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getMaxModifiers() : 0;
         list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocaleString()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers))).applyTextStyle(TextFormatting.GRAY));
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).applyTextStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
             list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
             Map<String, List<ITextComponent>> sorting_map = new HashMap<>();

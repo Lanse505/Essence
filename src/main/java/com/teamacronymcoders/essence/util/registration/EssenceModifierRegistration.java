@@ -14,6 +14,7 @@ import com.teamacronymcoders.essence.modifier.item.interaction.FieryModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingType;
+import com.teamacronymcoders.essence.modifier.item.tank.HoldingModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -59,6 +60,9 @@ public class EssenceModifierRegistration {
     public static RegistryObject<CascadingModifier> CASCADING_LUMBER_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_lumber", () -> new CascadingModifier(CascadingType.LUMBER));
     public static RegistryObject<CascadingModifier> CASCADING_VEIN_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_vein", () -> new CascadingModifier(CascadingType.VEIN));
     public static RegistryObject<CascadingModifier> CASCADING_EXCAVATION_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("cascading_excavation", () -> new CascadingModifier(CascadingType.EXCAVATION));
+
+    // Tank Modifiers
+    public static RegistryObject<HoldingModifier> HOLDING_MODIFIER = MODIFIER_DEFERRED_REGISTER.register("holding_tank", HoldingModifier::new);
 
     public static void register(IEventBus eventBus) {
         MODIFIER_DEFERRED_REGISTER.register(eventBus);

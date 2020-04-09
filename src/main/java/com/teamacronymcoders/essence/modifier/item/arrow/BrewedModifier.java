@@ -3,10 +3,8 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -70,31 +68,25 @@ public class BrewedModifier extends ItemArrowCoreModifier {
 
     @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
-        final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
-        final long handle = Minecraft.getInstance().getMainWindow().getHandle();
         List<ITextComponent> textComponents = new ArrayList<>();
-        if (InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode())) {
-            textComponents.add(new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN)));
-            textComponents.add(new StringTextComponent("    ").appendSibling(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD)));
-            for (EffectInstance effect : effects) {
-                if (effect.getPotion().isBeneficial()) {
-                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.BLUE));
-                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE)));
-                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.BLUE)));
-                } else {
-                    textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.RED));
-                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.RED)));
-                    textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.RED)));
-                }
-            }
-        } else {
+        if (!EssenceInformationHelper.isSneakKeyDown()) {
             textComponents.add(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GREEN));
+            return textComponents;
+        }
+        textComponents.add(new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName() + ".cleaned").applyTextStyle(TextFormatting.GREEN)));
+        textComponents.add(new StringTextComponent("    ").appendSibling(new TranslationTextComponent("brewed.contents").applyTextStyle(TextFormatting.GOLD)));
+        for (EffectInstance effect : effects) {
+            if (effect.getPotion().isBeneficial()) {
+                textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.BLUE));
+                textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.BLUE)));
+                textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.BLUE)));
+            } else {
+                textComponents.add(new StringTextComponent("      ").appendSibling(new TranslationTextComponent(effect.getPotion().getName())).applyTextStyle(TextFormatting.RED));
+                textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).applyTextStyle(TextFormatting.RED)));
+                textComponents.add(new StringTextComponent("        ").appendSibling(new TranslationTextComponent("brewed.amplifier", effect.getAmplifier()).applyTextStyle(TextFormatting.RED)));
+            }
         }
         return textComponents;
-    }
-
-    public List<EffectInstance> getEffects() {
-        return effects;
     }
 
 }

@@ -5,6 +5,7 @@ import com.teamacronymcoders.essence.api.holder.IModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModified;
+import com.teamacronymcoders.essence.api.modified.IModifiedTank;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
@@ -39,7 +40,7 @@ public class EssenceItemstackModifierHelpers {
 
     public static boolean canApplyModifier(Modifier<ItemStack> input, ItemStack stack, Modifier<ItemStack> modifier) {
         if (input instanceof ItemCoreModifier) {
-            return input.isCompatibleWith(modifier) && ((ItemCoreModifier) input).canApplyOnObject(stack);
+            return input.isCompatibleWith(modifier) && input.canApplyOnObject(stack);
         }
         return input.isCompatibleWith(modifier);
     }
@@ -67,7 +68,7 @@ public class EssenceItemstackModifierHelpers {
 
     public static void addModifier(ItemStack stack, Modifier<ItemStack> modifier, int level, CompoundNBT modifierData) {
         final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
-        if (stack.getItem() instanceof IModified && instances.isPresent()) {
+        if (stack.getItem() instanceof IModified && ((IModified<ItemStack>) stack.getItem()).getType().isInstance(ItemStack.class) && instances.isPresent()) {
             instances.ifPresent(holder -> {
                 if (modifier != null && holder.addModifierInstance(true, stack, new ModifierInstance<>(ItemStack.class, () -> modifier, level, modifierData))) {
                     holder.addModifierInstance(false, stack, new ModifierInstance<>(ItemStack.class, () -> modifier, level, modifierData));
@@ -90,7 +91,7 @@ public class EssenceItemstackModifierHelpers {
      */
     public static void addModifiers(ItemStack stack, Modifier<ItemStack>... modifiers) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
-        if (stack.getItem() instanceof IModifiedTool && holderLazyOptional.isPresent()) {
+        if (stack.getItem() instanceof IModified && ((IModified<ItemStack>) stack.getItem()).getType().isInstance(ItemStack.class) && holderLazyOptional.isPresent()) {
             holderLazyOptional.ifPresent(holder -> {
                 if (((ModifierHolder<?>) holder).getType() == ItemStack.class) {
                     if (holder.getModifierInstances().get(0).getType() == ItemStack.class) {

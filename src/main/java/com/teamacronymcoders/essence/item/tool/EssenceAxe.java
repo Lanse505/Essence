@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
@@ -54,13 +55,11 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     @Override
     public CompoundNBT getShareTag(ItemStack stack) {
         CompoundNBT tag = super.getShareTag(stack);
-        ListNBT capTag = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(cap -> cap.serializeNBT()).orElse(null);
-        if (capTag != null) {
-            if (tag == null) {
-                tag = new CompoundNBT();
-            }
-            tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
+        ListNBT capTag = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(ItemStackModifierHolder::serializeNBT).orElse(new ListNBT());
+        if (tag == null) {
+            tag = new CompoundNBT();
         }
+        tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
         return tag;
     }
 
@@ -74,7 +73,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     }
 
     @Override
-    public Rarity getRarity(ItemStack p_77613_1_) {
+    public Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -210,6 +209,11 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     @Override
     public int getFreeModifiers() {
         return freeModifiers;
+    }
+
+    @Override
+    public int getMaxModifiers() {
+        return baseModifiers + additionalModifiers;
     }
 
     @Override

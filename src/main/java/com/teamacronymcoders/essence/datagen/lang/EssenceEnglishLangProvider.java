@@ -59,6 +59,7 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         addModifiers();
         addModifierMisc();
         addMisc();
+        addTooltip();
     }
 
     private void addAdvancements() {
@@ -138,6 +139,11 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("essence.wrench.mode.tooltip", "Wrench Mode");
         add("essence.mode.wrench.serialize", "Stasis");
         add("essence.mode.wrench.rotate", "Rotate");
+        add("essence.tome.mode.tooltip", "Mode:");
+        add("tome.essence.experience.mode.fill", "Fill");
+        add("tome.essence.experience.mode.drain", "Drain");
+        add("tome.essence.experience.mode.absorb", "Absorb");
+        add("essence.tome.mode.tooltip", "Mode:");
     }
 
     private void addCommands() {
@@ -255,12 +261,18 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("tier.essence.supreme", "Supreme");
         add("tier.essence.godly", "Godly");
 
+        add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
+        add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
+    }
+
+    private void addTooltip() {
         add("tooltip.essence.modifier", "Modifiers:");
         add("tooltip.essence.modifier.free", "Free Modifiers: %s");
         add("tooltip.essence.tool.tier", "Material Tier: ");
-        add("tooltip.titanium.facing_handler.input", "Infusable");
+        add("tooltip.essence.generic.shiftForInformation", "");
 
-        add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
-        add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
+        add("tooltip.essence.tome_of_experience.holding", "Currently Holding");
+        add("tooltip.essence.tome_of_experience.levels", "%s Levels");
+        add("tooltip.essence.tome_of_experience.amount", "Stored Experience: %s/%s");
     }
 }

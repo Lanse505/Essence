@@ -35,6 +35,7 @@ import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
 import com.teamacronymcoders.essence.util.registration.*;
@@ -140,6 +141,10 @@ public class Essence extends ModuleController {
         EssenceEventHandlers.setup();
 
         setupCreativeTabIcons();
+        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(64));
+        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(256));
+        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(1024));
+        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(65536));
     }
 
     @Override

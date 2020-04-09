@@ -15,8 +15,9 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
+import com.teamacronymcoders.essence.item.tome.knowledge.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
@@ -46,6 +47,7 @@ public class EssenceModules {
                 .content(Item.class, new EssenceNuggetItem(EssenceItemTiers.GODLY_ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_nugget_godly")))
                 .content(Item.class, new EssenceStickItem().setRegistryName(new ResourceLocation(Essence.MODID, "essence_wood_sticks")))
                 .content(Item.class, new TomeOfKnowledgeItem().setRegistryName(new ResourceLocation(Essence.MODID, "tome_of_knowledge")))
+                .content(Item.class, new TomeOfExperienceItem().setRegistryName(new ResourceLocation(Essence.MODID, "tome_of_experience")))
         )
         .feature(
             Feature.builder("blocks")
@@ -92,6 +94,7 @@ public class EssenceModules {
                 .description("Core-Misc")
                 .content(Item.class, new GlueBallItem().setRegistryName(new ResourceLocation(Essence.MODID, "glue_ball")))
                 .content(TitaniumFluidInstance.class, EssenceObjectHolders.ESSENCE_FLUID)
+                .content(TitaniumFluidInstance.class, EssenceObjectHolders.EXP_FLUID)
         );
 
     public static final Module.Builder TOOLS = Module.builder("tools")

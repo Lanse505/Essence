@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.item.infusion;
+package com.teamacronymcoders.essence.item.tome;
 
 import com.teamacronymcoders.essence.Essence;
 import net.minecraft.entity.player.PlayerEntity;

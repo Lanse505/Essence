@@ -12,7 +12,8 @@ import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
-import com.teamacronymcoders.essence.container.PortableCrafterContainer;
+import com.teamacronymcoders.essence.item.tome.knowledge.ExperienceModeEnum;
+import com.teamacronymcoders.essence.item.tome.knowledge.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
@@ -83,13 +84,13 @@ public class EssenceEventHandlers {
                     new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
                 );
             }).subscribe();
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(ContainerType.class))
-            .process(register -> {
-                register.getRegistry().registerAll(
-                    IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
-                );
-            }).subscribe();
+//        EventManager.mod(RegistryEvent.Register.class)
+//            .filter(register -> register.getGenericType().equals(ContainerType.class))
+//            .process(register -> {
+//                register.getRegistry().registerAll(
+//                    IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
+//                );
+//            }).subscribe();
     }
 
     private static void setupModifierCapabilities() {
@@ -171,7 +172,28 @@ public class EssenceEventHandlers {
                             WrenchModeEnum mode = wrench.getMode();
                             WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
                             wrench.setMode(newMode);
-                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.essence.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
+                            Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
+                            scroll.setCanceled(true);
+                        }
+                    }
+                }
+            }).subscribe();
+
+        // Wrench-Mode Handler
+        EventManager.forge(InputEvent.MouseScrollEvent.class)
+            .process(scroll -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                    ItemStack stack = minecraft.player.getHeldItemMainhand();
+                    if (stack.getItem() instanceof TomeOfExperienceItem) {
+                        double scrolling = scroll.getScrollDelta();
+                        if (scrolling != 0) {
+                            TomeOfExperienceItem wrench = (TomeOfExperienceItem) stack.getItem();
+                            ExperienceModeEnum mode = wrench.getMode();
+                            ExperienceModeEnum newMode = ExperienceModeEnum.cycleMode(mode.ordinal());
+                            wrench.setMode(newMode);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("tome.essence.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleString())), true);
                             Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
                             scroll.setCanceled(true);
                         }

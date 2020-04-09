@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import net.minecraft.item.IItemTier;
 import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.system.MathUtil;
 
 import java.util.TreeMap;
 
@@ -35,14 +36,15 @@ public class EssenceUtilHelper {
         return roman.get(l) + toRoman(number - l);
     }
 
-    public static TextFormatting getTextColor(int free_modifiers) {
-        if (free_modifiers <= 1) {
+    public static TextFormatting getTextColor(int free_modifiers, int max_modifiers) {
+        int val = free_modifiers / max_modifiers;
+        if(val <= 0.33) {
             return TextFormatting.RED;
-        }
-        if (free_modifiers <= 3) {
+        } else if (val <= 0.66) {
             return TextFormatting.YELLOW;
+        }else{
+            return TextFormatting.GREEN;
         }
-        return TextFormatting.GREEN;
     }
 
 
@@ -79,4 +81,41 @@ public class EssenceUtilHelper {
     public static EssenceToolTiers getEssenceItemTier(IItemTier tier) {
         return isEssenceItemTier(tier) ? (EssenceToolTiers) tier : null;
     }
+
+    public static int getLevelForExperience(int experience) {
+        int i = 0;
+        while (getExperienceForLevel(i) <= experience) {
+            i++;
+        }
+        return i - 1;
+    }
+
+    public static int getExperienceForLevel(int level) {
+        if (level == 0) {
+            return 0;
+        }
+
+        if (level > 0 && level < 17) {
+            return level * level + 6 * level;
+        } else if (level > 16 && level < 32) {
+            return (int) (2.5 * level * level - 40.5 * level + 360);
+        }
+        return (int) (4.5 * level * level - 162.5 * level + 2220);
+    }
+
+    public static int getExperienceForLevelWithDestination(int currentLevel, int destination) {
+        int exp = 0;
+        for (; currentLevel > destination; currentLevel--) {
+            if (currentLevel <= 16) {
+                exp += 2 * currentLevel + 7;
+            } else if (currentLevel <= 31) {
+                exp += 5 * currentLevel - 38;
+            } else {
+                exp += 9 * currentLevel - 158;
+            }
+        }
+        return exp;
+    }
+
+
 }

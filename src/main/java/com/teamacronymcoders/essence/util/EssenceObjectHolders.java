@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.util;
 
 import com.hrznstudio.titanium.fluid.TitaniumFluidInstance;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.block.EssenceBlock;
 import com.teamacronymcoders.essence.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.block.EssenceCrystalOreBlock;
@@ -15,8 +14,9 @@ import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
-import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
+import com.teamacronymcoders.essence.item.tome.knowledge.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
@@ -151,6 +151,8 @@ public class EssenceObjectHolders {
     public static EssenceWrench WRENCH;
     @ObjectHolder("essence:tome_of_knowledge")
     public static TomeOfKnowledgeItem TOME_OF_KNOWLEDGE;
+    @ObjectHolder("essence:tome_of_experience")
+    public static TomeOfExperienceItem TOME_OF_EXPERIENCE;
     @ObjectHolder("essence:glue_ball")
     public static GlueBallItem GLUE_BALL;
 
@@ -227,4 +229,6 @@ public class EssenceObjectHolders {
     public static EssenceBow ESSENCE_BOW_GODLY;
 
     public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(Essence.MODID, "essence", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/essence_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/essence_flowing")), true, Essence.CORE_TAB);
+    public static TitaniumFluidInstance EXP_FLUID = new TitaniumFluidInstance(Essence.MODID, "experience", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/experience_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/experience_flowing")), true, Essence.CORE_TAB);
+
 }

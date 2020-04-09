@@ -4,7 +4,7 @@ import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
-import com.teamacronymcoders.essence.item.infusion.TomeOfKnowledgeItem;
+import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;

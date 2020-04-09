@@ -22,13 +22,11 @@ public class ItemStackModifierProvider implements ICapabilityProvider, ICapabili
 
     public ItemStackModifierProvider(ItemStack stack) {
         modifierHolder = new ItemStackModifierHolder(stack);
-        modifierHolder.serializeNBT();
     }
 
     public ItemStackModifierProvider(ItemStack stack, CompoundNBT nbt) {
         modifierHolder = new ItemStackModifierHolder(stack);
         modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-        modifierHolder.serializeNBT();
     }
 
     @Nonnull

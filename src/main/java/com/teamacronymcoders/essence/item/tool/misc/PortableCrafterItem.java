@@ -6,7 +6,6 @@ import com.hrznstudio.titanium.api.client.IScreenAddon;
 import com.hrznstudio.titanium.api.client.IScreenAddonProvider;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.container.PortableCrafterContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -68,7 +67,13 @@ public class PortableCrafterItem extends Item implements IScreenAddonProvider, I
 
     @Nullable
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new PortableCrafterContainer(this, playerInventory, id);
+    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+        return null;
     }
+
+//    @Nullable
+//    @Override
+//    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+//        return new PortableCrafterContainer(this, playerInventory, id);
+//    }
 }

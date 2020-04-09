@@ -13,6 +13,8 @@ public interface IModified<T> {
 
     int getFreeModifiers();
 
+    int getMaxModifiers();
+
     boolean recheck(T object, List<ModifierInstance<T>> instances);
 
     Class<T> getType();

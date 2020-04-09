@@ -222,6 +222,11 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     }
 
     @Override
+    public int getMaxModifiers() {
+        return baseModifiers + additionalModifiers;
+    }
+
+    @Override
     public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
         int cmc = 0;
         for (ModifierInstance<ItemStack> instance : modifierInstances) {

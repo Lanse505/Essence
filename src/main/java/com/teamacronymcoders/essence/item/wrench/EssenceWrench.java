@@ -102,10 +102,10 @@ public class EssenceWrench extends Item implements IItemNetwork {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(mode.getLocaleName())));
+        list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendText(" ").appendSibling(new TranslationTextComponent(mode.getLocaleName())));
         if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
             list.add(new StringTextComponent(" "));
-            list.add(new TranslationTextComponent("wrench.disclaimer"));
+            list.add(new TranslationTextComponent("essence.wrench.disclaimer"));
         }
     }
 
