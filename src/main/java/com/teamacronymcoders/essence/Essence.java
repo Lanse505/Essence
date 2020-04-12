@@ -18,7 +18,6 @@ import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.datagen.*;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
-import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.entity.render.*;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
@@ -26,10 +25,10 @@ import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.util.*;
-import com.teamacronymcoders.essence.util.command.argument.EssenceHandArgumentType;
-import com.teamacronymcoders.essence.util.command.argument.EssenceKnowledgeArgumentType;
-import com.teamacronymcoders.essence.util.command.argument.EssenceModifierArgumentType;
-import com.teamacronymcoders.essence.util.command.argument.extendable.EssenceEnumArgumentType;
+import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
+import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
+import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
+import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
@@ -44,7 +43,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
@@ -141,10 +139,6 @@ public class Essence extends ModuleController {
         EssenceEventHandlers.setup();
 
         setupCreativeTabIcons();
-        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(64));
-        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(256));
-        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(1024));
-        LOGGER.info(EssenceUtilHelper.getExperienceForLevel(65536));
     }
 
     @Override

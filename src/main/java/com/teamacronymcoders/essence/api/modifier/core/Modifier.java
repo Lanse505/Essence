@@ -60,6 +60,9 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
      * @return Returns the formatted TextComponent
      */
     public ITextComponent getTextComponentName(int level) {
+        if (level == -1) {
+            return new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY);
+        }
         if (level == 1) {
             return new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
         }

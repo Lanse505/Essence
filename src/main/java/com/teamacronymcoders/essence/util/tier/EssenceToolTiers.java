@@ -24,10 +24,10 @@ public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
         0, Rarity.RARE, () -> {
         return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME);
     }),
-    GODLY_ESSENCE("tier.essence.godly", 6, 6, 4062, 6093, 10.0F,
+    DIVINE_ESSENCE("tier.essence.divine", 6, 6, 4062, 6093, 10.0F,
         6.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
         0, Rarity.EPIC, () -> {
-        return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY);
+        return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE);
     });
 
     private final String localName;

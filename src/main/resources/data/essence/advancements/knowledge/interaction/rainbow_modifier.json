@@ -1,5 +1,5 @@
 {
-  "parent": "essence:interaction_modifier",
+  "parent": "essence:knowledge/interaction/interaction_modifier",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"
@@ -18,7 +18,10 @@
   },
   "criteria": {
     "knowledge": {
-      "trigger": "essence:knowledge"
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:rainbow"
+      }
     },
     "tome_of_knowledge": {
       "trigger": "minecraft:inventory_changed",

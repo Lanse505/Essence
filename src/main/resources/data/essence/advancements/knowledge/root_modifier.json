@@ -1,5 +1,5 @@
 {
-  "parent": "essence:root",
+  "parent": "essence:knowledge/root",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"

@@ -14,7 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.function.Consumer;
 
-public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvider {
+public class AttributeKnowledgeAdvancements {
 
     private static Advancement attribute;
     private static Advancement armor;
@@ -23,15 +23,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
     private static Advancement max_health;
     private static Advancement movement_speed;
 
-    public AttributeKnowledgeAdvancements(DataGenerator generator) {
-        super(generator, "/knowledge/attribute");
-    }
-
-    @Override
-    protected void addAdvancements(Consumer<Advancement> consumer) {
+    public static void addAttributeAdvancements(Consumer<Advancement> consumer) {
         attribute = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.attribute_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.attribute_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -39,10 +34,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:attribute_modifier");
+            .register(consumer, "essence:knowledge/attribute/attribute_modifier");
         armor = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.armor_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.armor_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -51,10 +46,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARMOR_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:armor_modifier");
+            .register(consumer, "essence:knowledge/attribute/armor_modifier");
         armor_toughness = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.armor_toughness_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.armor_toughness_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -63,10 +58,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:armor_toughness_modifier");
+            .register(consumer, "essence:knowledge/attribute/armor_toughness_modifier");
         attack_damage = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.attack_damage_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.attack_damage_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -75,10 +70,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:attack_damage_modifier");
+            .register(consumer, "essence:knowledge/attribute/attack_damage_modifier");
         max_health = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.max_health_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.max_health_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -87,10 +82,10 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MAX_HEALTH_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:max_health_modifier");
+            .register(consumer, "essence:knowledge/attribute/max_health_modifier");
         movement_speed = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.movement_speed_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.movement_speed_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -99,12 +94,7 @@ public class AttributeKnowledgeAdvancements extends ExtendableAdvancementProvide
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:movement_speed_modifier");
-    }
-
-    @Override
-    public String getName() {
-        return "Essence Advancements: [Knowledge/Modifier/Attributes]";
+            .register(consumer, "essence:knowledge/attribute/movement_speed_modifier");
     }
 
     public static Advancement getAttribute() {

@@ -11,7 +11,7 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
     ESSENCE("tier.essence.basic", Rarity.COMMON, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL),
     EMPOWERED_ESSENCE("tier.essence.empowered", Rarity.UNCOMMON, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED),
     SUPREME_ESSENCE("tier.essence.supreme", Rarity.RARE, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME),
-    GODLY_ESSENCE("tier.essence.godly", Rarity.EPIC, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY);
+    DIVINE_ESSENCE("tier.essence.divine", Rarity.EPIC, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE_NUGGET, () -> EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE);
 
     private final String localString;
     private final Rarity rarity;

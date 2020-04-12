@@ -21,37 +21,21 @@ public class ExtendableAdvancementProvider extends AdvancementProvider {
 
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private final DataGenerator generator;
-    private String subFolder;
 
     public ExtendableAdvancementProvider(DataGenerator generator) {
         super(generator);
         this.generator = generator;
     }
 
-    public ExtendableAdvancementProvider(DataGenerator generator, String subFolder) {
-        super(generator);
-        this.generator = generator;
-        this.subFolder = subFolder;
-    }
-
     @Override
     public void act(DirectoryCache cache) throws IOException {
         Path outputFolder = this.generator.getOutputFolder();
         Consumer<Advancement> consumer = advancement -> {
-            if (subFolder != null && !subFolder.isEmpty()) {
-                Path path = outputFolder.resolve("data/" + advancement.getId().getNamespace() + "/advancements/" + subFolder + "/" + advancement.getId().getPath() + ".json");
-                try {
-                    IDataProvider.save(GSON, cache, advancement.copy().serialize(), path);
-                } catch (IOException e) {
-                    Essence.LOGGER.info(e);
-                }
-            } else {
-                Path path = outputFolder.resolve("data/" + advancement.getId().getNamespace() + "/advancements/" + advancement.getId().getPath() + ".json");
-                try {
-                    IDataProvider.save(GSON, cache, advancement.copy().serialize(), path);
-                } catch (IOException e) {
-                    Essence.LOGGER.info(e);
-                }
+            Path path = outputFolder.resolve("data/" + advancement.getId().getNamespace() + "/advancements/" + advancement.getId().getPath() + ".json");
+            try {
+                IDataProvider.save(GSON, cache, advancement.copy().serialize(), path);
+            } catch (IOException e) {
+                Essence.LOGGER.info(e);
             }
         };
         addAdvancements(consumer);

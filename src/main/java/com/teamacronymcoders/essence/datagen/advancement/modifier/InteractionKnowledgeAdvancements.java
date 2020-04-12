@@ -14,7 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.function.Consumer;
 
-public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvider {
+public class InteractionKnowledgeAdvancements {
 
     private static Advancement interaction;
     private static Advancement cascading;
@@ -22,26 +22,21 @@ public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvi
     private static Advancement fiery;
     private static Advancement rainbow;
 
-    public InteractionKnowledgeAdvancements(DataGenerator generator) {
-        super(generator, "/knowledge/interaction");
-    }
-
-    @Override
-    protected void addAdvancements(Consumer<Advancement> consumer) {
+    public static void addInteractionAdvancements(Consumer<Advancement> consumer) {
         interaction = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.interaction_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.interaction_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                 FrameType.CHALLENGE, true, false, true
             )
-            .withParent(interaction)
+            .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:interaction_modifier");
+            .register(consumer, "essence:knowledge/interaction/interaction_modifier");
         cascading = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.cascading_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.cascading_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -50,10 +45,10 @@ public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvi
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.CASCADING_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:cascading_modifier");
+            .register(consumer, "essence:knowledge/interaction/cascading_modifier");
         expander = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.expander_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.expander_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -62,10 +57,10 @@ public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvi
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EXPANDER_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:expander_modifier");
+            .register(consumer, "essence:knowledge/interaction/expander_modifier");
         fiery = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.fiery_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.fiery_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -74,10 +69,10 @@ public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvi
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.FIERY_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:fiery_modifier");
+            .register(consumer, "essence:knowledge/interaction/fiery_modifier");
         rainbow = Advancement.Builder.builder()
             .withDisplay(
-                getDefaultIcon(),
+                ExtendableAdvancementProvider.getDefaultIcon(),
                 new TranslationTextComponent("advancements.essence.knowledge.rainbow_modifier.title"),
                 new TranslationTextComponent("advancements.essence.knowledge.rainbow_modifier.description"),
                 new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -86,12 +81,7 @@ public class InteractionKnowledgeAdvancements extends ExtendableAdvancementProvi
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.RAINBOW_MODIFIER_KNOWLEDGE.get()))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:rainbow_modifier");
-    }
-
-    @Override
-    public String getName() {
-        return "Essence Advancements: [Knowledge/Modifier/Interaction]";
+            .register(consumer, "essence:knowledge/interaction/rainbow_modifier");
     }
 
     public static Advancement getInteraction() {

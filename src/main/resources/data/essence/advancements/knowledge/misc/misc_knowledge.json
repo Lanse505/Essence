@@ -1,0 +1,36 @@
+{
+  "parent": "essence:knowledge/root",
+  "display": {
+    "icon": {
+      "item": "essence:tome_of_knowledge"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.misc.misc_knowledge.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.misc.misc_knowledge.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:tome_of_knowledge"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tome_of_knowledge"
+    ]
+  ]
+}

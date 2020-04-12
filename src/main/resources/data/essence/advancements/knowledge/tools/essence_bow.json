@@ -1,0 +1,36 @@
+{
+  "parent": "essence:knowledge/tools/tool_types",
+  "display": {
+    "icon": {
+      "item": "essence:essence_bow"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.tools.bow.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.tools.bow.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:essence_bow"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tome_of_knowledge"
+    ]
+  ]
+}

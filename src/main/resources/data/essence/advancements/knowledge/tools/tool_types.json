@@ -1,0 +1,46 @@
+{
+  "parent": "essence:knowledge/root_tools",
+  "display": {
+    "icon": {
+      "item": "essence:essence_axe",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.tools.tool_type.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.tools.tool_type.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "tool_crafting": {
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:tool_crafting"
+      }
+    },
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:tome_of_knowledge"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tool_crafting"
+    ],
+    [
+      "tome_of_knowledge"
+    ]
+  ]
+}

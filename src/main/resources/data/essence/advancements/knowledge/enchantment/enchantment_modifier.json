@@ -1,4 +1,5 @@
 {
+  "parent": "essence:knowledge/root_modifier",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"

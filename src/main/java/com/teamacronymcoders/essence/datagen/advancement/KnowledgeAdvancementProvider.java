@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.datagen.advancement;
 
+import com.teamacronymcoders.essence.datagen.advancement.misc.*;
 import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.advancements.Advancement;
@@ -18,12 +19,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
     private static Advancement knowledge_tool_root;
 
     public KnowledgeAdvancementProvider(DataGenerator generatorIn) {
-        super(generatorIn, "/knowledge");
-        generatorIn.addProvider(new ArrowKnowledgeAdvancements(generatorIn));
-        generatorIn.addProvider(new AttributeKnowledgeAdvancements(generatorIn));
-        generatorIn.addProvider(new CosmeticKnowledgeAdvancements(generatorIn));
-        generatorIn.addProvider(new EnchantmentKnowledgeAdvancementProvider(generatorIn));
-        generatorIn.addProvider(new InteractionKnowledgeAdvancements(generatorIn));
+        super(generatorIn);
     }
 
     @Override
@@ -37,7 +33,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
                 FrameType.CHALLENGE, false, false, true
             )
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:root");
+            .register(consumer, "essence:knowledge/root");
         knowledge_modifier_root = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
@@ -48,7 +44,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
             )
             .withParent(knowledge_root)
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:root_modifier");
+            .register(consumer, "essence:knowledge/root_modifier");
         knowledge_tool_root = Advancement.Builder.builder()
             .withDisplay(
                 getDefaultIcon(),
@@ -58,8 +54,22 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(knowledge_root)
-            .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
-            .register(consumer, "essence:root_tools");
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .register(consumer, "essence:knowledge/root_tools");
+
+        // Modifier Knowledge
+        ArrowKnowledgeAdvancements.addArrowAdvancements(consumer);
+        AttributeKnowledgeAdvancements.addAttributeAdvancements(consumer);
+        CosmeticKnowledgeAdvancements.addCosmeticAdvancements(consumer);
+        EnchantmentKnowledgeAdvancementProvider.addEnchantmentAdvancements(consumer);
+        InteractionKnowledgeAdvancements.addInteractionAdvancements(consumer);
+
+        // Tool Knowledge
+        EssenceMaterialTierAdvancements.addTierAdvancements(consumer);
+        EssenceToolTypeAdvancements.addToolTypeAdvancements(consumer);
+
+        // Misc Knowledge
+        EssenceKnowledgeAdvancements.addMiscKnowledge(consumer);
     }
 
     @Override

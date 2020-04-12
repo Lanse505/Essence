@@ -1,5 +1,5 @@
 {
-  "parent": "essence:attribute_modifier",
+  "parent": "essence:knowledge/attribute/attribute_modifier",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"
@@ -18,7 +18,10 @@
   },
   "criteria": {
     "knowledge": {
-      "trigger": "essence:knowledge"
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:attack_damage"
+      }
     },
     "tome_of_knowledge": {
       "trigger": "minecraft:inventory_changed",

@@ -1,4 +1,5 @@
 {
+	"type": "essence:fiery_modifier",
 	"conditions": [
 		{
 			"condition": "essence:modifier_matcher",

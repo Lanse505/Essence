@@ -10,7 +10,7 @@ public class UnlockKnowledgeListerners extends EssenceCriterionListener<UnlockKn
         super(advancements);
     }
 
-    public void trigger(final Knowledge knowledge) {
+    public void trigger(final Knowledge<?> knowledge) {
         trigger(instance -> instance.test(knowledge));
     }
 }

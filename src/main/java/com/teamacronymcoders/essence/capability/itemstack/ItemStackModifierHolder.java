@@ -25,6 +25,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         this.stack = stack;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean addModifierInstance(boolean simulate, ItemStack object, ModifierInstance<ItemStack>... instances) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -54,6 +55,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean removeModifierInstance(boolean simulate, ItemStack object, ModifierInstance<ItemStack>... instances) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -79,6 +81,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelUpModifier(boolean simulate, ItemStack object, int increase, Modifier<ItemStack>... modifiers) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -114,6 +117,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelUpModifier(boolean simulate, ItemStack object, int increase, ModifierInstance<ItemStack>... modifiersWithData) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -149,6 +153,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelDownModifier(boolean simulate, ItemStack object, int decrease, Modifier<ItemStack>... modifiers) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -191,6 +196,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelDownModifier(boolean simulate, ItemStack object, int decrease, ModifierInstance<ItemStack>... modifiersWithData) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -233,6 +239,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelSetModifier(boolean simulate, ItemStack object, int level, Modifier<ItemStack>... modifiers) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
@@ -268,6 +275,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
         return false;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean levelSetModifier(boolean simulate, ItemStack object, int level, ModifierInstance<ItemStack>... modifiersWithData) {
         if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {

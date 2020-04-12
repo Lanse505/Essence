@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 
 public class ModifiableTank extends FluidTank implements IFluidHandlerItem {
 
-    private ItemStack stack;
-    private int originalCapacity;
+    private final ItemStack stack;
+    private final int originalCapacity;
 
     public ModifiableTank(int capacity, ItemStack stack) {
         super(capacity);

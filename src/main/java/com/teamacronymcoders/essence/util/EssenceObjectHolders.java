@@ -16,7 +16,7 @@ import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
-import com.teamacronymcoders.essence.item.tome.knowledge.TomeOfExperienceItem;
+import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
@@ -35,14 +35,14 @@ public class EssenceObjectHolders {
     public static EssenceBlock ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK;
     @ObjectHolder("essence:essence_infused_block_supreme")
     public static EssenceBlock ESSENCE_INFUSED_METAL_SUPREME_BLOCK;
-    @ObjectHolder("essence:essence_infused_block_godly")
-    public static EssenceBlock ESSENCE_INFUSED_METAL_GODLY_BLOCK;
+    @ObjectHolder("essence:essence_infused_block_divine")
+    public static EssenceBlock ESSENCE_INFUSED_METAL_DIVINE_BLOCK;
 
     public static final List<Supplier<EssenceBlock>> ESSENCE_BLOCKS = Arrays.asList(
         () -> ESSENCE_INFUSED_METAL_BLOCK,
         () -> ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK,
         () -> ESSENCE_INFUSED_METAL_SUPREME_BLOCK,
-        () -> ESSENCE_INFUSED_METAL_GODLY_BLOCK
+        () -> ESSENCE_INFUSED_METAL_DIVINE_BLOCK
     );
 
     @ObjectHolder("essence:essence_crystal_ore")
@@ -140,10 +140,10 @@ public class EssenceObjectHolders {
     @ObjectHolder("essence:essence_nugget_supreme")
     public static EssenceNuggetItem ESSENCE_INFUSED_METAL_SUPREME_NUGGET;
 
-    @ObjectHolder("essence:essence_ingot_godly")
-    public static EssenceIngotItem ESSENCE_INFUSED_METAL_GODLY;
-    @ObjectHolder("essence:essence_nugget_godly")
-    public static EssenceNuggetItem ESSENCE_INFUSED_METAL_GODLY_NUGGET;
+    @ObjectHolder("essence:essence_ingot_divine")
+    public static EssenceIngotItem ESSENCE_INFUSED_METAL_DIVINE;
+    @ObjectHolder("essence:essence_nugget_divine")
+    public static EssenceNuggetItem ESSENCE_INFUSED_METAL_DIVINE_NUGGET;
 
     @ObjectHolder("essence:portable_crafter")
     public static PortableCrafterItem PORTABLE_CRAFTER;
@@ -211,22 +211,22 @@ public class EssenceObjectHolders {
     public static EssenceBow ESSENCE_BOW_SUPREME;
 
     // Tier 4 Tools
-    @ObjectHolder("essence:essence_axe_godly")
-    public static EssenceAxe ESSENCE_AXE_GODLY;
-    @ObjectHolder("essence:essence_pickaxe_godly")
-    public static EssencePickaxe ESSENCE_PICKAXE_GODLY;
-    @ObjectHolder("essence:essence_shovel_godly")
-    public static EssenceShovel ESSENCE_SHOVEL_GODLY;
-    @ObjectHolder("essence:essence_sword_godly")
-    public static EssenceSword ESSENCE_SWORD_GODLY;
-    @ObjectHolder("essence:essence_hoe_godly")
-    public static EssenceHoe ESSENCE_HOE_GODLY;
-    @ObjectHolder("essence:essence_omnitool_godly")
-    public static EssenceOmniTool ESSENCE_OMNITOOL_GODLY;
-    @ObjectHolder("essence:essence_shear_godly")
-    public static EssenceShear ESSENCE_SHEAR_GODLY;
-    @ObjectHolder("essence:essence_bow_godly")
-    public static EssenceBow ESSENCE_BOW_GODLY;
+    @ObjectHolder("essence:essence_axe_divine")
+    public static EssenceAxe ESSENCE_AXE_DIVINE;
+    @ObjectHolder("essence:essence_pickaxe_divine")
+    public static EssencePickaxe ESSENCE_PICKAXE_DIVINE;
+    @ObjectHolder("essence:essence_shovel_divine")
+    public static EssenceShovel ESSENCE_SHOVEL_DIVINE;
+    @ObjectHolder("essence:essence_sword_divine")
+    public static EssenceSword ESSENCE_SWORD_DIVINE;
+    @ObjectHolder("essence:essence_hoe_divine")
+    public static EssenceHoe ESSENCE_HOE_DIVINE;
+    @ObjectHolder("essence:essence_omnitool_divine")
+    public static EssenceOmniTool ESSENCE_OMNITOOL_DIVINE;
+    @ObjectHolder("essence:essence_shear_divine")
+    public static EssenceShear ESSENCE_SHEAR_DIVINE;
+    @ObjectHolder("essence:essence_bow_divine")
+    public static EssenceBow ESSENCE_BOW_DIVINE;
 
     public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(Essence.MODID, "essence", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/essence_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/essence_flowing")), true, Essence.CORE_TAB);
     public static TitaniumFluidInstance EXP_FLUID = new TitaniumFluidInstance(Essence.MODID, "experience", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/experience_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/experience_flowing")), true, Essence.CORE_TAB);

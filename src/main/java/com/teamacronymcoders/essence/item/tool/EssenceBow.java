@@ -63,29 +63,6 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
     }
 
-    @Nullable
-    @Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-        CompoundNBT tag = super.getShareTag(stack);
-        ListNBT capTag = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(cap -> cap.serializeNBT()).orElse(null);
-        if (capTag != null) {
-            if (tag == null) {
-                tag = new CompoundNBT();
-            }
-            tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
-        }
-        return tag;
-    }
-
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if (nbt != null && nbt.contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
-            ListNBT capTag = nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
-            stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(cap -> cap.deserializeNBT(capTag));
-        }
-        super.readShareTag(stack, nbt);
-    }
-
     @Override
     public Rarity getRarity(ItemStack p_77613_1_) {
         return tier.getRarity();
@@ -257,6 +234,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
     }
 

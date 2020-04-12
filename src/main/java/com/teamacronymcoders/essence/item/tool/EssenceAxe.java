@@ -51,43 +51,9 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
         this.additionalModifiers = 0;
     }
 
-    @Nullable
-    @Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-        CompoundNBT tag = super.getShareTag(stack);
-        ListNBT capTag = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(ItemStackModifierHolder::serializeNBT).orElse(new ListNBT());
-        if (tag == null) {
-            tag = new CompoundNBT();
-        }
-        tag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, capTag);
-        return tag;
-    }
-
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if (nbt != null && nbt.contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
-            ListNBT capTag = nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND);
-            stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(cap -> cap.deserializeNBT(capTag));
-        }
-        super.readShareTag(stack, nbt);
-    }
-
     @Override
     public Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
-    }
-
-    @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> list) {
-        if (this.isInGroup(group)) {
-            list.add(new ItemStack(this));
-            ItemStack stack = new ItemStack(this, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
-                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
-                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null),
-                new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null)
-            ));
-            list.add(stack);
-        }
     }
 
     @Override
@@ -183,6 +149,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
     }
 

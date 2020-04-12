@@ -6,7 +6,7 @@ public enum EssenceBackpackTiers implements IEssenceBaseTier {
     ESSENCE("tier.essence.basic", Rarity.COMMON, 3, 9, 3, 3),
     EMPOWERED_ESSENCE("tier.essence.empowered", Rarity.UNCOMMON, 4, 18, 6, 3),
     SUPREME_ESSENCE("tier.essence.supreme", Rarity.RARE, 5, 27, 9, 3),
-    GODLY_ESSENCE("tier.essence.godly", Rarity.EPIC, 6, 36, 9, 4);
+    DIVINE_ESSENCE("tier.essence.divine", Rarity.EPIC, 6, 36, 9, 4);
 
     private final String localString;
     private final Rarity rarity;

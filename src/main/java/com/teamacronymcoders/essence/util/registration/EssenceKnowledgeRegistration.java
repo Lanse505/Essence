@@ -60,7 +60,7 @@ public class EssenceKnowledgeRegistration {
     public static RegistryObject<Knowledge<ItemStack>> BASIC_TIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("basic_tier", () -> new Knowledge<>(ItemStack.class));
     public static RegistryObject<Knowledge<ItemStack>> EMPOWERED_TIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("empowered_tier", () -> new Knowledge<>(ItemStack.class));
     public static RegistryObject<Knowledge<ItemStack>> SUPREME_TIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("supreme_tier", () -> new Knowledge<>(ItemStack.class));
-    public static RegistryObject<Knowledge<ItemStack>> GODLY_TIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("godly_tier", () -> new Knowledge<>(ItemStack.class));
+    public static RegistryObject<Knowledge<ItemStack>> DIVINE_TIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("divine_tier", () -> new Knowledge<>(ItemStack.class));
 
     public static void register(IEventBus eventBus) {
         KNOWLEDGE_DEFERRED_REGISTER.register(eventBus);

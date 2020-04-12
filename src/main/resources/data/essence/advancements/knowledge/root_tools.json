@@ -1,5 +1,5 @@
 {
-  "parent": "essence:root",
+  "parent": "essence:knowledge/root",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"
@@ -17,7 +17,7 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
   },
   "criteria": {
-    "essence_ore": {
+    "tome_of_knowledge": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -30,7 +30,7 @@
   },
   "requirements": [
     [
-      "essence_ore"
+      "tome_of_knowledge"
     ]
   ]
 }

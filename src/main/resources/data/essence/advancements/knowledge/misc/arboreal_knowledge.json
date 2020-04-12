@@ -1,0 +1,45 @@
+{
+  "parent": "essence:knowledge/misc/misc_knowledge",
+  "display": {
+    "icon": {
+      "item": "essence:essence_wood_sapling"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.misc.arboreal_knowledge.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.misc.arboreal_knowledge.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "arboreal_knowledge": {
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:arboreal_notes"
+      }
+    },
+    "essence_sapling": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:essence_wood_sapling"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "arboreal_knowledge"
+    ],
+    [
+      "essence_sapling"
+    ]
+  ]
+}

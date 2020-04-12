@@ -32,9 +32,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine("ii ").patternLine("is ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_AXE_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_axe_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_AXE_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_axe_divine"))
             .patternLine("ii ").patternLine("is ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
         // Bow Recipes
@@ -50,9 +50,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine(" ns").patternLine("n s").patternLine(" ns")
             .key('n', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', Tags.Items.STRING)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_BOW_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_bow_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_BOW_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_bow_divine"))
             .patternLine(" ns").patternLine("n s").patternLine(" ns")
-            .key('n', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', Tags.Items.STRING)
+            .key('n', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', Tags.Items.STRING)
             .build(consumer);
 
         // Hoe Recipes
@@ -68,9 +68,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine(" ii").patternLine(" s ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_HOE_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_hoe_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_HOE_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_hoe_divine"))
             .patternLine(" ii").patternLine(" s ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
         // Omnitool Recipes
@@ -89,9 +89,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .key('a', EssenceObjectHolders.ESSENCE_AXE_SUPREME).key('s', EssenceObjectHolders.ESSENCE_SHOVEL_SUPREME).key('p', EssenceObjectHolders.ESSENCE_PICKAXE_SUPREME)
             .key('t', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_OMNITOOL_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_omnitool_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_OMNITOOL_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_omnitool_divine"))
             .patternLine("asp").patternLine(" t ").patternLine(" t ")
-            .key('a', EssenceObjectHolders.ESSENCE_AXE_GODLY).key('s', EssenceObjectHolders.ESSENCE_SHOVEL_GODLY).key('p', EssenceObjectHolders.ESSENCE_PICKAXE_GODLY)
+            .key('a', EssenceObjectHolders.ESSENCE_AXE_DIVINE).key('s', EssenceObjectHolders.ESSENCE_SHOVEL_DIVINE).key('p', EssenceObjectHolders.ESSENCE_PICKAXE_DIVINE)
             .key('t', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
@@ -108,9 +108,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine("iii").patternLine(" s ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_PICKAXE_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_pickaxe_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_PICKAXE_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_pickaxe_divine"))
             .patternLine("iii").patternLine(" s ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
         // Shear Recipes
@@ -125,9 +125,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine("iii").patternLine(" s ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SHEAR_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_shear_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SHEAR_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_shear_divine"))
             .patternLine("iii").patternLine(" s ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
         // Shovel Recipes
@@ -143,9 +143,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine(" i ").patternLine(" s ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SHOVEL_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_shovel_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SHOVEL_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_shovel_divine"))
             .patternLine(" i ").patternLine(" s ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
 
         // Sword Recipes
@@ -161,9 +161,9 @@ public class EssenceToolRecipeProvider extends TitaniumRecipeProvider {
             .patternLine(" i ").patternLine(" i ").patternLine(" s ")
             .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
-        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SWORD_GODLY).setName(new ResourceLocation(Essence.MODID, "essence_sword_godly"))
+        TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_SWORD_DIVINE).setName(new ResourceLocation(Essence.MODID, "essence_sword_divine"))
             .patternLine(" i ").patternLine(" i ").patternLine(" s ")
-            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_GODLY).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
+            .key('i', EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE).key('s', EssenceObjectHolders.ESSENCE_INFUSED_STICK)
             .build(consumer);
     }
 

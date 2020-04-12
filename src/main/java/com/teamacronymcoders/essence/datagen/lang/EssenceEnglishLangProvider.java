@@ -1,27 +1,17 @@
 package com.teamacronymcoders.essence.datagen.lang;
 
-import com.teamacronymcoders.essence.api.misc.IColorProvider;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.misc.*;
 import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.teamacronymcoders.essence.util.EssenceObjectHolders.*;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.*;
 
 public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
 
@@ -69,39 +59,58 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add(KnowledgeAdvancementProvider.getKnowledgeModifierRoot(), "Tool-Knowledge", "Knowledge about Essence-Infused Tools");
         add(KnowledgeAdvancementProvider.getKnowledgeToolRoot(), "Modifier-Knowledge", "Knowledge relating to Modifiers");
 
-        add(ArrowKnowledgeAdvancements.getArrow(), "Bow-Specific Modifiers", "");
-        add(ArrowKnowledgeAdvancements.getBrewed(), "Brewed", "");
-        add(ArrowKnowledgeAdvancements.getKeen(), "Keen", "");
+        add(ArrowKnowledgeAdvancements.getArrow(), "Bow-Specific Modifiers", "Various Infusions with Bow-Specific Properties");
+        add(ArrowKnowledgeAdvancements.getBrewed(), "Brewed", "Brewed with 11 Secret Herbs and Spices");
+        add(ArrowKnowledgeAdvancements.getKeen(), "Keen", "You used Snipe, It Was Super-Effective!");
 
-        add(AttributeKnowledgeAdvancements.getAttribute(), "Attribute-Modifiers", "");
-        add(AttributeKnowledgeAdvancements.getArmor(), "Armor", "");
-        add(AttributeKnowledgeAdvancements.getArmorToughness(), "Armor-Toughness", "");
-        add(AttributeKnowledgeAdvancements.getAttackDamage(), "Attack-Damage", "");
-        add(AttributeKnowledgeAdvancements.getMaxHealth(), "Max-Health", "");
-        add(AttributeKnowledgeAdvancements.getMovementSpeed(), "Movement-Speed", "");
+        add(AttributeKnowledgeAdvancements.getAttribute(), "Attribute-Modifiers", "Various Infusions with Attribute-Altering Properties");
+        add(AttributeKnowledgeAdvancements.getArmor(), "Armor", "My Armor is Impenetrable!");
+        add(AttributeKnowledgeAdvancements.getArmorToughness(), "Armor-Toughness", "Tougher Than Your Average Piece of Spaghetti");
+        add(AttributeKnowledgeAdvancements.getAttackDamage(), "Attack-Damage", "The Harder You Hit, The Faster They Fall");
+        add(AttributeKnowledgeAdvancements.getMaxHealth(), "Max-Health", "I'm Healthy by Default");
+        add(AttributeKnowledgeAdvancements.getMovementSpeed(), "Movement-Speed", "We've Got To Hit The 88/mph Mark Marty!");
 
-        add(CosmeticKnowledgeAdvancements.getCosmetic(), "Cosmetic-Modifier", "");
-        add(CosmeticKnowledgeAdvancements.getEnchanted(), "Enchanted", "");
+        add(CosmeticKnowledgeAdvancements.getCosmetic(), "Cosmetic-Modifier", "Various Infusions with Cosmetic Properties");
+        add(CosmeticKnowledgeAdvancements.getEnchanted(), "Enchanted", "Sparkle like a Twinkling Star");
 
-        add(EnchantmentKnowledgeAdvancementProvider.getEnchantment(), "Enchantment-Granting Modifiers", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getEfficiency(), "Efficiency", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getInfinity(), "Infinity", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getKnockback(), "Knockback", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getLuck(), "Luck", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getMending(), "Mending", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getSilkTouch(), "Silk-Touch", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getStrengthened(), "Strengthened", "");
-        add(EnchantmentKnowledgeAdvancementProvider.getUnbreaking(), "Unbreaking", "");
+        add(EnchantmentKnowledgeAdvancementProvider.getEnchantment(), "Enchantment-Granting Modifiers", "Various Infusions with Enchanting Properties");
+        add(EnchantmentKnowledgeAdvancementProvider.getEfficiency(), "Efficiency", "Efficiency is overrated, Just gotta go fast");
+        add(EnchantmentKnowledgeAdvancementProvider.getInfinity(), "Infinity", "UNLIMITED POWAH!");
+        add(EnchantmentKnowledgeAdvancementProvider.getKnockback(), "Knockback", "And it's going and going and going...");
+        add(EnchantmentKnowledgeAdvancementProvider.getLuck(), "Luck", "Luck had nothing to do with it");
+        add(EnchantmentKnowledgeAdvancementProvider.getMending(), "Mending", "Experience mends all wounds...");
+        add(EnchantmentKnowledgeAdvancementProvider.getSilkTouch(), "Silk-Touch", "Silky Smooth");
+        add(EnchantmentKnowledgeAdvancementProvider.getStrengthened(), "Strengthened", "IT'S OVER 9000!!!");
+        add(EnchantmentKnowledgeAdvancementProvider.getUnbreaking(), "Unbreaking", "Unbreakable Timmy Schmidt");
 
-        add(InteractionKnowledgeAdvancements.getInteraction(), "Interaction-Changing Modifiers", "");
-        add(InteractionKnowledgeAdvancements.getCascading(), "Cascading", "");
-        add(InteractionKnowledgeAdvancements.getExpander(), "Expander", "");
-        add(InteractionKnowledgeAdvancements.getFiery(), "Fiery", "");
-        add(InteractionKnowledgeAdvancements.getRainbow(), "Rainbow", "");
+        add(InteractionKnowledgeAdvancements.getInteraction(), "Interaction-Changing Modifiers", "Various Infusions with Interaction-Changing Properties");
+        add(InteractionKnowledgeAdvancements.getCascading(), "Cascading", "Cascading World Exception");
+        add(InteractionKnowledgeAdvancements.getExpander(), "Expander", "Well That's Quite the Reach!");
+        add(InteractionKnowledgeAdvancements.getFiery(), "Fiery", "Muy Caliente");
+        add(InteractionKnowledgeAdvancements.getRainbow(), "Rainbow", "Catch the rainbow, Taste the rainbow");
+
+        add(EssenceKnowledgeAdvancements.getMiscKnowledge(), "Miscellaneous Knowledge", "Assorted knowledge of the world");
+        add(EssenceKnowledgeAdvancements.getArborealKnowledge(), "Arboreal Knowledge", "Knowledge of The Essence of Trees");
+
+        add(EssenceMaterialTierAdvancements.getTiers(), "Material-Tiers", "Materials and Their Properties");
+        add(EssenceMaterialTierAdvancements.getBasic(), "Basic-Tier", "Basic-Quality Materials");
+        add(EssenceMaterialTierAdvancements.getEmpowered(), "Empowered-Tier", "Empowered-Quality Materials");
+        add(EssenceMaterialTierAdvancements.getSupreme(), "Supreme-Tier", "Supreme-Quality Materials");
+        add(EssenceMaterialTierAdvancements.getDivine(), "Divine-Tier", "Divine-Quality Materials");
+
+        add(EssenceToolTypeAdvancements.getToolTypes(), "Tool-Types", "The various implementations of Essence-Infused Materials in Tools");
+        add(EssenceToolTypeAdvancements.getAxe(), "Essence-Infused Axe", "A Axe holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getBow(), "Essence-Infused Bow", "A Bow holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getHoe(), "Essence-Infused Hoe", "A Hoe holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getOmniTool(), "Essence-Infused Omnitool", "A Omnitool holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getPickaxe(), "Essence-Infused Pickaxe", "A Pickaxe holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getShear(), "Essence-Infused Shears", "A Pair of Shears holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getShovel(), "Essence-Infused Shovel", "A Shovel holding the Essence of The World");
+        add(EssenceToolTypeAdvancements.getSword(), "Essence-Infused Sword", "A Sword holding the Essence of The World");
     }
 
     private void addBlocks() {
-        add("Essence-Infused Metal Block", ESSENCE_INFUSED_METAL_BLOCK, ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK, ESSENCE_INFUSED_METAL_SUPREME_BLOCK, ESSENCE_INFUSED_METAL_GODLY_BLOCK);
+        add("Essence-Infused Metal Block", ESSENCE_INFUSED_METAL_BLOCK, ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK, ESSENCE_INFUSED_METAL_SUPREME_BLOCK, ESSENCE_INFUSED_METAL_DIVINE_BLOCK);
 
         add(ESSENCE_WOOD_LEAVES, "Essence-Wood Leaves");
         add(ESSENCE_WOOD_LOG, "Essence-Wood Log");
@@ -143,7 +152,6 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("tome.essence.experience.mode.fill", "Fill");
         add("tome.essence.experience.mode.drain", "Drain");
         add("tome.essence.experience.mode.absorb", "Absorb");
-        add("essence.tome.mode.tooltip", "Mode:");
     }
 
     private void addCommands() {
@@ -172,36 +180,35 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
 
     private void addItems() {
         add("item.essence.essence_bucket", "Bucket of Essence");
+        add("item.essence.experience_bucket", "Bucket of Essence");
         add(ESSENCE_INFUSED_STICK, "Essence-Wood Sticks");
         add(PORTABLE_CRAFTER, "Portable Crafter");
         add(WRENCH, "Essence-Infused Wrench");
         add(ESSENCE_INFUSED_CRYSTAL, "Essence-Infused Crystal");
         add(TOME_OF_KNOWLEDGE, "Tome of Bound-Knowledge");
+        add(TOME_OF_EXPERIENCE, "Tome of Experience");
         add(GLUE_BALL, "Ball of Glue");
-        add("Essence-Infused Nugget", ESSENCE_INFUSED_METAL_NUGGET, ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET, ESSENCE_INFUSED_METAL_SUPREME_NUGGET, ESSENCE_INFUSED_METAL_GODLY_NUGGET);
-        add("Essence-Infused Ingot", ESSENCE_INFUSED_METAL, ESSENCE_INFUSED_METAL_EMPOWERED, ESSENCE_INFUSED_METAL_SUPREME, ESSENCE_INFUSED_METAL_GODLY);
-        add("Essence-Infused Axe", ESSENCE_AXE, ESSENCE_AXE_EMPOWERED, ESSENCE_AXE_SUPREME, ESSENCE_AXE_GODLY);
-        add("Essence-Infused Bow", ESSENCE_BOW, ESSENCE_BOW_EMPOWERED, ESSENCE_BOW_SUPREME, ESSENCE_BOW_GODLY);
-        add("Essence-Infused Hoe", ESSENCE_HOE, ESSENCE_HOE_EMPOWERED, ESSENCE_HOE_SUPREME, ESSENCE_HOE_GODLY);
-        add("Essence-Infused Omni-Tool", ESSENCE_OMNITOOL, ESSENCE_OMNITOOL_EMPOWERED, ESSENCE_OMNITOOL_SUPREME, ESSENCE_OMNITOOL_GODLY);
-        add("Essence-Infused Pickaxe", ESSENCE_PICKAXE, ESSENCE_PICKAXE_EMPOWERED, ESSENCE_PICKAXE_SUPREME, ESSENCE_PICKAXE_GODLY);
-        add("Essence-Infused Shear", ESSENCE_SHEAR, ESSENCE_SHEAR_EMPOWERED, ESSENCE_SHEAR_SUPREME, ESSENCE_SHEAR_GODLY);
-        add("Essence-Infused Shovel", ESSENCE_SHOVEL, ESSENCE_SHOVEL_EMPOWERED, ESSENCE_SHOVEL_SUPREME, ESSENCE_SHOVEL_GODLY);
-        add("Essence-Infused Sword", ESSENCE_SWORD, ESSENCE_SWORD_EMPOWERED, ESSENCE_SWORD_SUPREME, ESSENCE_SWORD_GODLY);
+        add("Essence-Infused Nugget", ESSENCE_INFUSED_METAL_NUGGET, ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET, ESSENCE_INFUSED_METAL_SUPREME_NUGGET, ESSENCE_INFUSED_METAL_DIVINE_NUGGET);
+        add("Essence-Infused Ingot", ESSENCE_INFUSED_METAL, ESSENCE_INFUSED_METAL_EMPOWERED, ESSENCE_INFUSED_METAL_SUPREME, ESSENCE_INFUSED_METAL_DIVINE);
+        add("Essence-Infused Axe", ESSENCE_AXE, ESSENCE_AXE_EMPOWERED, ESSENCE_AXE_SUPREME, ESSENCE_AXE_DIVINE);
+        add("Essence-Infused Bow", ESSENCE_BOW, ESSENCE_BOW_EMPOWERED, ESSENCE_BOW_SUPREME, ESSENCE_BOW_DIVINE);
+        add("Essence-Infused Hoe", ESSENCE_HOE, ESSENCE_HOE_EMPOWERED, ESSENCE_HOE_SUPREME, ESSENCE_HOE_DIVINE);
+        add("Essence-Infused Omni-Tool", ESSENCE_OMNITOOL, ESSENCE_OMNITOOL_EMPOWERED, ESSENCE_OMNITOOL_SUPREME, ESSENCE_OMNITOOL_DIVINE);
+        add("Essence-Infused Pickaxe", ESSENCE_PICKAXE, ESSENCE_PICKAXE_EMPOWERED, ESSENCE_PICKAXE_SUPREME, ESSENCE_PICKAXE_DIVINE);
+        add("Essence-Infused Shear", ESSENCE_SHEAR, ESSENCE_SHEAR_EMPOWERED, ESSENCE_SHEAR_SUPREME, ESSENCE_SHEAR_DIVINE);
+        add("Essence-Infused Shovel", ESSENCE_SHOVEL, ESSENCE_SHOVEL_EMPOWERED, ESSENCE_SHOVEL_SUPREME, ESSENCE_SHOVEL_DIVINE);
+        add("Essence-Infused Sword", ESSENCE_SWORD, ESSENCE_SWORD_EMPOWERED, ESSENCE_SWORD_SUPREME, ESSENCE_SWORD_DIVINE);
     }
 
     private void addKnowledge() {
         add("knowledge.essence.brewed", "Brewed");
         add("knowledge.essence.keen", "Keen");
-
         add("knowledge.essence.enchanted", "Enchanted");
-
         add("knowledge.essence.armor", "Armor");
         add("knowledge.essence.armor_toughness", "Armor-Toughness");
         add("knowledge.essence.attack_damage", "Attack-Damage");
         add("knowledge.essence.max_health", "Max-Health");
         add("knowledge.essence.movement_speed", "Movement-Speed");
-
         add("knowledge.essence.infinity", "Infinity");
         add("knowledge.essence.knockback", "Knockback");
         add("knowledge.essence.luck", "Luck");
@@ -209,42 +216,46 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("knowledge.essence.unbreaking", "Unbreaking");
         add("knowledge.essence.mending", "Mending");
         add("knowledge.essence.strengthened", "Strengthened");
-
         add("knowledge.essence.expander", "Expander");
         add("knowledge.essence.fiery", "Fiery");
         add("knowledge.essence.rainbow", "Rainbow");
         add("knowledge.essence.cascading", "Cascading");
-
         add("knowledge.essence.tool_crafting", "Tool-Crafting");
         add("knowledge.essence.arboreal_notes", "Arboreal Notes");
         add("knowledge.essence.basic_tier", "Basic-Tier");
         add("knowledge.essence.empowered_tier", "Empowered-Tier");
         add("knowledge.essence.supreme_tier", "Supreme-Tier");
-        add("knowledge.essence.godly_tier", "Godly-Tier");
+        add("knowledge.essence.divine_tier", "Divine-Tier");
     }
 
     private void addModifiers() {
         //Irregulars
         add("modifier.essence.attribute", "Attribute [%s]");
-        add("modifier.brewed.cleaned", "Brewed");
+        add("modifier.essence.brewed.cleaned", "Brewed");
         add("modifier.essence.cascading", "Cascading [%s]");
         add("modifier.essence.strengthened", "Strengthened %s [%s]");
         add("modifier.essence.strengthened.cleaned", "Strengthened [%s]");
 
         //Regulars
-        add(EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), "Efficiency");
-        add(EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), "Enchanted");
-        add(EssenceModifierRegistration.EXPANDER_MODIFIER.get(), "Expander");
-        add(EssenceModifierRegistration.FIERY_MODIFIER.get(), "Fiery");
-        add(EssenceModifierRegistration.KEEN_MODIFIER.get(), "Keen");
-        add(EssenceModifierRegistration.KNOCKBACK_MODIFIER.get(), "Knockback");
-        add(EssenceModifierRegistration.LUCK_MODIFIER.get(), "Luck");
-        add(EssenceModifierRegistration.RAINBOW_MODIFIER.get(), "Rainbow");
-        add(EssenceModifierRegistration.SILK_TOUCH_MODIFIER.get(), "Silk Touch");
-        add(EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), "Unbreaking");
+        add(EFFICIENCY_MODIFIER.get(), "Efficiency");
+        add(ENCHANTED_MODIFIER.get(), "Enchanted");
+        add(EXPANDER_MODIFIER.get(), "Expander");
+        add(FIERY_MODIFIER.get(), "Fiery");
+        add(KEEN_MODIFIER.get(), "Keen");
+        add(KNOCKBACK_MODIFIER.get(), "Knockback");
+        add(LUCK_MODIFIER.get(), "Luck");
+        add(RAINBOW_MODIFIER.get(), "Rainbow");
+        add(SILK_TOUCH_MODIFIER.get(), "Silk Touch");
+        add(UNBREAKING_MODIFIER.get(), "Unbreaking");
     }
 
     private void addMisc() {
+        add("attribute.essence.armor", "Armor");
+        add("attribute.essence.armor_toughness", "Armor-Toughness");
+        add("attribute.essence.attack_damage", "Attack-Damage");
+        add("attribute.essence.max_health", "Max-Health");
+        add("attribute.essence.movement_speed", "Movement Speed");
+
         add("container.essence.portable_crafter", "Portable-Crafter");
         add("curios.identifier.backpack", "Backpack");
         add("fluid.essence.essence", "Essence");
@@ -259,7 +270,7 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("tier.essence.basic", "Basic");
         add("tier.essence.empowered", "Empowered");
         add("tier.essence.supreme", "Supreme");
-        add("tier.essence.godly", "Godly");
+        add("tier.essence.divine", "divine");
 
         add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
         add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");

@@ -15,7 +15,7 @@ public class CoreAdvancementProvider extends ExtendableAdvancementProvider {
     private static Advancement core;
 
     public CoreAdvancementProvider(DataGenerator generator) {
-        super(generator, "/core");
+        super(generator);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class CoreAdvancementProvider extends ExtendableAdvancementProvider {
                 FrameType.CHALLENGE, false, false, true
             )
             .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
-            .register(consumer, "essence:root");
+            .register(consumer, "essence:core/root");
     }
 
     @Override

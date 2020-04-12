@@ -1,5 +1,5 @@
 {
-  "parent": "essence:arrow_modifier",
+  "parent": "essence:knowledge/arrow/arrow_modifier",
   "display": {
     "icon": {
       "item": "essence:essence_crystal"
@@ -18,9 +18,12 @@
   },
   "criteria": {
     "knowledge": {
-      "trigger": "essence:knowledge"
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:brewed"
+      }
     },
-    "essence_ore": {
+    "tome_of_knowledge": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -36,7 +39,7 @@
       "knowledge"
     ],
     [
-      "essence_ore"
+      "tome_of_knowledge"
     ]
   ]
 }

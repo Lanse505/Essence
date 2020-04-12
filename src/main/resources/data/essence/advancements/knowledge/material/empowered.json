@@ -1,0 +1,45 @@
+{
+  "parent": "essence:knowledge/material/basic",
+  "display": {
+    "icon": {
+      "item": "essence:essence_ingot_empowered"
+    },
+    "title": {
+      "translate": "advancements.essence.knowledge.material.empowered.title"
+    },
+    "description": {
+      "translate": "advancements.essence.knowledge.material.empowered.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "material_tiers": {
+      "trigger": "essence:knowledge",
+      "conditions": {
+        "knowledge_id": "essence:empowered_tier"
+      }
+    },
+    "tome_of_knowledge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "essence:essence_ingot_empowered"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "material_tiers"
+    ],
+    [
+      "tome_of_knowledge"
+    ]
+  ]
+}
