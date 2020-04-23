@@ -49,7 +49,6 @@ public class EssenceBlockLootTables extends BlockLootTables {
                     ItemLootEntry.builder(EssenceObjectHolders.ESSENCE_WOOD_SAPLING)
                         .acceptCondition(SurvivesExplosion.builder())
                         .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.05F, 0.0625F, 0.083333336F, 0.1F)),
-                    ItemLootEntry.builder(Items.COBBLESTONE)
                 ))
             )
             .addLootPool(LootPool.builder()
