@@ -10,7 +10,7 @@ import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
-import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
@@ -187,10 +187,10 @@ public class EssenceEventHandlers {
                     if (stack.getItem() instanceof TomeOfExperienceItem) {
                         double scrolling = scroll.getScrollDelta();
                         if (scrolling != 0) {
-                            TomeOfExperienceItem wrench = (TomeOfExperienceItem) stack.getItem();
-                            ExperienceModeEnum mode = wrench.getMode();
+                            TomeOfExperienceItem tome = (TomeOfExperienceItem) stack.getItem();
+                            ExperienceModeEnum mode = tome.getMode();
                             ExperienceModeEnum newMode = ExperienceModeEnum.cycleMode(mode.ordinal());
-                            wrench.setMode(newMode);
+                            tome.setMode(newMode);
                             minecraft.player.sendStatusMessage(new TranslationTextComponent("tome.essence.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleString())), true);
                             Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
                             scroll.setCanceled(true);

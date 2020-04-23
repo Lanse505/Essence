@@ -6,7 +6,7 @@ import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Items;
@@ -25,10 +25,10 @@ public class EssenceVanillaRecipeProvider extends TitaniumRecipeProvider {
         BasicBlock.BLOCKS.stream()
             .filter(basicBlock -> basicBlock.getRegistryName().getNamespace().equals(Essence.MODID))
             .forEach(basicBlock -> basicBlock.registerRecipe(consumer));
-        TitaniumShapelessRecipeBuilder.shapelessRecipe(Items.STONE_BRICKS).addIngredient(EssenceTags.Items.ESSENCE_BRICKS).build(consumer, new ResourceLocation(Essence.MODID, "essence_brick_to_stone_brick"));
+        TitaniumShapelessRecipeBuilder.shapelessRecipe(Items.STONE_BRICKS).addIngredient(EssenceItemTags.ESSENCE_BRICKS).build(consumer, new ResourceLocation(Essence.MODID, "essence_brick_to_stone_brick"));
         TitaniumShapedRecipeBuilder.shapedRecipe(EssenceObjectHolders.ESSENCE_BRICKS_CYAN)
             .patternLine("bbb").patternLine("bnb").patternLine("bbb")
-            .key('b', ItemTags.STONE_BRICKS).key('n', EssenceTags.Items.ESSENCE_INFUSED_METAL_NUGGET)
+            .key('b', ItemTags.STONE_BRICKS).key('n', EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET)
             .build(consumer, new ResourceLocation(Essence.MODID));
     }
 

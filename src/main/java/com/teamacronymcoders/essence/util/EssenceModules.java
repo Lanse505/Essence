@@ -21,11 +21,12 @@ import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
+import com.teamacronymcoders.essence.util.registration.*;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import net.minecraft.block.Block;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 
 public class EssenceModules {
@@ -106,6 +107,7 @@ public class EssenceModules {
                 .description("Tools")
                 .content(Item.class, new PortableCrafterItem().setRegistryName(new ResourceLocation(Essence.MODID, "portable_crafter")))
                 .content(Item.class, new EssenceWrench().setRegistryName(new ResourceLocation(Essence.MODID, "wrench")))
+                .content(Item.class, new SerializedEntityItem().setRegistryName(new ResourceLocation(Essence.MODID, "serialized_entity")))
 
                 // Tier 1
                 .content(Item.class, new EssenceAxe(EssenceToolTiers.ESSENCE).setRegistryName(new ResourceLocation(Essence.MODID, "essence_axe")))

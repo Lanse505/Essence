@@ -41,11 +41,11 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
     public void renderBook(InfusionTableTile infusionTableTile, MatrixStack matrix, float partial, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         matrix.push();
         matrix.translate(0.5D, 0.75D, 0.5D);
-        float f = (float)infusionTableTile.field_195522_a + partial;
+        float f = (float)infusionTableTile.ticks + partial;
         matrix.translate(0.0D, 0.1F + MathHelper.sin(f * 0.1F) * 0.01F, 0.0D);
 
         float f1;
-        f1 = infusionTableTile.field_195529_l - infusionTableTile.field_195530_m;
+        f1 = infusionTableTile.nextPageAngle - infusionTableTile.pageAngle;
         while (f1 >= (float)Math.PI) {
             f1 -= ((float) Math.PI * 2F);
         }
@@ -54,13 +54,13 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
             f1 += ((float)Math.PI * 2F);
         }
 
-        float f2 = infusionTableTile.field_195530_m + f1 * partial;
+        float f2 = infusionTableTile.pageAngle + f1 * partial;
         matrix.rotate(Vector3f.YP.rotation(-f2));
         matrix.rotate(Vector3f.ZP.rotationDegrees(80.0F));
         float f3 = MathHelper.lerp(partial, infusionTableTile.field_195524_g, infusionTableTile.field_195523_f);
         float f4 = MathHelper.frac(f3 + 0.25F) * 1.6F - 0.3F;
         float f5 = MathHelper.frac(f3 + 0.75F) * 1.6F - 0.3F;
-        float f6 = MathHelper.lerp(partial, infusionTableTile.field_195528_k, infusionTableTile.field_195527_j);
+        float f6 = MathHelper.lerp(partial, infusionTableTile.pageTurningSpeed, infusionTableTile.nextPageTurningSpeed);
         this.model.func_228247_a_(f, MathHelper.clamp(f4, 0.0F, 1.0F), MathHelper.clamp(f5, 0.0F, 1.0F), f6);
         IVertexBuilder ivertexbuilder = MATERIAL_TEXTURE_BOOK.getBuffer(buffer, RenderType::getEntitySolid);
         this.model.func_228249_b_(matrix, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);

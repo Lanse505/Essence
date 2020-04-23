@@ -10,16 +10,21 @@ import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.block.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.block.wood.*;
 import com.teamacronymcoders.essence.block.worker.EssenceFurnaceWorkerBlock;
+import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
+import com.teamacronymcoders.essence.entity.impl.sheared.*;
 import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.essence.EssenceStickItem;
+import com.teamacronymcoders.essence.item.misc.CustomSpawnEggItem;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
 import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.ObjectHolder;
@@ -149,12 +154,16 @@ public class EssenceObjectHolders {
     public static PortableCrafterItem PORTABLE_CRAFTER;
     @ObjectHolder("essence:wrench")
     public static EssenceWrench WRENCH;
+    @ObjectHolder("essence:serialized_entity")
+    public static SerializedEntityItem ENTITY_ITEM;
     @ObjectHolder("essence:tome_of_knowledge")
     public static TomeOfKnowledgeItem TOME_OF_KNOWLEDGE;
     @ObjectHolder("essence:tome_of_experience")
     public static TomeOfExperienceItem TOME_OF_EXPERIENCE;
     @ObjectHolder("essence:glue_ball")
     public static GlueBallItem GLUE_BALL;
+    @ObjectHolder("essence:glue_ball")
+    public static EntityType<GlueBallEntity> GLUE_BALL_ENTITY;
 
     // Tier 1 Tools
     @ObjectHolder("essence:essence_axe")
@@ -230,5 +239,27 @@ public class EssenceObjectHolders {
 
     public static TitaniumFluidInstance ESSENCE_FLUID = new TitaniumFluidInstance(Essence.MODID, "essence", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/essence_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/essence_flowing")), true, Essence.CORE_TAB);
     public static TitaniumFluidInstance EXP_FLUID = new TitaniumFluidInstance(Essence.MODID, "experience", FluidAttributes.builder(new ResourceLocation(Essence.MODID, "blocks/fluids/experience_still"), new ResourceLocation(Essence.MODID, "blocks/fluids/experience_flowing")), true, Essence.CORE_TAB);
+
+    @ObjectHolder("essence:sheared_chicken")
+    public static EntityType<ShearedChickenEntity> SHEARED_CHICKEN;
+    @ObjectHolder("essence:sheared_cow")
+    public static EntityType<ShearedCowEntity> SHEARED_COW;
+    @ObjectHolder("essence:sheared_creeper")
+    public static EntityType<ShearedCreeperEntity> SHEARED_CREEPER;
+    @ObjectHolder("essence:sheared_ghast")
+    public static EntityType<ShearedGhastEntity> SHEARED_GHAST;
+    @ObjectHolder("essence:sheared_pig")
+    public static EntityType<ShearedPigEntity> SHEARED_PIG;
+
+    @ObjectHolder("essence:sheared_chicken_egg")
+    public static CustomSpawnEggItem SHEARED_CHICKEN_EGG;
+    @ObjectHolder("essence:sheared_cow_egg")
+    public static CustomSpawnEggItem SHEARED_COW_EGG;
+    @ObjectHolder("essence:sheared_creeper_egg")
+    public static CustomSpawnEggItem SHEARED_CREEPER_EGG;
+    @ObjectHolder("essence:sheared_ghast_egg")
+    public static CustomSpawnEggItem SHEARED_GHAST_EGG;
+    @ObjectHolder("essence:sheared_pig_egg")
+    public static CustomSpawnEggItem SHEARED_PIG_EGG;
 
 }

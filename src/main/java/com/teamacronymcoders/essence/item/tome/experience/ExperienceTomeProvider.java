@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.item.tome.experience;
 
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.tank.ModifiableTank;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.fluid.Fluid;

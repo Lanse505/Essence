@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.block.wood;
 import com.hrznstudio.titanium.block.BasicBlock;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -34,6 +34,6 @@ public class EssencePlankBlock extends BasicBlock {
     @Override
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
         TitaniumShapelessRecipeBuilder.shapelessRecipe(this, 4)
-            .addIngredient(EssenceTags.Items.ESSENCE_WOOD_LOG).build(consumer);
+            .addIngredient(EssenceItemTags.ESSENCE_WOOD_LOG).build(consumer);
     }
 }

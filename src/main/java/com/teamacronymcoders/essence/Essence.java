@@ -11,7 +11,8 @@ import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.capability.block.BlockModifierHolder;
-import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageCapability;
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
@@ -34,7 +35,6 @@ import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
 import com.teamacronymcoders.essence.util.registration.*;
@@ -125,20 +125,18 @@ public class Essence extends ModuleController {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::setup);
-        eventBus.addListener(this::clientSetup);
-        eventBus.addListener(this::setupCuriosIMC);
-
         EssenceEntityRegistration.register(eventBus);
         EssenceFeatureRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
         EssenceSoundRegistration.register(eventBus);
-
+        EssenceItemRegistration.register(eventBus);
         EssenceAdvancements.setup();
         EssenceEventHandlers.setup();
-
         setupCreativeTabIcons();
+        eventBus.addListener(this::setup);
+        eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::setupCuriosIMC);
     }
 
     @Override
@@ -169,9 +167,10 @@ public class Essence extends ModuleController {
         ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new ArgumentSerializer<>(EssenceHandArgumentType::new));
         ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new ArgumentSerializer<>(EssenceModifierArgumentType::new));
         ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new ArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
+        CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
+        CapabilityManager.INSTANCE.register(EntityStorageCapability.class, NBTCapabilityStorage.create(CompoundNBT.class), EntityStorageCapability::new);
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
-        CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
 
         LootConditionManager.registerCondition(new MatchModifier.Serializer());
 

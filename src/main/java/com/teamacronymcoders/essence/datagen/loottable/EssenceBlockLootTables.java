@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 public class EssenceBlockLootTables extends BlockLootTables {
 
-
-
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return ForgeRegistries.BLOCKS.getValues().stream()
@@ -47,11 +45,11 @@ public class EssenceBlockLootTables extends BlockLootTables {
                         .acceptCondition(
                             MatchTool.builder(ItemPredicate.Builder.create().item(Items.SHEARS))
                                 .alternative(MatchTool.builder(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))))
-                            )
-                        ),
+                                )),
                     ItemLootEntry.builder(EssenceObjectHolders.ESSENCE_WOOD_SAPLING)
                         .acceptCondition(SurvivesExplosion.builder())
-                        .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.05F, 0.0625F, 0.083333336F, 0.1F))
+                        .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.05F, 0.0625F, 0.083333336F, 0.1F)),
+                    ItemLootEntry.builder(Items.COBBLESTONE)
                 ))
             )
             .addLootPool(LootPool.builder()
@@ -153,7 +151,6 @@ public class EssenceBlockLootTables extends BlockLootTables {
                 )
             );
         }
-
         for (Supplier<EssenceBrickBlock> brick : EssenceObjectHolders.BRICK_BLOCK_LIST) {
             this.registerLootTable(brick.get(), LootTable.builder()
                 .addLootPool(LootPool.builder()

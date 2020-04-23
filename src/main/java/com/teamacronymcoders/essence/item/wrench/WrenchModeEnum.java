@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.item.wrench;
 
 public enum WrenchModeEnum {
-    SERIALIZE("mode.wrench.serialize"),
-    ROTATE("mode.wrench.rotate"),
-    TRIGGER("mode.wrench.trigger");
+    SERIALIZE("essence.mode.wrench.serialize"),
+    ROTATE("essence.mode.wrench.rotate"),
+    TRIGGER("essence.mode.wrench.trigger");
 
     public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{SERIALIZE, ROTATE, TRIGGER};
     private final String localeName;

@@ -1,6 +1,9 @@
 package com.teamacronymcoders.essence.client.render.tesr.itemstack;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -8,22 +11,34 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @OnlyIn(Dist.CLIENT)
 public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
+
+    public static Cache<UUID, LivingEntity> entityCache = CacheBuilder.newBuilder()
+        .maximumSize(2048)
+        .expireAfterAccess(10, TimeUnit.SECONDS)
+        .build();
 
     @Override
     public void render(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay) {
         if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem) {
-
-            Entity entity = SerializedEntityItem.getSerializedEntity(stack);
-            if (entity != null) {
-                renderEntityStatic(entity, matrix, buffer, light);
-            }
+            stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).ifPresent(storage -> {
+                if (storage.getUUID() != null) {
+                    LivingEntity entity = entityCache.getIfPresent(storage.getUUID());
+                    if (entity != null) {
+                        renderEntityStatic(entity, matrix, buffer, light);
+                    }
+                }
+            });
         }
     }
 

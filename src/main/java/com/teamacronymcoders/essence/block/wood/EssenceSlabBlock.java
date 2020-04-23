@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.block.wood;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.base.CustomSlabBlock;
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -37,7 +37,7 @@ public class EssenceSlabBlock extends CustomSlabBlock {
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
         TitaniumShapedRecipeBuilder.shapedRecipe(this, 4).setName(new ResourceLocation(Essence.MODID, "essence_wood_slab_mid"))
             .patternLine("   ").patternLine("ppp").patternLine("   ")
-            .key('p', EssenceTags.Items.ESSENCE_WOOD_PLANKS)
+            .key('p', EssenceItemTags.ESSENCE_WOOD_PLANKS)
             .build(consumer);
     }
 }

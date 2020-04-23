@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.capability.itemstack;
+package com.teamacronymcoders.essence.capability.itemstack.modifier;
 
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;

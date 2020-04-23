@@ -1,6 +1,9 @@
 package com.teamacronymcoders.essence.datagen.tags;
 
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceModifierTags;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
@@ -32,27 +35,31 @@ public class EssenceBlockTagProvider extends BlockTagsProvider {
             ESSENCE_BRICKS_BROWN, ESSENCE_BRICKS_GREEN, ESSENCE_BRICKS_RED, ESSENCE_BRICKS_BLACK);
 
         // Essence Tag<Block>
-        getBuilder(EssenceTags.Blocks.ESSENCE_CRYSTAL_ORE).add(ESSENCE_CRYSTAL_ORE);
-        getBuilder(EssenceTags.Blocks.ESSENCE_ORE).add(ESSENCE_ORE);
-        getBuilder(EssenceTags.Blocks.ESSENCE_WOOD_LOG).add(ESSENCE_WOOD_LOG);
-        getBuilder(EssenceTags.Blocks.ESSENCE_BRICKS).add(
+        getBuilder(EssenceBlockTags.ESSENCE_CRYSTAL_ORE).add(ESSENCE_CRYSTAL_ORE);
+        getBuilder(EssenceBlockTags.ESSENCE_ORE).add(ESSENCE_ORE);
+        getBuilder(EssenceBlockTags.ESSENCE_WOOD_LOG).add(ESSENCE_WOOD_LOG);
+        getBuilder(EssenceBlockTags.ESSENCE_BRICKS).add(
             ESSENCE_BRICKS_WHITE, ESSENCE_BRICKS_ORANGE, ESSENCE_BRICKS_MAGENTA, ESSENCE_BRICKS_LIGHT_BLUE, ESSENCE_BRICKS_YELLOW, ESSENCE_BRICKS_LIME,
             ESSENCE_BRICKS_PINK, ESSENCE_BRICKS_GRAY, ESSENCE_BRICKS_LIGHT_GRAY, ESSENCE_BRICKS_CYAN, ESSENCE_BRICKS_PURPLE, ESSENCE_BRICKS_BLUE,
             ESSENCE_BRICKS_BROWN, ESSENCE_BRICKS_GREEN, ESSENCE_BRICKS_RED, ESSENCE_BRICKS_BLACK);
 
         // Essence Modifier-Specific Tag<Block>
-        getBuilder(EssenceTags.Modifier.CASCADING_NONE);
-        getBuilder(EssenceTags.Modifier.CASCADING_VEIN)
+        getBuilder(EssenceModifierTags.CASCADING_NONE);
+        getBuilder(EssenceModifierTags.CASCADING_VEIN)
             .add(Tags.Blocks.ORES);
-        getBuilder(EssenceTags.Modifier.CASCADING_LUMBER)
+        getBuilder(EssenceModifierTags.CASCADING_LUMBER)
             .add(BlockTags.LOGS);
-        getBuilder(EssenceTags.Modifier.CASCADING_EXCAVATION)
+        getBuilder(EssenceModifierTags.CASCADING_EXCAVATION)
             .add(Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
-
-        getBuilder(EssenceTags.Blocks.FORGE_MOVEABLE)
-            .add(net.minecraft.block.Blocks.CHEST, net.minecraft.block.Blocks.TRAPPED_CHEST, net.minecraft.block.Blocks.ENDER_CHEST)
-            .add(net.minecraft.block.Blocks.FURNACE, net.minecraft.block.Blocks.BLAST_FURNACE, net.minecraft.block.Blocks.SMOKER)
-            .add(net.minecraft.block.Blocks.HOPPER, net.minecraft.block.Blocks.BARREL);
+        getBuilder(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST).add(
+            Blocks.BEDROCK,
+            Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME
+        );
+        getBuilder(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST).add(
+                Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST,
+                Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER,
+                Blocks.HOPPER, Blocks.BARREL
+        );
     }
 
     @Override

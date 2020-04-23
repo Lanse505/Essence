@@ -2,15 +2,15 @@ package com.teamacronymcoders.essence.util;
 
 import com.teamacronymcoders.essence.Essence;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.*;
 import net.minecraft.util.ResourceLocation;
 
 public class EssenceTags {
 
-    public static class Items {
+    public static class EssenceItemTags {
         public static Tag<Item> AMMO_HOLDER = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "ammo_holder"));
 
         public static Tag<Item> ESSENCE_WOOD_LOG = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_logs"));
@@ -32,8 +32,9 @@ public class EssenceTags {
         public static Tag<Item> ESSENCE_SWORD = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_sword"));
     }
 
-    public static class Blocks {
-        public static Tag<Block> FORGE_MOVEABLE = new BlockTags.Wrapper(new ResourceLocation("forge:moveable"));
+    public static class EssenceBlockTags {
+        public static Tag<Block> FORGE_MOVEABLE_BLACKLIST = new BlockTags.Wrapper(new ResourceLocation("forge:block/moving/blacklist"));
+        public static Tag<Block> FORGE_MOVEABLE_WHITELIST = new BlockTags.Wrapper(new ResourceLocation("forge:block/moving/whitelist"));
 
         public static Tag<Block> ESSENCE_CRYSTAL_ORE = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_crystal_ore"));
         public static Tag<Block> ESSENCE_WOOD_LOG = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_logs"));
@@ -41,7 +42,19 @@ public class EssenceTags {
         public static Tag<Block> ESSENCE_BRICKS = new BlockTags.Wrapper(new ResourceLocation(Essence.MODID, "essence_bricks"));
     }
 
-    public static class Modifier {
+    public static class EssenceEntityTags {
+        public static Tag<EntityType<?>> BLACKLIST = new EntityTypeTags.Wrapper(new ResourceLocation(Essence.MODID, "entity/blacklist"));
+        public static Tag<EntityType<?>> WHITELIST = new EntityTypeTags.Wrapper(new ResourceLocation(Essence.MODID, "entity/whitelist"));
+    }
+
+    public static class EssenceFluidTags {
+        public static Tag<Fluid> FORGE_ESSENCE = new FluidTags.Wrapper(new ResourceLocation("forge:fluid/essence"));
+        public static Tag<Fluid> MY_ESSENCE = new FluidTags.Wrapper(new ResourceLocation(Essence.MODID, "fluid/essence"));
+        public static Tag<Fluid> FORGE_EXPERIENCE = new FluidTags.Wrapper(new ResourceLocation("forge:fluid/experience"));
+        public static Tag<Fluid> MY_EXPERIENCE = new FluidTags.Wrapper(new ResourceLocation(Essence.MODID, "fluid/experience"));
+    }
+
+    public static class EssenceModifierTags {
         public static Tag<Item> NONE_TOOL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "tool/none"));
         public static Tag<Item> AXE_TOOL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "tool/axe"));
         public static Tag<Item> PICKAXE_TOOL = new ItemTags.Wrapper(new ResourceLocation(Essence.MODID, "tool/pickaxe"));

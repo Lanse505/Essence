@@ -5,9 +5,8 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
-import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.util.helper.EssenceBowHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
@@ -23,7 +22,6 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +29,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -64,7 +61,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     }
 
     @Override
-    public Rarity getRarity(ItemStack p_77613_1_) {
+    public Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -87,7 +84,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
                 if (predicate.test(itemstack1)) {
                     return itemstack1;
                 }
-                if (itemstack1.getItem().isIn(EssenceTags.Items.AMMO_HOLDER)) {
+                if (itemstack1.getItem().isIn(EssenceItemTags.AMMO_HOLDER)) {
                     if (itemstack1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
                         LazyOptional<IItemHandler> handler = itemstack1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                         return handler.map(stackHandler -> {
@@ -133,8 +130,8 @@ public class EssenceBow extends BowItem implements IModifiedTool {
                     if (!world.isRemote) {
                         AbstractArrowEntity abstractarrowentity = EssenceBowHelper.getArrowEntity(world, bow, arrow, player, f);
                         EssenceBowHelper.modifyArrowEntityWithEnchantments(abstractarrowentity, bow);
-                        bow.damageItem(1, player, (p_220009_1_) -> {
-                            p_220009_1_.sendBreakAnimation(player.getActiveHand());
+                        bow.damageItem(1, player, (entity) -> {
+                            entity.sendBreakAnimation(player.getActiveHand());
                         });
                         world.addEntity(abstractarrowentity);
                     }

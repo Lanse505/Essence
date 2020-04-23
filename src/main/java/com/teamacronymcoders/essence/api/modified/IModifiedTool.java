@@ -6,7 +6,7 @@ import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.capability.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.util.helper.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
@@ -125,4 +125,8 @@ public interface IModifiedTool extends IModified<ItemStack> {
         }
     }
 
+    @Override
+    default Class<ItemStack> getType() {
+        return ItemStack.class;
+    }
 }

@@ -6,7 +6,7 @@ import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.EssenceTags;
+import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -108,7 +108,7 @@ public class EssenceBrickBlock extends BasicBlock implements IColorProvider {
     public void registerRecipe(Consumer<IFinishedRecipe> consumer) {
         TitaniumShapedRecipeBuilder.shapedRecipe(this, 8)
             .patternLine("bbb").patternLine("bdb").patternLine("bbb")
-            .key('b', EssenceTags.Items.ESSENCE_BRICKS).key('d', color.getTag())
+            .key('b', EssenceItemTags.ESSENCE_BRICKS).key('d', color.getTag())
             .build(consumer, new ResourceLocation(getRegistryName().getNamespace(), getRegistryName().getPath() + "_recolor"));
     }
 

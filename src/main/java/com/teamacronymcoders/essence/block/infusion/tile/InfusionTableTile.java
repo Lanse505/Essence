@@ -53,15 +53,15 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     private InventoryComponent<InfusionTableTile> tome;
 
     // Book Rendering Variables
-    public int field_195522_a;
+    public int ticks;
     public float field_195523_f;
     public float field_195524_g;
     public float field_195525_h;
     public float field_195526_i;
-    public float field_195527_j;
-    public float field_195528_k;
-    public float field_195529_l;
-    public float field_195530_m;
+    public float nextPageTurningSpeed;
+    public float pageTurningSpeed;
+    public float nextPageAngle;
+    public float pageAngle;
     public float field_195531_n;
     @Save
     public Integer pageSoundLastPlayed = 0;
@@ -149,17 +149,17 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     private PlayerEntity player;
 
     private void handleBookRender() {
-        this.field_195528_k = this.field_195527_j;
-        this.field_195530_m = this.field_195529_l;
+        this.pageTurningSpeed = this.nextPageTurningSpeed;
+        this.pageAngle = this.nextPageAngle;
         if (world == null) return;
         PlayerEntity player = this.world.getClosestPlayer(((float)this.pos.getX() + 0.5F), ((float)this.pos.getY() + 0.5F), ((float)this.pos.getZ() + 0.5F), 3.0D, false);
         if (player != null) {
             this.player = player;
-            double lvt_2_1_ = player.getPosX() - ((double)this.pos.getX() + 0.5D);
-            double lvt_4_1_ = player.getPosZ() - ((double)this.pos.getZ() + 0.5D);
-            this.field_195531_n = (float) MathHelper.atan2(lvt_4_1_, lvt_2_1_);
-            this.field_195527_j += 0.1F;
-            if (this.field_195527_j < 0.5F || Essence.RANDOM.nextInt(40) == 0) {
+            double rangeX = player.getPosX() - ((double)this.pos.getX() + 0.5D);
+            double rangeZ = player.getPosZ() - ((double)this.pos.getZ() + 0.5D);
+            this.field_195531_n = (float) MathHelper.atan2(rangeZ, rangeX);
+            this.nextPageTurningSpeed += 0.1F;
+            if (this.nextPageTurningSpeed < 0.5F || Essence.RANDOM.nextInt(40) == 0) {
                 float lvt_6_1_ = this.field_195525_h;
                 do {
                     this.field_195525_h += (float)(Essence.RANDOM.nextInt(4) - Essence.RANDOM.nextInt(4));
@@ -168,19 +168,19 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
         } else {
             this.player = null;
             this.field_195531_n += 0.02F;
-            this.field_195527_j -= 0.1F;
+            this.nextPageTurningSpeed -= 0.1F;
         }
 
         if (player != null && !world.isRemote()) {
             world.playSound(player, pos, EssenceSoundRegistration.INFUSION_BOOK_SOUND.get(), SoundCategory.BLOCKS, 1f, 1f);
         }
 
-        while(this.field_195529_l >= 3.1415927F) {
-            this.field_195529_l -= 6.2831855F;
+        while(this.nextPageAngle >= 3.1415927F) {
+            this.nextPageAngle -= 6.2831855F;
         }
 
-        while(this.field_195529_l < -3.1415927F) {
-            this.field_195529_l += 6.2831855F;
+        while(this.nextPageAngle < -3.1415927F) {
+            this.nextPageAngle += 6.2831855F;
         }
 
         while(this.field_195531_n >= 3.1415927F) {
@@ -192,7 +192,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
         }
 
         float lvt_2_2_;
-        lvt_2_2_ = this.field_195531_n - this.field_195529_l;
+        lvt_2_2_ = this.field_195531_n - this.nextPageAngle;
         while (lvt_2_2_ >= 3.1415927F) {
             lvt_2_2_ -= 6.2831855F;
         }
@@ -201,9 +201,9 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
             lvt_2_2_ += 6.2831855F;
         }
 
-        this.field_195529_l += lvt_2_2_ * 0.4F;
-        this.field_195527_j = MathHelper.clamp(this.field_195527_j, 0.0F, 1.0F);
-        ++this.field_195522_a;
+        this.nextPageAngle += lvt_2_2_ * 0.4F;
+        this.nextPageTurningSpeed = MathHelper.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
+        ++this.ticks;
         this.field_195524_g = this.field_195523_f;
         float lvt_3_1_ = (this.field_195525_h - this.field_195523_f) * 0.4F;
         lvt_3_1_ = MathHelper.clamp(lvt_3_1_, -0.2F, 0.2F);
