@@ -20,7 +20,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class EssenceModifierRegistration {
-    private static final DeferredRegister<Modifier<?>> MODIFIER_DEFERRED_REGISTER = new DeferredRegister<>(EssenceRegistries.MODIFIER, Essence.MODID);
+    private static final DeferredRegister<Modifier<?>> MODIFIER_DEFERRED_REGISTER = DeferredRegister.create(EssenceRegistries.MODIFIER, Essence.MODID);
 
     // Modifier RegistryObjects
     // Arrow Modifiers

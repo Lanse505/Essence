@@ -75,7 +75,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
         );
         addInventory(tome = new InventoryComponent<InfusionTableTile>("tome", 9, 10, 1)
             .setComponentHarness(this)
-            .setOnSlotChanged((stack, integer) -> markComponentForUpdate())
+            .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))
             .setInputFilter((stack, integer) -> false)
             .setOutputFilter((stack, integer) -> false)
             .setSlotLimit(1)

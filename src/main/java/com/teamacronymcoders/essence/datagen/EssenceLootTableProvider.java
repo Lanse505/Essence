@@ -6,11 +6,12 @@ import com.teamacronymcoders.essence.datagen.loottable.EssenceBlockLootTables;
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
+import net.minecraft.loot.LootParameterSet;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTable.Builder;
+import net.minecraft.loot.ValidationTracker;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootParameterSet;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.ValidationTracker;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class EssenceLootTableProvider extends LootTableProvider {
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
+    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootParameterSet>> getTables() {
         return Lists.newArrayList(
             Pair.of(EssenceEntityLootTables::new, LootParameterSets.ENTITY),
             Pair.of(EssenceBlockLootTables::new, LootParameterSets.BLOCK)

@@ -16,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -33,7 +34,7 @@ import java.util.*;
 
 public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
-    private static final Set<Block> EFFECTIVE_ON = mergeSet(AxeItem.EFFECTIVE_ON, PickaxeItem.EFFECTIVE_ON, ShovelItem.EFFECTIVE_ON);
+    private static final Set<Block> EFFECTIVE_ON = mergeSet(AxeItem.EFFECTIVE_ON_BLOCKS, PickaxeItem.EFFECTIVE_ON, ShovelItem.EFFECTIVE_ON);
     private static final List<Item> tools = new ArrayList<>(Arrays.asList(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_SHOVEL));
     private final EssenceToolTiers tier;
     private final int baseModifiers;
@@ -161,7 +162,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
     }
 

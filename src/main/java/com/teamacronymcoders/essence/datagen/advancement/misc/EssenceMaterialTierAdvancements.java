@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.util.*;
 import com.teamacronymcoders.essence.util.registration.*;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 
@@ -41,7 +42,7 @@ public class EssenceMaterialTierAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(tiers)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BASIC_TIER_KNOWLEDGE.get()))
+            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BASIC_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL))
             .register(consumer, "essence:knowledge/material/basic");
 
@@ -54,7 +55,7 @@ public class EssenceMaterialTierAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(basic)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EMPOWERED_TIER_KNOWLEDGE.get()))
+            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EMPOWERED_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED))
             .register(consumer, "essence:knowledge/material/empowered");
 
@@ -67,7 +68,7 @@ public class EssenceMaterialTierAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(empowered)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.SUPREME_TIER_KNOWLEDGE.get()))
+            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.SUPREME_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME))
             .register(consumer, "essence:knowledge/material/supreme");
 
@@ -80,7 +81,7 @@ public class EssenceMaterialTierAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(supreme)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.DIVINE_TIER_KNOWLEDGE.get()))
+            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.DIVINE_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE))
             .register(consumer, "essence:knowledge/material/divine");
     }

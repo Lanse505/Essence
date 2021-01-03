@@ -29,7 +29,7 @@ public abstract class BlockCoreModifier extends Modifier<Block> {
         return 0f;
     }
 
-    public float getModifiedExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
+    public float getModifiedExplosionResistance(BlockState state, IBlockReader reader, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
         return 0f;
     }
 

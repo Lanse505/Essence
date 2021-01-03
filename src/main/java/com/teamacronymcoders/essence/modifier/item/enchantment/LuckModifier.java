@@ -38,7 +38,7 @@ public class LuckModifier extends ItemEnchantmentCoreModifier {
 
     @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
-        super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).applyTextStyle(TextFormatting.BLUE));
+        super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).copyRaw().mergeStyle(TextFormatting.BLUE));
         return super.getRenderedText(instance);
     }
 }

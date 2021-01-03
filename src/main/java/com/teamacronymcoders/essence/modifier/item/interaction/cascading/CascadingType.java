@@ -4,8 +4,10 @@ import com.teamacronymcoders.essence.util.EssenceTags.EssenceModifierTags;
 import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -21,12 +23,12 @@ public enum CascadingType {
     private final int id;
     private final String name;
     private final TextFormatting[] formatting;
-    private Tag<Item> toolTag;
-    private Tag<Block> blockTag;
+    private ITag.INamedTag<Item> toolTag;
+    private ITag.INamedTag<Block> blockTag;
     private Supplier<Integer> blockLimit;
     private Supplier<Integer> searchLimit;
 
-    CascadingType(int id, String name, Tag<Item> toolTag, Tag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
+    CascadingType(int id, String name, ITag.INamedTag<Item> toolTag, ITag.INamedTag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
         this.id = id;
         this.name = name;
         this.toolTag = toolTag;
@@ -56,11 +58,11 @@ public enum CascadingType {
         return name;
     }
 
-    public Tag<Item> getToolTag() {
+    public ITag.INamedTag<Item> getToolTag() {
         return toolTag;
     }
 
-    public Tag<Block> getBlockTag() {
+    public ITag.INamedTag<Block> getBlockTag() {
         return blockTag;
     }
 

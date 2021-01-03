@@ -37,7 +37,7 @@ public class EssenceBowHelper {
             .filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)
             .forEach(instance -> ((ItemArrowCoreModifier) instance.getModifier()).alterArrowEntity(abstractArrowEntity, player, arrowVelocity, instance));
 
-        abstractArrowEntity.shoot(player, player.rotationPitch, player.rotationYaw, 0f, arrowVelocity * 3f, 1f);
+        abstractArrowEntity.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0f, arrowVelocity * 3f, 1f);
         if (baseCodeCheck || player.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
             abstractArrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
         }

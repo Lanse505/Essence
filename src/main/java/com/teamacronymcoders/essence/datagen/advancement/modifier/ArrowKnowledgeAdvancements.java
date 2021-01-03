@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -40,7 +41,7 @@ public class ArrowKnowledgeAdvancements {
                 FrameType.CHALLENGE, true, false, true
             )
             .withParent(arrow)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BREWED_MODIFIER_KNOWLEDGE.get()))
+            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BREWED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
             .register(consumer, "essence:knowledge/arrow/brewed_modifier");
         keen = Advancement.Builder.builder()
@@ -52,7 +53,7 @@ public class ArrowKnowledgeAdvancements {
                 FrameType.CHALLENGE, true, false, true
             )
             .withParent(arrow)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.KEEN_MODIFIER_KNOWLEDGE.get()))
+            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.KEEN_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
             .register(consumer, "essence:knowledge/arrow/keen_modifier");
     }

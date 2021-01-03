@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_wood_log"
+            "tag": "essence:essence_logs"
           }
         ]
       }

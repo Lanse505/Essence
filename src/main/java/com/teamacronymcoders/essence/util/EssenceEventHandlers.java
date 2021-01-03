@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
+import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
@@ -20,8 +21,12 @@ import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.command.EssenceCommands;
+import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
+import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
+import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -30,24 +35,40 @@ import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.OverworldDimension;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStage.Decoration;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.OreFeatureConfig.FillerBlockType;
+import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
+import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.teamacronymcoders.essence.Essence.MODID;
 
@@ -60,25 +81,24 @@ public class EssenceEventHandlers {
         setupModifierCapabilities();
         setupKnowledgeCapabilities();
         setupServer();
+        setupWorldgen();
         DistExecutor.runWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     }
 
     // Registration Handlers
     private static void setupRegistries() {
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(IRecipeSerializer.class))
+        EventManager.modGeneric(RegistryEvent.Register.class, IRecipeSerializer.class)
             .process(register -> {
-                register.getRegistry().registerAll(
+                ((RegistryEvent.Register)register).getRegistry().registerAll(
                     AxeStrippingRecipe.SERIALIZER,
                     HoeTillingRecipe.SERIALIZER,
                     InfusionTableSerializableRecipe.SERIALIZER,
                     ShovelPathingRecipe.SERIALIZER
                 );
             }).subscribe();
-        EventManager.mod(RegistryEvent.Register.class)
-            .filter(register -> register.getGenericType().equals(GlobalLootModifierSerializer.class))
+        EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
             .process(register -> {
-                register.getRegistry().registerAll(
+                ((RegistryEvent.Register)register).getRegistry().registerAll(
                     new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
                 );
             }).subscribe();
@@ -92,30 +112,28 @@ public class EssenceEventHandlers {
     }
 
     private static void setupModifierCapabilities() {
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof ItemStack)
+        EventManager.forgeGeneric(AttachCapabilitiesEvent.class, ItemStack.class)
             .process(attach -> {
-                if (attach.getObject() instanceof IModifiedTool) {
-                    attach.addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) attach.getObject()));
+                if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedTool) {
+                    ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MODID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) ((AttachCapabilitiesEvent) attach).getObject()));
                 }
             }).subscribe();
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof Block)
+        EventManager.forgeGeneric(AttachCapabilitiesEvent.class, Block.class)
             .process(attach -> {
-                if (attach.getObject() instanceof IModifiedBlock) {
-                    attach.addCapability(new ResourceLocation(MODID, "block_modifier_holder"), new BlockModifierProvider());
+                if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedBlock) {
+                    ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MODID, "block_modifier_holder"), new BlockModifierProvider());
                 }
             }).subscribe();
     }
 
     private static void setupKnowledgeCapabilities() {
-        EventManager.forge(AttachCapabilitiesEvent.class)
-            .filter(attach -> attach.getObject() instanceof World && ((World) attach.getObject()).getDimension() instanceof OverworldDimension)
+        EventManager.forgeGeneric(AttachCapabilitiesEvent.class, World.class)
+            .filter(attach -> ((AttachCapabilitiesEvent) attach).getObject() instanceof World && ((World) ((AttachCapabilitiesEvent) attach).getObject()).getDimensionKey().getRegistryName().compareTo(DimensionType.OVERWORLD_ID) > 0)
             .process(attach -> {
-                attach.addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
+                ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MODID, "knowledge"), new KnowledgeProvider());
             }).subscribe();
         EventManager.forge(EntityJoinWorldEvent.class)
-            .filter(join -> join.getEntity() instanceof PlayerEntity && join.getWorld().getDimension() instanceof OverworldDimension)
+            .filter(join -> join.getEntity() instanceof PlayerEntity && join.getWorld().getDimensionKey().getRegistryName().compareTo(DimensionType.OVERWORLD_ID) > 0)
             .process(join -> {
                 join.getWorld().getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
                     holder.addPlayerUUID((PlayerEntity) join.getEntity());
@@ -125,9 +143,64 @@ public class EssenceEventHandlers {
 
     // Server Handlers
     public static void setupServer() {
-        EventManager.forge(FMLServerStartingEvent.class)
-            .process(starting -> EssenceCommands.registerCommands(starting.getCommandDispatcher()))
+        EventManager.forge(RegisterCommandsEvent.class)
+            .process(register -> EssenceCommands.registerCommands(register.getDispatcher()))
             .subscribe();
+    }
+
+    public static void setupWorldgen() {
+        // Add Ores to Overworld
+        EventManager.forge(BiomeLoadingEvent.class)
+            .filter(biome -> {
+                Set<RegistryKey<Biome>> biomes = BiomeDictionary.getBiomes(Type.OVERWORLD);
+                return biomes.stream().anyMatch(key -> key.getRegistryName().compareTo(biome.getName()) > 0);
+            })
+            .process(biome -> {
+                EssenceOreGenConfig oreGenConfig = EssenceWorldGenConfig.getOreGenConfig();
+                EssenceTreeGenConfig treeGenConfig = EssenceWorldGenConfig.getTreeGenConfig();
+                List<Supplier<ConfiguredFeature<?,?>>> oregen = biome.getGeneration().getFeatures(Decoration.UNDERGROUND_ORES);
+                List<Supplier<ConfiguredFeature<?,?>>> vegetation = biome.getGeneration().getFeatures(Decoration.VEGETAL_DECORATION);
+                if (oreGenConfig.getEssenceOre().getShouldGenerate().get()) {
+                    oregen.add(() ->
+                        Feature.ORE
+                            .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceObjectHolders.ESSENCE_ORE.getDefaultState(), oreGenConfig.getEssenceOre().getMaxVeinSize().get()))
+                            .withPlacement(Placement.RANGE_BIASED.configure(new TopSolidRangeConfig(
+                                oreGenConfig.getEssenceOre().getBottomOffset().get(),
+                                oreGenConfig.getEssenceOre().getTopOffset().get(),
+                                oreGenConfig.getEssenceOre().getMaxHeight().get())))
+                    );
+                }
+                if (oreGenConfig.getEssenceCrystalOre().getShouldGenerate().get()) {
+                    oregen.add(() ->
+                        Feature.ORE
+                            .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceObjectHolders.ESSENCE_CRYSTAL_ORE.getDefaultState(), oreGenConfig.getEssenceCrystalOre().getMaxVeinSize().get()))
+                            .withPlacement(Placement.RANGE_BIASED.configure(new TopSolidRangeConfig(
+                                oreGenConfig.getEssenceCrystalOre().getBottomOffset().get(),
+                                oreGenConfig.getEssenceCrystalOre().getTopOffset().get(),
+                                oreGenConfig.getEssenceCrystalOre().getMaxHeight().get())))
+                    );
+                }
+                if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) {
+                    vegetation.add(() ->
+                        Feature.TREE
+                            .withConfiguration(EssenceFeatureConfig.NORMAL_WORLD_ESSENCE_TREE_CONFIG)
+                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(
+                                0,
+                                treeGenConfig.getNormalVariant().getExtraChance().get().floatValue(),
+                                treeGenConfig.getNormalVariant().getExtraCount().get())))
+                    );
+                }
+                if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
+                    vegetation.add(() ->
+                        Feature.TREE
+                            .withConfiguration(EssenceFeatureConfig.FANCY_WORLD_ESSENCE_TREE_CONFIG)
+                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(
+                                0,
+                                treeGenConfig.getFancyVariant().getExtraChance().get().floatValue(),
+                                treeGenConfig.getFancyVariant().getExtraCount().get())))
+                    );
+                }
+            }).subscribe();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -161,7 +234,7 @@ public class EssenceEventHandlers {
         EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
                 Minecraft minecraft = Minecraft.getInstance();
-                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                if (minecraft.player != null && EssenceKeyHandler.CYCLING.isKeyDown()) {
                     ItemStack stack = minecraft.player.getHeldItemMainhand();
                     if (stack.getItem() instanceof EssenceWrench) {
                         double scrolling = scroll.getScrollDelta();
@@ -170,7 +243,7 @@ public class EssenceEventHandlers {
                             WrenchModeEnum mode = wrench.getMode();
                             WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
                             wrench.setMode(newMode);
-                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.essence.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.essence.mode.tooltip").appendString(": ").append(new TranslationTextComponent(newMode.getLocaleName())), true);
                             Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
                             scroll.setCanceled(true);
                         }
@@ -182,7 +255,7 @@ public class EssenceEventHandlers {
         EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
                 Minecraft minecraft = Minecraft.getInstance();
-                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                if (minecraft.player != null && EssenceKeyHandler.CYCLING.isKeyDown()) {
                     ItemStack stack = minecraft.player.getHeldItemMainhand();
                     if (stack.getItem() instanceof TomeOfExperienceItem) {
                         double scrolling = scroll.getScrollDelta();
@@ -191,7 +264,7 @@ public class EssenceEventHandlers {
                             ExperienceModeEnum mode = tome.getMode();
                             ExperienceModeEnum newMode = ExperienceModeEnum.cycleMode(mode.ordinal());
                             tome.setMode(newMode);
-                            minecraft.player.sendStatusMessage(new TranslationTextComponent("tome.essence.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleString())), true);
+                            minecraft.player.sendStatusMessage(new TranslationTextComponent("tome.essence.mode.tooltip").appendString(": ").append(new TranslationTextComponent(newMode.getLocaleString())), true);
                             Essence.handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
                             scroll.setCanceled(true);
                         }

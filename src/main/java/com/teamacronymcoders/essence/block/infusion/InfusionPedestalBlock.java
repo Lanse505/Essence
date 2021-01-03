@@ -51,12 +51,12 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
                     te.getStack().shrink(1);
                     player.inventory.addItemStackToInventory(copy);
                 }
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
             } else if (!te.getStack().isEmpty()) {
                 ItemStack copy = te.getStack().copy();
                 te.getStack().shrink(1);
                 player.inventory.addItemStackToInventory(copy);
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
             }
             return ActionResultType.SUCCESS;
         }

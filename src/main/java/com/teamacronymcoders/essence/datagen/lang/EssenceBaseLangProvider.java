@@ -33,8 +33,8 @@ public class EssenceBaseLangProvider extends LanguageProvider {
      */
     public void add(Advancement advancement, String title, String description) {
         final DisplayInfo display = advancement.getDisplay();
-        add(display.getTitle().getUnformattedComponentText(), title);
-        add(display.getDescription().getUnformattedComponentText(), description);
+        add(display.getTitle().getString(), title);
+        add(display.getDescription().getString(), description);
     }
 
     public void add(Modifier<?> modifier, String translation) {
@@ -55,7 +55,7 @@ public class EssenceBaseLangProvider extends LanguageProvider {
 
     public <B> void addColored(List<B> objects, Function<B, DyeColor> color, BiConsumer<B, String> consumer, String inputString) {
         for (B b : objects) {
-            String str = color.apply(b).getName();
+            String str = color.apply(b).getString();
             String name;
             if (str.contains("_")) {
                 String[] strings = str.split("_");

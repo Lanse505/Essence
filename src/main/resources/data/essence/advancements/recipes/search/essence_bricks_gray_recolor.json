@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_bricks_lime"
+            "tag": "essence:essence_bricks"
           }
         ]
       }

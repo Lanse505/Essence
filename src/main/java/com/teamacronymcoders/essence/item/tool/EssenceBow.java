@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.item.tool;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
@@ -16,6 +17,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -44,20 +46,16 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     private int freeModifiers;
     private int additionalModifiers;
 
+    private final Multimap<Attribute, AttributeModifier> attributeModifiers;
+
+
     public EssenceBow(EssenceToolTiers tier) {
         super(new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
-        this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pull"), (stack, world, livingEntity) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            } else {
-                return !(livingEntity.getActiveItemStack().getItem() instanceof EssenceBow) ? 0.0F : (float) (stack.getUseDuration() - livingEntity.getItemInUseCount()) / 20.0F;
-            }
-        });
-        this.addPropertyOverride(new ResourceLocation(Essence.MODID, "pulling"), (stack, world, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack().getItem() instanceof EssenceBow ? 1.0F : 0.0F);
+        this.attributeModifiers = HashMultimap.create();
     }
 
     @Override
@@ -115,9 +113,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
             int i = this.getUseDuration(bow) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bow, world, player, i, !arrow.isEmpty() || flag);
-            if (i < 0) {
-                return;
-            }
+            if (i < 0) return;
 
             if (!arrow.isEmpty() || flag) {
                 if (arrow.isEmpty()) {
@@ -223,10 +219,16 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+        return attributeModifiers;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        return getAttributeModifiers(slot);
     }
 
     @Override

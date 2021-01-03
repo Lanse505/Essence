@@ -7,7 +7,9 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceCriterionTrigger;
 import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.ResourceLocation;
 
 public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowledgeListerners, UnlockKnowledgeCriterionInstance> {
@@ -24,12 +26,12 @@ public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowle
     }
 
     @Override
-    public UnlockKnowledgeCriterionInstance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
+    public UnlockKnowledgeCriterionInstance deserialize(JsonObject json, ConditionArrayParser conditions) {
         if (json.has("knowledge_id")) {
             String knowledgeID = json.get("knowledge_id").getAsString();
             Knowledge<?> knowledge = EssenceRegistries.KNOWLEDGE.getValue(new ResourceLocation(knowledgeID));
             if (knowledge != null) {
-                return new UnlockKnowledgeCriterionInstance(knowledge);
+                return new UnlockKnowledgeCriterionInstance(knowledge, AndPredicate.ANY_AND);
             }
             throw new JsonParseException("No Knowledge found for id " + knowledgeID);
         }

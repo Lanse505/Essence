@@ -32,7 +32,7 @@ public class InfusionSound extends TickableSound {
     @Override
     public void tick() {
         if (!tableTile.getWorking()) {
-            this.donePlaying = true;
+            this.finishPlaying();
         }
     }
 

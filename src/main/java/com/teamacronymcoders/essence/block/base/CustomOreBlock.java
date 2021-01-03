@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -23,8 +24,8 @@ public class CustomOreBlock extends BasicBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void spawnAdditionalDrops(BlockState state, World world, BlockPos pos, ItemStack stack) {
-        super.spawnAdditionalDrops(state, world, pos, stack);
+    public void spawnAdditionalDrops(BlockState state, ServerWorld worldIn, BlockPos pos, ItemStack stack) {
+        super.spawnAdditionalDrops(state, worldIn, pos, stack);
     }
 
     @Override

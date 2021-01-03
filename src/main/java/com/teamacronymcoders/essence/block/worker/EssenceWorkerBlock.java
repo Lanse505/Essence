@@ -59,13 +59,14 @@ public abstract class EssenceWorkerBlock<T extends ActiveTile<T>> extends BasicT
     }
 
     @Override
-    public float getBlockHardness(BlockState state, IBlockReader world, BlockPos pos) {
-        return state.getBlockHardness(world, pos) + getTile(world, pos).map(tile -> getBlockHardnessFromModifiers(state, world, pos, tile, state.getBlockHardness(world, pos))).orElse(0f);
+    @SuppressWarnings("deprecation")
+    public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+        return state.getBlockHardness(worldIn, pos) + getTile(worldIn, pos).map(tile -> getBlockHardnessFromModifiers(state, worldIn, pos, tile, state.getBlockHardness(worldIn, pos))).orElse(0f);
     }
 
     @Override
-    public float getExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-        return state.getExplosionResistance(world, pos, exploder, explosion) + getTile(world, pos).map(tile -> getExplosionResistanceFromModifiers(state, world, pos, exploder, explosion, tile, state.getExplosionResistance(world, pos, exploder, explosion))).orElse(0f);
+    public float getExplosionResistance(BlockState state, IBlockReader reader, BlockPos pos, Explosion explosion) {
+        return state.getExplosionResistance(reader, pos, explosion) + getTile(reader, pos).map(tile -> getExplosionResistanceFromModifiers(state, reader, pos, explosion.getExploder(), explosion, tile, state.getExplosionResistance(reader, pos, explosion))).orElse(0f);
     }
 
     @Override

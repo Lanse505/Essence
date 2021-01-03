@@ -25,7 +25,7 @@ public class GlueBallItem extends Item {
         if (!world.isRemote) {
             GlueBallEntity entity = new GlueBallEntity(world, player);
             entity.setItem(stack);
-            entity.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+            entity.shoot(player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
             world.addEntity(entity);
         }
 

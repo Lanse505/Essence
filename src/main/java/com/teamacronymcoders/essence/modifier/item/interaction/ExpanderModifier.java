@@ -23,8 +23,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 
 public class ExpanderModifier extends ItemInteractionCoreModifier {
@@ -41,7 +44,9 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
             Hand hand = context.getHand();
             BlockPos pos = context.getPos();
             Direction dir = context.getFace();
-            BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
+            Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
+            Vector3d vector3d = new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ());
+            BlockPos offset = new BlockPos(vector3d.add(1.0, 1.0, 1.0).scale(instance.getLevel()));
             BlockPos start = pos.add(offset);
             BlockPos end = pos.subtract(offset);
             BlockPos.getAllInBox(start, end)
@@ -49,7 +54,7 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
                 .forEach(position -> {
                     if (stack.getItem() instanceof IModifiedTool) {
                         IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
-                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
+                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
                     }
                 });
             return ActionResultType.SUCCESS;
@@ -59,8 +64,9 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
-        Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vec3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
-        BlockPos offset = new BlockPos(new Vec3d(Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
+        Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vector3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
+        Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
+        BlockPos offset = new BlockPos(new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
         BlockPos start = pos.add(offset);
         BlockPos end = pos.subtract(offset);
         BlockPos.getAllInBox(start, end)
@@ -81,7 +87,9 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
                                 block.harvestBlock(world, player, position, foundState, tile, stack);
                                 player.addStat(Stats.ITEM_USED.get(stack.getItem()));
                                 if (exp > 0) {
-                                    block.dropXpOnBlockBreak(world, position, exp);
+                                    if (!world.isRemote) {
+                                        block.dropXpOnBlockBreak((ServerWorld) world, position, exp);
+                                    }
                                 }
                             }
                         }

@@ -16,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -96,7 +97,7 @@ public interface IModifiedTool extends IModified<ItemStack> {
         });
     }
 
-    default Multimap<String, AttributeModifier> getAttributeModifiersFromModifiers(Multimap<String, AttributeModifier> baseAttributes, EquipmentSlotType slot, ItemStack stack) {
+    default Multimap<Attribute, AttributeModifier> getAttributeModifiersFromModifiers(Multimap<Attribute, AttributeModifier> baseAttributes, EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
             stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> holder.getModifierInstances().stream()
                 .filter(instance -> instance.getModifier() instanceof ItemAttributeModifier)
@@ -109,10 +110,10 @@ public interface IModifiedTool extends IModified<ItemStack> {
     default void addInformationFromModifiers(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
         int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
         int maxModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getMaxModifiers() : 0;
-        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocaleString()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).applyTextStyle(TextFormatting.GRAY));
+        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).mergeStyle(TextFormatting.GRAY));
         if ((stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND).size() > 0) || flag.isAdvanced()) {
-            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
+            list.add(new TranslationTextComponent("tooltip.essence.modifier").mergeStyle(TextFormatting.GOLD));
             Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
             stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER)
                 .ifPresent(holder -> holder.getModifierInstances()

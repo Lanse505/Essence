@@ -56,6 +56,7 @@ minecraft {
                     source sourceSets.main
                 }
             }
+            properties 'mixin.env.disableRefMap': 'true'
         }
 
         server {
@@ -65,6 +66,7 @@ minecraft {
                     source sourceSets.main
                 }
             }
+            properties 'mixin.env.disableRefMap': 'true'
         }
 
         data {
@@ -72,6 +74,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
             args '--mod', 'essence', '--all', '--output', file('generated'), '--input', file('src/main/resources')
             source sourceSets.main
+            properties 'mixin.env.disableRefMap': 'true'
         }
     }
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')

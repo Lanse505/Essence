@@ -9,11 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,13 +30,13 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
         .build();
 
     @Override
-    public void render(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay) {
+    public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType transform, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
         if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem) {
             stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).ifPresent(storage -> {
                 if (storage.getUUID() != null) {
                     LivingEntity entity = entityCache.getIfPresent(storage.getUUID());
                     if (entity != null) {
-                        renderEntityStatic(entity, matrix, buffer, light);
+                        renderEntityStatic(entity, matrixStack, buffer, combinedLight);
                     }
                 }
             });
@@ -47,7 +48,7 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
         EntityRendererManager manager = minecraft.getRenderManager();
         EntityRenderer<? super E> renderer = manager.getRenderer(entity);
 
-        Vec3d vec3d = renderer.getRenderOffset(entity, minecraft.getRenderPartialTicks());
+        Vector3d vec3d = renderer.getRenderOffset(entity, minecraft.getRenderPartialTicks());
         double x = 1.0f + vec3d.getX();
         double y = 1.0f + vec3d.getY();
         double z = 1.0f + vec3d.getZ();

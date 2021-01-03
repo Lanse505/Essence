@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +41,7 @@ public class CosmeticKnowledgeAdvancements {
                 FrameType.CHALLENGE, true, false, true
             )
             .withParent(cosmetic)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ENCHANTED_MODIFIER_KNOWLEDGE.get()))
+            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ENCHANTED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:knowledge/cosmetic/enchanted_modifier");
     }

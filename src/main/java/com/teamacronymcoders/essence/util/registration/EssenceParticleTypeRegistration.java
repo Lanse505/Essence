@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceParticleTypeRegistration {
 
-    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPE_DEFERRED_REGISTER = new DeferredRegister<>(ForgeRegistries.PARTICLE_TYPES, Essence.MODID);
+    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPE_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Essence.MODID);
 
     public static RegistryObject<BasicParticleType> GLUE_BALL_PARTICLE = PARTICLE_TYPE_DEFERRED_REGISTER.register("glue_ball", () -> new BasicParticleType(false));
 

@@ -6,9 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -37,7 +38,7 @@ public class EssenceWorldHelper {
         if (blockstate.isAir(world, pos)) {
             return false;
         } else {
-            IFluidState ifluidstate = world.getFluidState(pos);
+            FluidState ifluidstate = world.getFluidState(pos);
             world.playEvent(2001, pos, Block.getStateId(blockstate));
             if (hasTileEntity) {
                 TileEntity tileentity = blockstate.hasTileEntity() ? world.getTileEntity(pos) : null;
@@ -63,27 +64,27 @@ public class EssenceWorldHelper {
         return world.getTileEntity(pos);
     }
 
-    public static Set<Biome> getBiomes(BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
-        Set<Biome> biomes = BiomeDictionary.getBiomes(type);
+    public static Set<RegistryKey<Biome>> getBiomes(BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
+        Set<RegistryKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
         if (filterTypes.length == 0) {
             return biomes;
         }
-        Set<Biome> filtering = new HashSet<>(biomes);
+        Set<RegistryKey<Biome>> filtering = new HashSet<>(biomes);
         for (BiomeDictionary.Type fType : filterTypes) {
-            Set<Biome> filterBiomes = BiomeDictionary.getBiomes(fType);
+            Set<RegistryKey<Biome>> filterBiomes = BiomeDictionary.getBiomes(fType);
             filtering.retainAll(filterBiomes);
         }
         return filtering;
     }
 
-    public static Set<Biome> getBiomes(BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
-        Set<Biome> biomes = BiomeDictionary.getBiomes(type);
+    public static Set<RegistryKey<Biome>> getBiomes(BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
+        Set<RegistryKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
         if (filterTypes.size() == 0) {
             return biomes;
         }
-        Set<Biome> filtering = new HashSet<>(biomes);
+        Set<RegistryKey<Biome>> filtering = new HashSet<>(biomes);
         for (BiomeDictionary.Type fType : filterTypes) {
-            Set<Biome> filterBiomes = BiomeDictionary.getBiomes(fType);
+            Set<RegistryKey<Biome>> filterBiomes = BiomeDictionary.getBiomes(fType);
             filtering.retainAll(filterBiomes);
         }
         return filtering;

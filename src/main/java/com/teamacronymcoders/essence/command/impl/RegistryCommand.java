@@ -11,6 +11,7 @@ import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -34,7 +35,7 @@ public class RegistryCommand implements Command<CommandSource> {
     public static int dumpKnowledgeRegistry(CommandContext<CommandSource> context) {
         CommandSource source = context.getSource();
         source.sendFeedback(new TranslationTextComponent("command.essence.registry.dump.knowledge"), true);
-        for (Map.Entry<ResourceLocation, Knowledge<?>> knowledge : EssenceRegistries.KNOWLEDGE.getEntries()) {
+        for (Map.Entry<RegistryKey<Knowledge<?>>, Knowledge<?>> knowledge : EssenceRegistries.KNOWLEDGE.getEntries()) {
             Essence.LOGGER.info(new TranslationTextComponent("command.essence.registry.dump.knowledge.type", new TranslationTextComponent(knowledge.getValue().getTranslationString()), knowledge.getValue().getTypeString(), knowledge.getKey().toString()).getUnformattedComponentText());
         }
         return 1;
@@ -43,7 +44,7 @@ public class RegistryCommand implements Command<CommandSource> {
     public static int dumpModifierRegistry(CommandContext<CommandSource> context) {
         CommandSource source = context.getSource();
         source.sendFeedback(new TranslationTextComponent("command.essence.registry.dump.modifier"), true);
-        for (Map.Entry<ResourceLocation, Modifier<?>> knowledge : EssenceRegistries.MODIFIER.getEntries()) {
+        for (Map.Entry<RegistryKey<Modifier<?>>, Modifier<?>> knowledge : EssenceRegistries.MODIFIER.getEntries()) {
             Essence.LOGGER.info(new TranslationTextComponent("command.essence.registry.dump.modifier.type", knowledge.getValue().getType().getSimpleName(), knowledge.getKey().toString()).getUnformattedComponentText());
         }
         return 1;

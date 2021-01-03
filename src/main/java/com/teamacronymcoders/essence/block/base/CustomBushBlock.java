@@ -49,7 +49,7 @@ public class CustomBushBlock extends BasicBlock implements IPlantable {
 
     @SuppressWarnings("deprecation")
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        return type == PathType.AIR && !this.blocksMovement ? true : super.allowsMovement(state, worldIn, pos, type);
+        return type == PathType.AIR && !this.canCollide ? true : super.allowsMovement(state, worldIn, pos, type);
     }
 
     @Override

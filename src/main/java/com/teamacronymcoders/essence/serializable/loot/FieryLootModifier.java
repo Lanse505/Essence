@@ -2,23 +2,17 @@ package com.teamacronymcoders.essence.serializable.loot;
 
 import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameter;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.NoteBlockEvent.Play;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
@@ -68,6 +62,11 @@ public class FieryLootModifier extends LootModifier {
         @Override
         public FieryLootModifier read(ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
             return new FieryLootModifier(ailootcondition);
+        }
+
+        @Override
+        public JsonObject write(FieryLootModifier instance) {
+            return new JsonObject();
         }
     }
 }

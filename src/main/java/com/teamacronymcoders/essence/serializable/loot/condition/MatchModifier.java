@@ -3,12 +3,12 @@ package com.teamacronymcoders.essence.serializable.loot.condition;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.teamacronymcoders.essence.Essence;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.loot.ILootSerializer;
+import net.minecraft.loot.LootConditionType;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.conditions.ILootCondition;
 
 public class MatchModifier implements ILootCondition {
     private ModifierPredicate predicate;
@@ -23,12 +23,12 @@ public class MatchModifier implements ILootCondition {
         return stack != null && this.predicate.test(stack);
     }
 
-    public static class Serializer extends ILootCondition.AbstractSerializer<MatchModifier> {
+    @Override
+    public LootConditionType func_230419_b_() {
+        return null;
+    }
 
-        public Serializer() {
-            super(new ResourceLocation(Essence.MODID, "modifier_matcher"), MatchModifier.class);
-        }
-
+    public static class Serializer implements ILootSerializer<MatchModifier> {
         @Override
         public void serialize(JsonObject json, MatchModifier condition, JsonSerializationContext context) {
             json.add("predicate", condition.predicate.serialize());

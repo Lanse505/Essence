@@ -1,9 +1,10 @@
 package com.teamacronymcoders.essence;
 
+import com.hrznstudio.titanium.datagenerator.loot.TitaniumLootTableProvider;
+import com.hrznstudio.titanium.datagenerator.model.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
-import com.hrznstudio.titanium.recipe.generator.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
@@ -16,28 +17,48 @@ import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageCa
 import com.teamacronymcoders.essence.client.EssenceClientProxy;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
-import com.teamacronymcoders.essence.datagen.*;
-import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
-import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
-import com.teamacronymcoders.essence.entity.render.*;
-import com.teamacronymcoders.essence.item.tool.EssenceShear;
-import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
-import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
-import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
-import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
-import com.teamacronymcoders.essence.util.*;
 import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
+import com.teamacronymcoders.essence.datagen.EssenceAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.EssenceLangProvider;
+import com.teamacronymcoders.essence.datagen.EssenceLootTableProvider;
+import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
+import com.teamacronymcoders.essence.datagen.EssenceTagProvider;
+import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.entity.render.ShearedChickenRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedCowRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedCreeperRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedGhastRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedPigRenderer;
+import com.teamacronymcoders.essence.item.tool.EssenceShear;
+import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
+import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
+import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
+import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
+import com.teamacronymcoders.essence.util.EssenceCommonProxy;
+import com.teamacronymcoders.essence.util.EssenceEventHandlers;
+import com.teamacronymcoders.essence.util.EssenceItemProperties;
+import com.teamacronymcoders.essence.util.EssenceModules;
+import com.teamacronymcoders.essence.util.EssenceObjectHolders;
+import com.teamacronymcoders.essence.util.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
-import com.teamacronymcoders.essence.util.registration.*;
+import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceItemRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -47,18 +68,21 @@ import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.conditions.LootConditionManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -71,13 +95,17 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Mod("essence")
 public class Essence extends ModuleController {
@@ -126,7 +154,6 @@ public class Essence extends ModuleController {
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EssenceEntityRegistration.register(eventBus);
-        EssenceFeatureRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
         EssenceModifierRegistration.register(eventBus);
         EssenceSoundRegistration.register(eventBus);
@@ -148,9 +175,19 @@ public class Essence extends ModuleController {
     @Override
     public void addDataProvider(GatherDataEvent event) {
         super.addDataProvider(event);
-        EssenceTagProvider.addTagProviders(event.getGenerator());
-        EssenceRecipeProvider.addRecipeProviders(event.getGenerator());
-        event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MODID));
+        NonNullLazy<List<Block>> blocksToProcess = NonNullLazy.of(() ->
+            ForgeRegistries.BLOCKS.getValues()
+                .stream()
+                .filter(block -> Optional.ofNullable(block.getRegistryName())
+                    .map(ResourceLocation::getNamespace)
+                    .filter(MODID::equalsIgnoreCase)
+                    .isPresent())
+                .collect(Collectors.toList())
+        );
+        EssenceTagProvider.addTagProviders(event.getGenerator(), event.getExistingFileHelper());
+        EssenceRecipeProvider.addRecipeProviders(event.getGenerator(), blocksToProcess);
+        event.getGenerator().addProvider(new TitaniumLootTableProvider(event.getGenerator(), blocksToProcess));
+        event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MODID, blocksToProcess));
         event.getGenerator().addProvider(new EssenceLootTableProvider(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
         event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
@@ -171,11 +208,7 @@ public class Essence extends ModuleController {
         CapabilityManager.INSTANCE.register(EntityStorageCapability.class, NBTCapabilityStorage.create(CompoundNBT.class), EntityStorageCapability::new);
         CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
-
-        LootConditionManager.registerCondition(new MatchModifier.Serializer());
-
-        // TODO: Rework Worldgen Configs...
-        //EssenceGeneration.addFeaturesToWorldGen();
+        EssenceConditions.MATCH_MODIFIER = LootConditionManager.register("essence:match_modifier", new MatchModifier.Serializer());
 
         // TODO: Fix Dispenser Behaviour
         //EssenceDispenseBehaviours.init();
@@ -183,6 +216,7 @@ public class Essence extends ModuleController {
 
     @SuppressWarnings("unchecked")
     private void clientSetup(final FMLClientSetupEvent event) {
+        new EssenceKeyHandler();
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
@@ -198,6 +232,22 @@ public class Essence extends ModuleController {
         RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_GHAST.get(), ShearedGhastRenderer::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
+
+        // Pull
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
+
+        // Pulling
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
+
+        // Toggled
+        // TODO: Implement for Tablet of Muffling
+        //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "toggling"), EssenceItemProperties.TOGGLED);
     }
 
     private void setupCreativeTabIcons() {
@@ -216,54 +266,5 @@ public class Essence extends ModuleController {
             new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
             new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
             new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private void setupClientEventHandlers() {
-        // Atlas Texture Handler
-        EventManager.mod(TextureStitchEvent.Pre.class)
-            .filter(stitch -> stitch.getMap().getTextureLocation().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE))
-            .process(stitch -> {
-              stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
-            }).subscribe();
-        // Rainbow Tooltip Handler
-        EventManager.forge(RenderTooltipEvent.Color.class)
-            .process(color -> {
-                boolean isShear = color.getStack().getItem() instanceof EssenceShear;
-                boolean hasRainbow = EssenceItemstackModifierHelpers.hasRainbowModifier(color.getStack());
-                if (isShear && hasRainbow) {
-                    EssenceShear shear = (EssenceShear) color.getStack().getItem();
-                    int rainbowVal = shear.getRainbowVal();
-                    if (rainbowVal > 599) {
-                        rainbowVal = 0;
-                    }
-                    Color colorVal = EssenceColorHelper.getColor(rainbowVal);
-                    Color colorVal3 = EssenceColorHelper.getColor(rainbowVal + 60);
-                    color.setBorderStart(colorVal.getRGB());
-                    color.setBorderEnd(colorVal3.getRGB());
-                    shear.setRainbowVal(rainbowVal + 1);
-                }
-            }).subscribe();
-
-        // Wrench-Mode Handler
-        EventManager.forge(InputEvent.MouseScrollEvent.class)
-            .process(scroll -> {
-                Minecraft minecraft = Minecraft.getInstance();
-                if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
-                    ItemStack stack = minecraft.player.getHeldItemMainhand();
-                    if (stack.getItem() instanceof EssenceWrench) {
-                        double scrolling = scroll.getScrollDelta();
-                        if (scrolling != 0) {
-                            EssenceWrench wrench = (EssenceWrench) stack.getItem();
-                            WrenchModeEnum mode = wrench.getMode();
-                            WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
-                            wrench.setMode(newMode);
-                            minecraft.player.sendStatusMessage(new TranslationTextComponent("wrench.mode.tooltip").appendText(": ").appendSibling(new TranslationTextComponent(newMode.getLocaleName())), true);
-                            handler.sendToServer(new PacketItemStack(Hand.MAIN_HAND, Collections.singletonList(newMode)));
-                            scroll.setCanceled(true);
-                        }
-                    }
-                }
-            }).subscribe();
     }
 }

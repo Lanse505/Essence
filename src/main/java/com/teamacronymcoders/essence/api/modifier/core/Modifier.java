@@ -61,12 +61,12 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
      */
     public ITextComponent getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY);
+            return new TranslationTextComponent(getTranslationName()).mergeStyle(TextFormatting.GRAY);
         }
         if (level == 1) {
-            return new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName()).applyTextStyle(TextFormatting.GRAY));
+            return new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName()).mergeStyle(TextFormatting.GRAY));
         }
-        return new StringTextComponent("  ").appendSibling(new TranslationTextComponent(getTranslationName()).appendText(" " + EssenceUtilHelper.toRoman(level)).applyTextStyle(TextFormatting.GRAY));
+        return new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName()).appendString(" " + EssenceUtilHelper.toRoman(level)).mergeStyle(TextFormatting.GRAY));
     }
 
     /**

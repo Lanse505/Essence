@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.container;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -38,12 +39,12 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
 //        });
         buttons.add(modeButton);
 
-        addSoundButton = new Button(1, guiTop + 151, guiLeft + 159, 44, I18n.format("tile.sound_muffler.gui.button.add"), pressed -> {
+        addSoundButton = new Button(1, guiTop + 151, guiLeft + 159, 44, new TranslationTextComponent("tile.sound_muffler.gui.button.add"), pressed -> {
 
         });
         buttons.add(addSoundButton);
 
-        removeSoundButton = new Button(2, guiTop + 151, guiLeft + 205,44, I18n.format("tile.sound_muffler.gui.button.remove"), pressed -> {
+        removeSoundButton = new Button(2, guiTop + 151, guiLeft + 205,44, new TranslationTextComponent("tile.sound_muffler.gui.button.remove"), pressed -> {
 
         });
         removeSoundButton.active = false;
@@ -60,15 +61,10 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
 //        soundList.setSounds(sounds);
     }
 
+    @Override
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {}
+
 
     @Override
-    public void onChangeSliderValue(Slider slider) {
-        slider.dispString = slider.dispString + " " + ranges[slider.getValueInt()];
-
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
-    }
+    public void onChangeSliderValue(Slider slider) {}
 }

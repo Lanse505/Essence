@@ -5,21 +5,21 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class EssenceOreGenConfig {
 
-    private final EssenceOreConfig essence_ore;
-    private final EssenceOreConfig essence_crystal_ore;
+    private final EssenceOreConfig essenceOre;
+    private final EssenceOreConfig essenceCrystalOre;
 
     public EssenceOreGenConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Ores");
-        essence_ore = new EssenceOreConfig(builder, "Essence", true, 24, 8, 0, 0, 128);
-        essence_crystal_ore = new EssenceOreConfig(builder, "EssenceCrystal", true, 16, 4, 0, 0, 128);
+        essenceOre = new EssenceOreConfig(builder, "Essence", true, 24, 8, 0, 0, 128);
+        essenceCrystalOre = new EssenceOreConfig(builder, "EssenceCrystal", true, 16, 4, 0, 0, 128);
         builder.pop();
     }
 
-    public EssenceOreConfig getEssence_ore() {
-        return essence_ore;
+    public EssenceOreConfig getEssenceOre() {
+        return essenceOre;
     }
 
-    public EssenceOreConfig getEssence_crystal_ore() {
-        return essence_crystal_ore;
+    public EssenceOreConfig getEssenceCrystalOre() {
+        return essenceCrystalOre;
     }
 }

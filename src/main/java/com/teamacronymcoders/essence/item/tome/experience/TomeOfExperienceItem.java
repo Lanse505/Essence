@@ -9,6 +9,8 @@ import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -56,8 +58,8 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         if (!EssenceInformationHelper.isSneakKeyDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers, (baseModifiers + additionalModifiers)))).applyTextStyle(TextFormatting.GRAY));
-            tooltip.add(EssenceInformationHelper.shiftForDetails.applyTextStyle(TextFormatting.GREEN));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, (baseModifiers + additionalModifiers)))).mergeStyle(TextFormatting.GRAY));
+            tooltip.add(EssenceInformationHelper.shiftForDetails.mergeStyle(TextFormatting.GREEN));
             return;
         }
 
@@ -65,10 +67,10 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
         stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
             int currentAmount = handler.getFluidInTank(0).getAmount();
             int capacityAmount = handler.getTankCapacity(0);
-            tooltip.add(new TranslationTextComponent("essence.tome.mode.tooltip").appendText(" ").appendSibling(new TranslationTextComponent(mode.getLocaleString())));
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding").applyTextStyle(TextFormatting.GREEN));
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels", NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount))).applyTextStyle(TextFormatting.LIGHT_PURPLE));
-            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount", NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount), NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount)).applyTextStyle(TextFormatting.LIGHT_PURPLE));
+            tooltip.add(new TranslationTextComponent("essence.tome.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleString())));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding").mergeStyle(TextFormatting.GREEN));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels", NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount))).mergeStyle(TextFormatting.LIGHT_PURPLE));
+            tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount", NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount), NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount)).mergeStyle(TextFormatting.LIGHT_PURPLE));
         });
 
         addInformationFromModifiers(stack, worldIn, tooltip, flagIn);
@@ -111,7 +113,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
             if (lazy.isPresent()) {
                 return lazy.map(handler -> {
                     if (getMode() == ExperienceModeEnum.FILL) {
-                        if (player.isShiftKeyDown()) {
+                        if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
                             int amount = handler.fill(new FluidStack(EssenceObjectHolders.EXP_FLUID.getSourceFluid(), experience), IFluidHandler.FluidAction.EXECUTE);
                             player.giveExperiencePoints(-amount);
                         } else {
@@ -120,7 +122,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
                         }
                         return ActionResultType.SUCCESS;
                     } else if (getMode() == ExperienceModeEnum.DRAIN) {
-                        if (player.isShiftKeyDown()) {
+                        if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
                             FluidStack amount = handler.drain(experience, IFluidHandler.FluidAction.EXECUTE);
                             player.giveExperiencePoints(amount.getAmount());
                         } else {

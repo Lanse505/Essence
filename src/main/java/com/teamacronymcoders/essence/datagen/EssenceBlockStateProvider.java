@@ -3,12 +3,13 @@ package com.teamacronymcoders.essence.datagen;
 
 import com.teamacronymcoders.essence.Essence;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class EssenceBlockStateProvider extends BlockStateProvider {

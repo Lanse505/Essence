@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -54,7 +55,7 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
     }
 
     @Override
-    public U deserializeInstance(JsonObject json, JsonDeserializationContext context) {
+    public U deserialize(JsonObject object, ConditionArrayParser conditions) {
         return null;
     }
 

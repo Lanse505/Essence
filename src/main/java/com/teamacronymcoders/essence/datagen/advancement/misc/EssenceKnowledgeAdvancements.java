@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.util.*;
 import com.teamacronymcoders.essence.util.registration.*;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 
@@ -37,7 +38,7 @@ public class EssenceKnowledgeAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(miscKnowledge)
-            .withCriterion("arboreal_knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARBOREAL_NOTES.get()))
+            .withCriterion("arboreal_knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARBOREAL_NOTES.get(), AndPredicate.ANY_AND))
             .withCriterion("essence_sapling", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_WOOD_SAPLING))
             .register(consumer, "essence:knowledge/misc/arboreal_knowledge");
     }

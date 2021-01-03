@@ -40,7 +40,7 @@ public class EssenceBlock extends BasicBlock {
         return () -> (BlockItem) new BlockItem(this, new Item.Properties().group(this.getItemGroup()).rarity(tier.getRarity())) {
             @Override
             public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flagIn) {
-                list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocaleString()).applyTextStyle(tier.getRarity().color)));
+                list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
             }
         }.setRegistryName(Objects.requireNonNull(this.getRegistryName()));
     }

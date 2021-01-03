@@ -18,10 +18,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,16 +38,16 @@ public class EssenceDispenseBehaviours {
                 World world = source.getWorld();
                 Direction dir = source.getBlockState().get(DispenserBlock.FACING);
                 BlockPos sourcePos = source.getBlockPos();
-                Vec3i dirVec = dir.getDirectionVec();
+                Vector3i dirVec = dir.getDirectionVec();
                 int level = instance.getLevel();
-                Vec3d dirVecXYZ = new Vec3d(sourcePos.offset(dir)).add(new Vec3d(dirVec)).scale(level + 1);
-                Vec3d vec1 = new Vec3d(-level, -level, -level).add(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).add(new Vec3d(dirVec).scale(level + 1));
-                Vec3d vec2 = new Vec3d(level + 1, level + 1, level + 1).subtract(dirVecXYZ).add(new Vec3d(sourcePos.offset(dir))).subtract(new Vec3d(dirVec).scale(level + 1));
+                Vector3d dirVecXYZ = new Vector3d(sourcePos.offset(dir).getX(), source.getY(), source.getZ()).add(new Vector3d(dirVec.getX(), dirVec.getY(), dirVec.getZ())).scale(level + 1);
+                Vector3d vec1 = new Vector3d(-level, -level, -level).add(dirVecXYZ).add(new Vector3d(sourcePos.offset(dir).getX(), sourcePos.offset(dir).getY(), sourcePos.offset(dir).getZ())).add(new Vector3d(dirVec.getX(), dirVec.getY(), dirVec.getZ()).scale(level + 1));
+                Vector3d vec2 = new Vector3d(level + 1, level + 1, level + 1).subtract(dirVecXYZ).add(new Vector3d(sourcePos.offset(dir).getX(), sourcePos.offset(dir).getY(), sourcePos.offset(dir).getZ())).subtract(new Vector3d(dirVec.getX(), dirVec.getY(), dirVec.getZ()).scale(level + 1));
                 if (!world.isRemote && stack.getItem() instanceof EssenceShear) {
-                    this.successful = false;
+                    this.setSuccessful(false);
                     EssenceShear shear = (EssenceShear) stack.getItem();
                     world.getEntitiesInAABBexcluding(null, new AxisAlignedBB(vec1, vec2),
-                        e -> e instanceof LivingEntity && e instanceof IShearable && !e.isSpectator())
+                        e -> e instanceof LivingEntity && e instanceof IForgeShearable && !e.isSpectator())
                         .forEach(e -> {
                             shear.itemInteractionForEntity(stack, null, (LivingEntity) e, Hand.MAIN_HAND);
                             Essence.LOGGER.info("Attempted to Shear at " + e.getPosition().toString());

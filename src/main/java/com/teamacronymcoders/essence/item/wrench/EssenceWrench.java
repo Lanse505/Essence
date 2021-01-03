@@ -15,10 +15,12 @@ import com.teamacronymcoders.essence.util.EssenceStats;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
+import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +34,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -50,6 +52,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,14 +69,14 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         this.freeModifiers = 1;
     }
 
-    private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, IProperty<T> property) {
+    private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, Property<T> property) {
         T prop = state.get(property);
         return property.getName(prop);
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) return false;
+    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+        if (target.getEntityWorld().isRemote) return ActionResultType.FAIL;
         LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
         return lazy.isPresent() ? lazy.map(holder -> {
             Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
@@ -88,8 +91,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
                 player.addItemStackToInventory(serialized);
                 stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(hand));
             }
-            return successful;
-        }).orElse(false) : false;
+            return successful ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+        }).orElse(ActionResultType.FAIL) : ActionResultType.FAIL;
     }
 
     @Override
@@ -161,7 +164,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         }
 
         if (player != null && mode == WrenchModeEnum.ROTATE) {
-            if (player.isShiftKeyDown()) {
+            if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
                 state.rotate(Rotation.CLOCKWISE_180);
             }
             state.rotate(Rotation.CLOCKWISE_90);
@@ -173,7 +176,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendText(" ").appendSibling(new TranslationTextComponent(mode.getLocaleName())));
+        list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleName())));
         if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
             list.add(new StringTextComponent(" "));
             list.add(new TranslationTextComponent("essence.wrench.disclaimer"));

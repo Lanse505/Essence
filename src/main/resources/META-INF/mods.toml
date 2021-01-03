@@ -1,6 +1,7 @@
 modLoader="javafml"
 loaderVersion="[31,)"
 issueTrackerURL="https://github.com/Lanse505/Essence/issues"
+license="MIT"
 
 [[mods]]
     modId="essence"
@@ -21,13 +22,20 @@ issueTrackerURL="https://github.com/Lanse505/Essence/issues"
 [[dependencies.essence]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.4]"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.essence]]
     modId="titanium"
     mandatory=true
-    versionRange="[2.3,]"
+    versionRange="[3.2.4,]"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.essence]]
+    modId="patchouli"
+    mandatory=true
+    versionRange="[1.16.4-48,]"
     ordering="AFTER"
     side="BOTH"

@@ -38,12 +38,12 @@ public interface IModifiedBlock extends IModified<Block> {
             }).reduce(0f, Float::sum)).orElse(defaultHardness);
     }
 
-    default float getExplosionResistanceFromModifiers(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion, TileEntity te, float defaultExplosionResistance) {
+    default float getExplosionResistanceFromModifiers(BlockState state, IBlockReader reader, BlockPos pos, @Nullable Entity exploder, Explosion explosion, TileEntity te, float defaultExplosionResistance) {
         return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
                 BlockCoreModifier modifier = (BlockCoreModifier) instance.getModifier();
-                return modifier.getModifiedExplosionResistance(state, world, pos, exploder, explosion);
+                return modifier.getModifiedExplosionResistance(state, reader, pos, exploder, explosion);
             }).reduce(0f, Float::sum)).orElse(defaultExplosionResistance);
     }
 
@@ -59,10 +59,10 @@ public interface IModifiedBlock extends IModified<Block> {
     default void addInformation(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
         int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
         int maxModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getMaxModifiers() : 0;
-        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").applyTextStyle(TextFormatting.GRAY).appendSibling(new TranslationTextComponent(tier.getLocaleString()).applyTextStyle(tier.getRarity().color)));
-        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).applyTextStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).applyTextStyle(TextFormatting.GRAY));
+        list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
+        list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).mergeStyle(TextFormatting.GRAY));
         if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS)) {
-            list.add(new TranslationTextComponent("tooltip.essence.modifier").applyTextStyle(TextFormatting.GOLD));
+            list.add(new TranslationTextComponent("tooltip.essence.modifier").mergeStyle(TextFormatting.GOLD));
             Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
             stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER)
                 .ifPresent(holder -> holder.getModifierInstances()

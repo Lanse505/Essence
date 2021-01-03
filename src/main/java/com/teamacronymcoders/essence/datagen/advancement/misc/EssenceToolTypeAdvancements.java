@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.util.*;
 import com.teamacronymcoders.essence.util.registration.*;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
 import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 
@@ -33,7 +34,7 @@ public class EssenceToolTypeAdvancements {
                 FrameType.CHALLENGE, false, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeToolRoot())
-            .withCriterion("tool_crafting", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.TOOL_CRAFTING.get()))
+            .withCriterion("tool_crafting", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.TOOL_CRAFTING.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:knowledge/tools/tool_types");
 

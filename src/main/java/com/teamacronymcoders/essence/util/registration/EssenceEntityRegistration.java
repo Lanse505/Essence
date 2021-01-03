@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceEntityRegistration {
 
-    private static final DeferredRegister<EntityType<?>> ENTITY_TYPE_DEFERRED_REGISTER = new DeferredRegister<>(ForgeRegistries.ENTITIES, Essence.MODID);
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPE_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ENTITIES, Essence.MODID);
 
     public static RegistryObject<EntityType<GlueBallEntity>> GLUE_BALL = ENTITY_TYPE_DEFERRED_REGISTER.register("glue_ball", () -> EntityType.Builder.<GlueBallEntity>create(GlueBallEntity::new, EntityClassification.MISC).build("glue_ball"));
 

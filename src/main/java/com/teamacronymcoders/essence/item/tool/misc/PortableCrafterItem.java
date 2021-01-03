@@ -62,7 +62,7 @@ public class PortableCrafterItem extends Item implements IScreenAddonProvider, I
 
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("container.essence.portable.crafter").applyTextStyle(TextFormatting.BLACK);
+        return new TranslationTextComponent("container.essence.portable.crafter").mergeStyle(TextFormatting.BLACK);
     }
 
     @Nullable

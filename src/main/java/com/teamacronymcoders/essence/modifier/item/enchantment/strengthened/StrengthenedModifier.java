@@ -56,7 +56,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
-        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("strengthened.type." + this.type.getName()).applyTextStyles(this.type.getTextFormatting())).applyTextStyle(TextFormatting.GRAY));
+        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("strengthened.type." + this.type.getName()).mergeStyle(this.type.getTextFormatting())).mergeStyle(TextFormatting.GRAY));
         return textComponents;
     }
 

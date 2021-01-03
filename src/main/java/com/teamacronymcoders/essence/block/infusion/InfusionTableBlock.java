@@ -60,13 +60,13 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
                 ItemStack copy = stack.copy();
                 te.getTome().setStackInSlot(0, copy);
                 stack.shrink(1);
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
                 return ActionResultType.SUCCESS;
             } else if (!stack.isEmpty() && te.getInfusable().getStackInSlot(0).isEmpty()) {
                 ItemStack copy = stack.copy();
                 te.getInfusable().setStackInSlot(0, copy);
                 stack.shrink(1);
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
                 return ActionResultType.SUCCESS;
             }
 
@@ -75,13 +75,13 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
                 ItemStack copy = te.getTome().getStackInSlot(0);
                 player.addItemStackToInventory(copy);
                 te.getTome().setStackInSlot(0, ItemStack.EMPTY);
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
                 return ActionResultType.SUCCESS;
             } else if (stack.isEmpty() && !te.getInfusable().getStackInSlot(0).isEmpty()) {
                 ItemStack copy = te.getInfusable().getStackInSlot(0).copy();
                 player.addItemStackToInventory(copy);
                 te.getInfusable().setStackInSlot(0, ItemStack.EMPTY);
-                te.markComponentForUpdate();
+                te.markComponentForUpdate(false);
                 return ActionResultType.SUCCESS;
             }
         }

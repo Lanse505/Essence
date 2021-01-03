@@ -20,7 +20,7 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
         super(EssenceObjectHolders.INFUSION_PEDESTAL);
         addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
             .setComponentHarness(this)
-            .setOnSlotChanged((stack, integer) -> markComponentForUpdate())
+            .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))
             .setSlotLimit(1)
         );
     }

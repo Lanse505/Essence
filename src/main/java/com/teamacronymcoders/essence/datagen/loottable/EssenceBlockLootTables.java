@@ -13,12 +13,22 @@ import net.minecraft.block.SlabBlock;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
+import net.minecraft.loot.AlternativesLootEntry;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.RandomValueRange;
+import net.minecraft.loot.conditions.Alternative;
+import net.minecraft.loot.conditions.BlockStateProperty;
+import net.minecraft.loot.conditions.Inverted;
+import net.minecraft.loot.conditions.MatchTool;
+import net.minecraft.loot.conditions.SurvivesExplosion;
+import net.minecraft.loot.conditions.TableBonus;
+import net.minecraft.loot.functions.ApplyBonus;
+import net.minecraft.loot.functions.ExplosionDecay;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.SlabType;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.conditions.*;
-import net.minecraft.world.storage.loot.functions.ApplyBonus;
-import net.minecraft.world.storage.loot.functions.ExplosionDecay;
-import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
@@ -48,7 +58,7 @@ public class EssenceBlockLootTables extends BlockLootTables {
                                 )),
                     ItemLootEntry.builder(EssenceObjectHolders.ESSENCE_WOOD_SAPLING)
                         .acceptCondition(SurvivesExplosion.builder())
-                        .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.05F, 0.0625F, 0.083333336F, 0.1F)),
+                        .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.05F, 0.0625F, 0.083333336F, 0.1F))
                 ))
             )
             .addLootPool(LootPool.builder()

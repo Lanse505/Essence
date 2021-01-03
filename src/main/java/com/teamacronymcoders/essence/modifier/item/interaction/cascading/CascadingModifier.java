@@ -19,6 +19,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 
 import java.util.ArrayList;
@@ -59,7 +60,9 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
                             block.harvestBlock(world, player, foundPos, foundState, tile, stack);
                             player.addStat(Stats.ITEM_USED.get(stack.getItem()));
                             if (exp > 0) {
-                                block.dropXpOnBlockBreak(world, foundPos, exp);
+                                if (!world.isRemote) {
+                                    block.dropXpOnBlockBreak((ServerWorld) world, foundPos, exp);
+                                }
                             }
                         }
                     }
@@ -102,7 +105,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
-        textComponents.add(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("cascading.type." + this.type.getName()).applyTextStyles(this.type.getFormatting())).applyTextStyle(TextFormatting.GRAY));
+        textComponents.add(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("cascading.type." + this.type.getName()).mergeStyle(this.type.getFormatting())).mergeStyle(TextFormatting.GRAY));
         return textComponents;
     }
 

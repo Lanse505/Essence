@@ -46,12 +46,12 @@ public class CustomSaplingBlock extends CustomBushBlock implements IGrowable {
 
     public void attemptGrow(ServerWorld world, BlockPos pos, BlockState state, Random random) {
         if (state.get(STAGE) == 0) {
-            world.setBlockState(pos, state.cycle(STAGE), 4);
+            world.setBlockState(pos, state.func_235896_a_(STAGE), 4);
         } else {
             if (!net.minecraftforge.event.ForgeEventFactory.saplingGrowTree(world, random, pos)) {
                 return;
             }
-            this.tree.func_225545_a_(world, world.getChunkProvider().getChunkGenerator(), pos, state, random);
+            this.tree.attemptGrowTree(world, world.getChunkProvider().getChunkGenerator(), pos, state, random);
         }
 
     }

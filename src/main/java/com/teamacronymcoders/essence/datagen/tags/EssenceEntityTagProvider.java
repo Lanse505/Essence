@@ -1,26 +1,30 @@
 package com.teamacronymcoders.essence.datagen.tags;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.EntityTypeTagsProvider;
 import net.minecraft.entity.EntityType;
+import net.minecraftforge.common.data.ExistingFileHelper;
+
+import javax.annotation.Nullable;
 
 public class EssenceEntityTagProvider extends EntityTypeTagsProvider {
 
-    public EssenceEntityTagProvider(DataGenerator generator) {
-        super(generator);
+    public EssenceEntityTagProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
+        super(generator, Essence.MODID, existingFileHelper);
     }
 
     @Override
     protected void registerTags() {
-        getBuilder(EssenceEntityTags.BLACKLIST).add(
+        getOrCreateBuilder(EssenceEntityTags.BLACKLIST).add(
             EntityType.ARMOR_STAND,
             EntityType.ENDER_DRAGON,
             EntityType.PLAYER
         );
-        getBuilder(EssenceEntityTags.WHITELIST).add(
+        getOrCreateBuilder(EssenceEntityTags.WHITELIST).add(
             EntityType.BAT,
             EntityType.BEE,
             EntityType.BLAZE,
@@ -52,7 +56,8 @@ public class EssenceEntityTagProvider extends EntityTypeTagsProvider {
             EntityType.PARROT,
             EntityType.PIG,
             EntityType.PUFFERFISH,
-            EntityType.ZOMBIE_PIGMAN,
+            EntityType.ZOGLIN,
+            EntityType.ZOMBIFIED_PIGLIN,
             EntityType.POLAR_BEAR,
             EntityType.RABBIT,
             EntityType.SALMON,

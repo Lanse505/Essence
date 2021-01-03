@@ -12,7 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 @SuppressWarnings("unchecked")
 public class EssenceKnowledgeRegistration {
 
-    private static final DeferredRegister<Knowledge<?>> KNOWLEDGE_DEFERRED_REGISTER = new DeferredRegister<>(EssenceRegistries.KNOWLEDGE, Essence.MODID);
+    private static final DeferredRegister<Knowledge<?>> KNOWLEDGE_DEFERRED_REGISTER = DeferredRegister.create(EssenceRegistries.KNOWLEDGE, Essence.MODID);
 
     // Modifier Knowledge
     public static RegistryObject<Knowledge<ItemStack>> BREWED_MODIFIER_KNOWLEDGE = KNOWLEDGE_DEFERRED_REGISTER.register("brewed", () -> new Knowledge<ItemStack>(ItemStack.class, new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, null)));

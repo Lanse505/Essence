@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EssenceColorHelper {
-    public static Map<Tag<Item>, DyeColor> tagToDye = new HashMap<>();
+    public static Map<IOptionalNamedTag<Item>, DyeColor> tagToDye = new HashMap<>();
     private static List<Color> colors = new ArrayList<>();
 
     static {

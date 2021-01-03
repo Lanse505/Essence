@@ -1,10 +1,9 @@
 package com.teamacronymcoders.essence.generation.tree.essence_tree;
 
-import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
-import com.teamacronymcoders.essence.util.registration.EssenceFeatureRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceFeatures;
 import net.minecraft.block.trees.Tree;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -12,7 +11,7 @@ import java.util.Random;
 public class EssenceTree extends Tree {
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-        return random.nextInt(10) >= 8 ? EssenceFeatureRegistration.NORMAL_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfig.SAPLING_ESSENCE_TREE_CONFIG) : EssenceFeatureRegistration.FANCY_ESSENCE_TREE_FEATURE.get().withConfiguration(EssenceFeatureConfig.SAPLING_ESSENCE_TREE_CONFIG);
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
+        return random.nextInt(10) >= 8 ? EssenceFeatures.NORMAL_ESSENCE_TREE_FEATURE : EssenceFeatures.FANCY_ESSENCE_TREE_FEATURE;
     }
 }

@@ -1,7 +1,8 @@
 package com.teamacronymcoders.essence.block;
 
 import com.hrznstudio.titanium.block.BasicBlock;
-import com.hrznstudio.titanium.recipe.generator.TitaniumLootTableProvider;
+import com.hrznstudio.titanium.datagenerator.loot.TitaniumLootTableProvider;
+import com.hrznstudio.titanium.datagenerator.loot.block.BasicBlockLootTables;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.misc.IColorProvider;
@@ -16,6 +17,7 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable.Builder;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -93,15 +95,14 @@ public class EssenceBrickBlock extends BasicBlock implements IColorProvider {
             .orElse(ActionResultType.PASS) : ActionResultType.PASS;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return color.getMapColor();
+    public MaterialColor getMaterialColor() {
+        return super.getMaterialColor();
     }
 
     @Override
-    public void createLootTable(@Nonnull TitaniumLootTableProvider provider) {
-        super.createLootTable(provider);
+    public Builder getLootTable(@Nonnull BasicBlockLootTables blockLootTables) {
+        return blockLootTables.droppingSelf(this);
     }
 
     @Override

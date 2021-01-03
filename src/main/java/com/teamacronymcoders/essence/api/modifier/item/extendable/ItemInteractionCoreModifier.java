@@ -4,8 +4,8 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -32,15 +32,15 @@ public abstract class ItemInteractionCoreModifier extends ItemAttributeModifier 
         super(maxLevel, minLevel);
     }
 
-    public ItemInteractionCoreModifier(IAttribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
         super(attribute, identifier, uuid, amount, operation);
     }
 
-    public ItemInteractionCoreModifier(IAttribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
         super(attribute, identifier, uuid, amount, maxLevel, operation);
     }
 
-    public ItemInteractionCoreModifier(IAttribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
         super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
     }
 

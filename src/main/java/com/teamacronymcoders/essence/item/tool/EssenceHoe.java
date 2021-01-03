@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -38,7 +39,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     private int additionalModifiers;
 
     public EssenceHoe(EssenceToolTiers tier) {
-        super(tier, tier.getAttackSpeedHoeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+        super(tier, 0, tier.getAttackSpeedHoeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
@@ -129,7 +130,7 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
     }
 

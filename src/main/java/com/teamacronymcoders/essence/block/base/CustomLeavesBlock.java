@@ -20,11 +20,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 
 import java.util.Random;
 
-public class CustomLeavesBlock extends BasicBlock implements IShearable {
+public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
     public static final IntegerProperty DISTANCE = BlockStateProperties.DISTANCE_1_7;
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
@@ -35,18 +35,17 @@ public class CustomLeavesBlock extends BasicBlock implements IShearable {
 
     private static BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
         int i = 7;
+        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
-            for (Direction direction : Direction.values()) {
-                blockpos$pooledmutable.setPos(pos).move(direction);
-                i = Math.min(i, getDistance(worldIn.getBlockState(blockpos$pooledmutable)) + 1);
-                if (i == 1) {
-                    break;
-                }
+        for(Direction direction : Direction.values()) {
+            blockpos$mutable.setAndMove(pos, direction);
+            i = Math.min(i, getDistance(worldIn.getBlockState(blockpos$mutable)) + 1);
+            if (i == 1) {
+                break;
             }
         }
 
-        return state.with(DISTANCE, i);
+        return state.with(DISTANCE, Integer.valueOf(i));
     }
 
     private static int getDistance(BlockState neighbor) {

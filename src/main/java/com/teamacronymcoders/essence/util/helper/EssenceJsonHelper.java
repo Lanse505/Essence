@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -66,8 +66,8 @@ public class EssenceJsonHelper {
         final JsonObject object = new JsonObject();
         object.addProperty("block", state.getBlock().getRegistryName().toString());
         final JsonObject propertiesElement = new JsonObject();
-        ImmutableMap<IProperty<?>, Comparable<?>> map = state.getValues();
-        for (ImmutableMap.Entry<IProperty<?>, Comparable<?>> entry : map.entrySet()) {
+        ImmutableMap<Property<?>, Comparable<?>> map = state.getValues();
+        for (ImmutableMap.Entry<Property<?>, Comparable<?>> entry : map.entrySet()) {
             propertiesElement.addProperty(entry.getKey().getName(), entry.getValue().toString());
         }
         object.add("properties", propertiesElement);
@@ -89,7 +89,7 @@ public class EssenceJsonHelper {
                 // primitive string structure.
                 for (final Map.Entry<String, JsonElement> property : props.entrySet()) {
                     // Check the block for the property. Keys = property names.
-                    final IProperty blockProperty = block.getStateContainer().getProperty(property.getKey());
+                    final Property blockProperty = block.getStateContainer().getProperty(property.getKey());
                     if (blockProperty != null) {
                         if (property.getValue().isJsonPrimitive()) {
                             // Attempt to parse the value with the the property.

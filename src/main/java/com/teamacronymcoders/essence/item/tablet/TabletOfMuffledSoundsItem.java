@@ -1,6 +1,8 @@
 package com.teamacronymcoders.essence.item.tablet;
 
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
+import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,17 +24,6 @@ import java.util.List;
 
 public class TabletOfMuffledSoundsItem extends TabletItem {
 
-    public TabletOfMuffledSoundsItem() {
-        addPropertyOverride(new ResourceLocation("toggled"), new IItemPropertyGetter() {
-            @Override
-            public float call(ItemStack stack, @Nullable World world, @Nullable LivingEntity livingEntity) {
-                return stack.hasTag() && stack.getTag() != null && stack.getTag().contains("enabled") && stack.getTag().getBoolean("enabled") ? 1f : 0f;
-            }
-        });
-    }
-
-
-
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
@@ -41,7 +32,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if(player.isShiftKeyDown()) {
+        if(EssenceKeyHandler.CYCLING.isKeyDown()) {
             toggle(player, stack);
         } else {
 //            playerIn.openGui(SuperSoundMuffler.instance, GuiHandler.SOUND_MUFFLER_BAUBLE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);

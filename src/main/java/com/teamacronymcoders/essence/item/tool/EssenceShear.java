@@ -18,6 +18,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -32,7 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -123,7 +124,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
     }
 
@@ -153,15 +154,15 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand) {
+    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand) {
         if (sheared.world.isRemote) {
-            return false;
+            return ActionResultType.FAIL;
         }
-        if (sheared instanceof IShearable) {
-            IShearable target = (IShearable) sheared;
+        if (sheared instanceof IForgeShearable) {
+            IForgeShearable target = (IForgeShearable) sheared;
             BlockPos pos = new BlockPos(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
             if (target.isShearable(stack, sheared.world, pos)) {
-                List<ItemStack> dropList = sheared instanceof SheepEntity ? handleShearingSheep((SheepEntity) sheared, stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)) : target.onSheared(stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
+                List<ItemStack> dropList = sheared instanceof SheepEntity ? handleShearingSheep((SheepEntity) sheared, stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)) : target.onSheared(player, stack, sheared.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
 
                 // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
                 List<? extends ModifierInstance<?>> unchecked = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
@@ -189,10 +190,10 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
                 // Damage the ItemStack
                 stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return ActionResultType.FAIL;
     }
 
     @Override
