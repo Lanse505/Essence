@@ -251,7 +251,7 @@ public class EssenceEventHandlers {
                 }
             }).subscribe();
 
-        // Wrench-Mode Handler
+        // Essence-Tome Handler
         EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
                 Minecraft minecraft = Minecraft.getInstance();

@@ -226,9 +226,9 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     @Override
-    public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer dataStream) {
+    public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
         if (!world.isRemote()) {
-            setMode(dataStream.readEnumValue(WrenchModeEnum.class));
+            setMode(packetBuffer.readEnumValue(WrenchModeEnum.class));
         }
     }
 
