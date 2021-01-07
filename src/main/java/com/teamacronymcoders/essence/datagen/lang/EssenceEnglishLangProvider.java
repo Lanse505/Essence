@@ -231,6 +231,7 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
     private void addModifiers() {
         //Irregulars
         add("modifier.essence.attribute", "Attribute [%s]");
+        add("modifier.essence.brewed", "Brewed [Hold %s for Info]");
         add("modifier.essence.brewed.cleaned", "Brewed");
         add("modifier.essence.cascading", "Cascading [%s]");
         add("modifier.essence.strengthened", "Strengthened %s [%s]");

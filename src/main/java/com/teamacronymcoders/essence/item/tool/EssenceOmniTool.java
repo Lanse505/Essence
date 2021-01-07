@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.item.tool;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
@@ -35,7 +36,6 @@ import java.util.*;
 public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     private static final Set<Block> EFFECTIVE_ON = mergeSet(AxeItem.EFFECTIVE_ON_BLOCKS, PickaxeItem.EFFECTIVE_ON, ShovelItem.EFFECTIVE_ON);
-    private static final List<Item> tools = new ArrayList<>(Arrays.asList(EssenceObjectHolders.ESSENCE_AXE, EssenceObjectHolders.ESSENCE_PICKAXE, EssenceObjectHolders.ESSENCE_SHOVEL));
     private final EssenceToolTiers tier;
     private final int baseModifiers;
     private int freeModifiers;
@@ -53,7 +53,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
     }
 
     @Override
-    public Rarity getRarity(ItemStack p_77613_1_) {
+    public Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -163,7 +163,8 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        return HashMultimap.create();
     }
 
     @Override

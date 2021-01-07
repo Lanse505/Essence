@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.util;
+package com.teamacronymcoders.essence.util.proxy;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.network.NetworkEvent;

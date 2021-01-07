@@ -9,6 +9,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -48,7 +49,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     @Override
     public ITextComponent getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslationTextComponent(getTranslationName() + ".cleaned", new TranslationTextComponent("strengthened.type." + this.type.getName()));
+            return new TranslationTextComponent(getTranslationName() + ".cleaned", new TranslationTextComponent("essence.strengthened.type." + this.type.getName()));
         }
         return super.getTextComponentName(level);
     }
@@ -56,7 +57,7 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
     @Override
     public List<ITextComponent> getRenderedText(ModifierInstance<ItemStack> instance) {
         List<ITextComponent> textComponents = new ArrayList<>();
-        textComponents.add(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("strengthened.type." + this.type.getName()).mergeStyle(this.type.getTextFormatting())).mergeStyle(TextFormatting.GRAY));
+        textComponents.add(new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("essence.strengthened.type." + this.type.getName()).mergeStyle(this.type.getTextFormatting())).mergeStyle(TextFormatting.GRAY)));
         return textComponents;
     }
 

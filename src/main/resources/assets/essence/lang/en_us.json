@@ -236,6 +236,7 @@
   "knowledge.essence.tool_crafting": "Tool-Crafting",
   "knowledge.essence.unbreaking": "Unbreaking",
   "modifier.essence.attribute": "Attribute [%s]",
+  "modifier.essence.brewed": "Brewed [Hold %s for Info]",
   "modifier.essence.brewed.cleaned": "Brewed",
   "modifier.essence.cascading": "Cascading [%s]",
   "modifier.essence.efficiency": "Efficiency",

@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.util.proxy;
 
-import com.teamacronymcoders.essence.util.EssenceCommonProxy;
 import net.minecraftforge.fml.DistExecutor.SafeSupplier;
 
 import java.util.function.Supplier;

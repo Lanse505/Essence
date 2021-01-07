@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -117,6 +118,7 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }

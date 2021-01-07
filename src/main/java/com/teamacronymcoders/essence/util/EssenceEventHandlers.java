@@ -82,7 +82,6 @@ public class EssenceEventHandlers {
         setupKnowledgeCapabilities();
         setupServer();
         setupWorldgen();
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     }
 
     // Registration Handlers
@@ -204,7 +203,7 @@ public class EssenceEventHandlers {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static void setupClientEventHandlers() {
+    public static void setupClientEventHandlers() {
         // Atlas Texture Handler
         EventManager.mod(TextureStitchEvent.Pre.class)
             .filter(stitch -> stitch.getMap().getTextureLocation().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE))

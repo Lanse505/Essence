@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.item.tool;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
@@ -123,9 +124,9 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        return HashMultimap.create();
     }
 
     @Override
@@ -175,8 +176,10 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
                 // Loops over and Gathers the final modified list
                 for (ModifierInstance<ItemStack> instance : matchingEntries) {
-                    ItemInteractionCoreModifier interactionCoreModifier = (ItemInteractionCoreModifier) instance.getModifier();
-                    dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
+                    if (instance.getModifier() instanceof ItemInteractionCoreModifier) {
+                        ItemInteractionCoreModifier interactionCoreModifier = (ItemInteractionCoreModifier) instance.getModifier();
+                        dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
+                    }
                 }
 
                 // Handle dropping the final list of ItemStacks

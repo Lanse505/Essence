@@ -1,6 +1,5 @@
-package com.teamacronymcoders.essence.client;
+package com.teamacronymcoders.essence.util.proxy;
 
-import com.teamacronymcoders.essence.util.EssenceCommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.network.NetworkDirection;

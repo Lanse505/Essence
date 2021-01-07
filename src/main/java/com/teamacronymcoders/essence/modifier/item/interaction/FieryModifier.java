@@ -19,6 +19,7 @@ public class FieryModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
+    //TODO: Figure out why Fiery is broken
     public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
         if (stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow) {
             EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
