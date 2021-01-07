@@ -34,6 +34,7 @@ import com.teamacronymcoders.essence.entity.render.ShearedCreeperRenderer;
 import com.teamacronymcoders.essence.entity.render.ShearedGhastRenderer;
 import com.teamacronymcoders.essence.entity.render.ShearedPigRenderer;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
+import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
@@ -53,11 +54,15 @@ import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
+import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
+import com.teamacronymcoders.essence.util.proxy.EssenceServerProxy;
 import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceItemRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
+import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
+import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -67,6 +72,12 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
@@ -113,45 +124,28 @@ public class Essence extends ModuleController {
     public static final String MODID = "essence";
     public static final Random RANDOM = new Random();
     public static final Logger LOGGER = LogManager.getLogger("Essence");
-    public static final AdvancedTitaniumTab CORE_TAB = new AdvancedTitaniumTab("essence_core", true) {
-        @Override
-        public boolean hasScrollbar() {
-            return true;
-        }
-    };
-    public static final AdvancedTitaniumTab TOOL_TAB = new AdvancedTitaniumTab("essence_tools", true) {
-        @Override
-        public boolean hasScrollbar() {
-            return true;
-        }
-    };
+    public static final AdvancedTitaniumTab CORE_TAB = new EssenceCoreTab();
+    public static final AdvancedTitaniumTab TOOL_TAB = new EssenceToolTab();
 
     public static Essence instance;
-    public static EssenceCommonProxy proxy = DistExecutor.runForDist(Essence::getClientProxy, () -> EssenceCommonProxy::new);
+    public static EssenceCommonProxy proxy = DistExecutor.safeRunForDist(EssenceSafeSuppliers.getClientProxy(), EssenceSafeSuppliers.getServerProxy());
     public static PacketHandler handler = new PacketHandler();
     public final String versionNumber;
-
-    @OnlyIn(Dist.CLIENT)
-    private static Supplier<EssenceCommonProxy> getClientProxy() {
-        return EssenceClientProxy::new;
-    }
 
     public Essence() {
         instance = this;
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
         handler.init();
-
+        
         JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
         JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
         JSONSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::writeBlockState, EssenceSerializableObjectHandler::readBlockState);
         CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
         CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
         CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
-
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
-
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EssenceEntityRegistration.register(eventBus);
         EssenceKnowledgeRegistration.register(eventBus);
@@ -210,8 +204,14 @@ public class Essence extends ModuleController {
         CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
         EssenceConditions.MATCH_MODIFIER = LootConditionManager.register("essence:match_modifier", new MatchModifier.Serializer());
 
+        GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ChickenEntity.func_234187_eI_().create());
+        GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_COW.get(), CowEntity.func_234188_eI_().create());
+        GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_CREEPER.get(), CreeperEntity.registerAttributes().create());
+        GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_GHAST.get(), GhastEntity.func_234290_eH_().create());
+        GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_PIG.get(), PigEntity.func_234215_eI_().create());
+
         // TODO: Fix Dispenser Behaviour
-        //EssenceDispenseBehaviours.init();
+        EssenceDispenseBehaviours.init();
     }
 
     @SuppressWarnings("unchecked")

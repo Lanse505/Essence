@@ -82,7 +82,7 @@ public class EssenceEventHandlers {
         setupKnowledgeCapabilities();
         setupServer();
         setupWorldgen();
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     }
 
     // Registration Handlers

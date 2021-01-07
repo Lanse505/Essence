@@ -14,6 +14,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,20 +81,29 @@ public class HoeTillingRecipe extends SerializableRecipe {
     public ActionResultType resolveRecipe(ItemUseContext context) {
         World world = context.getWorld();
         BlockPos blockpos = context.getPos();
-        int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(context);
-        if (hook != 0) {
-            return hook > 0 ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-        }
+        BlockState targetedState = world.getBlockState(blockpos);
+        BlockState hook = net.minecraftforge.event.ForgeEventFactory.onToolUse(targetedState, world, blockpos, context.getPlayer(), context.getItem(), ToolType.HOE);
         if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
             if (to != null) {
                 PlayerEntity playerentity = context.getPlayer();
                 world.playSound(playerentity, blockpos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 if (!world.isRemote) {
-                    world.setBlockState(blockpos, to, 11);
-                    if (playerentity != null) {
-                        context.getItem().damageItem(1, playerentity, (p_220043_1_) -> {
-                            p_220043_1_.sendBreakAnimation(context.getHand());
-                        });
+                    // If the state is changed after firing the forge hook then use the event provided state
+                    if (!targetedState.equals(hook)) {
+                        world.setBlockState(blockpos, hook, 11);
+                        if (playerentity != null) {
+                            context.getItem().damageItem(1, playerentity, (p_220043_1_) -> {
+                                p_220043_1_.sendBreakAnimation(context.getHand());
+                            });
+                        }
+                        // If the state is unchanged after firing the forge hook then use the recipe provided state
+                    } else {
+                        world.setBlockState(blockpos, to, 11);
+                        if (playerentity != null) {
+                            context.getItem().damageItem(1, playerentity, (p_220043_1_) -> {
+                                p_220043_1_.sendBreakAnimation(context.getHand());
+                            });
+                        }
                     }
                 }
                 return ActionResultType.SUCCESS;

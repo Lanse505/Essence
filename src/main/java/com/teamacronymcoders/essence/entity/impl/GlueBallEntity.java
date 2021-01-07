@@ -37,6 +37,8 @@ public class GlueBallEntity extends ProjectileItemEntity {
         super(EssenceEntityRegistration.GLUE_BALL.get(), x, y, z, worldIn);
     }
 
+
+
     @Override
     protected Item getDefaultItem() {
         return EssenceObjectHolders.GLUE_BALL;

@@ -15,9 +15,9 @@ import com.teamacronymcoders.essence.util.EssenceStats;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -52,7 +52,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +75,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
     public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
         if (target.getEntityWorld().isRemote) return ActionResultType.FAIL;
         LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
@@ -102,7 +104,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         BlockState state = world.getBlockState(pos);
         PlayerEntity player = context.getPlayer();
 
-        if (state.isAir(world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
+        if (state.getBlock().isAir(state, world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
             return ActionResultType.PASS;
         }
 
@@ -165,9 +167,9 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
         if (player != null && mode == WrenchModeEnum.ROTATE) {
             if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
-                state.rotate(Rotation.CLOCKWISE_180);
+                state.rotate(world, pos, Rotation.CLOCKWISE_180);
             }
-            state.rotate(Rotation.CLOCKWISE_90);
+            state.rotate(world, pos, Rotation.CLOCKWISE_90);
             player.addStat(Stats.ITEM_USED.get(this));
             return ActionResultType.SUCCESS;
         }
@@ -175,6 +177,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleName())));
         if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {

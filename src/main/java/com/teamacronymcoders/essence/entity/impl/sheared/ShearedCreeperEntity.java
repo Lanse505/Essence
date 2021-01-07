@@ -2,7 +2,10 @@ package com.teamacronymcoders.essence.entity.impl.sheared;
 
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.network.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;

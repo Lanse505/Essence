@@ -3,6 +3,8 @@ package com.teamacronymcoders.essence.item.tool.misc.behaviour;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
+import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
@@ -10,12 +12,16 @@ import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistrati
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -54,6 +60,12 @@ public class EssenceDispenseBehaviours {
                         });
                 }
                 return stack;
+            }
+        });
+        dispenserBehaviours.put(EssenceObjectHolders.GLUE_BALL, new ProjectileDispenseBehavior() {
+            @Override
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                return stackIn.getItem() instanceof GlueBallItem ? Util.make(new GlueBallEntity(worldIn, position.getX(), position.getY(), position.getZ()), glueBallEntity -> glueBallEntity.setItem(stackIn)) : null;
             }
         });
     }

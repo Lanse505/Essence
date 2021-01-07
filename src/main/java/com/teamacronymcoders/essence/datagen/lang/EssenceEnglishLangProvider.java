@@ -270,7 +270,7 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
         add("tier.essence.basic", "Basic");
         add("tier.essence.empowered", "Empowered");
         add("tier.essence.supreme", "Supreme");
-        add("tier.essence.divine", "divine");
+        add("tier.essence.divine", "Divine");
 
         add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
         add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");

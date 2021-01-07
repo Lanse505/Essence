@@ -10,8 +10,8 @@ public class EssenceOreGenConfig {
 
     public EssenceOreGenConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Ores");
-        essenceOre = new EssenceOreConfig(builder, "Essence", true, 24, 8, 0, 0, 128);
-        essenceCrystalOre = new EssenceOreConfig(builder, "EssenceCrystal", true, 16, 4, 0, 0, 128);
+        essenceOre = new EssenceOreConfig(builder, "Essence", true, 24, 8, 1, 1, 128);
+        essenceCrystalOre = new EssenceOreConfig(builder, "EssenceCrystal", true, 16, 4, 1, 1, 128);
         builder.pop();
     }
 

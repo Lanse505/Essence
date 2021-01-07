@@ -48,7 +48,6 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
-
     public EssenceBow(EssenceToolTiers tier) {
         super(new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
@@ -220,15 +219,9 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-        return attributeModifiers;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
-        return getAttributeModifiers(slot);
+        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
+        return HashMultimap.create();
     }
 
     @Override

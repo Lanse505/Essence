@@ -5,15 +5,16 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tags.*;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag.INamedTag;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import net.minecraft.tags.ItemTags;
 
 public class EssenceTags {
 
     public static class EssenceItemTags {
-        public static final IOptionalNamedTag<Item> AMMO_HOLDER = ItemTags.createOptional(new ResourceLocation(Essence.MODID, "ammo_holder"));
+        public static final INamedTag<Item> AMMO_HOLDER = ItemTags.makeWrapperTag(Essence.MODID + ":" + "ammo_holder");
 
         public static final INamedTag<Item> ESSENCE_WOOD_LOG = ItemTags.makeWrapperTag(Essence.MODID + ":" + "essence_logs");
         public static final INamedTag<Item> ESSENCE_WOOD_PLANKS = ItemTags.makeWrapperTag(Essence.MODID + ":" + "essence_planks");
