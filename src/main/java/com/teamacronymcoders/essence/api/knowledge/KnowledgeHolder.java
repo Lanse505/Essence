@@ -9,7 +9,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<CompoundNBT> {
 
@@ -40,7 +44,8 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     /**
      * This should only be called from code where you don't have a player input context for the input!
      * THIS VERSION DOES NOT FIRE EVENTS!
-     * @param player UUID to remove Knowledge from
+     *
+     * @param player    UUID to remove Knowledge from
      * @param knowledge Knowledge VarArg to remove.
      */
     @Override
@@ -76,9 +81,10 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
 
     /**
      * This should only be called from code where you don't have a player input context for the input!
-     * @param player UUID to remove Knowledge from
+     *
+     * @param player    UUID to remove Knowledge from
      * @param knowledge Knowledge VarArg to remove.
-     * THIS VERSION DOES NOT FIRE EVENTS!
+     *                  THIS VERSION DOES NOT FIRE EVENTS!
      */
     @Override
     public void removeKnowledge(UUID player, Knowledge<?>... knowledge) {

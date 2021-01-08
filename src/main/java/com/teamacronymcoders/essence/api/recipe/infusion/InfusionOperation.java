@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
-public enum  InfusionOperation {
+public enum InfusionOperation {
     ADD(0, "add"),
     REMOVE(1, "remove"),
     INCREMENT(2, "increment"),

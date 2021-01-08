@@ -19,7 +19,11 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +35,6 @@ import net.minecraftforge.common.util.Constants.BlockFlags;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 public class EssenceAxe extends AxeItem implements IModifiedTool {
 
@@ -87,11 +90,15 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
             world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
             resultType = ActionResultType.SUCCESS;
         }
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Check Recipes
         resultType = onItemBehaviour(context);
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Fallback on Modifier Behaviour
         return onItemUseFromModifiers(context).orElse(resultType);
@@ -160,7 +167,9 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) {
+            return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        }
         return HashMultimap.create();
     }
 

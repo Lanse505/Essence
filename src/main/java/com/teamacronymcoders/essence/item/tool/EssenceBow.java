@@ -22,10 +22,20 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.ArrowItem;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Items;
+import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -112,7 +122,9 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
             int i = this.getUseDuration(bow) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bow, world, player, i, !arrow.isEmpty() || flag);
-            if (i < 0) return;
+            if (i < 0) {
+                return;
+            }
 
             if (!arrow.isEmpty() || flag) {
                 if (arrow.isEmpty()) {
@@ -220,7 +232,9 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) {
+            return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
+        }
         return HashMultimap.create();
     }
 

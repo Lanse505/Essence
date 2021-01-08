@@ -14,7 +14,7 @@ import java.util.List;
  * This is totally not stolen from Mekanism
  * Nope not at all, and if anyone asks this is not the link to the specific code on the specific repo
  * link: https://github.com/mekanism/Mekanism/blob/1.16.x/src/main/java/mekanism/client/MekKeyHandler.java
- *
+ * <p>
  * Nope that is totally not what this is :)
  * Also their license is not MIT, and can not be found on their github: https://github.com/mekanism/Mekanism/blob/1.16.x/LICENSE
  */

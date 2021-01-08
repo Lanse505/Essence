@@ -85,7 +85,6 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     }
 
 
-
     public int getDuration() {
         return duration;
     }

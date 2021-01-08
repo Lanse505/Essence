@@ -1,16 +1,17 @@
 package com.teamacronymcoders.essence.datagen.advancement.misc;
 
-import com.teamacronymcoders.essence.datagen.advancement.*;
-import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.*;
-import com.teamacronymcoders.essence.util.*;
-import com.teamacronymcoders.essence.util.registration.*;
-import net.minecraft.advancements.*;
-import net.minecraft.advancements.criterion.*;
+import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
+import com.teamacronymcoders.essence.util.EssenceObjectHolders;
+import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
-import net.minecraft.util.*;
-import net.minecraft.util.text.*;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.function.*;
+import java.util.function.Consumer;
 
 public class EssenceToolTypeAdvancements {
 

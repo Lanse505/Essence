@@ -1,24 +1,16 @@
 package com.teamacronymcoders.essence.container;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
-import java.util.Comparator;
-import java.util.List;
-
 public class MufflerContainer extends ContainerScreen<Container> implements Slider.ISlider {
 
-    private static final int[] ranges = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 32, 64, 128, 256 };
+    private static final int[] ranges = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 32, 64, 128, 256};
 
     private Button modeButton;
     private Button addSoundButton;
@@ -44,7 +36,7 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
         });
         buttons.add(addSoundButton);
 
-        removeSoundButton = new Button(2, guiTop + 151, guiLeft + 205,44, new TranslationTextComponent("tile.sound_muffler.gui.button.remove"), pressed -> {
+        removeSoundButton = new Button(2, guiTop + 151, guiLeft + 205, 44, new TranslationTextComponent("tile.sound_muffler.gui.button.remove"), pressed -> {
 
         });
         removeSoundButton.active = false;
@@ -62,9 +54,11 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {}
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    }
 
 
     @Override
-    public void onChangeSliderValue(Slider slider) {}
+    public void onChangeSliderValue(Slider slider) {
+    }
 }

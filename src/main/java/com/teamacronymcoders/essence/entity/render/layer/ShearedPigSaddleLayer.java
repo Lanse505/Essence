@@ -24,7 +24,7 @@ public class ShearedPigSaddleLayer extends LayerRenderer<ShearedPigEntity, PigMo
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int i, ShearedPigEntity shearedPigEntity, float v, float v1, float v2, float v3, float v4, float v5) {
         if (shearedPigEntity.isHorseSaddled()) {
-            ((PigModel)this.getEntityModel()).copyModelAttributesTo(this.pigModel);
+            ((PigModel) this.getEntityModel()).copyModelAttributesTo(this.pigModel);
             this.pigModel.setLivingAnimations(shearedPigEntity, v, v1, v2);
             this.pigModel.setRotationAngles(shearedPigEntity, v, v1, v3, v4, v5);
             IVertexBuilder vertexBuilder = iRenderTypeBuffer.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE));

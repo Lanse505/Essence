@@ -78,7 +78,9 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
     public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) return ActionResultType.FAIL;
+        if (target.getEntityWorld().isRemote) {
+            return ActionResultType.FAIL;
+        }
         LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
         return lazy.isPresent() ? lazy.map(holder -> {
             Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
@@ -197,18 +199,28 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     public boolean serializeEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
-        if (target.getEntityWorld().isRemote) return false;
+        if (target.getEntityWorld().isRemote) {
+            return false;
+        }
         if (checkBoss) {
-            if (target instanceof PlayerEntity || !target.isNonBoss() || !target.isAlive()) return false;
+            if (target instanceof PlayerEntity || !target.isNonBoss() || !target.isAlive()) {
+                return false;
+            }
         } else {
-            if (target instanceof PlayerEntity || !target.isAlive()) return false;
+            if (target instanceof PlayerEntity || !target.isAlive()) {
+                return false;
+            }
         }
         return stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).map(storage -> {
             String entityID = EntityType.getKey(target.getType()).toString();
             if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
-                if (isEntityBlacklisted(entityID)) return false;
+                if (isEntityBlacklisted(entityID)) {
+                    return false;
+                }
             } else {
-                if (!isEntityWhitelisted(entityID)) return false;
+                if (!isEntityWhitelisted(entityID)) {
+                    return false;
+                }
             }
             storage.setEntity(target);
             playerIn.swingArm(hand);
@@ -248,10 +260,12 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     @Override
-    public void addModifierWithoutIncreasingAdditional(int increase){}
+    public void addModifierWithoutIncreasingAdditional(int increase) {
+    }
 
     @Override
-    public void increaseFreeModifiers(int increase) {}
+    public void increaseFreeModifiers(int increase) {
+    }
 
     @Override
     public boolean decreaseFreeModifiers(int decrease) {

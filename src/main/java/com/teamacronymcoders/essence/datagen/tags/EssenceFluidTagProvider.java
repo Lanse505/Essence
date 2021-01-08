@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.datagen.tags;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceFluidTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.FluidTagsProvider;

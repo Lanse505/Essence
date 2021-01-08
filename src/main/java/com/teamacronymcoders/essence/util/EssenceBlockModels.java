@@ -7,7 +7,7 @@ import static net.minecraft.block.Block.makeCuboidShape;
 
 public class EssenceBlockModels {
 
-    public static final VoxelShape[] INFUSION_PEDESTAL = new VoxelShape[] {
+    public static final VoxelShape[] INFUSION_PEDESTAL = new VoxelShape[]{
         EssenceVoxelHelper.combine(
             makeCuboidShape(5.2, 14, 5.2, 10.8, 14.2, 10.8),
             makeCuboidShape(11, 13, 8, 12, 14, 10),
@@ -43,8 +43,8 @@ public class EssenceBlockModels {
             makeCuboidShape(6, 8, 11, 8, 9, 12),
             makeCuboidShape(8, 9, 11, 10, 10, 12),
             makeCuboidShape(5, 4, 5, 6, 5, 6),
-            makeCuboidShape(4, 5, 6, 5, 6,8),
-            makeCuboidShape(4,6, 8, 5, 7, 10),
+            makeCuboidShape(4, 5, 6, 5, 6, 8),
+            makeCuboidShape(4, 6, 8, 5, 7, 10),
             makeCuboidShape(11, 11, 8, 12, 12, 10),
             makeCuboidShape(5, 1, 10, 6, 2, 11),
             makeCuboidShape(10, 4, 10, 11, 5, 11),
@@ -65,7 +65,7 @@ public class EssenceBlockModels {
             makeCuboidShape(10, 1, 6.5, 10.25, 13, 9.5)
         )
     };
-    public static final VoxelShape[] INFUSION_TABLE = new VoxelShape[] {
+    public static final VoxelShape[] INFUSION_TABLE = new VoxelShape[]{
         EssenceVoxelHelper.combine(
             makeCuboidShape(1, 0, 1, 15, 9, 15),
             makeCuboidShape(0, 4, 0, 2, 10, 2),
@@ -78,6 +78,7 @@ public class EssenceBlockModels {
             makeCuboidShape(0.5, 0.1, 5, 3.5, 9.5, 11),
             makeCuboidShape(3, 9, 3, 13, 10, 13)
         )
-    };;
+    };
+    ;
 
 }

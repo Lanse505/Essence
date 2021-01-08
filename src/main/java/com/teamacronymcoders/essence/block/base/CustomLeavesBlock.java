@@ -37,7 +37,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
         int i = 7;
         BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        for(Direction direction : Direction.values()) {
+        for (Direction direction : Direction.values()) {
             blockpos$mutable.setAndMove(pos, direction);
             i = Math.min(i, getDistance(worldIn.getBlockState(blockpos$mutable)) + 1);
             if (i == 1) {

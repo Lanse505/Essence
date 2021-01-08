@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.util.helper;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingType;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.Block;
@@ -12,9 +11,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class EssenceBlockHelper {
 
@@ -24,15 +21,6 @@ public class EssenceBlockHelper {
             if (newState.getProperties().contains(property)) {
                 values.put(property, oldState.get(property));
             }
-        }
-        return values.build();
-    }
-
-    public static ImmutableMap<Property<?>, Comparable<?>> getCommonPropertiesByName(BlockState oldState, BlockState newState) {
-        List<Property<?>> commonProperties = oldState.getProperties().stream().filter(property -> newState.getProperties().stream().anyMatch(property1 -> property1.getName().equals(property.getName()))).collect(Collectors.toList());
-        ImmutableMap.Builder<Property<?>, Comparable<?>> values = ImmutableMap.builder();
-        for (Entry<Property<?>, Comparable<?>> entry : oldState.getValues().entrySet()) {
-            if (commonProperties.contains(entry.getKey())) values.put(entry);
         }
         return values.build();
     }

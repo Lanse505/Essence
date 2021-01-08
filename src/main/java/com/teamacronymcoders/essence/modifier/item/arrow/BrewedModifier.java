@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import net.minecraft.entity.player.PlayerEntity;

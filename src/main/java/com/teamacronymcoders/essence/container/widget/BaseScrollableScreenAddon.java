@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.container.widget;
 
 import com.hrznstudio.titanium.client.screen.addon.BasicScreenAddon;
-import com.hrznstudio.titanium.client.screen.asset.IAssetProvider;
-import net.minecraft.client.gui.screen.Screen;
 
 public abstract class BaseScrollableScreenAddon extends BasicScreenAddon {
 

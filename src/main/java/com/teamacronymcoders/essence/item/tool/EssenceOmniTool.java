@@ -10,7 +10,6 @@ import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import net.minecraft.block.Block;
@@ -22,7 +21,14 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.ToolItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +40,7 @@ import net.minecraftforge.common.util.Constants.BlockFlags;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.List;
 
 public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
@@ -104,7 +110,9 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
             world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
             resultType = ActionResultType.SUCCESS;
         }
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Check Pickaxe Behaviour
         behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.PICKAXE);
@@ -112,7 +120,9 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
             world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
             resultType = ActionResultType.SUCCESS;
         }
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Check Vanilla Shovel Behaviour
         behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.SHOVEL);
@@ -120,11 +130,15 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
             world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
             resultType = ActionResultType.SUCCESS;
         }
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Check Recipes
         resultType = onItemBehaviour(context);
-        if (resultType == ActionResultType.SUCCESS) return resultType;
+        if (resultType == ActionResultType.SUCCESS) {
+            return resultType;
+        }
 
         // Fallback on Modifier Behaviour
         return onItemUseFromModifiers(context).orElse(resultType);
@@ -201,7 +215,9 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) {
+            return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        }
         return HashMultimap.create();
     }
 

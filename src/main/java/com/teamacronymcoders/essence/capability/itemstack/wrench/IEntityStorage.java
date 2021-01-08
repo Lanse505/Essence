@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface IEntityStorage {
     void setEntity(LivingEntity entity);
+
     LivingEntity getEntity(CompoundNBT nbt, World world);
+
     UUID getUUID();
 }

@@ -1,9 +1,7 @@
 package com.teamacronymcoders.essence.util.keybindings;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings.Type;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,8 +48,10 @@ public class EssenceKeyHandler extends KeyHandler {
     }
 
     @Override
-    public void keyDown(KeyBinding kb, boolean isRepeat) {}
+    public void keyDown(KeyBinding kb, boolean isRepeat) {
+    }
 
     @Override
-    public void keyUp(KeyBinding kb) {}
+    public void keyUp(KeyBinding kb) {
+    }
 }

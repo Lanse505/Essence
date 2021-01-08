@@ -25,7 +25,11 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -129,7 +133,9 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) {
+            return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
+        }
         return HashMultimap.create();
     }
 

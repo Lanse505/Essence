@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.item.tome.experience;
 
-public enum  ExperienceModeEnum {
+public enum ExperienceModeEnum {
     FILL("tome.essence.experience.mode.fill"),
     DRAIN("tome.essence.experience.mode.drain"),
     ABSORB("tome.essence.experience.mode.absorb");

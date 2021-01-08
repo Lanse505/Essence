@@ -60,8 +60,12 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) return optional_tank.cast();
-        if (cap == EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER) return optional_holder.cast();
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
+            return optional_tank.cast();
+        }
+        if (cap == EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER) {
+            return optional_holder.cast();
+        }
         return LazyOptional.empty();
     }
 

@@ -35,7 +35,6 @@ import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBeh
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
-import com.teamacronymcoders.essence.util.proxy.EssenceCommonProxy;
 import com.teamacronymcoders.essence.util.EssenceEventHandlers;
 import com.teamacronymcoders.essence.util.EssenceItemProperties;
 import com.teamacronymcoders.essence.util.EssenceModules;
@@ -46,6 +45,7 @@ import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
+import com.teamacronymcoders.essence.util.proxy.EssenceCommonProxy;
 import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
 import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceItemRegistration;

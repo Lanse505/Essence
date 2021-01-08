@@ -30,7 +30,7 @@ public class EssenceRenderHelper {
         random.setSeed(i);
         IBakedModel ibakedmodel = renderer.getItemModelWithOverrides(stack, world, null);
         boolean flag = ibakedmodel.isGui3d();
-        float f1 = MathHelper.sin(((float)existedTicks + partial) / 10.0F) * 0.05F + 0.1F;
+        float f1 = MathHelper.sin(((float) existedTicks + partial) / 10.0F) * 0.05F + 0.1F;
         float f3 = existedTicks + partial * 0.7F;
         matrixStack.translate(0.5D, f1 + yOffset, 0.5D);
         matrixStack.rotate(new Quaternion(0, -f3, 0, true));

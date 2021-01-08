@@ -53,10 +53,12 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
     }
 
     @Override
-    public void markComponentForUpdate(boolean b) {}
+    public void markComponentForUpdate(boolean b) {
+    }
 
     @Override
-    public void markComponentDirty() {}
+    public void markComponentDirty() {
+    }
 
     public InventoryComponent<EssenceBackpackItem> getComponent(ItemStack stack) {
         InventoryComponent<EssenceBackpackItem> essenceBackpackItemInventoryComponent = (InventoryComponent<EssenceBackpackItem>) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);

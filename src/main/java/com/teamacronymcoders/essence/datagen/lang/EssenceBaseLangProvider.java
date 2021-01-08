@@ -22,7 +22,8 @@ public class EssenceBaseLangProvider extends LanguageProvider {
     }
 
     @Override
-    protected void addTranslations() {}
+    protected void addTranslations() {
+    }
 
     /**
      * Helper function to add advancements to the lang generator

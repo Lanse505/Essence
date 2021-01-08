@@ -23,7 +23,7 @@ public class EssenceBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        
+
     }
 
     public ExistingFileHelper getHelper() {

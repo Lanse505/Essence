@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
+import com.teamacronymcoders.essence.command.EssenceCommands;
 import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
@@ -20,7 +21,6 @@ import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
-import com.teamacronymcoders.essence.command.EssenceCommands;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
@@ -62,7 +62,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.fml.DistExecutor;
 
 import java.awt.*;
 import java.util.Collections;
@@ -88,7 +87,7 @@ public class EssenceEventHandlers {
     private static void setupRegistries() {
         EventManager.modGeneric(RegistryEvent.Register.class, IRecipeSerializer.class)
             .process(register -> {
-                ((RegistryEvent.Register)register).getRegistry().registerAll(
+                ((RegistryEvent.Register) register).getRegistry().registerAll(
                     AxeStrippingRecipe.SERIALIZER,
                     HoeTillingRecipe.SERIALIZER,
                     InfusionTableSerializableRecipe.SERIALIZER,
@@ -97,7 +96,7 @@ public class EssenceEventHandlers {
             }).subscribe();
         EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
             .process(register -> {
-                ((RegistryEvent.Register)register).getRegistry().registerAll(
+                ((RegistryEvent.Register) register).getRegistry().registerAll(
                     new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MODID, "fiery_modifier"))
                 );
             }).subscribe();
@@ -157,8 +156,8 @@ public class EssenceEventHandlers {
             .process(biome -> {
                 EssenceOreGenConfig oreGenConfig = EssenceWorldGenConfig.getOreGenConfig();
                 EssenceTreeGenConfig treeGenConfig = EssenceWorldGenConfig.getTreeGenConfig();
-                List<Supplier<ConfiguredFeature<?,?>>> oregen = biome.getGeneration().getFeatures(Decoration.UNDERGROUND_ORES);
-                List<Supplier<ConfiguredFeature<?,?>>> vegetation = biome.getGeneration().getFeatures(Decoration.VEGETAL_DECORATION);
+                List<Supplier<ConfiguredFeature<?, ?>>> oregen = biome.getGeneration().getFeatures(Decoration.UNDERGROUND_ORES);
+                List<Supplier<ConfiguredFeature<?, ?>>> vegetation = biome.getGeneration().getFeatures(Decoration.VEGETAL_DECORATION);
                 if (oreGenConfig.getEssenceOre().getShouldGenerate().get()) {
                     oregen.add(() ->
                         Feature.ORE

@@ -151,19 +151,21 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     private void handleBookRender() {
         this.pageTurningSpeed = this.nextPageTurningSpeed;
         this.pageAngle = this.nextPageAngle;
-        if (world == null) return;
-        PlayerEntity player = this.world.getClosestPlayer(((float)this.pos.getX() + 0.5F), ((float)this.pos.getY() + 0.5F), ((float)this.pos.getZ() + 0.5F), 3.0D, false);
+        if (world == null) {
+            return;
+        }
+        PlayerEntity player = this.world.getClosestPlayer(((float) this.pos.getX() + 0.5F), ((float) this.pos.getY() + 0.5F), ((float) this.pos.getZ() + 0.5F), 3.0D, false);
         if (player != null) {
             this.player = player;
-            double rangeX = player.getPosX() - ((double)this.pos.getX() + 0.5D);
-            double rangeZ = player.getPosZ() - ((double)this.pos.getZ() + 0.5D);
+            double rangeX = player.getPosX() - ((double) this.pos.getX() + 0.5D);
+            double rangeZ = player.getPosZ() - ((double) this.pos.getZ() + 0.5D);
             this.field_195531_n = (float) MathHelper.atan2(rangeZ, rangeX);
             this.nextPageTurningSpeed += 0.1F;
             if (this.nextPageTurningSpeed < 0.5F || Essence.RANDOM.nextInt(40) == 0) {
                 float lvt_6_1_ = this.field_195525_h;
                 do {
-                    this.field_195525_h += (float)(Essence.RANDOM.nextInt(4) - Essence.RANDOM.nextInt(4));
-                } while(lvt_6_1_ == this.field_195525_h);
+                    this.field_195525_h += (float) (Essence.RANDOM.nextInt(4) - Essence.RANDOM.nextInt(4));
+                } while (lvt_6_1_ == this.field_195525_h);
             }
         } else {
             this.player = null;
@@ -175,19 +177,19 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
             world.playSound(player, pos, EssenceSoundRegistration.INFUSION_BOOK_SOUND.get(), SoundCategory.BLOCKS, 1f, 1f);
         }
 
-        while(this.nextPageAngle >= 3.1415927F) {
+        while (this.nextPageAngle >= 3.1415927F) {
             this.nextPageAngle -= 6.2831855F;
         }
 
-        while(this.nextPageAngle < -3.1415927F) {
+        while (this.nextPageAngle < -3.1415927F) {
             this.nextPageAngle += 6.2831855F;
         }
 
-        while(this.field_195531_n >= 3.1415927F) {
+        while (this.field_195531_n >= 3.1415927F) {
             this.field_195531_n -= 6.2831855F;
         }
 
-        while(this.field_195531_n < -3.1415927F) {
+        while (this.field_195531_n < -3.1415927F) {
             this.field_195531_n += 6.2831855F;
         }
 
@@ -197,7 +199,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
             lvt_2_2_ -= 6.2831855F;
         }
 
-        while(lvt_2_2_ < -3.1415927F) {
+        while (lvt_2_2_ < -3.1415927F) {
             lvt_2_2_ += 6.2831855F;
         }
 

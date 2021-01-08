@@ -61,8 +61,9 @@ public class ModifiableTank extends FluidTank implements IFluidHandlerItem {
         } else {
             fluid.setAmount(getFluidAmount());
         }
-        if (filled > 0)
+        if (filled > 0) {
             onContentsChanged();
+        }
         return filled;
     }
 

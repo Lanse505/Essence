@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.util.helper;
 
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;

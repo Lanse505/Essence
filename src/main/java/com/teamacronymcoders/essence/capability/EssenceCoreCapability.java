@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.capability;
 import com.teamacronymcoders.essence.capability.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageCapability;
-import com.teamacronymcoders.essence.capability.itemstack.wrench.IEntityStorage;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 

@@ -32,7 +32,7 @@ public class ShearedCreeperRenderer extends MobRenderer<ShearedCreeperEntity, Cr
     @Override
     protected float getOverlayProgress(ShearedCreeperEntity entity, float v) {
         float intensity = entity.getCreeperFlashIntensity(v);
-        return (int)(intensity * 10.0F) % 2 == 0 ? 0.0F : MathHelper.clamp(intensity, 0.5F, 1.0F);
+        return (int) (intensity * 10.0F) % 2 == 0 ? 0.0F : MathHelper.clamp(intensity, 0.5F, 1.0F);
     }
 
     @Override

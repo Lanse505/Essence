@@ -41,17 +41,17 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
     public void renderBook(InfusionTableTile infusionTableTile, MatrixStack matrix, float partial, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         matrix.push();
         matrix.translate(0.5D, 0.75D, 0.5D);
-        float f = (float)infusionTableTile.ticks + partial;
+        float f = (float) infusionTableTile.ticks + partial;
         matrix.translate(0.0D, 0.1F + MathHelper.sin(f * 0.1F) * 0.01F, 0.0D);
 
         float f1;
         f1 = infusionTableTile.nextPageAngle - infusionTableTile.pageAngle;
-        while (f1 >= (float)Math.PI) {
+        while (f1 >= (float) Math.PI) {
             f1 -= ((float) Math.PI * 2F);
         }
 
-        while(f1 < -(float)Math.PI) {
-            f1 += ((float)Math.PI * 2F);
+        while (f1 < -(float) Math.PI) {
+            f1 += ((float) Math.PI * 2F);
         }
 
         float f2 = infusionTableTile.pageAngle + f1 * partial;

@@ -16,10 +16,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.server.MinecraftServer;
@@ -28,12 +25,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SetupDevWorldCommand implements Command<CommandSource> {
@@ -152,6 +147,6 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
     }
 
     private static int getDayTime(ServerWorld worldIn) {
-        return (int)(worldIn.getDayTime() % 24000L);
+        return (int) (worldIn.getDayTime() % 24000L);
     }
 }

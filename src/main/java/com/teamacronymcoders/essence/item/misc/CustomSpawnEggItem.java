@@ -6,7 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 

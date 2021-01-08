@@ -1,7 +1,13 @@
 package com.teamacronymcoders.essence.datagen.advancement;
 
-import com.teamacronymcoders.essence.datagen.advancement.misc.*;
-import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
+import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceMaterialTierAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceToolTypeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.ArrowKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.AttributeKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.CosmeticKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.EnchantmentKnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.InteractionKnowledgeAdvancements;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -12,7 +18,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.function.Consumer;
 
-public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider{
+public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider {
 
     private static Advancement knowledge_root;
     private static Advancement knowledge_modifier_root;

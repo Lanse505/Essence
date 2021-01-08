@@ -4,15 +4,35 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceModifierTags;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
-import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import static com.teamacronymcoders.essence.util.EssenceObjectHolders.*;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BLACK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BLUE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BROWN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_CYAN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_GRAY;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_GREEN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIGHT_BLUE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIGHT_GRAY;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_MAGENTA;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_ORANGE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_PINK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_PURPLE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_RED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_WHITE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_YELLOW;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_CRYSTAL_ORE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_ORE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_LEAVES;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_LOG;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_PLANKS;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_SAPLING;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_SLAB;
 
 public class EssenceBlockTagProvider extends BlockTagsProvider {
 
@@ -59,9 +79,9 @@ public class EssenceBlockTagProvider extends BlockTagsProvider {
             Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME
         );
         getOrCreateBuilder(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST).add(
-                Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST,
-                Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER,
-                Blocks.HOPPER, Blocks.BARREL
+            Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST,
+            Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER,
+            Blocks.HOPPER, Blocks.BARREL
         );
     }
 

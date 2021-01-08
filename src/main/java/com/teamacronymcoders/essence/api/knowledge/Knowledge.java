@@ -29,7 +29,8 @@ public class Knowledge<T> extends ForgeRegistryEntry<Knowledge<?>> implements IN
         Collections.addAll(this.modifierInstances, modifiers);
     }
 
-    public Knowledge() {}
+    public Knowledge() {
+    }
 
     public String getTranslationString() {
         return "knowledge." + getRegistryName().getNamespace() + "." + getRegistryName().getPath();

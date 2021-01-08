@@ -1,7 +1,5 @@
 package com.teamacronymcoders.essence.capability.itemstack.wrench;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -63,17 +61,17 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
     @SuppressWarnings("rawtypes")
     @Nullable
     public static LivingEntity getEntityFromNBT(CompoundNBT nbt, World world) {
-            if (nbt.contains("entity")) {
-                EntityType type = EntityType.byKey(nbt.getString("entity")).orElse(null);
-                if (type != null) {
-                    Entity entity = type.create(world);
-                    if (entity instanceof LivingEntity) {
-                        entity.read(nbt);
-                        return (LivingEntity) entity;
-                    }
-                    return null;
+        if (nbt.contains("entity")) {
+            EntityType type = EntityType.byKey(nbt.getString("entity")).orElse(null);
+            if (type != null) {
+                Entity entity = type.create(world);
+                if (entity instanceof LivingEntity) {
+                    entity.read(nbt);
+                    return (LivingEntity) entity;
                 }
+                return null;
             }
+        }
         return null;
     }
 
@@ -87,5 +85,6 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {}
+    public void deserializeNBT(CompoundNBT nbt) {
+    }
 }

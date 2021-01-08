@@ -2,7 +2,11 @@ package com.teamacronymcoders.essence.util.registration;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
-import com.teamacronymcoders.essence.entity.impl.sheared.*;
+import com.teamacronymcoders.essence.entity.impl.sheared.ShearedChickenEntity;
+import com.teamacronymcoders.essence.entity.impl.sheared.ShearedCowEntity;
+import com.teamacronymcoders.essence.entity.impl.sheared.ShearedCreeperEntity;
+import com.teamacronymcoders.essence.entity.impl.sheared.ShearedGhastEntity;
+import com.teamacronymcoders.essence.entity.impl.sheared.ShearedPigEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.eventbus.api.IEventBus;

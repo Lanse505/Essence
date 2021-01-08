@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.generation.tree.essence_tree;
 
-import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.util.registration.EssenceFeatures;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;

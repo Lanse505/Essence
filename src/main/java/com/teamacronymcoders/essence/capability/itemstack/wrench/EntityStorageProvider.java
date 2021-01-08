@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.capability.itemstack.wrench;
 
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -42,5 +41,6 @@ public class EntityStorageProvider implements ICapabilityProvider, ICapabilitySe
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {}
+    public void deserializeNBT(CompoundNBT nbt) {
+    }
 }

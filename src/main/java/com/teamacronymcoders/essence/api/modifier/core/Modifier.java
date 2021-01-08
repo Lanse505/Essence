@@ -56,6 +56,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
 
     /**
      * Override this and use Level -1 as a dump value!
+     *
      * @param level Level of the Modifier
      * @return Returns the formatted TextComponent
      */

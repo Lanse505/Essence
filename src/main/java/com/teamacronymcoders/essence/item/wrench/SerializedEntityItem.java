@@ -4,17 +4,13 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageProvider;
 import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -38,7 +34,9 @@ public class SerializedEntityItem extends Item {
         PlayerEntity player = context.getPlayer();
         World world = context.getWorld();
         ItemStack stack = context.getItem();
-        if ((player != null && player.getEntityWorld().isRemote) || !containsEntity(stack)) return ActionResultType.FAIL;
+        if ((player != null && player.getEntityWorld().isRemote) || !containsEntity(stack)) {
+            return ActionResultType.FAIL;
+        }
         return stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).map(storage -> {
             LivingEntity entity = storage.getEntity(stack.getTag(), world);
             BlockPos spawnPosition = context.getPos().offset(context.getFace());

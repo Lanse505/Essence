@@ -32,6 +32,6 @@ public class HoldingModifier extends ItemAttributeModifier {
 
     @Override
     public boolean canApplyTogether(IModifier modifier) {
-        return !(modifier instanceof HoldingModifier) ;
+        return !(modifier instanceof HoldingModifier);
     }
 }

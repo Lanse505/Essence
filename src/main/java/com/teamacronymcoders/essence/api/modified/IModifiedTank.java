@@ -1,13 +1,9 @@
 package com.teamacronymcoders.essence.api.modified;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.modifier.item.tank.HoldingModifier;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
-import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
-import com.teamacronymcoders.essence.util.tier.IEssenceBaseTier;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

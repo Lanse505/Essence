@@ -12,7 +12,6 @@ import com.teamacronymcoders.essence.util.registration.EssenceRegistries;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Map;
@@ -23,14 +22,14 @@ public class RegistryCommand implements Command<CommandSource> {
         return Commands.literal("registry")
             .requires(cs -> cs.hasPermissionLevel(4))
             .then(Commands.literal("dump")
-                    .then(Commands.literal("knowledge")
-                            .executes(RegistryCommand::dumpKnowledgeRegistry)
-                        )
-                    .then(Commands.literal("modifiers")
-                            .executes(RegistryCommand::dumpModifierRegistry)
-                        )
+                .then(Commands.literal("knowledge")
+                    .executes(RegistryCommand::dumpKnowledgeRegistry)
+                )
+                .then(Commands.literal("modifiers")
+                    .executes(RegistryCommand::dumpModifierRegistry)
+                )
             );
-        }
+    }
 
     public static int dumpKnowledgeRegistry(CommandContext<CommandSource> context) {
         CommandSource source = context.getSource();

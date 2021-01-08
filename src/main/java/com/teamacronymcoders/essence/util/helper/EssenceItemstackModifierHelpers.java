@@ -174,9 +174,9 @@ public class EssenceItemstackModifierHelpers {
             holder.getModifierInstances().stream()
                 .filter(instance -> instance.getModifier() == mergeInstance.getModifier())
                 .findFirst().ifPresent(instance -> {
-                    CompoundNBT tagOnItem = instance.getModifierData();
-                    tagOnItem.merge(mergeInstance.getModifierData());
-                    instance.setModifierData(tagOnItem);
+                CompoundNBT tagOnItem = instance.getModifierData();
+                tagOnItem.merge(mergeInstance.getModifierData());
+                instance.setModifierData(tagOnItem);
             });
             stack.getOrCreateTag().put(TAG_MODIFIERS, holder.serializeNBT());
         });

@@ -97,7 +97,7 @@ public class EssenceWorldHelper {
         InfusionSound sound = new InfusionSound(tableTile);
         if (distanceDelay && sqdt > 100.0F) {
             double sqrt = Math.sqrt(sqdt) / 40.0D;
-            Minecraft.getInstance().getSoundHandler().playDelayed(sound, (int)(sqrt * 20.0D));
+            Minecraft.getInstance().getSoundHandler().playDelayed(sound, (int) (sqrt * 20.0D));
         } else {
             Minecraft.getInstance().getSoundHandler().play(sound);
         }

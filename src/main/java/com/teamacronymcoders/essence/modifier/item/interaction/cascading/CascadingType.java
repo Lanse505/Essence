@@ -5,9 +5,7 @@ import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 import java.util.Arrays;
 import java.util.function.Supplier;

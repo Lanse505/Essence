@@ -10,7 +10,54 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nullable;
 
-import static com.teamacronymcoders.essence.util.EssenceObjectHolders.*;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_AXE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_AXE_DIVINE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_AXE_EMPOWERED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_AXE_SUPREME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BLACK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BLUE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_BROWN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_CYAN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_GRAY;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_GREEN;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIGHT_BLUE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIGHT_GRAY;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_LIME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_MAGENTA;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_ORANGE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_PINK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_PURPLE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_RED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_WHITE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_BRICKS_YELLOW;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_CRYSTAL;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_BLOCK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE_BLOCK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE_NUGGET;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_NUGGET;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME_BLOCK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME_NUGGET;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_INFUSED_STICK;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_OMNITOOL;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_OMNITOOL_DIVINE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_OMNITOOL_EMPOWERED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_OMNITOOL_SUPREME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_PICKAXE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_PICKAXE_DIVINE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_PICKAXE_EMPOWERED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_PICKAXE_SUPREME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_SHOVEL;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_SHOVEL_DIVINE;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_SHOVEL_EMPOWERED;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_SHOVEL_SUPREME;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_LOG;
+import static com.teamacronymcoders.essence.util.EssenceObjectHolders.ESSENCE_WOOD_PLANKS;
 
 public class EssenceItemTagProvider extends ItemTagsProvider {
 

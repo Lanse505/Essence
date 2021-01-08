@@ -4,7 +4,6 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import net.minecraft.item.IItemTier;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.system.MathUtil;
 
 import java.util.TreeMap;
 
@@ -38,11 +37,11 @@ public class EssenceUtilHelper {
 
     public static TextFormatting getTextColor(int free_modifiers, int max_modifiers) {
         int val = free_modifiers / max_modifiers;
-        if(val <= 0.33) {
+        if (val <= 0.33) {
             return TextFormatting.RED;
         } else if (val <= 0.66) {
             return TextFormatting.YELLOW;
-        }else{
+        } else {
             return TextFormatting.GREEN;
         }
     }

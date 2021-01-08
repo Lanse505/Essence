@@ -1,7 +1,5 @@
 package com.teamacronymcoders.essence.container.widget;
 
-import com.hrznstudio.titanium.client.screen.addon.ArrowButtonScreenAddon;
-import com.hrznstudio.titanium.client.screen.addon.BasicScreenAddon;
 import com.hrznstudio.titanium.client.screen.asset.IAssetProvider;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.Screen;
@@ -33,8 +31,10 @@ public class ScrollableListScreenAddon extends BaseScrollableScreenAddon {
     }
 
     @Override
-    public void drawBackgroundLayer(MatrixStack matrixStack, Screen screen, IAssetProvider iAssetProvider, int i, int i1, int i2, int i3, float v) {}
+    public void drawBackgroundLayer(MatrixStack matrixStack, Screen screen, IAssetProvider iAssetProvider, int i, int i1, int i2, int i3, float v) {
+    }
 
     @Override
-    public void drawForegroundLayer(MatrixStack matrixStack, Screen screen, IAssetProvider iAssetProvider, int i, int i1, int i2, int i3) {}
+    public void drawForegroundLayer(MatrixStack matrixStack, Screen screen, IAssetProvider iAssetProvider, int i, int i1, int i2, int i3) {
+    }
 }

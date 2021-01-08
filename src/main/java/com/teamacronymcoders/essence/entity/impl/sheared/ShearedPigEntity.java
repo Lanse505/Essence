@@ -2,14 +2,11 @@ package com.teamacronymcoders.essence.entity.impl.sheared;
 
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.network.*;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.*;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ShearedPigEntity extends PigEntity {
 
