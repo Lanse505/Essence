@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge;
 
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teamacronymcoders.essence.Essence;

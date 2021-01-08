@@ -98,7 +98,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
 
         // Check Vanilla Axe Behaviour
         behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.AXE);
-        if (!behaviourState.equals(state)) {
+        if (behaviourState != null && !behaviourState.equals(state)) {
             world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
             resultType = ActionResultType.SUCCESS;
         }

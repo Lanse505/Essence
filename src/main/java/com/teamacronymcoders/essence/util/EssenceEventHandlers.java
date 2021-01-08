@@ -13,6 +13,11 @@ import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.command.EssenceCommands;
+import com.teamacronymcoders.essence.entity.render.ShearedChickenRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedCowRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedCreeperRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedGhastRenderer;
+import com.teamacronymcoders.essence.entity.render.ShearedPigRenderer;
 import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
@@ -28,8 +33,11 @@ import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
+import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
@@ -62,6 +70,8 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.awt.*;
 import java.util.Collections;
@@ -268,6 +278,18 @@ public class EssenceEventHandlers {
                         }
                     }
                 }
+            }).subscribe();
+
+        // Rendering
+        EventManager.forge(FMLClientSetupEvent.class)
+            .process(event -> {
+                ItemRenderer renderer = event.getMinecraftSupplier().get().getItemRenderer();
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.GLUE_BALL.get(), manager -> new SpriteRenderer<>(manager, renderer, 0.75F, true));
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_COW.get(), ShearedCowRenderer::new);
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_PIG.get(), ShearedPigRenderer::new);
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ShearedChickenRenderer::new);
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CREEPER.get(), ShearedCreeperRenderer::new);
+                RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_GHAST.get(), ShearedGhastRenderer::new);
             }).subscribe();
     }
 }

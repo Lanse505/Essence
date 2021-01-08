@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
 import com.google.common.collect.Maps;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;

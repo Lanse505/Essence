@@ -26,6 +26,7 @@ import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.datagen.EssenceTagProvider;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.entity.render.BreakingGlueballParticleFactory;
 import com.teamacronymcoders.essence.entity.render.ShearedChickenRenderer;
 import com.teamacronymcoders.essence.entity.render.ShearedCowRenderer;
 import com.teamacronymcoders.essence.entity.render.ShearedCreeperRenderer;
@@ -51,12 +52,14 @@ import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration
 import com.teamacronymcoders.essence.util.registration.EssenceItemRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -199,19 +202,14 @@ public class Essence extends ModuleController {
     @SuppressWarnings("unchecked")
     private void clientSetup(final FMLClientSetupEvent event) {
         new EssenceKeyHandler();
-        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
+
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_TABLE, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getTranslucent());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.GLUE_BALL.get(), manager -> new SpriteRenderer<>(manager, renderer, 0.75F, true));
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_COW.get(), ShearedCowRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_PIG.get(), ShearedPigRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ShearedChickenRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CREEPER.get(), ShearedCreeperRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_GHAST.get(), ShearedGhastRenderer::new);
+        Minecraft.getInstance().particles.registerFactory(EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get(), BreakingGlueballParticleFactory::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
 

@@ -34,7 +34,6 @@ public class GlueBallEntity extends ProjectileItemEntity {
         super(EssenceEntityRegistration.GLUE_BALL.get(), x, y, z, worldIn);
     }
 
-
     @Override
     protected Item getDefaultItem() {
         return EssenceObjectHolders.GLUE_BALL;
@@ -43,7 +42,7 @@ public class GlueBallEntity extends ProjectileItemEntity {
     @OnlyIn(Dist.CLIENT)
     private IParticleData makeParticle() {
         ItemStack itemstack = this.func_213882_k();
-        return itemstack.isEmpty() ? EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get() : new ItemParticleData(ParticleTypes.ITEM, itemstack);
+        return (IParticleData)(itemstack.isEmpty() ? EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get() : new ItemParticleData(ParticleTypes.ITEM, itemstack));
     }
 
     @OnlyIn(Dist.CLIENT)
