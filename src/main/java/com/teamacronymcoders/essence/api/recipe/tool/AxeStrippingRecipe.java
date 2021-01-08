@@ -115,7 +115,7 @@ public class AxeStrippingRecipe extends SerializableRecipe {
                     for (Entry<Property<?>, Comparable<?>> entry : EssenceBlockHelper.getCommonProperties(targetedState, to).entrySet()) {
                         Property property = state.getBlock().getStateContainer().getProperty(entry.getKey().getName());
                         final Optional<Comparable> propValue = property.parseValue(entry.getValue().toString());
-                        propValue.ifPresent(comparable -> to.with(property, comparable));
+                        if (propValue.isPresent()) to = to.with(property, propValue.get());
                     }
                     world.setBlockState(blockpos, to, BlockFlags.DEFAULT_AND_RERENDER);
                     if (player != null) {

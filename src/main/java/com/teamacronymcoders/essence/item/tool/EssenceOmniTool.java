@@ -106,6 +106,14 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
         }
         if (resultType == ActionResultType.SUCCESS) return resultType;
 
+        // Check Pickaxe Behaviour
+        behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.PICKAXE);
+        if (!behaviourState.equals(state)) {
+            world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
+            resultType = ActionResultType.SUCCESS;
+        }
+        if (resultType == ActionResultType.SUCCESS) return resultType;
+
         // Check Vanilla Shovel Behaviour
         behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.SHOVEL);
         if (!behaviourState.equals(state)) {
