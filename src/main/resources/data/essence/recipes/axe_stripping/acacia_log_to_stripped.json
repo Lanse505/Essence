@@ -1,5 +1,10 @@
 {
   "from": "minecraft:acacia_log",
-  "to": "minecraft:stripped_acacia_log",
+  "to": {
+    "block": "minecraft:stripped_acacia_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
   "type": "essence:axe_stripping"
 }

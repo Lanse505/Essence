@@ -27,6 +27,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -72,9 +73,28 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        ActionResultType resultType = onItemBehaviour(context);
-        Optional<ActionResultType> modifierResult = onItemUseFromModifiers(context);
-        return resultType == ActionResultType.SUCCESS ? resultType : modifierResult.orElse(resultType);
+        World world = context.getWorld();
+        PlayerEntity player = context.getPlayer();
+        BlockPos pos = context.getPos();
+        BlockState state = world.getBlockState(pos);
+        ItemStack stack = context.getItem();
+        ActionResultType resultType = ActionResultType.FAIL;
+        BlockState behaviourState;
+
+        // Check Vanilla Axe Behaviour
+        behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.AXE);
+        if (!behaviourState.equals(state)) {
+            world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
+            resultType = ActionResultType.SUCCESS;
+        }
+        if (resultType == ActionResultType.SUCCESS) return resultType;
+
+        // Check Recipes
+        resultType = onItemBehaviour(context);
+        if (resultType == ActionResultType.SUCCESS) return resultType;
+
+        // Fallback on Modifier Behaviour
+        return onItemUseFromModifiers(context).orElse(resultType);
     }
 
     @Override

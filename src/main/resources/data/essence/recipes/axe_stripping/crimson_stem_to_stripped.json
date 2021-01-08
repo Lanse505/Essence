@@ -1,7 +1,7 @@
 {
-  "from": "minecraft:birch_log",
+  "from": "minecraft:crimson_stem",
   "to": {
-    "block": "minecraft:stripped_birch_log",
+    "block": "minecraft:stripped_crimson_stem",
     "properties": {
       "axis": "y"
     }

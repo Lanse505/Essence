@@ -52,12 +52,16 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     private int additionalModifiers;
     private int rainbowVal = 0;
 
+    private final Multimap<Attribute, AttributeModifier> attributeModifiers;
+
     public EssenceShear(EssenceToolTiers tier) {
         super(new Item.Properties().maxDamage(tier.getMaxUses()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
         this.tier = tier;
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
         this.additionalModifiers = 0;
+
+        this.attributeModifiers = HashMultimap.create();
     }
 
     @Override
@@ -125,7 +129,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+        if (slot == EquipmentSlotType.MAINHAND) return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
         return HashMultimap.create();
     }
 

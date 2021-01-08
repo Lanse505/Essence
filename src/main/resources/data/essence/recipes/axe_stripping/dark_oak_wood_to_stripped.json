@@ -1,5 +1,10 @@
 {
   "from": "minecraft:dark_oak_wood",
-  "to": "minecraft:stripped_dark_oak_wood",
+  "to": {
+    "block": "minecraft:stripped_dark_oak_wood",
+    "properties": {
+      "axis": "y"
+    }
+  },
   "type": "essence:axe_stripping"
 }

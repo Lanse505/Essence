@@ -1,5 +1,10 @@
 {
   "from": "minecraft:spruce_log",
-  "to": "minecraft:stripped_spruce_log",
+  "to": {
+    "block": "minecraft:stripped_spruce_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
   "type": "essence:axe_stripping"
 }

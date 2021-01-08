@@ -35,17 +35,17 @@ public class EssenceWorldHelper {
      */
     public static boolean breakBlock(World world, BlockPos pos, boolean hasTileEntity, @Nullable Entity entity, ItemStack stack) {
         BlockState blockstate = world.getBlockState(pos);
-        if (blockstate.isAir(world, pos)) {
+        if (blockstate.getBlock().isAir(blockstate, world, pos)) {
             return false;
         } else {
-            FluidState ifluidstate = world.getFluidState(pos);
+            FluidState fluidState = world.getFluidState(pos);
             world.playEvent(2001, pos, Block.getStateId(blockstate));
             if (hasTileEntity) {
                 TileEntity tileentity = blockstate.hasTileEntity() ? world.getTileEntity(pos) : null;
                 Block.spawnDrops(blockstate, world, pos, tileentity, entity, stack);
             }
 
-            return world.setBlockState(pos, ifluidstate.getBlockState(), 3);
+            return world.setBlockState(pos, fluidState.getBlockState(), 3);
         }
     }
 

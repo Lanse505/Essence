@@ -4,7 +4,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
-import com.teamacronymcoders.essence.util.helper.EssenceBlockPosHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceBlockHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -42,7 +42,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
                 PlayerEntity player = (PlayerEntity) miner;
                 if (player instanceof ServerPlayerEntity) {
                     ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                    List<BlockPos> found = EssenceBlockPosHelper.findPositions(state, pos, world, this.type);
+                    List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, world, this.type);
                     for (BlockPos foundPos : found) {
                         if (pos.equals(foundPos)) {
                             continue;
@@ -69,7 +69,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
                     }
                 }
             } else {
-                List<BlockPos> found = EssenceBlockPosHelper.findPositions(state, pos, world, this.type);
+                List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, world, this.type);
                 for (BlockPos foundPos : found) {
                     if (!pos.equals(foundPos)) {
                         EssenceWorldHelper.breakBlock(world, foundPos, true, miner, stack);

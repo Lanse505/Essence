@@ -12,11 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,24 +87,24 @@ public class ShovelPathingRecipe extends SerializableRecipe {
     public ActionResultType resolveRecipe(ItemUseContext context) {
         World world = context.getWorld();
         BlockPos blockpos = context.getPos();
-        PlayerEntity playerentity = context.getPlayer();
-        BlockState blockstate = to;
-        if (blockstate != null && world.isAirBlock(blockpos.up())) {
-            world.playSound(playerentity, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        }
-        if (blockstate != null) {
-            if (!world.isRemote) {
-                world.setBlockState(blockpos, blockstate, 11);
-                if (playerentity != null) {
-                    context.getItem().damageItem(1, playerentity, (p_220041_1_) -> {
-                        p_220041_1_.sendBreakAnimation(context.getHand());
-                    });
+        PlayerEntity player = context.getPlayer();
+        ItemStack stack = context.getItem();
+        if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
+            if (to != null) {
+                world.playSound(player, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if (!world.isRemote()) {
+                    // If the state is unchanged after firing the forge hook then use the recipe provided state
+                    world.setBlockState(blockpos, to, BlockFlags.DEFAULT_AND_RERENDER);
+                    if (player != null) {
+                        stack.damageItem(1, player, (playerIn) -> {
+                            player.sendBreakAnimation(context.getHand());
+                        });
+                    }
+                    return ActionResultType.SUCCESS;
                 }
             }
-            return ActionResultType.SUCCESS;
-        } else {
-            return ActionResultType.PASS;
         }
+        return ActionResultType.PASS;
     }
 
     public Block getFrom() {

@@ -28,6 +28,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -49,7 +50,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public Rarity getRarity(ItemStack p_77613_1_) {
+    public Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -67,8 +68,8 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
             if (!world.isRemote) {
                 world.setBlockState(pos, newState, 11);
                 if (playerentity != null) {
-                    context.getItem().damageItem(1, playerentity, (p_220041_1_) -> {
-                        p_220041_1_.sendBreakAnimation(context.getHand());
+                    context.getItem().damageItem(1, playerentity, (playerIn) -> {
+                        playerIn.sendBreakAnimation(context.getHand());
                     });
                 }
             }
@@ -84,9 +85,28 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        ActionResultType resultType = onItemBehaviour(context);
-        Optional<ActionResultType> modifierResult = onItemUseFromModifiers(context);
-        return resultType == ActionResultType.SUCCESS ? resultType : modifierResult.orElse(resultType);
+        World world = context.getWorld();
+        PlayerEntity player = context.getPlayer();
+        BlockPos pos = context.getPos();
+        BlockState state = world.getBlockState(pos);
+        ItemStack stack = context.getItem();
+        ActionResultType resultType = ActionResultType.FAIL;
+        BlockState behaviourState;
+
+        // Check Vanilla Axe Behaviour
+        behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.AXE);
+        if (!behaviourState.equals(state)) {
+            world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
+            resultType = ActionResultType.SUCCESS;
+        }
+        if (resultType == ActionResultType.SUCCESS) return resultType;
+
+        // Check Recipes
+        resultType = onItemBehaviour(context);
+        if (resultType == ActionResultType.SUCCESS) return resultType;
+
+        // Fallback on Modifier Behaviour
+        return onItemUseFromModifiers(context).orElse(resultType);
     }
 
     @Override

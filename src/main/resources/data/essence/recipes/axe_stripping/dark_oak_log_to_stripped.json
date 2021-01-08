@@ -1,5 +1,10 @@
 {
   "from": "minecraft:dark_oak_log",
-  "to": "minecraft:stripped_dark_oak_log",
+  "to": {
+    "block": "minecraft:stripped_dark_oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
   "type": "essence:axe_stripping"
 }

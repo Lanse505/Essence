@@ -1,5 +1,10 @@
 {
   "from": "minecraft:birch_wood",
-  "to": "minecraft:stripped_birch_wood",
+  "to": {
+    "block": "minecraft:stripped_birch_wood",
+    "properties": {
+      "axis": "y"
+    }
+  },
   "type": "essence:axe_stripping"
 }
