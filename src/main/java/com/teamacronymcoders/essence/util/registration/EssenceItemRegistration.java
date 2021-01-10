@@ -8,9 +8,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceItemRegistration {
 
-    private static final DeferredRegister<Item> ITEM_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, Essence.MODID);
+  private static final DeferredRegister<Item> ITEM_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, Essence.MOD_ID);
 
-    public static void register(IEventBus bus) {
-        ITEM_DEFERRED_REGISTER.register(bus);
-    }
+  public static void register (IEventBus bus) {
+    ITEM_DEFERRED_REGISTER.register(bus);
+  }
 }

@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 
 public class BlockModifierProvider implements ICapabilityProvider, ICapabilitySerializable<ListNBT> {
 
-    private BlockModifierHolder modifierHolder = new BlockModifierHolder();
-    private LazyOptional<BlockModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
+    private final BlockModifierHolder modifierHolder = new BlockModifierHolder();
+    private final LazyOptional<BlockModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
     public BlockModifierProvider() {
     }

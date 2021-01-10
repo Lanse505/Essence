@@ -5,6 +5,7 @@ import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementPro
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
+import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
@@ -12,44 +13,42 @@ import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.function.Consumer;
-
 public class CosmeticKnowledgeAdvancements {
 
-    private static Advancement cosmetic;
-    private static Advancement enchanted;
+  private static Advancement cosmetic;
+  private static Advancement enchanted;
 
-    public static void addCosmeticAdvancements(Consumer<Advancement> consumer) {
-        cosmetic = Advancement.Builder.builder()
+  public static void addCosmeticAdvancements (Consumer<Advancement> consumer) {
+    cosmetic = Advancement.Builder.builder()
             .withDisplay(
-                ExtendableAdvancementProvider.getDefaultIcon(),
-                new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.title"),
-                new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.description"),
-                new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
-                FrameType.CHALLENGE, true, false, true
+                    ExtendableAdvancementProvider.getDefaultIcon(),
+                    new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.title"),
+                    new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.description"),
+                    new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
+                    FrameType.CHALLENGE, true, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:knowledge/cosmetic/cosmetic_modifier");
-        enchanted = Advancement.Builder.builder()
+    enchanted = Advancement.Builder.builder()
             .withDisplay(
-                ExtendableAdvancementProvider.getDefaultIcon(),
-                new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.title"),
-                new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.description"),
-                new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
-                FrameType.CHALLENGE, true, false, true
+                    ExtendableAdvancementProvider.getDefaultIcon(),
+                    new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.title"),
+                    new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.description"),
+                    new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
+                    FrameType.CHALLENGE, true, false, true
             )
             .withParent(cosmetic)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ENCHANTED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
             .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
             .register(consumer, "essence:knowledge/cosmetic/enchanted_modifier");
-    }
+  }
 
-    public static Advancement getCosmetic() {
-        return cosmetic;
-    }
+  public static Advancement getCosmetic () {
+    return cosmetic;
+  }
 
-    public static Advancement getEnchanted() {
-        return enchanted;
-    }
+  public static Advancement getEnchanted () {
+    return enchanted;
+  }
 }

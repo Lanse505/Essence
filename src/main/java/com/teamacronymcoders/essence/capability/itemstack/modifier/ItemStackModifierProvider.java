@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 public class ItemStackModifierProvider implements ICapabilityProvider, ICapabilitySerializable<ListNBT> {
 
     private ItemStackModifierHolder modifierHolder;
-    private LazyOptional<ItemStackModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
+    private final LazyOptional<ItemStackModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
     public ItemStackModifierProvider(ItemStack stack) {
         modifierHolder = new ItemStackModifierHolder(stack);

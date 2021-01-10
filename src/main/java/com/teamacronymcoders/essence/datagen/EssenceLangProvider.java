@@ -5,8 +5,8 @@ import net.minecraft.data.DataGenerator;
 
 public class EssenceLangProvider {
 
-    public static void registerLangProviders(DataGenerator generator) {
-        generator.addProvider(new EssenceEnglishLangProvider(generator));
-    }
+  public static void registerLangProviders (DataGenerator generator) {
+    generator.addProvider(new EssenceEnglishLangProvider(generator));
+  }
 
 }

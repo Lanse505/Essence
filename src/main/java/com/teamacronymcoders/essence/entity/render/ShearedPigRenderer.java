@@ -10,13 +10,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class ShearedPigRenderer extends MobRenderer<ShearedPigEntity, PigModel<ShearedPigEntity>> {
 
-    public ShearedPigRenderer(EntityRendererManager manager) {
-        super(manager, new PigModel<>(), 0.7F);
-        this.addLayer(new ShearedPigSaddleLayer(this));
-    }
+  public ShearedPigRenderer (EntityRendererManager manager) {
+    super(manager, new PigModel<>(), 0.7F);
+    this.addLayer(new ShearedPigSaddleLayer(this));
+  }
 
-    @Override
-    public ResourceLocation getEntityTexture(ShearedPigEntity entity) {
-        return EssenceEntityTextures.SHEARED_PIG;
-    }
+  @Override
+  public ResourceLocation getEntityTexture (ShearedPigEntity entity) {
+    return EssenceEntityTextures.SHEARED_PIG;
+  }
 }

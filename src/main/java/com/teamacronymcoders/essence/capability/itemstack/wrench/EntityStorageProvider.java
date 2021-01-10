@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class EntityStorageProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
 
     private EntityStorageCapability cap;
-    private LazyOptional<EntityStorageCapability> optional = LazyOptional.of(() -> cap);
+    private final LazyOptional<EntityStorageCapability> optional = LazyOptional.of(() -> cap);
 
     public EntityStorageProvider(ItemStack stack) {
         cap = new EntityStorageCapability(stack);

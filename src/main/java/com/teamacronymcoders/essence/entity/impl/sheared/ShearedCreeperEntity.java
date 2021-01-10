@@ -10,17 +10,17 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ShearedCreeperEntity extends CreeperEntity {
 
-    public ShearedCreeperEntity(EntityType<? extends ShearedCreeperEntity> entityType, World world) {
-        super(entityType, world);
-    }
+  public ShearedCreeperEntity (EntityType<? extends ShearedCreeperEntity> entityType, World world) {
+    super(entityType, world);
+  }
 
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
+  @Override
+  public IPacket<?> createSpawnPacket () {
+    return NetworkHooks.getEntitySpawningPacket(this);
+  }
 
-    @Override
-    protected ResourceLocation getLootTable() {
-        return EssenceEntityLootTables.SHEARED_CREEPER;
-    }
+  @Override
+  protected ResourceLocation getLootTable () {
+    return EssenceEntityLootTables.SHEARED_CREEPER;
+  }
 }

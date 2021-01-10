@@ -8,17 +8,17 @@ import net.minecraft.item.ItemStack;
 
 public abstract class ItemArrowCoreModifier extends ItemCoreModifier {
 
-    public ItemArrowCoreModifier() {
-        this(1);
-    }
+  public ItemArrowCoreModifier () {
+    this(1);
+  }
 
-    public ItemArrowCoreModifier(int maxLevel) {
-        this(maxLevel, 0);
-    }
+  public ItemArrowCoreModifier (int maxLevel) {
+    this(maxLevel, 0);
+  }
 
-    public ItemArrowCoreModifier(int maxLevel, int minLevel) {
-        super(maxLevel, minLevel);
-    }
+  public ItemArrowCoreModifier (int maxLevel, int minLevel) {
+    super(maxLevel, minLevel);
+  }
 
-    public abstract void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance);
+  public abstract void alterArrowEntity (AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance);
 }

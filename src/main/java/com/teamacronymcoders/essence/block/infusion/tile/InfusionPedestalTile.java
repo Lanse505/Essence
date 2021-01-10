@@ -4,48 +4,47 @@ import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import net.minecraft.item.ItemStack;
-
 import javax.annotation.Nonnull;
+import net.minecraft.item.ItemStack;
 
 public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
 
-    @Save
-    private Integer ticksExisted = 0;
+  @Save
+  private Integer ticksExisted = 0;
 
-    @Save
-    private InventoryComponent<InfusionPedestalTile> inventory;
+  @Save
+  private final InventoryComponent<InfusionPedestalTile> inventory;
 
-    public InfusionPedestalTile() {
-        super(EssenceObjectHolders.INFUSION_PEDESTAL);
-        addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
+  public InfusionPedestalTile () {
+    super(EssenceObjectHolders.INFUSION_PEDESTAL);
+    addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
             .setComponentHarness(this)
             .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))
             .setSlotLimit(1)
-        );
-    }
+    );
+  }
 
-    @Override
-    public void tick() {
-        super.tick();
-        ticksExisted++;
-    }
+  @Override
+  public void tick () {
+    super.tick();
+    ticksExisted++;
+  }
 
-    @Nonnull
-    @Override
-    public InfusionPedestalTile getSelf() {
-        return this;
-    }
+  @Nonnull
+  @Override
+  public InfusionPedestalTile getSelf () {
+    return this;
+  }
 
-    public void addItem(ItemStack stack) {
-        this.inventory.insertItem(0, stack, false);
-    }
+  public void addItem (ItemStack stack) {
+    this.inventory.insertItem(0, stack, false);
+  }
 
-    public ItemStack getStack() {
-        return this.inventory.getStackInSlot(0);
-    }
+  public ItemStack getStack () {
+    return this.inventory.getStackInSlot(0);
+  }
 
-    public Integer getTicksExisted() {
-        return ticksExisted;
-    }
+  public Integer getTicksExisted () {
+    return ticksExisted;
+  }
 }

@@ -10,11 +10,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceParticleTypeRegistration {
 
-    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPE_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Essence.MODID);
+  private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPE_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Essence.MOD_ID);
 
-    public static RegistryObject<BasicParticleType> GLUE_BALL_PARTICLE = PARTICLE_TYPE_DEFERRED_REGISTER.register("glue_ball", () -> new BasicParticleType(false));
+  public static RegistryObject<BasicParticleType> GLUE_BALL_PARTICLE = PARTICLE_TYPE_DEFERRED_REGISTER.register("glue_ball", () -> new BasicParticleType(false));
 
-    public static void register(IEventBus eventBus) {
-        PARTICLE_TYPE_DEFERRED_REGISTER.register(eventBus);
-    }
+  public static void register (IEventBus eventBus) {
+    PARTICLE_TYPE_DEFERRED_REGISTER.register(eventBus);
+  }
 }

@@ -12,7 +12,7 @@ public class UnlockKnowledgeCriterionInstance extends CriterionInstance {
     private final Knowledge<?> knowledge;
 
     public UnlockKnowledgeCriterionInstance(Knowledge<?> knowledge, EntityPredicate.AndPredicate predicate) {
-        super(new ResourceLocation(Essence.MODID, "knowledge"), predicate);
+        super(new ResourceLocation(Essence.MOD_ID, "knowledge"), predicate);
         this.knowledge = knowledge;
     }
 

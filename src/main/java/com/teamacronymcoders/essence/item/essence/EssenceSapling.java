@@ -7,9 +7,9 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
 public class EssenceSapling extends CustomSaplingBlock {
-    public EssenceSapling() {
-        super(new EssenceTree(), Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.PLANT));
-        setRegistryName(Essence.MODID, "essence_wood_sapling");
-        setItemGroup(Essence.CORE_TAB);
-    }
+  public EssenceSapling () {
+    super(new EssenceTree(), Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.PLANT));
+    setRegistryName(Essence.MOD_ID, "essence_wood_sapling");
+    setItemGroup(Essence.CORE_TAB);
+  }
 }

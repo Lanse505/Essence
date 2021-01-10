@@ -5,21 +5,21 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class EssenceTreeGenConfig {
 
-    private final EssenceTreeConfig normalVariant;
-    private final EssenceTreeConfig fancyVariant;
+  private final EssenceTreeConfig normalVariant;
+  private final EssenceTreeConfig fancyVariant;
 
-    public EssenceTreeGenConfig(ForgeConfigSpec.Builder builder) {
-        builder.push("Trees");
-        normalVariant = new EssenceTreeConfig(builder, "Normal", true, 0.085f, 1);
-        fancyVariant = new EssenceTreeConfig(builder, "Fancy", true, 0.085f, 1);
-        builder.pop();
-    }
+  public EssenceTreeGenConfig (ForgeConfigSpec.Builder builder) {
+    builder.push("Trees");
+    normalVariant = new EssenceTreeConfig(builder, "Normal", true, 0.085f, 1);
+    fancyVariant = new EssenceTreeConfig(builder, "Fancy", true, 0.085f, 1);
+    builder.pop();
+  }
 
-    public EssenceTreeConfig getNormalVariant() {
-        return normalVariant;
-    }
+  public EssenceTreeConfig getNormalVariant () {
+    return normalVariant;
+  }
 
-    public EssenceTreeConfig getFancyVariant() {
-        return fancyVariant;
-    }
+  public EssenceTreeConfig getFancyVariant () {
+    return fancyVariant;
+  }
 }

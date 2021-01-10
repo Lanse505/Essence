@@ -2,27 +2,26 @@ package com.teamacronymcoders.essence.datagen.tags;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
+import javax.annotation.Nullable;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.EntityTypeTagsProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import javax.annotation.Nullable;
-
 public class EssenceEntityTagProvider extends EntityTypeTagsProvider {
 
-    public EssenceEntityTagProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generator, Essence.MODID, existingFileHelper);
-    }
+  public EssenceEntityTagProvider (DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
+    super(generator, Essence.MOD_ID, existingFileHelper);
+  }
 
-    @Override
-    protected void registerTags() {
-        getOrCreateBuilder(EssenceEntityTags.BLACKLIST).add(
+  @Override
+  protected void registerTags () {
+    getOrCreateBuilder(EssenceEntityTags.BLACKLIST).add(
             EntityType.ARMOR_STAND,
             EntityType.ENDER_DRAGON,
             EntityType.PLAYER
-        );
-        getOrCreateBuilder(EssenceEntityTags.WHITELIST).add(
+    );
+    getOrCreateBuilder(EssenceEntityTags.WHITELIST).add(
             EntityType.BAT,
             EntityType.BEE,
             EntityType.BLAZE,
@@ -87,11 +86,11 @@ public class EssenceEntityTagProvider extends EntityTypeTagsProvider {
             EntityType.ZOMBIE_VILLAGER,
             EntityType.PHANTOM,
             EntityType.RAVAGER
-        );
-    }
+    );
+  }
 
-    @Override
-    public String getName() {
-        return "Essence Tags<EntityType>";
-    }
+  @Override
+  public String getName () {
+    return "Essence Tags<EntityType>";
+  }
 }

@@ -11,7 +11,7 @@ import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.conditions.ILootCondition;
 
 public class MatchModifier implements ILootCondition {
-    private ModifierPredicate predicate;
+    private final ModifierPredicate predicate;
 
     public MatchModifier(ModifierPredicate predicate) {
         this.predicate = predicate;

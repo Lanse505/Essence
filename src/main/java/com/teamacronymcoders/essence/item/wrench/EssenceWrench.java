@@ -17,6 +17,10 @@ import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -51,249 +55,244 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-import java.util.Optional;
-
 public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
-    private WrenchModeEnum mode;
-    private final int baseModifiers = 1;
-    private int freeModifiers;
-    private final int additionalModifiers = 0;
+  private WrenchModeEnum mode;
+  private final int baseModifiers = 1;
+  private int freeModifiers;
+  private final int additionalModifiers = 0;
 
-    public EssenceWrench() {
-        super(new Item.Properties().group(Essence.TOOL_TAB).maxStackSize(1).maxDamage(2048).rarity(Rarity.RARE));
-        this.mode = WrenchModeEnum.SERIALIZE;
-        this.freeModifiers = 1;
+  public EssenceWrench () {
+    super(new Item.Properties().group(Essence.TOOL_TAB).maxStackSize(1).maxDamage(2048).rarity(Rarity.RARE));
+    this.mode = WrenchModeEnum.SERIALIZE;
+    this.freeModifiers = 1;
+  }
+
+  private static <T extends Comparable<T>> String getStatePropertyValue (BlockState state, Property<T> property) {
+    T prop = state.get(property);
+    return property.getName(prop);
+  }
+
+  @Override
+  @ParametersAreNonnullByDefault
+  @MethodsReturnNonnullByDefault
+  public ActionResultType itemInteractionForEntity (ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+    if (target.getEntityWorld().isRemote) {
+      return ActionResultType.FAIL;
+    }
+    LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
+    return lazy.isPresent() ? lazy.map(holder -> {
+      Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
+      ItemStack serialized = new ItemStack(EssenceObjectHolders.ENTITY_ITEM);
+      boolean successful;
+      if (optional.isPresent()) {
+        successful = serializeEntity(serialized, player, target, hand, true);
+      } else {
+        successful = serializeEntity(serialized, player, target, hand, false);
+      }
+      if (successful) {
+        player.addItemStackToInventory(serialized);
+        stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(hand));
+      }
+      return successful ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+    }).orElse(ActionResultType.FAIL) : ActionResultType.FAIL;
+  }
+
+  @Override
+  public ActionResultType onItemUseFirst (ItemStack stack, ItemUseContext context) {
+    World world = context.getWorld();
+    BlockPos pos = context.getPos();
+    BlockState state = world.getBlockState(pos);
+    PlayerEntity player = context.getPlayer();
+
+    if (state.getBlock().isAir(state, world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
+      return ActionResultType.PASS;
     }
 
-    private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, Property<T> property) {
-        T prop = state.get(property);
-        return property.getName(prop);
-    }
+    if (player != null) {
+      BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
+      if (config == BlockSerializationEnum.BLACKLIST) {
+        if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST)) {
+          TileEntity te = world.getTileEntity(pos);
+          ItemStack drop = new ItemStack(state.getBlock());
+          CompoundNBT stateNBT = new CompoundNBT();
+          state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
+          drop.setTagInfo("BlockStateTag", stateNBT);
 
-    @Override
-    @ParametersAreNonnullByDefault
-    @MethodsReturnNonnullByDefault
-    public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-        if (target.getEntityWorld().isRemote) {
-            return ActionResultType.FAIL;
+          if (te != null) {
+            drop.setTagInfo("BlockEntityTag", te.serializeNBT());
+          }
+
+          player.addStat(EssenceStats.INSTANCE.SERIALIZED);
+          player.addStat(Stats.ITEM_USED.get(this));
+
+          world.removeTileEntity(pos);
+          world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
+
+          ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
+          itemEntity.setDefaultPickupDelay();
+          world.addEntity(itemEntity);
+
+          stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+
+          return ActionResultType.SUCCESS;
         }
-        LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return lazy.isPresent() ? lazy.map(holder -> {
-            Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
-            ItemStack serialized = new ItemStack(EssenceObjectHolders.ENTITY_ITEM);
-            boolean successful;
-            if (optional.isPresent()) {
-                successful = serializeEntity(serialized, player, target, hand, true);
-            } else {
-                successful = serializeEntity(serialized, player, target, hand, false);
-            }
-            if (successful) {
-                player.addItemStackToInventory(serialized);
-                stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(hand));
-            }
-            return successful ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-        }).orElse(ActionResultType.FAIL) : ActionResultType.FAIL;
-    }
+      } else {
+        if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) {
+          TileEntity te = world.getTileEntity(pos);
+          ItemStack drop = new ItemStack(state.getBlock());
+          CompoundNBT stateNBT = new CompoundNBT();
+          state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
+          drop.setTagInfo("BlockStateTag", stateNBT);
 
-    @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
-        BlockState state = world.getBlockState(pos);
-        PlayerEntity player = context.getPlayer();
+          if (te != null) {
+            drop.setTagInfo("BlockEntityTag", te.serializeNBT());
+          }
 
-        if (state.getBlock().isAir(state, world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
-            return ActionResultType.PASS;
+          player.addStat(EssenceStats.INSTANCE.SERIALIZED);
+          player.addStat(Stats.ITEM_USED.get(this));
+
+          world.removeTileEntity(pos);
+          world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
+
+          ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
+          itemEntity.setDefaultPickupDelay();
+          world.addEntity(itemEntity);
+
+          stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+
+          return ActionResultType.SUCCESS;
         }
+      }
+    }
 
-        if (player != null) {
-            BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
-            if (config == BlockSerializationEnum.BLACKLIST) {
-                if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST)) {
-                    TileEntity te = world.getTileEntity(pos);
-                    ItemStack drop = new ItemStack(state.getBlock());
-                    CompoundNBT stateNBT = new CompoundNBT();
-                    state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
-                    drop.setTagInfo("BlockStateTag", stateNBT);
+    if (player != null && mode == WrenchModeEnum.ROTATE) {
+      if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
+        state.rotate(world, pos, Rotation.CLOCKWISE_180);
+      }
+      state.rotate(world, pos, Rotation.CLOCKWISE_90);
+      player.addStat(Stats.ITEM_USED.get(this));
+      return ActionResultType.SUCCESS;
+    }
+    return ActionResultType.PASS;
+  }
 
-                    if (te != null) {
-                        drop.setTagInfo("BlockEntityTag", te.serializeNBT());
-                    }
+  @Override
+  @ParametersAreNonnullByDefault
+  public void addInformation (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+    list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleName())));
+    if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
+      list.add(new StringTextComponent(" "));
+      list.add(new TranslationTextComponent("essence.wrench.disclaimer"));
+    }
+    addInformationFromModifiers(stack, world, list, flag, EssenceItemTiers.ESSENCE);
+  }
 
-                    player.addStat(EssenceStats.INSTANCE.SERIALIZED);
-                    player.addStat(Stats.ITEM_USED.get(this));
+  @Nullable
+  @Override
+  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+    if (nbt != null && !nbt.isEmpty()) {
+      return new ItemStackModifierProvider(stack, nbt);
+    }
+    return new ItemStackModifierProvider(stack);
+  }
 
-                    world.removeTileEntity(pos);
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-
-                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
-                    itemEntity.setDefaultPickupDelay();
-                    world.addEntity(itemEntity);
-
-                    stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-
-                    return ActionResultType.SUCCESS;
-                }
-            } else {
-                if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) {
-                    TileEntity te = world.getTileEntity(pos);
-                    ItemStack drop = new ItemStack(state.getBlock());
-                    CompoundNBT stateNBT = new CompoundNBT();
-                    state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
-                    drop.setTagInfo("BlockStateTag", stateNBT);
-
-                    if (te != null) {
-                        drop.setTagInfo("BlockEntityTag", te.serializeNBT());
-                    }
-
-                    player.addStat(EssenceStats.INSTANCE.SERIALIZED);
-                    player.addStat(Stats.ITEM_USED.get(this));
-
-                    world.removeTileEntity(pos);
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-
-                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
-                    itemEntity.setDefaultPickupDelay();
-                    world.addEntity(itemEntity);
-
-                    stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-
-                    return ActionResultType.SUCCESS;
-                }
-            }
+  public boolean serializeEntity (ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
+    if (target.getEntityWorld().isRemote) {
+      return false;
+    }
+    if (checkBoss) {
+      if (target instanceof PlayerEntity || !target.isNonBoss() || !target.isAlive()) {
+        return false;
+      }
+    } else {
+      if (target instanceof PlayerEntity || !target.isAlive()) {
+        return false;
+      }
+    }
+    return stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).map(storage -> {
+      String entityID = EntityType.getKey(target.getType()).toString();
+      if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
+        if (isEntityBlacklisted(entityID)) {
+          return false;
         }
-
-        if (player != null && mode == WrenchModeEnum.ROTATE) {
-            if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
-                state.rotate(world, pos, Rotation.CLOCKWISE_180);
-            }
-            state.rotate(world, pos, Rotation.CLOCKWISE_90);
-            player.addStat(Stats.ITEM_USED.get(this));
-            return ActionResultType.SUCCESS;
+      } else {
+        if (!isEntityWhitelisted(entityID)) {
+          return false;
         }
-        return ActionResultType.PASS;
-    }
+      }
+      storage.setEntity(target);
+      playerIn.swingArm(hand);
+      target.remove(true);
+      return true;
+    }).orElse(false);
+  }
 
-    @Override
-    @ParametersAreNonnullByDefault
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleName())));
-        if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
-            list.add(new StringTextComponent(" "));
-            list.add(new TranslationTextComponent("essence.wrench.disclaimer"));
-        }
-        addInformationFromModifiers(stack, world, list, flag, EssenceItemTiers.ESSENCE);
-    }
+  public WrenchModeEnum getMode () {
+    return mode;
+  }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        if (nbt != null && !nbt.isEmpty()) {
-            return new ItemStackModifierProvider(stack, nbt);
-        }
-        return new ItemStackModifierProvider(stack);
-    }
+  public void setMode (WrenchModeEnum mode) {
+    this.mode = mode;
+  }
 
-    public boolean serializeEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
-        if (target.getEntityWorld().isRemote) {
-            return false;
-        }
-        if (checkBoss) {
-            if (target instanceof PlayerEntity || !target.isNonBoss() || !target.isAlive()) {
-                return false;
-            }
-        } else {
-            if (target instanceof PlayerEntity || !target.isAlive()) {
-                return false;
-            }
-        }
-        return stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).map(storage -> {
-            String entityID = EntityType.getKey(target.getType()).toString();
-            if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
-                if (isEntityBlacklisted(entityID)) {
-                    return false;
-                }
-            } else {
-                if (!isEntityWhitelisted(entityID)) {
-                    return false;
-                }
-            }
-            storage.setEntity(target);
-            playerIn.swingArm(hand);
-            target.remove(true);
-            return true;
-        }).orElse(false);
+  @Override
+  public void handlePacketData (IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
+    if (!world.isRemote()) {
+      setMode(packetBuffer.readEnumValue(WrenchModeEnum.class));
     }
+  }
 
-    public WrenchModeEnum getMode() {
-        return mode;
-    }
+  @SuppressWarnings("ConstantConditions")
+  public boolean isEntityBlacklisted (String entityID) {
+    return EssenceEntityTags.BLACKLIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
+  }
 
-    public void setMode(WrenchModeEnum mode) {
-        this.mode = mode;
-    }
+  @SuppressWarnings("ConstantConditions")
+  public boolean isEntityWhitelisted (String entityID) {
+    return EssenceEntityTags.WHITELIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
+  }
 
-    @Override
-    public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
-        if (!world.isRemote()) {
-            setMode(packetBuffer.readEnumValue(WrenchModeEnum.class));
-        }
-    }
+  @Override
+  public ActionResultType onItemUseModified (ItemUseContext context, boolean isRecursive) {
+    return ActionResultType.PASS;
+  }
 
-    @SuppressWarnings("ConstantConditions")
-    public boolean isEntityBlacklisted(String entityID) {
-        return EssenceEntityTags.BLACKLIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
-    }
+  @Override
+  public void addModifierWithoutIncreasingAdditional (int increase) {
+  }
 
-    @SuppressWarnings("ConstantConditions")
-    public boolean isEntityWhitelisted(String entityID) {
-        return EssenceEntityTags.WHITELIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
-    }
+  @Override
+  public void increaseFreeModifiers (int increase) {
+  }
 
-    @Override
-    public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-        return ActionResultType.PASS;
+  @Override
+  public boolean decreaseFreeModifiers (int decrease) {
+    if (freeModifiers - decrease < 0) {
+      return false;
     }
+    freeModifiers = freeModifiers - decrease;
+    return true;
+  }
 
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-    }
+  @Override
+  public int getFreeModifiers () {
+    return freeModifiers;
+  }
 
-    @Override
-    public void increaseFreeModifiers(int increase) {
-    }
+  @Override
+  public int getMaxModifiers () {
+    return baseModifiers + additionalModifiers;
+  }
 
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
+  @Override
+  public boolean recheck (ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+    int cmc = 0;
+    for (ModifierInstance<ItemStack> instance : modifierInstances) {
+      if (instance.getModifier() instanceof ItemCoreModifier) {
+        cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+      }
     }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance<ItemStack> instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
-    }
+    return cmc <= baseModifiers + additionalModifiers;
+  }
 }

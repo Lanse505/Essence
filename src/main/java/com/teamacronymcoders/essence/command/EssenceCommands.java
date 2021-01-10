@@ -11,14 +11,14 @@ import net.minecraft.command.Commands;
 
 public class EssenceCommands {
 
-    public static void registerCommands(CommandDispatcher<CommandSource> dispatcher) {
-        dispatcher.register(
-            Commands.literal(Essence.MODID)
-                .then(SetupDevWorldCommand.register(dispatcher))
-                .then(KnowledgeCommand.register(dispatcher))
-                .then(ItemStackModifierCommand.register(dispatcher))
-                .then(RegistryCommand.register(dispatcher))
-        );
-    }
+  public static void registerCommands (CommandDispatcher<CommandSource> dispatcher) {
+    dispatcher.register(
+            Commands.literal(Essence.MOD_ID)
+                    .then(SetupDevWorldCommand.register(dispatcher))
+                    .then(KnowledgeCommand.register(dispatcher))
+                    .then(ItemStackModifierCommand.register(dispatcher))
+                    .then(RegistryCommand.register(dispatcher))
+    );
+  }
 
 }

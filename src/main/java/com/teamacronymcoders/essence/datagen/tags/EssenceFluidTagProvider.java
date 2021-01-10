@@ -9,23 +9,23 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class EssenceFluidTagProvider extends FluidTagsProvider {
 
-    public EssenceFluidTagProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Essence.MODID, existingFileHelper);
-    }
+  public EssenceFluidTagProvider (DataGenerator generator, ExistingFileHelper existingFileHelper) {
+    super(generator, Essence.MOD_ID, existingFileHelper);
+  }
 
-    @Override
-    protected void registerTags() {
-        // Essence
-        getOrCreateBuilder(EssenceFluidTags.FORGE_ESSENCE).add(EssenceObjectHolders.ESSENCE_FLUID.getSourceFluid());
-        getOrCreateBuilder(EssenceFluidTags.MY_ESSENCE).add(EssenceObjectHolders.ESSENCE_FLUID.getSourceFluid());
+  @Override
+  protected void registerTags () {
+    // Essence
+    getOrCreateBuilder(EssenceFluidTags.FORGE_ESSENCE).add(EssenceObjectHolders.ESSENCE_FLUID.getSourceFluid());
+    getOrCreateBuilder(EssenceFluidTags.MY_ESSENCE).add(EssenceObjectHolders.ESSENCE_FLUID.getSourceFluid());
 
-        // Experience
-        getOrCreateBuilder(EssenceFluidTags.FORGE_EXPERIENCE).add(EssenceObjectHolders.EXP_FLUID.getSourceFluid());
-        getOrCreateBuilder(EssenceFluidTags.MY_EXPERIENCE).add(EssenceObjectHolders.EXP_FLUID.getSourceFluid());
-    }
+    // Experience
+    getOrCreateBuilder(EssenceFluidTags.FORGE_EXPERIENCE).add(EssenceObjectHolders.EXP_FLUID.getSourceFluid());
+    getOrCreateBuilder(EssenceFluidTags.MY_EXPERIENCE).add(EssenceObjectHolders.EXP_FLUID.getSourceFluid());
+  }
 
-    @Override
-    public String getName() {
-        return "Essence Tags<Fluid>";
-    }
+  @Override
+  public String getName () {
+    return "Essence Tags<Fluid>";
+  }
 }

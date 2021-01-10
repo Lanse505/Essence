@@ -21,10 +21,10 @@ public enum CascadingType {
     private final int id;
     private final String name;
     private final TextFormatting[] formatting;
-    private ITag.INamedTag<Item> toolTag;
-    private ITag.INamedTag<Block> blockTag;
-    private Supplier<Integer> blockLimit;
-    private Supplier<Integer> searchLimit;
+    private final ITag.INamedTag<Item> toolTag;
+    private final ITag.INamedTag<Block> blockTag;
+    private final Supplier<Integer> blockLimit;
+    private final Supplier<Integer> searchLimit;
 
     CascadingType(int id, String name, ITag.INamedTag<Item> toolTag, ITag.INamedTag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
         this.id = id;

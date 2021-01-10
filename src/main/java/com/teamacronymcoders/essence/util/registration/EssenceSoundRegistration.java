@@ -10,13 +10,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceSoundRegistration {
 
-    private static final DeferredRegister<SoundEvent> SOUND_EVENT_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Essence.MODID);
+  private static final DeferredRegister<SoundEvent> SOUND_EVENT_DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Essence.MOD_ID);
 
-    public static RegistryObject<SoundEvent> INFUSION_SOUND = SOUND_EVENT_DEFERRED_REGISTER.register("crafting_infusion", () -> EssenceEffect.infusion);
-    public static RegistryObject<SoundEvent> INFUSION_BOOK_SOUND = SOUND_EVENT_DEFERRED_REGISTER.register("ambient_infusion_book", () -> EssenceEffect.infusionBook);
+  public static RegistryObject<SoundEvent> INFUSION_SOUND = SOUND_EVENT_DEFERRED_REGISTER.register("crafting_infusion", () -> EssenceEffect.infusion);
+  public static RegistryObject<SoundEvent> INFUSION_BOOK_SOUND = SOUND_EVENT_DEFERRED_REGISTER.register("ambient_infusion_book", () -> EssenceEffect.infusionBook);
 
-    public static void register(IEventBus bus) {
-        SOUND_EVENT_DEFERRED_REGISTER.register(bus);
-    }
+  public static void register (IEventBus bus) {
+    SOUND_EVENT_DEFERRED_REGISTER.register(bus);
+  }
 
 }

@@ -5,12 +5,12 @@ import net.minecraft.data.DataGenerator;
 
 public class EssenceAdvancementProvider extends ExtendableAdvancementProvider {
 
-    public EssenceAdvancementProvider(DataGenerator generatorIn) {
-        super(generatorIn);
-    }
+  public EssenceAdvancementProvider (DataGenerator generatorIn) {
+    super(generatorIn);
+  }
 
-    @Override
-    public String getName() {
-        return "Essence Advancements";
-    }
+  @Override
+  public String getName () {
+    return "Essence Advancements";
+  }
 }

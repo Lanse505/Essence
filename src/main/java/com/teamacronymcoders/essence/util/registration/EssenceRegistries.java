@@ -11,24 +11,24 @@ import net.minecraftforge.registries.RegistryManager;
 
 public class EssenceRegistries {
 
-    static {
-        init();
-    }
+  static {
+    init();
+  }
 
-    public static IForgeRegistry<Modifier<?>> MODIFIER = RegistryManager.ACTIVE.getRegistry(Modifier.class);
-    public static IForgeRegistry<Knowledge<?>> KNOWLEDGE = RegistryManager.ACTIVE.getRegistry(Knowledge.class);
+  public static IForgeRegistry<Modifier<?>> MODIFIER = RegistryManager.ACTIVE.getRegistry(Modifier.class);
+  public static IForgeRegistry<Knowledge<?>> KNOWLEDGE = RegistryManager.ACTIVE.getRegistry(Knowledge.class);
 
-    @SuppressWarnings("unchecked")
-    private static void init() {
-        makeRegistry("modifier", Modifier.class).create();
-        makeRegistry("knowledge", Knowledge.class).create();
-    }
+  @SuppressWarnings("unchecked")
+  private static void init () {
+    makeRegistry("modifier", Modifier.class).create();
+    makeRegistry("knowledge", Knowledge.class).create();
+  }
 
-    public static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(String name, Class<T> type) {
-        return new RegistryBuilder<T>()
-            .setName(new ResourceLocation(Essence.MODID, name))
+  public static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry (String name, Class<T> type) {
+    return new RegistryBuilder<T>()
+            .setName(new ResourceLocation(Essence.MOD_ID, name))
             .setIDRange(1, Integer.MAX_VALUE - 1)
             .disableSaving()
             .setType(type);
-    }
+  }
 }

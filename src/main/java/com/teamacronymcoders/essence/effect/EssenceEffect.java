@@ -6,10 +6,10 @@ import net.minecraft.util.SoundEvent;
 
 public class EssenceEffect {
 
-    private static final ResourceLocation infusionSoundRL = new ResourceLocation(Essence.MODID, "crafting_infusion");
-    public static final SoundEvent infusion = new SoundEvent(infusionSoundRL);
+  private static final ResourceLocation infusionSoundRL = new ResourceLocation(Essence.MOD_ID, "crafting_infusion");
+  public static final SoundEvent infusion = new SoundEvent(infusionSoundRL);
 
-    private static final ResourceLocation infusionBookRL = new ResourceLocation(Essence.MODID, "ambient_infusion_book");
-    public static final SoundEvent infusionBook = new SoundEvent(infusionBookRL);
+  private static final ResourceLocation infusionBookRL = new ResourceLocation(Essence.MOD_ID, "ambient_infusion_book");
+  public static final SoundEvent infusionBook = new SoundEvent(infusionBookRL);
 
 }

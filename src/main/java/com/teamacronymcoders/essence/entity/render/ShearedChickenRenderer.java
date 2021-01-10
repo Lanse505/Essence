@@ -10,18 +10,18 @@ import net.minecraft.util.math.MathHelper;
 
 public class ShearedChickenRenderer extends MobRenderer<ShearedChickenEntity, ChickenModel<ShearedChickenEntity>> {
 
-    public ShearedChickenRenderer(EntityRendererManager manager) {
-        super(manager, new ChickenModel<>(), 0.3F);
-    }
+  public ShearedChickenRenderer (EntityRendererManager manager) {
+    super(manager, new ChickenModel<>(), 0.3F);
+  }
 
-    @Override
-    public ResourceLocation getEntityTexture(ShearedChickenEntity entity) {
-        return EssenceEntityTextures.SHEARED_CHICKEN;
-    }
+  @Override
+  public ResourceLocation getEntityTexture (ShearedChickenEntity entity) {
+    return EssenceEntityTextures.SHEARED_CHICKEN;
+  }
 
-    protected float handleRotationFloat(ShearedChickenEntity entity, float v) {
-        float lerp = MathHelper.lerp(v, entity.oFlap, entity.wingRotation);
-        float lerp1 = MathHelper.lerp(v, entity.oFlapSpeed, entity.destPos);
-        return (MathHelper.sin(lerp) + 1.0F) * lerp1;
-    }
+  protected float handleRotationFloat (ShearedChickenEntity entity, float v) {
+    float lerp = MathHelper.lerp(v, entity.oFlap, entity.wingRotation);
+    float lerp1 = MathHelper.lerp(v, entity.oFlapSpeed, entity.destPos);
+    return (MathHelper.sin(lerp) + 1.0F) * lerp1;
+  }
 }

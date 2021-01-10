@@ -28,7 +28,7 @@ import java.util.List;
 
 public class CascadingModifier extends ItemInteractionCoreModifier {
 
-    private CascadingType type;
+    private final CascadingType type;
 
     public CascadingModifier(CascadingType type) {
         super();

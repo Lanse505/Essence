@@ -10,17 +10,17 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ShearedGhastEntity extends GhastEntity {
 
-    public ShearedGhastEntity(EntityType<? extends ShearedGhastEntity> entityType, World world) {
-        super(entityType, world);
-    }
+  public ShearedGhastEntity (EntityType<? extends ShearedGhastEntity> entityType, World world) {
+    super(entityType, world);
+  }
 
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
+  @Override
+  public IPacket<?> createSpawnPacket () {
+    return NetworkHooks.getEntitySpawningPacket(this);
+  }
 
-    @Override
-    protected ResourceLocation getLootTable() {
-        return EssenceEntityLootTables.SHEARED_GHAST;
-    }
+  @Override
+  protected ResourceLocation getLootTable () {
+    return EssenceEntityLootTables.SHEARED_GHAST;
+  }
 }

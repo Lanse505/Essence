@@ -17,9 +17,9 @@ public class ModifiableTankProvider implements ICapabilityProvider, ICapabilityS
 
     public static final String MODIFIABLE_TANK = "Modifiable_Tank";
 
-    private ItemStack stack;
+    private final ItemStack stack;
     private ModifiableTank tank;
-    private LazyOptional<ModifiableTank> optional = LazyOptional.of(() -> tank);
+    private final LazyOptional<ModifiableTank> optional = LazyOptional.of(() -> tank);
 
     public ModifiableTankProvider(ItemStack stack, Fluid fluid) {
         this.stack = stack;

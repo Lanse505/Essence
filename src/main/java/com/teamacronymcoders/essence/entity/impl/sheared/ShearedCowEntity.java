@@ -10,17 +10,17 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ShearedCowEntity extends CowEntity {
 
-    public ShearedCowEntity(EntityType<? extends ShearedCowEntity> entityType, World world) {
-        super(entityType, world);
-    }
+  public ShearedCowEntity (EntityType<? extends ShearedCowEntity> entityType, World world) {
+    super(entityType, world);
+  }
 
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
+  @Override
+  public IPacket<?> createSpawnPacket () {
+    return NetworkHooks.getEntitySpawningPacket(this);
+  }
 
-    @Override
-    protected ResourceLocation getLootTable() {
-        return EssenceEntityLootTables.SHEARED_COW;
-    }
+  @Override
+  protected ResourceLocation getLootTable () {
+    return EssenceEntityLootTables.SHEARED_COW;
+  }
 }

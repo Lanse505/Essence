@@ -9,20 +9,20 @@ import net.minecraft.item.ItemStack;
 
 public class KeenModifier extends ItemArrowCoreModifier {
 
-    public KeenModifier() {
-        super(4);
-    }
+  public KeenModifier () {
+    super(4);
+  }
 
-    @Override
-    public void alterArrowEntity(AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance) {
-        if (velocity >= (1f - (0.25f * instance.getLevel()))) {
-            abstractArrowEntity.setIsCritical(true);
-        }
+  @Override
+  public void alterArrowEntity (AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance) {
+    if (velocity >= (1f - (0.25f * instance.getLevel()))) {
+      abstractArrowEntity.setIsCritical(true);
     }
+  }
 
-    @Override
-    public boolean isCompatibleWith(IModifier modifier) {
-        return !(modifier instanceof KeenModifier);
-    }
+  @Override
+  public boolean isCompatibleWith (IModifier modifier) {
+    return !(modifier instanceof KeenModifier);
+  }
 
 }

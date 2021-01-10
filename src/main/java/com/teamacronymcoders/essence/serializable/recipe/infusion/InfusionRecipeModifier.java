@@ -16,7 +16,7 @@ import java.util.List;
 
 public class InfusionRecipeModifier extends ExtendableInfusionRecipe {
 
-    public static GenericSerializer<InfusionRecipeModifier> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MODID, "infusion_modifier"), InfusionRecipeModifier.class);
+    public static GenericSerializer<InfusionRecipeModifier> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "infusion_modifier"), InfusionRecipeModifier.class);
     public static List<InfusionRecipeModifier> RECIPES = new ArrayList<>();
 
     public Ingredient infusable;

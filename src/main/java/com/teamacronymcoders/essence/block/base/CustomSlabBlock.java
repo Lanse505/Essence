@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.block.base;
 
 import com.hrznstudio.titanium.block.BasicBlock;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -24,114 +25,112 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-import javax.annotation.Nullable;
-
 public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
-    public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    protected static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-    protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+  public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
+  public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+  protected static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+  protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-    public CustomSlabBlock(Properties properties) {
-        super(properties);
+  public CustomSlabBlock (Properties properties) {
+    super(properties);
+  }
+
+  @SuppressWarnings("deprecation")
+  public boolean isTransparent (BlockState state) {
+    return state.get(TYPE) != SlabType.DOUBLE;
+  }
+
+  protected void fillStateContainer (StateContainer.Builder<Block, BlockState> builder) {
+    builder.add(TYPE, WATERLOGGED);
+  }
+
+  @SuppressWarnings("deprecation")
+  public VoxelShape getShape (BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    SlabType slabtype = state.get(TYPE);
+    switch (slabtype) {
+      case DOUBLE:
+        return VoxelShapes.fullCube();
+      case TOP:
+        return TOP_SHAPE;
+      default:
+        return BOTTOM_SHAPE;
     }
+  }
 
-    @SuppressWarnings("deprecation")
-    public boolean isTransparent(BlockState state) {
-        return state.get(TYPE) != SlabType.DOUBLE;
+  @Nullable
+  public BlockState getStateForPlacement (BlockItemUseContext context) {
+    BlockPos blockpos = context.getPos();
+    BlockState blockstate = context.getWorld().getBlockState(blockpos);
+    if (blockstate.getBlock() == this) {
+      return blockstate.with(TYPE, SlabType.DOUBLE).with(WATERLOGGED, Boolean.valueOf(false));
+    } else {
+      FluidState fluidstate = context.getWorld().getFluidState(blockpos);
+      BlockState blockstate1 = this.getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+      Direction direction = context.getFace();
+      return direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.with(TYPE, SlabType.TOP);
     }
+  }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(TYPE, WATERLOGGED);
-    }
-
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        SlabType slabtype = state.get(TYPE);
-        switch (slabtype) {
-            case DOUBLE:
-                return VoxelShapes.fullCube();
-            case TOP:
-                return TOP_SHAPE;
-            default:
-                return BOTTOM_SHAPE;
-        }
-    }
-
-    @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockPos blockpos = context.getPos();
-        BlockState blockstate = context.getWorld().getBlockState(blockpos);
-        if (blockstate.getBlock() == this) {
-            return blockstate.with(TYPE, SlabType.DOUBLE).with(WATERLOGGED, Boolean.valueOf(false));
+  @SuppressWarnings("deprecation")
+  public boolean isReplaceable (BlockState state, BlockItemUseContext useContext) {
+    ItemStack itemstack = useContext.getItem();
+    SlabType slabtype = state.get(TYPE);
+    if (slabtype != SlabType.DOUBLE && itemstack.getItem() == this.asItem()) {
+      if (useContext.replacingClickedOnBlock()) {
+        boolean flag = useContext.getHitVec().y - (double) useContext.getPos().getY() > 0.5D;
+        Direction direction = useContext.getFace();
+        if (slabtype == SlabType.BOTTOM) {
+          return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
         } else {
-            FluidState fluidstate = context.getWorld().getFluidState(blockpos);
-            BlockState blockstate1 = this.getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
-            Direction direction = context.getFace();
-            return direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.with(TYPE, SlabType.TOP);
+          return direction == Direction.DOWN || !flag && direction.getAxis().isHorizontal();
         }
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  @SuppressWarnings("deprecation")
+  public FluidState getFluidState (BlockState state) {
+    return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+  }
+
+  public boolean receiveFluid (IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+    return state.get(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+  }
+
+  public boolean canContainFluid (IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+    return state.get(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
+  }
+
+  /**
+   * Update the provided state given the provided neighbor facing and neighbor state, returning a new state.
+   * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
+   * returns its solidified counterpart.
+   * Note that this method should ideally consider only the specific face passed in.
+   */
+  @SuppressWarnings("deprecation")
+  public BlockState updatePostPlacement (BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    if (stateIn.get(WATERLOGGED)) {
+      worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-        ItemStack itemstack = useContext.getItem();
-        SlabType slabtype = state.get(TYPE);
-        if (slabtype != SlabType.DOUBLE && itemstack.getItem() == this.asItem()) {
-            if (useContext.replacingClickedOnBlock()) {
-                boolean flag = useContext.getHitVec().y - (double) useContext.getPos().getY() > 0.5D;
-                Direction direction = useContext.getFace();
-                if (slabtype == SlabType.BOTTOM) {
-                    return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
-                } else {
-                    return direction == Direction.DOWN || !flag && direction.getAxis().isHorizontal();
-                }
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
+    return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+  }
 
-    @SuppressWarnings("deprecation")
-    public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+  @SuppressWarnings("deprecation")
+  public boolean allowsMovement (BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+    switch (type) {
+      case LAND:
+        return false;
+      case WATER:
+        return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
+      case AIR:
+        return false;
+      default:
+        return false;
     }
-
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return state.get(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn) : false;
-    }
-
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
-        return state.get(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn) : false;
-    }
-
-    /**
-     * Update the provided state given the provided neighbor facing and neighbor state, returning a new state.
-     * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
-     * returns its solidified counterpart.
-     * Note that this method should ideally consider only the specific face passed in.
-     */
-    @SuppressWarnings("deprecation")
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-        }
-
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-        switch (type) {
-            case LAND:
-                return false;
-            case WATER:
-                return worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
-            case AIR:
-                return false;
-            default:
-                return false;
-        }
-    }
+  }
 }

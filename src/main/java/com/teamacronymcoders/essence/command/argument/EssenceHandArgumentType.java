@@ -6,15 +6,15 @@ import net.minecraft.util.Hand;
 
 public class EssenceHandArgumentType extends EssenceEnumArgumentType<Hand> {
 
-    public EssenceHandArgumentType() {
-        super(Hand.class);
-    }
+  public EssenceHandArgumentType () {
+    super(Hand.class);
+  }
 
-    public static EssenceHandArgumentType hand() {
-        return new EssenceHandArgumentType();
-    }
+  public static EssenceHandArgumentType hand () {
+    return new EssenceHandArgumentType();
+  }
 
-    public static Hand getHand(final CommandContext<?> context, final String paramName) {
-        return context.getArgument(paramName, Hand.class);
-    }
+  public static Hand getHand (final CommandContext<?> context, final String paramName) {
+    return context.getArgument(paramName, Hand.class);
+  }
 }

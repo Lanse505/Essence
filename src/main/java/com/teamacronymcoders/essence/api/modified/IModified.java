@@ -1,22 +1,21 @@
 package com.teamacronymcoders.essence.api.modified;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-
 import java.util.List;
 
 public interface IModified<T> {
-    void addModifierWithoutIncreasingAdditional(int increase);
+  void addModifierWithoutIncreasingAdditional (int increase);
 
-    void increaseFreeModifiers(int increase);
+  void increaseFreeModifiers (int increase);
 
-    boolean decreaseFreeModifiers(int decrease);
+  boolean decreaseFreeModifiers (int decrease);
 
-    int getFreeModifiers();
+  int getFreeModifiers ();
 
-    int getMaxModifiers();
+  int getMaxModifiers ();
 
-    boolean recheck(T object, List<ModifierInstance<T>> instances);
+  boolean recheck (T object, List<ModifierInstance<T>> instances);
 
-    Class<T> getType();
+  Class<T> getType ();
 
 }

@@ -3,9 +3,9 @@ package com.teamacronymcoders.essence.util.tier;
 import net.minecraft.item.Rarity;
 
 public interface IEssenceBaseTier {
-    String getLocaleString();
+  String getLocaleString ();
 
-    Rarity getRarity();
+  Rarity getRarity ();
 
-    int getFreeModifiers();
+  int getFreeModifiers ();
 }

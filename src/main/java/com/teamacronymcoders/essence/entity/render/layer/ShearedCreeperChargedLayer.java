@@ -9,25 +9,25 @@ import net.minecraft.util.ResourceLocation;
 
 public class ShearedCreeperChargedLayer extends EnergyLayer<ShearedCreeperEntity, CreeperModel<ShearedCreeperEntity>> {
 
-    private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
-    private final CreeperModel<ShearedCreeperEntity> creeperModel = new CreeperModel<>(2.0F);
+  private static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
+  private final CreeperModel<ShearedCreeperEntity> creeperModel = new CreeperModel<>(2.0F);
 
-    public ShearedCreeperChargedLayer(IEntityRenderer<ShearedCreeperEntity, CreeperModel<ShearedCreeperEntity>> renderer) {
-        super(renderer);
-    }
+  public ShearedCreeperChargedLayer (IEntityRenderer<ShearedCreeperEntity, CreeperModel<ShearedCreeperEntity>> renderer) {
+    super(renderer);
+  }
 
-    @Override
-    protected float func_225634_a_(float v) {
-        return v * 0.01F;
-    }
+  @Override
+  protected float func_225634_a_ (float v) {
+    return v * 0.01F;
+  }
 
-    @Override
-    protected ResourceLocation func_225633_a_() {
-        return LIGHTNING_TEXTURE;
-    }
+  @Override
+  protected ResourceLocation func_225633_a_ () {
+    return LIGHTNING_TEXTURE;
+  }
 
-    @Override
-    protected EntityModel<ShearedCreeperEntity> func_225635_b_() {
-        return this.creeperModel;
-    }
+  @Override
+  protected EntityModel<ShearedCreeperEntity> func_225635_b_ () {
+    return this.creeperModel;
+  }
 }

@@ -4,9 +4,9 @@ import net.minecraft.data.DataGenerator;
 
 public class EssenceSwedishLangProvider extends EssenceBaseLangProvider {
 
-    public EssenceSwedishLangProvider(DataGenerator generator) {
-        super(generator, "sv_se");
-    }
+  public EssenceSwedishLangProvider (DataGenerator generator) {
+    super(generator, "sv_se");
+  }
 
 
 }

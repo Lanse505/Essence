@@ -26,12 +26,6 @@ import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.datagen.EssenceTagProvider;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
-import com.teamacronymcoders.essence.entity.render.BreakingGlueballParticleFactory;
-import com.teamacronymcoders.essence.entity.render.ShearedChickenRenderer;
-import com.teamacronymcoders.essence.entity.render.ShearedCowRenderer;
-import com.teamacronymcoders.essence.entity.render.ShearedCreeperRenderer;
-import com.teamacronymcoders.essence.entity.render.ShearedGhastRenderer;
-import com.teamacronymcoders.essence.entity.render.ShearedPigRenderer;
 import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
@@ -52,18 +46,13 @@ import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration
 import com.teamacronymcoders.essence.util.registration.EssenceItemRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
-import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
 import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -85,7 +74,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -105,7 +93,7 @@ import java.util.stream.Collectors;
 @Mod("essence")
 public class Essence extends ModuleController {
 
-    public static final String MODID = "essence";
+    public static final String MOD_ID = "essence";
     public static final Random RANDOM = new Random();
     public static final Logger LOGGER = LogManager.getLogger("Essence");
     public static final AdvancedTitaniumTab CORE_TAB = new EssenceCoreTab();
@@ -159,14 +147,14 @@ public class Essence extends ModuleController {
                 .stream()
                 .filter(block -> Optional.ofNullable(block.getRegistryName())
                     .map(ResourceLocation::getNamespace)
-                    .filter(MODID::equalsIgnoreCase)
+                    .filter(MOD_ID::equalsIgnoreCase)
                     .isPresent())
                 .collect(Collectors.toList())
         );
         EssenceTagProvider.addTagProviders(event.getGenerator(), event.getExistingFileHelper());
         EssenceRecipeProvider.addRecipeProviders(event.getGenerator(), blocksToProcess);
         event.getGenerator().addProvider(new TitaniumLootTableProvider(event.getGenerator(), blocksToProcess));
-        event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MODID, blocksToProcess));
+        event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MOD_ID, blocksToProcess));
         event.getGenerator().addProvider(new EssenceLootTableProvider(event.getGenerator()));
         event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
         event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
@@ -176,7 +164,7 @@ public class Essence extends ModuleController {
 
     private void setupCuriosIMC(final InterModEnqueueEvent event) {
         //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
-        //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MODID, "items/curios/empty_backpack_slot")));
+        //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MOD_ID, "items/curios/empty_backpack_slot")));
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -209,25 +197,26 @@ public class Essence extends ModuleController {
         RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getTranslucent());
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
         ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
-        Minecraft.getInstance().particles.registerFactory(EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get(), BreakingGlueballParticleFactory::new);
+        // TODO: Figure out why the Glueball Entity isn't working!
+        //Minecraft.getInstance().particles.registerFactory(EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get(), BreakingGlueballParticleFactory::new);
         // TODO: Reimplement once I get this working
         //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
 
         // Pull
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MODID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
 
         // Pulling
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
-        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MODID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+        ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
 
         // Toggled
         // TODO: Implement for Tablet of Muffling
-        //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MODID, "toggling"), EssenceItemProperties.TOGGLED);
+        //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "toggling"), EssenceItemProperties.TOGGLED);
     }
 
     private void setupCreativeTabIcons() {

@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowledgeListerners, UnlockKnowledgeCriterionInstance> {
 
     public UnlockKnowledgeTrigger() {
-        super(new ResourceLocation(Essence.MODID, "knowledge"), UnlockKnowledgeListerners::new);
+        super(new ResourceLocation(Essence.MOD_ID, "knowledge"), UnlockKnowledgeListerners::new);
     }
 
     public void trigger(ServerPlayerEntity playerEntity, Knowledge<?> knowledge) {

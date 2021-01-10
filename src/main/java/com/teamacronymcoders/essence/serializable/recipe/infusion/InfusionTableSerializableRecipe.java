@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
-    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MODID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
+    public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
     public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
 

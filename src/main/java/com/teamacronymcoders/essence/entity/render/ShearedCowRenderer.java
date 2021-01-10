@@ -9,13 +9,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class ShearedCowRenderer extends MobRenderer<ShearedCowEntity, CowModel<ShearedCowEntity>> {
 
-    public ShearedCowRenderer(EntityRendererManager manager) {
-        super(manager, new CowModel<>(), 0.7F);
-    }
+  public ShearedCowRenderer (EntityRendererManager manager) {
+    super(manager, new CowModel<>(), 0.7F);
+  }
 
-    @Override
-    public ResourceLocation getEntityTexture(ShearedCowEntity entity) {
-        return EssenceEntityTextures.SHEARED_COW;
-    }
+  @Override
+  public ResourceLocation getEntityTexture (ShearedCowEntity entity) {
+    return EssenceEntityTextures.SHEARED_COW;
+  }
 
 }

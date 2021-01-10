@@ -5,9 +5,9 @@ import net.minecraft.item.Item;
 
 public class TomeItem extends Item {
 
-    public TomeItem() {
-        super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0));
-    }
+  public TomeItem () {
+    super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0));
+  }
 
 
 }

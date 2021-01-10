@@ -9,13 +9,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EssenceInformationHelper {
 
-    public static final TranslationTextComponent shiftForDetails = new TranslationTextComponent("tooltip.essence.generic.shiftForInformation");
+  public static final TranslationTextComponent shiftForDetails = new TranslationTextComponent("tooltip.essence.generic.shiftForInformation");
 
-    @OnlyIn(Dist.CLIENT)
-    public static boolean isSneakKeyDown() {
-        final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
-        final long handle = Minecraft.getInstance().getMainWindow().getHandle();
-        return InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode());
-    }
+  @OnlyIn(Dist.CLIENT)
+  public static boolean isSneakKeyDown () {
+    final KeyBinding keyBindSneak = Minecraft.getInstance().gameSettings.keyBindSneak;
+    final long handle = Minecraft.getInstance().getMainWindow().getHandle();
+    return InputMappings.isKeyDown(handle, keyBindSneak.getKey().getKeyCode());
+  }
 
 }
