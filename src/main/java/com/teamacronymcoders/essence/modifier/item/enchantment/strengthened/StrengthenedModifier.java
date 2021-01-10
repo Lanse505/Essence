@@ -5,6 +5,8 @@ import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
 import com.teamacronymcoders.essence.util.helper.EssenceEnchantmentHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -13,9 +15,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
 

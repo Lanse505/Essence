@@ -31,93 +31,93 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ExpanderModifier extends ItemInteractionCoreModifier {
 
-    public ExpanderModifier() {
-        super(2);
-    }
+  public ExpanderModifier () {
+    super(2);
+  }
 
-    @Override
-    public ActionResultType onItemUse(ItemUseContext context, ModifierInstance instance) {
-        ItemStack stack = context.getItem();
-        if (context.getPlayer() != null) {
-            PlayerEntity player = context.getPlayer();
-            Hand hand = context.getHand();
-            BlockPos pos = context.getPos();
-            Direction dir = context.getFace();
-            Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
-            Vector3d vector3d = new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ());
-            BlockPos offset = new BlockPos(vector3d.add(1.0, 1.0, 1.0).scale(instance.getLevel()));
-            BlockPos start = pos.add(offset);
-            BlockPos end = pos.subtract(offset);
-            BlockPos.getAllInBox(start, end)
-                .filter(position -> !position.equals(pos))
-                .forEach(position -> {
-                    if (stack.getItem() instanceof IModifiedTool) {
-                        IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
-                        modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
-                    }
-                });
-            return ActionResultType.SUCCESS;
-        }
-        return super.onItemUse(context, instance);
+  @Override
+  public ActionResultType onItemUse (ItemUseContext context, ModifierInstance instance) {
+    ItemStack stack = context.getItem();
+    if (context.getPlayer() != null) {
+      PlayerEntity player = context.getPlayer();
+      Hand hand = context.getHand();
+      BlockPos pos = context.getPos();
+      Direction dir = context.getFace();
+      Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
+      Vector3d vector3d = new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ());
+      BlockPos offset = new BlockPos(vector3d.add(1.0, 1.0, 1.0).scale(instance.getLevel()));
+      BlockPos start = pos.add(offset);
+      BlockPos end = pos.subtract(offset);
+      BlockPos.getAllInBox(start, end)
+              .filter(position -> !position.equals(pos))
+              .forEach(position -> {
+                if (stack.getItem() instanceof IModifiedTool) {
+                  IModifiedTool modifiedTool = (IModifiedTool) stack.getItem();
+                  modifiedTool.onItemUseModified(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(position.getX(), position.getY(), position.getZ()), context.getFace(), position, false)), true);
+                }
+              });
+      return ActionResultType.SUCCESS;
     }
+    return super.onItemUse(context, instance);
+  }
 
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
-        Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vector3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
-        Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
-        BlockPos offset = new BlockPos(new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
-        BlockPos start = pos.add(offset);
-        BlockPos end = pos.subtract(offset);
-        BlockPos.getAllInBox(start, end)
+  @Override
+  public boolean onBlockDestroyed (ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vector3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
+    Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
+    BlockPos offset = new BlockPos(new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
+    BlockPos start = pos.add(offset);
+    BlockPos end = pos.subtract(offset);
+    BlockPos.getAllInBox(start, end)
             .filter(position -> !position.equals(pos) && stack.canHarvestBlock(state))
             .forEach(position -> {
-                if (miner instanceof PlayerEntity) {
-                    PlayerEntity player = (PlayerEntity) miner;
-                    if (player instanceof ServerPlayerEntity) {
-                        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                        BlockState foundState = world.getBlockState(position);
-                        int exp = ForgeHooks.onBlockBreakEvent(world, serverPlayer.interactionManager.getGameType(), serverPlayer, position);
-                        if (exp != -1) {
-                            Block block = foundState.getBlock();
-                            TileEntity tile = EssenceWorldHelper.getTileEntity(world, pos);
-                            boolean removed = foundState.removedByPlayer(world, position, player, true, world.getFluidState(position));
-                            if (removed) {
-                                block.onPlayerDestroy(world, position, foundState);
-                                block.harvestBlock(world, player, position, foundState, tile, stack);
-                                player.addStat(Stats.ITEM_USED.get(stack.getItem()));
-                                if (exp > 0) {
-                                    if (!world.isRemote) {
-                                        block.dropXpOnBlockBreak((ServerWorld) world, position, exp);
-                                    }
-                                }
-                            }
+              if (miner instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) miner;
+                if (player instanceof ServerPlayerEntity) {
+                  ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                  BlockState foundState = world.getBlockState(position);
+                  int exp = ForgeHooks.onBlockBreakEvent(world, serverPlayer.interactionManager.getGameType(), serverPlayer, position);
+                  if (exp != -1) {
+                    Block block = foundState.getBlock();
+                    TileEntity tile = EssenceWorldHelper.getTileEntity(world, pos);
+                    boolean removed = foundState.removedByPlayer(world, position, player, true, world.getFluidState(position));
+                    if (removed) {
+                      block.onPlayerDestroy(world, position, foundState);
+                      block.harvestBlock(world, player, position, foundState, tile, stack);
+                      player.addStat(Stats.ITEM_USED.get(stack.getItem()));
+                      if (exp > 0) {
+                        if (!world.isRemote) {
+                          block.dropXpOnBlockBreak((ServerWorld) world, position, exp);
                         }
+                      }
                     }
-                } else {
-                    EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+                  }
                 }
+              } else {
+                EssenceWorldHelper.breakBlock(world, position, true, miner, stack);
+              }
             });
-        return true;
-    }
+    return true;
+  }
 
-    @Override
-    public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
-        return (float) -(base * 0.275) * instance.getLevel();
-    }
+  @Override
+  public float getModifiedEfficiency (ItemStack stack, ModifierInstance instance, float base) {
+    return (float) -(base * 0.275) * instance.getLevel();
+  }
 
-    @Override
-    public int getModifierCountValue(int level, ItemStack stack) {
-        return level;
-    }
+  @Override
+  public int getModifierCountValue (int level, ItemStack stack) {
+    return level;
+  }
 
-    @Override
-    public boolean canApplyTogether(IModifier modifier) {
-        return !(modifier instanceof CascadingModifier);
-    }
+  @Override
+  public boolean canApplyTogether (IModifier modifier) {
+    return !(modifier instanceof CascadingModifier);
+  }
 
-    @Override
-    public boolean canApplyOnObject(ItemStack object) {
-        return !(object.getItem() instanceof EssenceSword || object.getItem() instanceof EssenceBow);
-    }
+  @Override
+  public boolean canApplyOnObject (ItemStack object) {
+    return !(object.getItem() instanceof EssenceSword || object.getItem() instanceof EssenceBow);
+  }
 
 }

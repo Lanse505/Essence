@@ -11,17 +11,17 @@ import net.minecraft.world.World;
 
 public class UnbreakingModifier extends ItemEnchantmentCoreModifier {
 
-    public UnbreakingModifier() {
-        super(5);
-    }
+  public UnbreakingModifier () {
+    super(5);
+  }
 
-    @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
-    }
+  @Override
+  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+    EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
+  }
 
-    @Override
-    public Enchantment getLinkedEnchantment(ItemStack stack) {
-        return Enchantments.UNBREAKING;
-    }
+  @Override
+  public Enchantment getLinkedEnchantment (ItemStack stack) {
+    return Enchantments.UNBREAKING;
+  }
 }

@@ -6,11 +6,11 @@ import net.minecraft.advancements.PlayerAdvancements;
 
 public class UnlockKnowledgeListerners extends EssenceCriterionListener<UnlockKnowledgeCriterionInstance> {
 
-    public UnlockKnowledgeListerners(PlayerAdvancements advancements) {
-        super(advancements);
-    }
+  public UnlockKnowledgeListerners (PlayerAdvancements advancements) {
+    super(advancements);
+  }
 
-    public void trigger(final Knowledge<?> knowledge) {
-        trigger(instance -> instance.test(knowledge));
-    }
+  public void trigger (final Knowledge<?> knowledge) {
+    trigger(instance -> instance.test(knowledge));
+  }
 }

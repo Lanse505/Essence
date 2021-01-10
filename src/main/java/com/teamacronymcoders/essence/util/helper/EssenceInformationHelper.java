@@ -9,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EssenceInformationHelper {
 
-  public static final TranslationTextComponent shiftForDetails = new TranslationTextComponent("tooltip.essence.generic.shiftForInformation");
+  public static final TranslationTextComponent shiftForDetails = new TranslationTextComponent("tooltip.essence.generic.shiftForInformation", new TranslationTextComponent(Minecraft.getInstance().gameSettings.keyBindSneak.getKey().getTranslationKey()));
 
   @OnlyIn(Dist.CLIENT)
   public static boolean isSneakKeyDown () {

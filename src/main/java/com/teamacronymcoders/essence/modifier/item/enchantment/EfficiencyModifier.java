@@ -16,24 +16,24 @@ import net.minecraft.world.World;
 
 public class EfficiencyModifier extends ItemEnchantmentCoreModifier {
 
-    public EfficiencyModifier() {
-        super(5);
-    }
+  public EfficiencyModifier () {
+    super(5);
+  }
 
-    @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
-    }
+  @Override
+  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+    EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
+  }
 
-    @Override
-    public Enchantment getLinkedEnchantment(ItemStack stack) {
-        return Enchantments.EFFICIENCY;
-    }
+  @Override
+  public Enchantment getLinkedEnchantment (ItemStack stack) {
+    return Enchantments.EFFICIENCY;
+  }
 
-    @Override
-    public boolean canApplyOnObject(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof EssenceAxe || item instanceof EssencePickaxe || item instanceof EssenceShovel || item instanceof EssenceOmniTool;
-    }
+  @Override
+  public boolean canApplyOnObject (ItemStack stack) {
+    Item item = stack.getItem();
+    return item instanceof EssenceAxe || item instanceof EssencePickaxe || item instanceof EssenceShovel || item instanceof EssenceOmniTool;
+  }
 
 }

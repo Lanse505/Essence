@@ -7,12 +7,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 public class EssenceCoreCapability {
-    @CapabilityInject(ItemStackModifierHolder.class)
-    public static Capability<ItemStackModifierHolder> ITEMSTACK_MODIFIER_HOLDER;
+  @CapabilityInject(ItemStackModifierHolder.class)
+  public static Capability<ItemStackModifierHolder> ITEMSTACK_MODIFIER_HOLDER;
 
-    @CapabilityInject(BlockModifierHolder.class)
-    public static Capability<BlockModifierHolder> BLOCK_MODIFIER_HOLDER;
+  @CapabilityInject(BlockModifierHolder.class)
+  public static Capability<BlockModifierHolder> BLOCK_MODIFIER_HOLDER;
 
-    @CapabilityInject(EntityStorageCapability.class)
-    public static Capability<EntityStorageCapability> ENTITY_STORAGE;
+  @CapabilityInject(EntityStorageCapability.class)
+  public static Capability<EntityStorageCapability> ENTITY_STORAGE;
 }

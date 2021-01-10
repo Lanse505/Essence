@@ -11,14 +11,14 @@ import net.minecraft.world.World;
 
 public class MendingModifier extends ItemEnchantmentCoreModifier {
 
-    @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
-    }
+  @Override
+  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+    EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
+  }
 
-    @Override
-    public Enchantment getLinkedEnchantment(ItemStack stack) {
-        return Enchantments.MENDING;
-    }
+  @Override
+  public Enchantment getLinkedEnchantment (ItemStack stack) {
+    return Enchantments.MENDING;
+  }
 
 }

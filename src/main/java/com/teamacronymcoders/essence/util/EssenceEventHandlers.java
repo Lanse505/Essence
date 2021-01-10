@@ -26,6 +26,7 @@ import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
@@ -213,6 +214,7 @@ public class EssenceEventHandlers {
             .process(stitch -> {
               stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
             }).subscribe();
+
     // Rainbow Tooltip Handler
     EventManager.forge(RenderTooltipEvent.Color.class)
             .process(color -> {
@@ -236,7 +238,7 @@ public class EssenceEventHandlers {
     EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
               Minecraft minecraft = Minecraft.getInstance();
-              if (minecraft.player != null && EssenceKeyHandler.CYCLING.isKeyDown()) {
+              if (minecraft.player != null && EssenceInformationHelper.isSneakKeyDown()) {
                 ItemStack stack = minecraft.player.getHeldItemMainhand();
                 if (stack.getItem() instanceof EssenceWrench) {
                   double scrolling = scroll.getScrollDelta();
@@ -253,11 +255,11 @@ public class EssenceEventHandlers {
               }
             }).subscribe();
 
-    // Essence-Tome Handler
+    // Experience-Tome Handler
     EventManager.forge(InputEvent.MouseScrollEvent.class)
             .process(scroll -> {
               Minecraft minecraft = Minecraft.getInstance();
-              if (minecraft.player != null && EssenceKeyHandler.CYCLING.isKeyDown()) {
+              if (minecraft.player != null && EssenceInformationHelper.isSneakKeyDown()) {
                 ItemStack stack = minecraft.player.getHeldItemMainhand();
                 if (stack.getItem() instanceof TomeOfExperienceItem) {
                   double scrolling = scroll.getScrollDelta();
@@ -275,7 +277,7 @@ public class EssenceEventHandlers {
             }).subscribe();
 
     // Rendering
-    EventManager.forge(FMLClientSetupEvent.class)
+    EventManager.mod(FMLClientSetupEvent.class)
             .process(event -> {
               ItemRenderer renderer = event.getMinecraftSupplier().get().getItemRenderer();
               RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.GLUE_BALL.get(), manager -> new SpriteRenderer<>(manager, renderer, 0.75F, true));

@@ -13,27 +13,27 @@ import net.minecraft.util.ResourceLocation;
 
 public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowledgeListerners, UnlockKnowledgeCriterionInstance> {
 
-    public UnlockKnowledgeTrigger() {
-        super(new ResourceLocation(Essence.MOD_ID, "knowledge"), UnlockKnowledgeListerners::new);
-    }
+  public UnlockKnowledgeTrigger () {
+    super(new ResourceLocation(Essence.MOD_ID, "knowledge"), UnlockKnowledgeListerners::new);
+  }
 
-    public void trigger(ServerPlayerEntity playerEntity, Knowledge<?> knowledge) {
-        UnlockKnowledgeListerners listerners = this.getListeners(playerEntity.getAdvancements());
-        if (listerners != null) {
-            listerners.trigger(knowledge);
-        }
+  public void trigger (ServerPlayerEntity playerEntity, Knowledge<?> knowledge) {
+    UnlockKnowledgeListerners listerners = this.getListeners(playerEntity.getAdvancements());
+    if (listerners != null) {
+      listerners.trigger(knowledge);
     }
+  }
 
-    @Override
-    public UnlockKnowledgeCriterionInstance deserialize(JsonObject json, ConditionArrayParser conditions) {
-        if (json.has("knowledge_id")) {
-            String knowledgeID = json.get("knowledge_id").getAsString();
-            Knowledge<?> knowledge = EssenceRegistries.KNOWLEDGE.getValue(new ResourceLocation(knowledgeID));
-            if (knowledge != null) {
-                return new UnlockKnowledgeCriterionInstance(knowledge, AndPredicate.ANY_AND);
-            }
-            throw new JsonParseException("No Knowledge found for id " + knowledgeID);
-        }
-        throw new JsonParseException("Field 'knowledge_id' not found");
+  @Override
+  public UnlockKnowledgeCriterionInstance deserialize (JsonObject json, ConditionArrayParser conditions) {
+    if (json.has("knowledge_id")) {
+      String knowledgeID = json.get("knowledge_id").getAsString();
+      Knowledge<?> knowledge = EssenceRegistries.KNOWLEDGE.getValue(new ResourceLocation(knowledgeID));
+      if (knowledge != null) {
+        return new UnlockKnowledgeCriterionInstance(knowledge, AndPredicate.ANY_AND);
+      }
+      throw new JsonParseException("No Knowledge found for id " + knowledgeID);
     }
+    throw new JsonParseException("Field 'knowledge_id' not found");
+  }
 }

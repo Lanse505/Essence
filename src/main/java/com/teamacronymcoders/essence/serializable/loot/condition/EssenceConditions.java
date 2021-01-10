@@ -4,7 +4,7 @@ import net.minecraft.loot.LootConditionType;
 
 public class EssenceConditions {
 
-    public static LootConditionType MATCH_MODIFIER;
+  public static LootConditionType MATCH_MODIFIER;
 
 
 }

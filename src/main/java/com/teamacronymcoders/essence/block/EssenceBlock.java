@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -38,7 +39,7 @@ public class EssenceBlock extends BasicBlock {
   public IFactory<BlockItem> getItemBlockFactory () {
     return () -> (BlockItem) new BlockItem(this, new Item.Properties().group(this.getItemGroup()).rarity(tier.getRarity())) {
       @Override
-      public void addInformation (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flagIn) {
+      public void addInformation (@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
         list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
       }
     }.setRegistryName(Objects.requireNonNull(this.getRegistryName()));

@@ -13,24 +13,24 @@ import net.minecraft.world.World;
 
 public class KnockbackModifier extends ItemEnchantmentCoreModifier {
 
-    public KnockbackModifier() {
-        super(3);
-    }
+  public KnockbackModifier () {
+    super(3);
+  }
 
-    @Override
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
-    }
+  @Override
+  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+    EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
+  }
 
-    @Override
-    public Enchantment getLinkedEnchantment(ItemStack stack) {
-        return stack.getItem() instanceof EssenceBow ? Enchantments.PUNCH : Enchantments.KNOCKBACK;
-    }
+  @Override
+  public Enchantment getLinkedEnchantment (ItemStack stack) {
+    return stack.getItem() instanceof EssenceBow ? Enchantments.PUNCH : Enchantments.KNOCKBACK;
+  }
 
-    @Override
-    public boolean canApplyOnObject(ItemStack stack) {
-        return stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow;
-    }
+  @Override
+  public boolean canApplyOnObject (ItemStack stack) {
+    return stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow;
+  }
 
 
 }

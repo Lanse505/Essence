@@ -51,15 +51,12 @@ public class EssenceBlockTagProvider extends BlockTagsProvider {
             .addTag(BlockTags.LOGS);
     getOrCreateBuilder(EssenceModifierTags.CASCADING_EXCAVATION)
             .addTags(Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
-    getOrCreateBuilder(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST).add(
-            Blocks.BEDROCK,
-            Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME
-    );
-    getOrCreateBuilder(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST).add(
-            Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST,
-            Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER,
-            Blocks.HOPPER, Blocks.BARREL
-    );
+    getOrCreateBuilder(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST)
+            .add(Blocks.BEDROCK, Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME)
+            .addTag(Tags.Blocks.ORES)
+    ;
+    getOrCreateBuilder(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)
+            .add(Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER, Blocks.HOPPER, Blocks.BARREL);
   }
 
   @Override

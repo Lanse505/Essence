@@ -65,10 +65,10 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
     stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
       int currentAmount = handler.getFluidInTank(0).getAmount();
       int capacityAmount = handler.getTankCapacity(0);
-      tooltip.add(new TranslationTextComponent("essence.tome.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleString())));
-      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding").mergeStyle(TextFormatting.GREEN));
-      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels", NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount))).mergeStyle(TextFormatting.LIGHT_PURPLE));
-      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount", NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount), NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount)).mergeStyle(TextFormatting.LIGHT_PURPLE));
+      tooltip.add(new TranslationTextComponent("tome.essence.mode.tooltip").mergeStyle(TextFormatting.LIGHT_PURPLE).append(new StringTextComponent(" ").mergeStyle(TextFormatting.WHITE).append(new TranslationTextComponent(mode.getLocaleString()))));
+      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.holding").mergeStyle(TextFormatting.LIGHT_PURPLE));
+      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.levels").mergeStyle(TextFormatting.LIGHT_PURPLE).append(new StringTextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount)) + "/").append(new StringTextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(Math.floor(EssenceUtilHelper.getLevelForExperience(capacityAmount))))).mergeStyle(EssenceUtilHelper.getTextColor(currentAmount, Math.round(EssenceUtilHelper.getLevelForExperience(capacityAmount))))));
+      tooltip.add(new TranslationTextComponent("tooltip.essence.tome_of_experience.amount").mergeStyle(TextFormatting.LIGHT_PURPLE).append(new StringTextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount)).appendString("/").append(new StringTextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount))).mergeStyle(EssenceUtilHelper.getTextColor(currentAmount, capacityAmount))));
     });
 
     addInformationFromModifiers(stack, worldIn, tooltip, flagIn);

@@ -144,11 +144,13 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
   }
 
   private void addItemMisc () {
-    add("essence.wrench.disclaimer", "Please note: The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.");
+    add("essence.wrench.disclaimer", "Please note: ");
+    add("essence.wrench.disclaimer_message", "The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.");
     add("essence.wrench.mode.tooltip", "Wrench Mode");
     add("essence.mode.wrench.serialize", "Stasis");
     add("essence.mode.wrench.rotate", "Rotate");
-    add("essence.tome.mode.tooltip", "Mode:");
+    add("essence.mode.wrench.trigger", "Trigger");
+    add("tome.essence.mode.tooltip", "Mode:");
     add("tome.essence.experience.mode.fill", "Fill");
     add("tome.essence.experience.mode.drain", "Drain");
     add("tome.essence.experience.mode.absorb", "Absorb");
@@ -180,7 +182,7 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
 
   private void addItems () {
     add("item.essence.essence_bucket", "Bucket of Essence");
-    add("item.essence.experience_bucket", "Bucket of Essence");
+    add("item.essence.experience_bucket", "Bucket of Experience");
     add(ESSENCE_INFUSED_STICK, "Essence-Wood Sticks");
     add(PORTABLE_CRAFTER, "Portable Crafter");
     add(WRENCH, "Essence-Infused Wrench");
@@ -281,10 +283,10 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
     add("tooltip.essence.modifier", "Modifiers:");
     add("tooltip.essence.modifier.free", "Free Modifiers: %s");
     add("tooltip.essence.tool.tier", "Material Tier: ");
-    add("tooltip.essence.generic.shiftForInformation", "");
+    add("tooltip.essence.generic.shiftForInformation", "Hold %s For More Info");
 
     add("tooltip.essence.tome_of_experience.holding", "Currently Holding");
-    add("tooltip.essence.tome_of_experience.levels", "%s Levels");
-    add("tooltip.essence.tome_of_experience.amount", "Stored Experience: %s/%s");
+    add("tooltip.essence.tome_of_experience.levels", "Levels Held %s/%s");
+    add("tooltip.essence.tome_of_experience.amount", "Stored Experience: ");
   }
 }

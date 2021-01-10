@@ -4,9 +4,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 
 public class MufflerGUI extends Screen {
-    protected MufflerGUI(ITextComponent titleIn) {
-        super(titleIn);
-    }
+  protected MufflerGUI (ITextComponent titleIn) {
+    super(titleIn);
+  }
 //
 //    /** The X size of the inventory window in pixels. */
 //    protected int xSize = 176;

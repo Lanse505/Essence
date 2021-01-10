@@ -34,8 +34,8 @@ public class EssenceUtilHelper {
     return roman.get(l) + toRoman(number - l);
   }
 
-  public static TextFormatting getTextColor (int free_modifiers, int max_modifiers) {
-    int val = free_modifiers / max_modifiers;
+  public static TextFormatting getTextColor (int current, int max) {
+    int val = current / max;
     if (val <= 0.33) {
       return TextFormatting.RED;
     } else if (val <= 0.66) {
@@ -44,7 +44,6 @@ public class EssenceUtilHelper {
       return TextFormatting.GREEN;
     }
   }
-
 
   public static int nextIntInclusive (int min, int max) {
     return Essence.RANDOM.nextInt(max - min + 1) + min;

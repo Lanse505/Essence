@@ -1,7 +1,9 @@
 package com.teamacronymcoders.essence.util;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -10,6 +12,10 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeTagHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceTags {
 
@@ -38,11 +44,17 @@ public class EssenceTags {
   public static class EssenceBlockTags {
     public static final INamedTag<Block> FORGE_MOVEABLE_BLACKLIST = BlockTags.makeWrapperTag("forge:block/moving/blacklist");
     public static final INamedTag<Block> FORGE_MOVEABLE_WHITELIST = BlockTags.makeWrapperTag("forge:block/moving/whitelist");
+    public static final INamedTag<Block> RELOCATION_NOT_SUPPORTED = BlockTags.makeWrapperTag("forge:relocation_not_supported");
 
     public static final INamedTag<Block> ESSENCE_CRYSTAL_ORE = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "essence_crystal_ore");
     public static final INamedTag<Block> ESSENCE_WOOD_LOG = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "essence_logs");
     public static final INamedTag<Block> ESSENCE_ORE = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "essence_ore");
     public static final INamedTag<Block> ESSENCE_BRICKS = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "essence_bricks");
+  }
+
+  public static class EssenceTileEntityTypeTags {
+    public static final INamedTag<TileEntityType<?>> IMMOVABLE = ForgeTagHandler.makeWrapperTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation("forge:relocation_not_supported"));
+    public static final INamedTag<TileEntityType<?>> RELOCATION_NOT_SUPPORTED = ForgeTagHandler.makeWrapperTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation("forge:immovable"));
   }
 
   public static class EssenceEntityTags {
@@ -68,6 +80,5 @@ public class EssenceTags {
     public static final INamedTag<Block> CASCADING_LUMBER = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "cascading/lumber");
     public static final INamedTag<Block> CASCADING_EXCAVATION = BlockTags.makeWrapperTag(Essence.MOD_ID + ":" + "cascading/excavation");
   }
-
 
 }

@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.item.wrench.config.EntitySerializationEnum;
 import com.teamacronymcoders.essence.modifier.item.enchantment.EfficiencyModifier;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.EssenceStats;
+import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
@@ -24,6 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
@@ -41,6 +43,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.state.Property;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.CachedBlockInfo;
 import net.minecraft.util.Hand;
@@ -48,9 +51,11 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
@@ -112,8 +117,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     if (player != null) {
       BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
       if (config == BlockSerializationEnum.BLACKLIST) {
-        if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST)) {
-          TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world.getTileEntity(pos);
+        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && (((!state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) || !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) || !state.getPushReaction().equals(PushReaction.BLOCK))) {
           ItemStack drop = new ItemStack(state.getBlock());
           CompoundNBT stateNBT = new CompoundNBT();
           state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
@@ -138,8 +143,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
           return ActionResultType.SUCCESS;
         }
       } else {
-        if (mode == WrenchModeEnum.SERIALIZE && state.getProperties().size() > 0 && state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) {
-          TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world.getTileEntity(pos);
+        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && (((state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) && (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) || !state.getPushReaction().equals(PushReaction.BLOCK))) {
           ItemStack drop = new ItemStack(state.getBlock());
           CompoundNBT stateNBT = new CompoundNBT();
           state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
@@ -180,12 +185,12 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   @Override
   @ParametersAreNonnullByDefault
   public void addInformation (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-    list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").appendString(" ").append(new TranslationTextComponent(mode.getLocaleName())));
-    if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
-      list.add(new StringTextComponent(" "));
-      list.add(new TranslationTextComponent("essence.wrench.disclaimer"));
-    }
     addInformationFromModifiers(stack, world, list, flag, EssenceItemTiers.ESSENCE);
+    list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD).appendString(": ").mergeStyle(TextFormatting.WHITE).append(new TranslationTextComponent(mode.getLocaleName())));
+    if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
+      list.add(new TranslationTextComponent("essence.wrench.disclaimer").mergeStyle(TextFormatting.RED, TextFormatting.BOLD));
+      list.add(new TranslationTextComponent("essence.wrench.disclaimer_message"));
+    }
   }
 
   @Nullable
