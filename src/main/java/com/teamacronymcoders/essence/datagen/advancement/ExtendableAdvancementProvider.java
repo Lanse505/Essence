@@ -2,8 +2,9 @@ package com.teamacronymcoders.essence.datagen.advancement;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hrznstudio.titanium.item.BasicItem;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.item.essence.EssenceCrystal;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ import net.minecraft.data.IDataProvider;
 
 public class ExtendableAdvancementProvider extends AdvancementProvider {
 
-  private static final EssenceCrystal defaultIcon = EssenceObjectHolders.ESSENCE_INFUSED_CRYSTAL;
+  private static final BasicItem defaultIcon = EssenceItemRegistrate.ESSENCE_CRYSTAL.get();
 
   private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
   private final DataGenerator generator;
@@ -49,7 +50,7 @@ public class ExtendableAdvancementProvider extends AdvancementProvider {
     return "Essence Advancement";
   }
 
-  public static EssenceCrystal getDefaultIcon () {
+  public static BasicItem getDefaultIcon () {
     return defaultIcon;
   }
 }

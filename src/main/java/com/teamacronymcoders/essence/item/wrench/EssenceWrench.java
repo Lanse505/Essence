@@ -10,12 +10,15 @@ import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModi
 import com.teamacronymcoders.essence.item.wrench.config.BlockSerializationEnum;
 import com.teamacronymcoders.essence.item.wrench.config.EntitySerializationEnum;
 import com.teamacronymcoders.essence.modifier.item.enchantment.EfficiencyModifier;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.EssenceStats;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
+import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
+import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import java.util.List;
@@ -44,10 +47,7 @@ import net.minecraft.state.Property;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.CachedBlockInfo;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -67,8 +67,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   private int freeModifiers;
   private final int additionalModifiers = 0;
 
-  public EssenceWrench () {
-    super(new Item.Properties().group(Essence.TOOL_TAB).maxStackSize(1).maxDamage(2048).rarity(Rarity.RARE));
+  public EssenceWrench (Properties properties) {
+    super(properties);
     this.mode = WrenchModeEnum.SERIALIZE;
     this.freeModifiers = 1;
   }
@@ -88,7 +88,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     return lazy.isPresent() ? lazy.map(holder -> {
       Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
-      ItemStack serialized = new ItemStack(EssenceObjectHolders.ENTITY_ITEM);
+      ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
       boolean successful;
       if (optional.isPresent()) {
         successful = serializeEntity(serialized, player, target, hand, true);
@@ -109,75 +109,42 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     BlockPos pos = context.getPos();
     BlockState state = world.getBlockState(pos);
     PlayerEntity player = context.getPlayer();
+    TileEntity te = world.getTileEntity(pos);
+    BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
 
     if (state.getBlock().isAir(state, world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
       return ActionResultType.PASS;
     }
 
     if (player != null) {
-      BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
-      if (config == BlockSerializationEnum.BLACKLIST) {
-        TileEntity te = world.getTileEntity(pos);
-        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && (((!state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) || !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) || !state.getPushReaction().equals(PushReaction.BLOCK))) {
+        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPushReaction().equals(PushReaction.BLOCK))) {
           ItemStack drop = new ItemStack(state.getBlock());
           CompoundNBT stateNBT = new CompoundNBT();
           state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
+          // Serializes the BlockState
           drop.setTagInfo("BlockStateTag", stateNBT);
-
+          // Serializes the TE
           if (te != null) {
             drop.setTagInfo("BlockEntityTag", te.serializeNBT());
           }
-
+          // Adds the Stats
           player.addStat(EssenceStats.INSTANCE.SERIALIZED);
           player.addStat(Stats.ITEM_USED.get(this));
-
-          world.removeTileEntity(pos);
+          // Cleans up the World and Drops the Item
           world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-
-          ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
-          itemEntity.setDefaultPickupDelay();
-          world.addEntity(itemEntity);
-
+          world.addEntity(Util.make(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop), ItemEntity::setDefaultPickupDelay));
           stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-
           return ActionResultType.SUCCESS;
         }
-      } else {
-        TileEntity te = world.getTileEntity(pos);
-        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && (((state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) && (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) || !state.getPushReaction().equals(PushReaction.BLOCK))) {
-          ItemStack drop = new ItemStack(state.getBlock());
-          CompoundNBT stateNBT = new CompoundNBT();
-          state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
-          drop.setTagInfo("BlockStateTag", stateNBT);
 
-          if (te != null) {
-            drop.setTagInfo("BlockEntityTag", te.serializeNBT());
-          }
-
-          player.addStat(EssenceStats.INSTANCE.SERIALIZED);
-          player.addStat(Stats.ITEM_USED.get(this));
-
-          world.removeTileEntity(pos);
-          world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-
-          ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop);
-          itemEntity.setDefaultPickupDelay();
-          world.addEntity(itemEntity);
-
-          stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-
-          return ActionResultType.SUCCESS;
+      if (mode == WrenchModeEnum.ROTATE) {
+        if (EssenceInformationHelper.isSneakKeyDown()) {
+          state.rotate(world, pos, Rotation.CLOCKWISE_180);
         }
+        state.rotate(world, pos, Rotation.CLOCKWISE_90);
+        player.addStat(Stats.ITEM_USED.get(this));
+        return ActionResultType.SUCCESS;
       }
-    }
-
-    if (player != null && mode == WrenchModeEnum.ROTATE) {
-      if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
-        state.rotate(world, pos, Rotation.CLOCKWISE_180);
-      }
-      state.rotate(world, pos, Rotation.CLOCKWISE_90);
-      player.addStat(Stats.ITEM_USED.get(this));
-      return ActionResultType.SUCCESS;
     }
     return ActionResultType.PASS;
   }

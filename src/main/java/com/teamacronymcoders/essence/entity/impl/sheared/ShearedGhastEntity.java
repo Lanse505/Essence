@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.entity.impl.sheared;
 
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
+import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.network.IPacket;
@@ -21,6 +22,6 @@ public class ShearedGhastEntity extends GhastEntity {
 
   @Override
   protected ResourceLocation getLootTable () {
-    return EssenceEntityLootTables.SHEARED_GHAST;
+    return EssenceEntityRegistrate.SHEARED_GHAST.getId();
   }
 }

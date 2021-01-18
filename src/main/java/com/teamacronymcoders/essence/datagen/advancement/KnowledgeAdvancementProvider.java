@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceKnowledgeAd
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceMaterialTierAdvancements;
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceToolTypeAdvancements;
 import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
@@ -33,7 +34,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider 
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/root");
     knowledge_modifier_root = Advancement.Builder.builder()
             .withDisplay(
@@ -44,7 +45,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider 
                     FrameType.CHALLENGE, false, false, true
             )
             .withParent(knowledge_root)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/root_modifier");
     knowledge_tool_root = Advancement.Builder.builder()
             .withDisplay(
@@ -55,7 +56,7 @@ public class KnowledgeAdvancementProvider extends ExtendableAdvancementProvider 
                     FrameType.CHALLENGE, false, false, true
             )
             .withParent(knowledge_root)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/root_tools");
 
     // Modifier Knowledge

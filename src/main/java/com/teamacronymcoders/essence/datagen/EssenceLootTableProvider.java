@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.datagen;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import com.teamacronymcoders.essence.datagen.loottable.EssenceBlockLootTables;
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +30,7 @@ public class EssenceLootTableProvider extends LootTableProvider {
 
   @Override
   protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootParameterSet>> getTables () {
-    return Lists.newArrayList(
-            Pair.of(EssenceEntityLootTables::new, LootParameterSets.ENTITY),
-            Pair.of(EssenceBlockLootTables::new, LootParameterSets.BLOCK)
-    );
+    return Lists.newArrayList(Pair.of(EssenceEntityLootTables::new, LootParameterSets.ENTITY));
   }
 
   @Override

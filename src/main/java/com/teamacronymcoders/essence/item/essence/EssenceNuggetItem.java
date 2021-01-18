@@ -16,8 +16,8 @@ public class EssenceNuggetItem extends Item {
 
   private final EssenceItemTiers tier;
 
-  public EssenceNuggetItem (EssenceItemTiers tier) {
-    super(new Item.Properties().group(Essence.CORE_TAB).rarity(tier.getRarity()));
+  public EssenceNuggetItem (Properties properties, EssenceItemTiers tier) {
+    super(properties.rarity(tier.getRarity()));
     this.tier = tier;
   }
 

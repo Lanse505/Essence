@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
@@ -31,7 +32,7 @@ public class EssenceDispenseBehaviours {
   public static Map<IItemProvider, IDispenseItemBehavior> dispenserBehaviours = new HashMap<>();
 
   static {
-    dispenserBehaviours.put(EssenceObjectHolders.ESSENCE_SHEAR, new OptionalDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR.get(), new OptionalDispenseBehavior() {
       @Override
       protected ItemStack dispenseStack (IBlockSource source, ItemStack stack) {
         ModifierInstance<?> instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
@@ -56,7 +57,7 @@ public class EssenceDispenseBehaviours {
         return stack;
       }
     });
-    dispenserBehaviours.put(EssenceObjectHolders.GLUE_BALL, new ProjectileDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.GLUE_BALL_ITEM.get(), new ProjectileDispenseBehavior() {
       @Override
       protected ProjectileEntity getProjectileEntity (World worldIn, IPosition position, ItemStack stackIn) {
         return stackIn.getItem() instanceof GlueBallItem ? Util.make(new GlueBallEntity(worldIn, position.getX(), position.getY(), position.getZ()), glueBallEntity -> glueBallEntity.setItem(stackIn)) : null;

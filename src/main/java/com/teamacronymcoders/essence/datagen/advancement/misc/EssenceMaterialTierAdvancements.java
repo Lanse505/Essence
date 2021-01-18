@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.datagen.advancement.misc;
 
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
@@ -23,19 +24,19 @@ public class EssenceMaterialTierAdvancements {
   public static void addTierAdvancements (Consumer<Advancement> consumer) {
     tiers = Advancement.Builder.builder()
             .withDisplay(
-                    EssenceObjectHolders.TOME_OF_KNOWLEDGE,
+                    EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get(),
                     new TranslationTextComponent("advancements.essence.knowledge.material.material_tiers.title"),
                     new TranslationTextComponent("advancements.essence.knowledge.material.material_tiers.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/material/material_tiers");
 
     basic = Advancement.Builder.builder()
             .withDisplay(
-                    EssenceObjectHolders.ESSENCE_INFUSED_METAL,
+                    EssenceItemRegistrate.ESSENCE_INGOT.get(),
                     new TranslationTextComponent("advancements.essence.knowledge.material.basic.title"),
                     new TranslationTextComponent("advancements.essence.knowledge.material.basic.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -43,12 +44,12 @@ public class EssenceMaterialTierAdvancements {
             )
             .withParent(tiers)
             .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BASIC_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT.get()))
             .register(consumer, "essence:knowledge/material/basic");
 
     empowered = Advancement.Builder.builder()
             .withDisplay(
-                    EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED,
+                    EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get(),
                     new TranslationTextComponent("advancements.essence.knowledge.material.empowered.title"),
                     new TranslationTextComponent("advancements.essence.knowledge.material.empowered.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -56,12 +57,12 @@ public class EssenceMaterialTierAdvancements {
             )
             .withParent(basic)
             .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EMPOWERED_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get()))
             .register(consumer, "essence:knowledge/material/empowered");
 
     supreme = Advancement.Builder.builder()
             .withDisplay(
-                    EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME,
+                    EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get(),
                     new TranslationTextComponent("advancements.essence.knowledge.material.supreme.title"),
                     new TranslationTextComponent("advancements.essence.knowledge.material.supreme.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -69,12 +70,12 @@ public class EssenceMaterialTierAdvancements {
             )
             .withParent(empowered)
             .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.SUPREME_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get()))
             .register(consumer, "essence:knowledge/material/supreme");
 
     divine = Advancement.Builder.builder()
             .withDisplay(
-                    EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE,
+                    EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get(),
                     new TranslationTextComponent("advancements.essence.knowledge.material.divine.title"),
                     new TranslationTextComponent("advancements.essence.knowledge.material.divine.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
@@ -82,7 +83,7 @@ public class EssenceMaterialTierAdvancements {
             )
             .withParent(supreme)
             .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.DIVINE_TIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get()))
             .register(consumer, "essence:knowledge/material/divine");
   }
 

@@ -38,8 +38,8 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceAxe (EssenceToolTiers tier) {
-    super(tier, tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssenceAxe (Properties properties, EssenceToolTiers tier) {
+    super(tier, tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

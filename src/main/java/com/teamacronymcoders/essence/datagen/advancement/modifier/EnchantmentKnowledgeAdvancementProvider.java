@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
 import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
@@ -35,7 +36,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
                     FrameType.CHALLENGE, true, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/enchantment_modifier");
     efficiency = Advancement.Builder.builder()
             .withDisplay(
@@ -47,7 +48,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EFFICIENCY_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/efficiency_modifier");
     infinity = Advancement.Builder.builder()
             .withDisplay(
@@ -59,7 +60,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.INFINITY_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/infinity_modifier");
     knockback = Advancement.Builder.builder()
             .withDisplay(
@@ -71,7 +72,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.KNOCKBACK_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/knockback_modifier");
     luck = Advancement.Builder.builder()
             .withDisplay(
@@ -83,7 +84,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.LUCK_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/luck_modifier");
     mending = Advancement.Builder.builder()
             .withDisplay(
@@ -95,7 +96,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MENDING_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/mending_modifier");
     silkTouch = Advancement.Builder.builder()
             .withDisplay(
@@ -107,7 +108,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.SILK_TOUCH_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/silk_touch_modifier");
     strengthened = Advancement.Builder.builder()
             .withDisplay(
@@ -119,7 +120,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.STRENGTHENED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/strengthened_modifier");
     unbreaking = Advancement.Builder.builder()
             .withDisplay(
@@ -131,7 +132,7 @@ public class EnchantmentKnowledgeAdvancementProvider {
             )
             .withParent(enchantment)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.UNBREAKING_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/enchantment/unbreaking_modifier");
   }
 

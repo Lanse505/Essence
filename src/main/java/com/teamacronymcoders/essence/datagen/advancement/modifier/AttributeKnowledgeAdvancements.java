@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
 import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
@@ -32,7 +33,7 @@ public class AttributeKnowledgeAdvancements {
                     FrameType.CHALLENGE, true, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/attribute_modifier");
     armor = Advancement.Builder.builder()
             .withDisplay(
@@ -44,7 +45,7 @@ public class AttributeKnowledgeAdvancements {
             )
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARMOR_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/armor_modifier");
     armor_toughness = Advancement.Builder.builder()
             .withDisplay(
@@ -56,7 +57,7 @@ public class AttributeKnowledgeAdvancements {
             )
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/armor_toughness_modifier");
     attack_damage = Advancement.Builder.builder()
             .withDisplay(
@@ -68,7 +69,7 @@ public class AttributeKnowledgeAdvancements {
             )
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/attack_damage_modifier");
     max_health = Advancement.Builder.builder()
             .withDisplay(
@@ -80,7 +81,7 @@ public class AttributeKnowledgeAdvancements {
             )
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MAX_HEALTH_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/max_health_modifier");
     movement_speed = Advancement.Builder.builder()
             .withDisplay(
@@ -92,7 +93,7 @@ public class AttributeKnowledgeAdvancements {
             )
             .withParent(attribute)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/attribute/movement_speed_modifier");
   }
 

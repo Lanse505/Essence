@@ -1,8 +1,11 @@
 package com.teamacronymcoders.essence.datagen.loottable;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
+import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import net.minecraft.advancements.criterion.EntityFlagsPredicate;
@@ -20,12 +23,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceEntityLootTables extends EntityLootTables {
 
-  public static final ResourceLocation SHEARED_COW = new ResourceLocation(Essence.MOD_ID, "entities/sheared_cow");
-  public static final ResourceLocation SHEARED_PIG = new ResourceLocation(Essence.MOD_ID, "entities/sheared_pig");
-  public static final ResourceLocation SHEARED_CHICKEN = new ResourceLocation(Essence.MOD_ID, "entities/sheared_chicken");
-  public static final ResourceLocation SHEARED_CREEPER = new ResourceLocation(Essence.MOD_ID, "entities/sheared_creeper");
-  public static final ResourceLocation SHEARED_GHAST = new ResourceLocation(Essence.MOD_ID, "entities/sheared_ghast");
-
   // Horse -> Zombie Horse
   public static final ResourceLocation SHEARING_HORSE = new ResourceLocation(Essence.MOD_ID, "entities/shearing_horse");
   // Zombie Horse -> Skeleton Horse
@@ -33,72 +30,13 @@ public class EssenceEntityLootTables extends EntityLootTables {
   // Zombie -> Skeleton
   public static final ResourceLocation SHEARING_ZOMBIE = new ResourceLocation(Essence.MOD_ID, "entities/shearing_zombie");
 
-  private static final EntityPredicate.Builder ON_FIRE = EntityPredicate.Builder.create().flags(EntityFlagsPredicate.Builder.create().onFire(true).build());
-
   @Override
   protected Iterable<EntityType<?>> getKnownEntities () {
-    return ForgeRegistries.ENTITIES.getValues().stream()
-            .filter(entity -> Optional.ofNullable(entity.getRegistryName())
-                    .filter(registryName -> registryName.getNamespace().equals(Essence.MOD_ID)).isPresent()
-            ).collect(Collectors.toList());
+    return new ArrayList<>();
   }
 
   @Override
   protected void addTables () {
-    this.registerLootTable(EssenceEntityRegistration.SHEARED_CHICKEN.get(), LootTable.builder()
-            .addLootPool(LootPool.builder()
-                    .rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.CHICKEN)
-                            .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                            .acceptFunction(Smelt.func_215953_b()
-                                    .acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))
-                            )
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                    )
-            )
-    );
-    this.registerLootTable(EssenceEntityRegistration.SHEARED_COW.get(), LootTable.builder()
-            .addLootPool(LootPool.builder()
-                    .rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.BEEF)
-                            .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                            .acceptFunction(Smelt.func_215953_b()
-                                    .acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))
-                            )
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                    )
-            )
-    );
-    this.registerLootTable(EssenceEntityRegistration.SHEARED_CREEPER.get(), LootTable.builder()
-            .addLootPool(LootPool.builder()
-                    .rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.GUNPOWDER)
-                            .acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 0.5F)))
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                    )
-            )
-    );
-    this.registerLootTable(EssenceEntityRegistration.SHEARED_GHAST.get(), LootTable.builder()
-            .addLootPool(LootPool.builder()
-                    .rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.GUNPOWDER)
-                            .acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F)))
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                    )
-            )
-    );
-    this.registerLootTable(EssenceEntityRegistration.SHEARED_PIG.get(), LootTable.builder()
-            .addLootPool(LootPool.builder()
-                    .rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.PORKCHOP)
-                            .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                            .acceptFunction(Smelt.func_215953_b()
-                                    .acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))
-                            )
-                            .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                    )
-            )
-    );
     this.registerLootTable(SHEARING_HORSE, LootTable.builder()
             .addLootPool(LootPool.builder()
                     .rolls(ConstantRange.of(1))
@@ -106,7 +44,7 @@ public class EssenceEntityLootTables extends EntityLootTables {
                             .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
                             .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
                     )
-                    .addEntry(ItemLootEntry.builder(EssenceObjectHolders.GLUE_BALL)
+                    .addEntry(ItemLootEntry.builder(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
                             .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
                             .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
                     )
@@ -119,7 +57,7 @@ public class EssenceEntityLootTables extends EntityLootTables {
                             .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
                             .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
                     )
-                    .addEntry(ItemLootEntry.builder(EssenceObjectHolders.GLUE_BALL)
+                    .addEntry(ItemLootEntry.builder(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
                             .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
                             .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
                     )

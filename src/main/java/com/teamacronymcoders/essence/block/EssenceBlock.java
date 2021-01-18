@@ -26,35 +26,20 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class EssenceBlock extends BasicBlock {
+public class EssenceBlock extends Block {
   private final EssenceItemTiers tier;
 
-  public EssenceBlock (EssenceItemTiers tier) {
-    super(Block.Properties.create(Material.IRON).sound(SoundType.METAL).speedFactor(1.25f));
-    setItemGroup(Essence.CORE_TAB);
+  public EssenceBlock (Block.Properties properties, EssenceItemTiers tier) {
+    super(properties);
     this.tier = tier;
   }
 
-  @Override
-  public IFactory<BlockItem> getItemBlockFactory () {
-    return () -> (BlockItem) new BlockItem(this, new Item.Properties().group(this.getItemGroup()).rarity(tier.getRarity())) {
+  public IFactory<BlockItem> getBlockItem(Item.Properties properties) {
+    return () -> (BlockItem) new BlockItem(this, properties.rarity(tier.getRarity())) {
       @Override
       public void addInformation (@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
         list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
       }
-    }.setRegistryName(Objects.requireNonNull(this.getRegistryName()));
-  }
-
-  @Override
-  public void registerRecipe (Consumer<IFinishedRecipe> consumer) {
-    ResourceLocation rl = getRegistryName();
-    TitaniumShapedRecipeBuilder.shapedRecipe(tier.getIngot().get())
-            .patternLine("nnn").patternLine("nnn").patternLine("nnn")
-            .key('n', tier.getNugget().get()).build(consumer, new ResourceLocation(rl.getNamespace(), rl.getPath() + "_nugget_to_ingot"));
-    TitaniumShapelessRecipeBuilder.shapelessRecipe(tier.getNugget().get(), 9).addIngredient(Ingredient.fromItems(tier.getIngot().get())).build(consumer, new ResourceLocation(rl.getNamespace(), rl.getPath() + "_ingot_to_nuggets"));
-    TitaniumShapedRecipeBuilder.shapedRecipe(this)
-            .patternLine("iii").patternLine("iii").patternLine("iii")
-            .key('i', tier.getIngot().get()).build(consumer, new ResourceLocation(rl.getNamespace(), rl.getPath() + "_ingot_to_block"));
-    TitaniumShapelessRecipeBuilder.shapelessRecipe(tier.getIngot().get(), 9).addIngredient(Ingredient.fromItems(this)).build(consumer, new ResourceLocation(rl.getNamespace(), rl.getPath() + "_block_to_ingots"));
+    };
   }
 }

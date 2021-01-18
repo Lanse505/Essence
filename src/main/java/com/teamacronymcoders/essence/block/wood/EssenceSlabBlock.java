@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import java.util.function.Consumer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -16,10 +17,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 
-public class EssenceSlabBlock extends CustomSlabBlock {
-  public EssenceSlabBlock () {
-    super(Block.Properties.create(Material.WOOD, MaterialColor.CYAN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
-    setItemGroup(Essence.CORE_TAB);
+public class EssenceSlabBlock extends SlabBlock {
+  public EssenceSlabBlock (Properties properties) {
+    super(properties);
   }
 
   @Override
@@ -32,11 +32,4 @@ public class EssenceSlabBlock extends CustomSlabBlock {
     return 75;
   }
 
-  @Override
-  public void registerRecipe (Consumer<IFinishedRecipe> consumer) {
-    TitaniumShapedRecipeBuilder.shapedRecipe(this, 4).setName(new ResourceLocation(Essence.MOD_ID, "essence_wood_slab_mid"))
-            .patternLine("   ").patternLine("ppp").patternLine("   ")
-            .key('p', EssenceItemTags.ESSENCE_WOOD_PLANKS)
-            .build(consumer);
-  }
 }

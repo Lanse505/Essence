@@ -53,8 +53,8 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
   private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
-  public EssenceShear (EssenceToolTiers tier) {
-    super(new Item.Properties().maxDamage(tier.getMaxUses()).group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssenceShear (Properties properties, EssenceToolTiers tier) {
+    super(properties.maxDamage(tier.getMaxUses()).rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

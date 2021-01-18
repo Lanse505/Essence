@@ -33,9 +33,8 @@ import net.minecraftforge.common.ToolType;
 
 public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
 
-  public InfusionTableBlock () {
-    super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity(), InfusionTableTile.class);
-    setItemGroup(Essence.CORE_TAB);
+  public InfusionTableBlock (Properties properties) {
+    super(properties, InfusionTableTile.class);
   }
 
   @Override

@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[${loader_version},)"
 issueTrackerURL="https://github.com/Lanse505/Essence/issues"
 license="MIT"
 
 [[mods]]
     modId="essence"
-    version="${file.jarVersion}"
+    version="${version}"
     displayName="Essence"
     authors="Lanse505, VeyezX"
     description='''
@@ -22,7 +22,14 @@ license="MIT"
 [[dependencies.essence]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4]"
+    versionRange="[${mc_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.essence]]
+    modId="forge"
+    mandatory=true
+    versionRange="[${forge_version},)"
     ordering="NONE"
     side="BOTH"
 

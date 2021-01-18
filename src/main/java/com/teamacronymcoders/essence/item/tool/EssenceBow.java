@@ -47,8 +47,8 @@ public class EssenceBow extends BowItem implements IModifiedTool {
 
   private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
-  public EssenceBow (EssenceToolTiers tier) {
-    super(new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssenceBow (Properties properties, EssenceToolTiers tier) {
+    super(properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

@@ -1,9 +1,8 @@
-package com.teamacronymcoders.essence.serializable.recipe.infusion;
+package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import java.util.*;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 
 public class GlueBallItem extends Item {
 
-  public GlueBallItem () {
-    super(new Item.Properties().group(Essence.CORE_TAB));
+  public GlueBallItem (Properties properties) {
+    super(properties);
   }
 
   @Override

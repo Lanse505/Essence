@@ -15,25 +15,6 @@ import static com.teamacronymcoders.essence.util.registration.EssenceModifierReg
 
 public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
 
-  public static final List<EssenceBrickBlock> BRICK_BLOCK_LIST = Arrays.asList(
-          ESSENCE_BRICKS_WHITE,
-          ESSENCE_BRICKS_ORANGE,
-          ESSENCE_BRICKS_MAGENTA,
-          ESSENCE_BRICKS_LIGHT_BLUE,
-          ESSENCE_BRICKS_YELLOW,
-          ESSENCE_BRICKS_LIME,
-          ESSENCE_BRICKS_PINK,
-          ESSENCE_BRICKS_GRAY,
-          ESSENCE_BRICKS_LIGHT_GRAY,
-          ESSENCE_BRICKS_CYAN,
-          ESSENCE_BRICKS_PURPLE,
-          ESSENCE_BRICKS_BLUE,
-          ESSENCE_BRICKS_BROWN,
-          ESSENCE_BRICKS_GREEN,
-          ESSENCE_BRICKS_RED,
-          ESSENCE_BRICKS_BLACK
-  );
-
   public EssenceEnglishLangProvider (DataGenerator generator) {
     super(generator, "en_us");
   }
@@ -41,7 +22,6 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
   @Override
   protected void addTranslations () {
     addAdvancements();
-    addBlocks();
     addCommands();
     addItems();
     addItemMisc();
@@ -109,24 +89,6 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
     add(EssenceToolTypeAdvancements.getSword(), "Essence-Infused Sword", "A Sword holding the Essence of The World");
   }
 
-  private void addBlocks () {
-    add("Essence-Infused Metal Block", ESSENCE_INFUSED_METAL_BLOCK, ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK, ESSENCE_INFUSED_METAL_SUPREME_BLOCK, ESSENCE_INFUSED_METAL_DIVINE_BLOCK);
-
-    add(ESSENCE_WOOD_LEAVES, "Essence-Wood Leaves");
-    add(ESSENCE_WOOD_LOG, "Essence-Wood Log");
-    add(ESSENCE_WOOD_SAPLING, "Essence-Wood Sapling");
-    add(ESSENCE_WOOD_PLANKS, "Essence-Wood Planks");
-    add(ESSENCE_WOOD_SLAB, "Essence-Wood Slab");
-
-    add(ESSENCE_ORE, "Essence-Infused Ore");
-    add(ESSENCE_CRYSTAL_ORE, "Essence-Infused Crystal Ore");
-
-    add(INFUSION_TABLE, "Infusion Table");
-    add(INFUSION_PEDESTAL, "Infusion Pedestal");
-
-    addColored(BRICK_BLOCK_LIST, EssenceBrickBlock::hasColor, this::add, " Essence-Infused Bricks");
-  }
-
   private void addModifierMisc () {
     add("essence.brewed.contents", "Contents:");
     add("essence.brewed.duration", "Duration %s");
@@ -183,23 +145,6 @@ public class EssenceEnglishLangProvider extends EssenceBaseLangProvider {
   private void addItems () {
     add("item.essence.essence_bucket", "Bucket of Essence");
     add("item.essence.experience_bucket", "Bucket of Experience");
-    add(ESSENCE_INFUSED_STICK, "Essence-Wood Sticks");
-    add(PORTABLE_CRAFTER, "Portable Crafter");
-    add(WRENCH, "Essence-Infused Wrench");
-    add(ESSENCE_INFUSED_CRYSTAL, "Essence-Infused Crystal");
-    add(TOME_OF_KNOWLEDGE, "Tome of Bound-Knowledge");
-    add(TOME_OF_EXPERIENCE, "Tome of Experience");
-    add(GLUE_BALL, "Ball of Glue");
-    add("Essence-Infused Nugget", ESSENCE_INFUSED_METAL_NUGGET, ESSENCE_INFUSED_METAL_EMPOWERED_NUGGET, ESSENCE_INFUSED_METAL_SUPREME_NUGGET, ESSENCE_INFUSED_METAL_DIVINE_NUGGET);
-    add("Essence-Infused Ingot", ESSENCE_INFUSED_METAL, ESSENCE_INFUSED_METAL_EMPOWERED, ESSENCE_INFUSED_METAL_SUPREME, ESSENCE_INFUSED_METAL_DIVINE);
-    add("Essence-Infused Axe", ESSENCE_AXE, ESSENCE_AXE_EMPOWERED, ESSENCE_AXE_SUPREME, ESSENCE_AXE_DIVINE);
-    add("Essence-Infused Bow", ESSENCE_BOW, ESSENCE_BOW_EMPOWERED, ESSENCE_BOW_SUPREME, ESSENCE_BOW_DIVINE);
-    add("Essence-Infused Hoe", ESSENCE_HOE, ESSENCE_HOE_EMPOWERED, ESSENCE_HOE_SUPREME, ESSENCE_HOE_DIVINE);
-    add("Essence-Infused Omni-Tool", ESSENCE_OMNITOOL, ESSENCE_OMNITOOL_EMPOWERED, ESSENCE_OMNITOOL_SUPREME, ESSENCE_OMNITOOL_DIVINE);
-    add("Essence-Infused Pickaxe", ESSENCE_PICKAXE, ESSENCE_PICKAXE_EMPOWERED, ESSENCE_PICKAXE_SUPREME, ESSENCE_PICKAXE_DIVINE);
-    add("Essence-Infused Shear", ESSENCE_SHEAR, ESSENCE_SHEAR_EMPOWERED, ESSENCE_SHEAR_SUPREME, ESSENCE_SHEAR_DIVINE);
-    add("Essence-Infused Shovel", ESSENCE_SHOVEL, ESSENCE_SHOVEL_EMPOWERED, ESSENCE_SHOVEL_SUPREME, ESSENCE_SHOVEL_DIVINE);
-    add("Essence-Infused Sword", ESSENCE_SWORD, ESSENCE_SWORD_EMPOWERED, ESSENCE_SWORD_SUPREME, ESSENCE_SWORD_DIVINE);
   }
 
   private void addKnowledge () {

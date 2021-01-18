@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -48,6 +49,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
   /**
    * @return Returns the Translation Key for the Modifier.
    */
+  @Nonnull
   public String getTranslationName () {
     final ResourceLocation id = this.getRegistryName();
     return "modifier." + id.getNamespace() + "." + id.getPath();

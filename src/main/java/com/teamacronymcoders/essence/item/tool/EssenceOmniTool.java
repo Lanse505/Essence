@@ -42,8 +42,8 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceOmniTool (EssenceToolTiers tier) {
-    super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity())
+  public EssenceOmniTool (Properties properties, EssenceToolTiers tier) {
+    super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, properties.rarity(tier.getRarity())
             .addToolType(ToolType.AXE, tier.getHarvestLevel())
             .addToolType(ToolType.PICKAXE, tier.getHarvestLevel())
             .addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));

@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.block.infusion.tile;
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
   private final InventoryComponent<InfusionPedestalTile> inventory;
 
   public InfusionPedestalTile () {
-    super(EssenceObjectHolders.INFUSION_PEDESTAL);
+    super(EssenceBlockRegistrate.INFUSION_PEDESTAL.get());
     addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
             .setComponentHarness(this)
             .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))

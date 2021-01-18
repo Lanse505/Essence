@@ -44,7 +44,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
   private int freeModifiers;
   private int additionalModifiers;
 
-  public TomeOfExperienceItem () {
+  public TomeOfExperienceItem (Properties properties) {
     mode = ExperienceModeEnum.FILL;
     this.baseModifiers = 3;
     this.freeModifiers = 3;

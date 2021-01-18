@@ -1,9 +1,6 @@
 package com.teamacronymcoders.essence.datagen;
 
-import com.teamacronymcoders.essence.datagen.tags.EssenceBlockTagProvider;
-import com.teamacronymcoders.essence.datagen.tags.EssenceEntityTagProvider;
-import com.teamacronymcoders.essence.datagen.tags.EssenceFluidTagProvider;
-import com.teamacronymcoders.essence.datagen.tags.EssenceItemTagProvider;
+import com.teamacronymcoders.essence.datagen.tags.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -15,6 +12,7 @@ public class EssenceTagProvider {
     generator.addProvider(blockTagProvider);
     generator.addProvider(new EssenceFluidTagProvider(generator, existingFileHelper));
     generator.addProvider(new EssenceEntityTagProvider(generator, existingFileHelper));
+    generator.addProvider(new EssenceTileEntityTypeTagProvider(generator, existingFileHelper));
   }
 
 }

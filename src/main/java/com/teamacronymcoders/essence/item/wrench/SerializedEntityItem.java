@@ -18,8 +18,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class SerializedEntityItem extends Item {
 
-  public SerializedEntityItem () {
-    super(new Item.Properties().setISTER(() -> SerializableMobRenderer::new).group(Essence.CORE_TAB));
+  public SerializedEntityItem (Properties properties) {
+    super(properties);
   }
 
   @Nullable

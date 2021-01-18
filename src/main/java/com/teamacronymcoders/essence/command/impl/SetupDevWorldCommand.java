@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceBowHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
@@ -73,14 +74,14 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
 
   public List<ItemStack> getTestStacks () {
     List<ItemStack> stacks = Lists.newArrayList();
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_AXE_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.CASCADING_LUMBER_MODIFIER.get(), 1, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_BOW_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.STRENGTHENED_POWER_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.KEEN_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.BREWED_MODIFIER.get(), 1, EssenceBowHelper.createEffectInstanceNBT(
@@ -89,11 +90,11 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
                     new EffectInstance(Effects.GLOWING, 1000, 2, false, false)
             ))))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_HOE_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EXPANDER_MODIFIER.get(), 3, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_OMNITOOL_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.CASCADING_LUMBER_MODIFIER.get(), 1, null),
@@ -101,36 +102,36 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.CASCADING_VEIN_MODIFIER.get(), 1, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.CASCADING_VEIN_MODIFIER.get(), 1, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_SHEAR_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.RAINBOW_MODIFIER.get(), 1, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.EFFICIENCY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.FIERY_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.ENCHANTED_MODIFIER.get(), 1, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.CASCADING_EXCAVATION_MODIFIER.get(), 1, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_SWORD_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.STRENGTHENED_SHARPNESS_MODIFIER.get(), 5, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_SWORD_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.STRENGTHENED_ARTHROPOD_MODIFIER.get(), 5, null)
             ))
     );
-    stacks.add(new ItemStack(EssenceObjectHolders.ESSENCE_SWORD_DIVINE, 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
+    stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.UNBREAKING_MODIFIER.get(), 5, null),
             new ModifierInstance<>(ItemStack.class, () -> EssenceModifierRegistration.STRENGTHENED_SMITE_MODIFIER.get(), 5, null)
             ))

@@ -13,24 +13,22 @@ import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.command.EssenceCommands;
-import com.teamacronymcoders.essence.entity.render.*;
 import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
-import com.teamacronymcoders.essence.serializable.recipe.infusion.InfusionTableSerializableRecipe;
+import com.teamacronymcoders.essence.api.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
-import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
 import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +36,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
@@ -72,8 +68,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import static com.teamacronymcoders.essence.Essence.MOD_ID;
 
 public class EssenceEventHandlers {
@@ -166,7 +160,7 @@ public class EssenceEventHandlers {
               if (oreGenConfig.getEssenceOre().getShouldGenerate().get()) {
                 oregen.add(() ->
                         Feature.ORE
-                                .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceObjectHolders.ESSENCE_ORE.getDefaultState(), oreGenConfig.getEssenceOre().getMaxVeinSize().get()))
+                                .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceBlockRegistrate.ESSENCE_ORE.getDefaultState(), oreGenConfig.getEssenceOre().getMaxVeinSize().get()))
                                 .withPlacement(Placement.RANGE_BIASED.configure(new TopSolidRangeConfig(
                                         oreGenConfig.getEssenceOre().getBottomOffset().get(),
                                         oreGenConfig.getEssenceOre().getTopOffset().get(),
@@ -176,7 +170,7 @@ public class EssenceEventHandlers {
               if (oreGenConfig.getEssenceCrystalOre().getShouldGenerate().get()) {
                 oregen.add(() ->
                         Feature.ORE
-                                .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceObjectHolders.ESSENCE_CRYSTAL_ORE.getDefaultState(), oreGenConfig.getEssenceCrystalOre().getMaxVeinSize().get()))
+                                .withConfiguration(new OreFeatureConfig(FillerBlockType.BASE_STONE_OVERWORLD, EssenceBlockRegistrate.ESSENCE_CRYSTAL_ORE.getDefaultState(), oreGenConfig.getEssenceCrystalOre().getMaxVeinSize().get()))
                                 .withPlacement(Placement.RANGE_BIASED.configure(new TopSolidRangeConfig(
                                         oreGenConfig.getEssenceCrystalOre().getBottomOffset().get(),
                                         oreGenConfig.getEssenceCrystalOre().getTopOffset().get(),
@@ -274,18 +268,6 @@ public class EssenceEventHandlers {
                   }
                 }
               }
-            }).subscribe();
-
-    // Rendering
-    EventManager.mod(FMLClientSetupEvent.class)
-            .process(event -> {
-              ItemRenderer renderer = event.getMinecraftSupplier().get().getItemRenderer();
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.GLUE_BALL.get(), manager -> new SpriteRenderer<>(manager, renderer, 0.75F, true));
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_COW.get(), ShearedCowRenderer::new);
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_PIG.get(), ShearedPigRenderer::new);
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ShearedChickenRenderer::new);
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_CREEPER.get(), ShearedCreeperRenderer::new);
-              RenderingRegistry.registerEntityRenderingHandler(EssenceEntityRegistration.SHEARED_GHAST.get(), ShearedGhastRenderer::new);
             }).subscribe();
   }
 }

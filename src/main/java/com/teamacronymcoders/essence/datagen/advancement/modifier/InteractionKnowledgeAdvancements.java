@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
 import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
@@ -31,7 +32,7 @@ public class InteractionKnowledgeAdvancements {
                     FrameType.CHALLENGE, true, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/interaction/interaction_modifier");
     cascading = Advancement.Builder.builder()
             .withDisplay(
@@ -43,7 +44,7 @@ public class InteractionKnowledgeAdvancements {
             )
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.CASCADING_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/interaction/cascading_modifier");
     expander = Advancement.Builder.builder()
             .withDisplay(
@@ -55,7 +56,7 @@ public class InteractionKnowledgeAdvancements {
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.EXPANDER_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/interaction/expander_modifier");
     fiery = Advancement.Builder.builder()
             .withDisplay(
@@ -67,7 +68,7 @@ public class InteractionKnowledgeAdvancements {
             )
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.FIERY_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/interaction/fiery_modifier");
     rainbow = Advancement.Builder.builder()
             .withDisplay(
@@ -79,7 +80,7 @@ public class InteractionKnowledgeAdvancements {
             )
             .withParent(interaction)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.RAINBOW_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/interaction/rainbow_modifier");
   }
 

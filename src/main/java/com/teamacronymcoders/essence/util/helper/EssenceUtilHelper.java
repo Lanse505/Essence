@@ -2,7 +2,9 @@ package com.teamacronymcoders.essence.util.helper;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
+import java.util.Locale;
 import java.util.TreeMap;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.IItemTier;
 import net.minecraft.util.text.TextFormatting;
 
@@ -112,6 +114,27 @@ public class EssenceUtilHelper {
       }
     }
     return exp;
+  }
+
+  public static String getColorFormattedLangString(String input, DyeColor color) {
+    String colorName = color.getString();
+    String name;
+    if (colorName.contains("_")) {
+      String[] strings = colorName.split("_");
+      StringBuilder builder = new StringBuilder();
+      boolean firstString = true;
+      for (String string : strings) {
+        builder.append(string.substring(0, 1).toUpperCase(Locale.ROOT)).append(string.substring(1));
+        if (firstString) {
+          builder.append("-");
+          firstString = false;
+        }
+      }
+      name = builder.toString() + input;
+      return name;
+    }
+    name = colorName.substring(0, 1).toUpperCase(Locale.ROOT) + colorName.substring(1) + input;
+    return name;
   }
 
 

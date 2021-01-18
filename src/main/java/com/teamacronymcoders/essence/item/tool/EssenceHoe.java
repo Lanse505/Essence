@@ -38,8 +38,8 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceHoe (EssenceToolTiers tier) {
-    super(tier, 0, tier.getAttackSpeedHoeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssenceHoe (Properties properties, EssenceToolTiers tier) {
+    super(tier, 0, tier.getAttackSpeedHoeMod(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

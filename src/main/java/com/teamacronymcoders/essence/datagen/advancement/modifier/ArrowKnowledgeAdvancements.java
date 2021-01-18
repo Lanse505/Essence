@@ -2,6 +2,8 @@ package com.teamacronymcoders.essence.datagen.advancement.modifier;
 
 import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
@@ -29,7 +31,7 @@ public class ArrowKnowledgeAdvancements {
                     FrameType.CHALLENGE, true, false, true
             )
             .withParent(KnowledgeAdvancementProvider.getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.TOME_OF_KNOWLEDGE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .register(consumer, "essence:knowledge/arrow/arrow_modifier");
     brewed = Advancement.Builder.builder()
             .withDisplay(
@@ -41,7 +43,7 @@ public class ArrowKnowledgeAdvancements {
             )
             .withParent(arrow)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.BREWED_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
             .register(consumer, "essence:knowledge/arrow/brewed_modifier");
     keen = Advancement.Builder.builder()
             .withDisplay(
@@ -53,7 +55,7 @@ public class ArrowKnowledgeAdvancements {
             )
             .withParent(arrow)
             .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistration.KEEN_MODIFIER_KNOWLEDGE.get(), AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
+            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
             .register(consumer, "essence:knowledge/arrow/keen_modifier");
   }
 

@@ -35,8 +35,8 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceSword (EssenceToolTiers tier) {
-    super(tier, tier.getAttackDamageSwordMod(), tier.getAttackDamage(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssenceSword (Properties properties, EssenceToolTiers tier) {
+    super(tier, tier.getAttackDamageSwordMod(), tier.getAttackDamage(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

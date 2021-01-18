@@ -9,12 +9,12 @@ import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 
-public class TomeOfKnowledgeItem extends Item {
+public class TomeOfKnowledgeItem extends TomeItem {
 
   private static final String playerUUID = "PLAYER_UUID";
 
-  public TomeOfKnowledgeItem () {
-    super(new Item.Properties().group(Essence.CORE_TAB).rarity(Rarity.EPIC));
+  public TomeOfKnowledgeItem (Properties properties) {
+    super(properties);
   }
 
   @Override

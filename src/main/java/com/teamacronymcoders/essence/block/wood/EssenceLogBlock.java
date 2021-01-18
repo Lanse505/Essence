@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockReader;
 
 public class EssenceLogBlock extends CustomRotatedPillarBlock {
   public EssenceLogBlock () {
-    super(Block.Properties.create(Material.WOOD, MaterialColor.CYAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    super(Block.Properties.create(Material.WOOD, MaterialColor.CYAN));
     setItemGroup(Essence.CORE_TAB);
   }
 

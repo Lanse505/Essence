@@ -1,10 +1,8 @@
-package com.teamacronymcoders.essence.serializable.recipe.infusion;
+package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.util.helper.recipe.EssenceModifierRecipeHelper;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.item.ItemStack;
@@ -13,23 +11,23 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-public class InfusionRecipeModifier extends ExtendableInfusionRecipe {
+public class InfusionRecipeConversion extends ExtendableInfusionRecipe {
 
-  public static GenericSerializer<InfusionRecipeModifier> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "infusion_modifier"), InfusionRecipeModifier.class);
-  public static List<InfusionRecipeModifier> RECIPES = new ArrayList<>();
+  public static GenericSerializer<InfusionRecipeConversion> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "infusion_conversion"), InfusionRecipeConversion.class);
+  public static List<InfusionRecipeConversion> RECIPES = new ArrayList<>();
 
   public Ingredient infusable;
   public Ingredient.IItemList[] inputIngredients;
-  public SerializableModifier[] modifiers;
+  public ItemStack output;
   public int duration;
 
-  public InfusionRecipeModifier (ResourceLocation resourceLocation) {
+  public InfusionRecipeConversion (ResourceLocation resourceLocation) {
     super(resourceLocation);
   }
 
-  public InfusionRecipeModifier (ResourceLocation id, Ingredient infusable, Ingredient.IItemList[] inputIngredients, SerializableModifier[] modifiers, int duration) {
+  public InfusionRecipeConversion (ResourceLocation id, Ingredient infusable, Ingredient.IItemList[] inputIngredients, ItemStack output, int duration) {
     super(id, infusable, inputIngredients, duration);
-    this.modifiers = modifiers;
+    this.output = output;
   }
 
   @Override
@@ -39,8 +37,7 @@ public class InfusionRecipeModifier extends ExtendableInfusionRecipe {
 
   @Override
   public ItemStack resolveRecipe (ItemStack stack) {
-    EssenceModifierRecipeHelper.resolveRecipe(stack, modifiers);
-    return stack;
+    return output;
   }
 
   @Override
@@ -52,5 +49,4 @@ public class InfusionRecipeModifier extends ExtendableInfusionRecipe {
   public IRecipeType<?> getType () {
     return SERIALIZER.getRecipeType();
   }
-
 }

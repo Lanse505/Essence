@@ -31,8 +31,8 @@ public class PortableCrafterItem extends Item implements IScreenAddonProvider, I
   private final InventoryComponent<?> grid;
   private final InventoryComponent<?> output;
 
-  public PortableCrafterItem () {
-    super(new Item.Properties().maxStackSize(1).group(Essence.TOOL_TAB).rarity(Rarity.RARE));
+  public PortableCrafterItem (Properties properties) {
+    super(properties);
     grid = new InventoryComponent<>("grid", 26, 25, 9).setRange(3, 3);
     output = new InventoryComponent<>("grid", 133, 43, 1);
   }

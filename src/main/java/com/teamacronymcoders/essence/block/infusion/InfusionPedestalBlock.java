@@ -26,9 +26,8 @@ import net.minecraftforge.common.ToolType;
 
 public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> {
 
-  public InfusionPedestalBlock () {
-    super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid(), InfusionPedestalTile.class);
-    setItemGroup(Essence.CORE_TAB);
+  public InfusionPedestalBlock (Properties properties) {
+    super(properties, InfusionPedestalTile.class);
   }
 
   @Override

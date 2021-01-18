@@ -6,7 +6,8 @@ import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
-import com.teamacronymcoders.essence.serializable.recipe.infusion.ExtendableInfusionRecipe;
+import com.teamacronymcoders.essence.api.recipe.infusion.ExtendableInfusionRecipe;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
 import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
@@ -66,7 +67,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   public Integer pageSoundLastPlayed = 0;
 
   public InfusionTableTile () {
-    super(EssenceObjectHolders.INFUSION_TABLE);
+    super(EssenceBlockRegistrate.INFUSION_TABLE.get());
     addInventory(infusable = new InventoryComponent<InfusionTableTile>("input", 80, 20, 1)
             .setComponentHarness(this)
             .setOutputFilter(this::canExtractInfusable)

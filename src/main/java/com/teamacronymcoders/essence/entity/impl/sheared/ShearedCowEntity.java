@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.entity.impl.sheared;
 
 import com.teamacronymcoders.essence.datagen.loottable.EssenceEntityLootTables;
+import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.network.IPacket;
@@ -21,6 +22,6 @@ public class ShearedCowEntity extends CowEntity {
 
   @Override
   protected ResourceLocation getLootTable () {
-    return EssenceEntityLootTables.SHEARED_COW;
+    return EssenceEntityRegistrate.SHEARED_COW.getId();
   }
 }

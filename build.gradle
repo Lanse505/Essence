@@ -10,110 +10,174 @@ buildscript {
         classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
     }
 }
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "com.wynprice.cursemaven"
 
-version = "${minecraft_version}-" + "${version}"
+version = "${minecraft_version}-" + getVersion()
 group = "${group}"
 archivesBaseName = "${archive}"
 
 repositories {
+    mavenLocal()
+    mavenCentral()
     maven {
         name = "forge"
         url = "http://files.minecraftforge.net/maven"
     }
     maven {
-        url "https://maven.tterrag.com/"
+        name = "Titanium"
+        url  = 'https://cdn.hrzn.studio/maven/'
+    }
+    maven {
+        name = "JEI"
+        url  = 'https://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name = "Curios"
+        url  = 'https://maven.theillusivec4.top/'
+    }
+    maven {
+        name = "Patchouli"
+        url  = 'https://maven.blamejared.com'
+    }
+    maven {
+        name = "Registrate"
+        url  = "http://maven.tterrag.com/"
     }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+sourceSets {
+    main {
+        resources {
+            include '**/**'
+            srcDirs += "$rootDir/src/generated/resources"
+            exclude '.cache'
+        }
+    }
+}
+
+def version_properties = [
+        "version"       : version,
+        "mc_version"    : minecraft_version,
+        "forge_version" : forge_version,
+        "loader_version": loader_version
+]
+
+
+processResources {
+    outputs.upToDateWhen { false }
+    from(sourceSets.main.resources) {
+        include "META-INF/mods.toml"
+        expand(version_properties)
+    }
+    into "$buildDir/resources/main/"
+}
+
 minecraft {
     mappings channel: "snapshot", version: "${mappings_version}"
     runs {
         client {
-            workingDirectory project.file('run')
-            if (project.hasProperty('mc_uuid')) {
-                //Your uuid without any dashes in the middle
-                args '--uuid', project.getProperty('mc_uuid')
-            }
-            if (project.hasProperty('mc_username')) {
-                //Your username/display name, this is the name that shows up in chat
-                // Note: This is not your email, even if you have a Mojang account
-                args '--username', project.getProperty('mc_username')
-            }
-            if (project.hasProperty('mc_accessToken')) {
-                //Your access token, you can find it in your '.minecraft/launcher_profiles.json' file
-                args '--accessToken', project.getProperty('mc_accessToken')
-            }
-
+            workingDirectory project.file('run/client')
+            properties 'mixin.env.disableRefMap': 'true'
             mods {
-                examplemod {
-                    source sourceSets.main
+                essence {
+                    source(sourceSets.main)
                 }
             }
-            properties 'mixin.env.disableRefMap': 'true'
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/server')
+            properties 'mixin.env.disableRefMap': 'true'
             mods {
-                examplemod {
-                    source sourceSets.main
+                essence {
+                    source(sourceSets.main)
                 }
             }
-            properties 'mixin.env.disableRefMap': 'true'
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'info'
-            args '--mod', 'essence', '--all', '--output', file('generated'), '--input', file('src/main/resources')
-            source sourceSets.main
+            workingDirectory project.file('run/data')
+            properties 'fml.earlyprogresswindow': 'false'
             properties 'mixin.env.disableRefMap': 'true'
+            args '--all', '--output', file('src/generated/resources/'),
+                    '--reports',
+                    '--mod', 'essence',  '--existing', sourceSets.main.resources.srcDirs[0]
+            mods {
+                essence {
+                    source(sourceSets.main)
+                }
+            }
         }
     }
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 }
 
-repositories {
-    maven {
-        url 'https://cdn.hrzn.studio/maven/'
-    }
-    maven {
-        url 'https://dvs1.progwml6.com/files/maven'
-    }
-    maven {
-        url 'https://maven.theillusivec4.top/'
-    }
-    maven {
-        url 'https://maven.blamejared.com'
-    }
-    maven {
-        url "https://minecraft.curseforge.com/api/maven/"
-    }
+configurations {
+    shade
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    relocate 'com.tterrag.registrate', "com.teamacronymcoders.essence.repack.registrate"
+    classifier ''
 }
 
 dependencies {
+    // Forge
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compile fg.deobf("com.hrznstudio:titanium:${titanium_version}")
-    compile fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
-    //compile fg.deobf("curse.maven:crafting-tweaks:2863719")
-    
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-        // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}:api")
-        // at runtime, use the full Curios jar
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}")
+    // Titanium
+    compile fg.deobf(project.dependencies.create("com.hrznstudio:titanium:${titanium_version}") {
+        transitive = false
+    })
+
+    // Registrate
+    def registrate = "com.tterrag.registrate:Registrate:MC1.16.2-${registrate_version}"
+    implementation fg.deobf(registrate)
+    shade registrate
+
+    //Patchouli
+    compile fg.deobf("vazkii.patchouli:Patchouli:${old_minecraft_version}-${patchouli_version}")
+
+    // JEI
+    compileOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}")
+
+    // Curios
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}")
+}
+
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = "sources"
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+task registrateJar(type: Jar, dependsOn: javadoc) {
+    classifier = "registrate"
+    from sourceSets.main.allSource
+    exclude '**/**'
+    include 'com/teamacronymcoders/essence/registrate/**'
 }
 
 jar {
+    classifier = "nodep"
     manifest {
         attributes([
                 "Specification-Title"     : "${title}",
@@ -126,4 +190,39 @@ jar {
                 "ModSide": "BOTH",
         ],)
     }
+}
+
+reobf {
+    shadowJar{}
+    registrateJar{}
+}
+
+build.dependsOn shadowJar
+build.dependsOn reobfShadowJar
+build.dependsOn registrateJar
+build.dependsOn reobfRegistrateJar
+
+
+String getVersion() {
+    String version = "${mod_version}"
+    String branch = project.hasProperty("branch") ? project.branch : ""
+
+    if (branch != "") {
+        version += "-" + branch
+
+        String buildNumber = getBuildNumber()
+        if (buildNumber != "") {
+            version += "." + buildNumber
+        }
+    }
+
+    return version
+}
+
+static String getBuildNumber() {
+    String buildNumber = System.getenv("BUILD_NUMBER") != null ? System.getenv("BUILD_NUMBER") : ""
+    if (buildNumber == "") {
+        buildNumber = System.getenv("bamboo_buildNumber") != null ? System.getenv("bamboo_buildNumber") : ""
+    }
+    return buildNumber
 }

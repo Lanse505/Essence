@@ -1,7 +1,8 @@
 package com.teamacronymcoders.essence.entity.impl;
 
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.registration.EssenceEntityRegistration;
+import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
 import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -19,6 +21,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class GlueBallEntity extends ProjectileItemEntity {
 
@@ -27,16 +30,16 @@ public class GlueBallEntity extends ProjectileItemEntity {
   }
 
   public GlueBallEntity (World worldIn, LivingEntity throwerIn) {
-    super(EssenceEntityRegistration.GLUE_BALL.get(), throwerIn, worldIn);
+    super(EssenceEntityRegistrate.GLUE_BALL.get(), throwerIn, worldIn);
   }
 
   public GlueBallEntity (World worldIn, double x, double y, double z) {
-    super(EssenceEntityRegistration.GLUE_BALL.get(), x, y, z, worldIn);
+    super(EssenceEntityRegistrate.GLUE_BALL.get(), x, y, z, worldIn);
   }
 
   @Override
   protected Item getDefaultItem () {
-    return EssenceObjectHolders.GLUE_BALL;
+    return EssenceItemRegistrate.GLUE_BALL_ITEM.get();
   }
 
   @OnlyIn(Dist.CLIENT)
@@ -61,7 +64,13 @@ public class GlueBallEntity extends ProjectileItemEntity {
       Entity entity = ((EntityRayTraceResult) result).getEntity();
       if (entity instanceof LivingEntity) {
         LivingEntity living = (LivingEntity) entity;
-        living.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 200, 2));
+        EffectInstance instance = living.getActivePotionEffect(Effects.SLOWNESS);
+        if (instance != null && instance.getAmplifier() < 5) {
+          living.removePotionEffect(Effects.SLOWNESS);
+          living.addPotionEffect(new EffectInstance(Effects.SLOWNESS, instance.getDuration(), instance.getAmplifier() + 1));
+          return;
+        }
+        living.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 1));
       }
     }
 
@@ -69,5 +78,10 @@ public class GlueBallEntity extends ProjectileItemEntity {
       this.world.setEntityState(this, (byte) 3);
       this.remove();
     }
+  }
+
+  @Override
+  public IPacket<?> createSpawnPacket () {
+    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

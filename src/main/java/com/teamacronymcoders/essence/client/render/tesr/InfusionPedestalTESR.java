@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.client.render.tesr;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceRenderHelper;
 import java.util.Random;
@@ -21,15 +22,18 @@ public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTil
 
   @Override
   public void render (InfusionPedestalTile tile, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay, int light) {
-    BlockState state = tile.getWorld().getBlockState(tile.getPos());
-    if (state.getBlock() != EssenceObjectHolders.INFUSION_PEDESTAL) {
-      return;
-    }
+    if (tile.getWorld() != null) {
+      tile.getWorld().getBlockState(tile.getPos());
+      BlockState state = tile.getWorld().getBlockState(tile.getPos());
+      if (state.getBlock() != EssenceBlockRegistrate.INFUSION_PEDESTAL.get()) {
+        return;
+      }
 
-    ItemStack stack = tile.getStack();
+      ItemStack stack = tile.getStack();
 
-    if (!stack.isEmpty()) {
-      EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer, overlay);
+      if (!stack.isEmpty()) {
+        EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer, overlay);
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.serializable.recipe.infusion;
+package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import java.util.Arrays;

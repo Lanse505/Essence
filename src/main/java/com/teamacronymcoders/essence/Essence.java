@@ -23,6 +23,9 @@ import com.teamacronymcoders.essence.datagen.*;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
@@ -37,6 +40,7 @@ import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
 import com.teamacronymcoders.essence.util.registration.*;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
+import com.tterrag.registrate.Registrate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -81,6 +85,7 @@ import org.apache.logging.log4j.Logger;
 public class Essence extends ModuleController {
 
   public static final String MOD_ID = "essence";
+  public static final String versionNumber = "1.0.0-alpha";
   public static final Random RANDOM = new Random();
   public static final Logger LOGGER = LogManager.getLogger("Essence");
   public static final AdvancedTitaniumTab CORE_TAB = new EssenceCoreTab();
@@ -89,13 +94,12 @@ public class Essence extends ModuleController {
   public static Essence instance;
   public static EssenceCommonProxy proxy = DistExecutor.safeRunForDist(EssenceSafeSuppliers.getClientProxy(), EssenceSafeSuppliers.getServerProxy());
   public static PacketHandler handler = new PacketHandler();
-  public final String versionNumber;
+
+  public static Registrate ESSENCE_REGISTRATE;
 
   public Essence () {
     instance = this;
-    versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
     handler.init();
-
     JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
     JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
     JSONSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::writeBlockState, EssenceSerializableObjectHandler::readBlockState);
@@ -106,15 +110,19 @@ public class Essence extends ModuleController {
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    EssenceEntityRegistration.register(eventBus);
+    ESSENCE_REGISTRATE = Registrate.create("essence");
+    EssenceEntityRegistrate.init();
+    EssenceItemRegistrate.init();
+    EssenceBlockRegistrate.init();
+
     EssenceKnowledgeRegistration.register(eventBus);
     EssenceModifierRegistration.register(eventBus);
     EssenceSoundRegistration.register(eventBus);
-    EssenceItemRegistration.register(eventBus);
+    EssenceParticleTypeRegistration.register(eventBus);
     EssenceAdvancements.setup();
     EssenceEventHandlers.setup();
     DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
-    setupCreativeTabIcons();
+    //setupCreativeTabIcons();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
     eventBus.addListener(this::setupCuriosIMC);
@@ -123,25 +131,13 @@ public class Essence extends ModuleController {
   @Override
   protected void initModules () {
     addModule(EssenceModules.CORE);
-    addModule(EssenceModules.TOOLS);
   }
 
   @Override
   public void addDataProvider (GatherDataEvent event) {
     super.addDataProvider(event);
-    NonNullLazy<List<Block>> blocksToProcess = NonNullLazy.of(() ->
-            ForgeRegistries.BLOCKS.getValues()
-                    .stream()
-                    .filter(block -> Optional.ofNullable(block.getRegistryName())
-                            .map(ResourceLocation::getNamespace)
-                            .filter(MOD_ID::equalsIgnoreCase)
-                            .isPresent())
-                    .collect(Collectors.toList())
-    );
     EssenceTagProvider.addTagProviders(event.getGenerator(), event.getExistingFileHelper());
-    EssenceRecipeProvider.addRecipeProviders(event.getGenerator(), blocksToProcess);
-    event.getGenerator().addProvider(new TitaniumLootTableProvider(event.getGenerator(), blocksToProcess));
-    event.getGenerator().addProvider(new BlockItemModelGeneratorProvider(event.getGenerator(), MOD_ID, blocksToProcess));
+    EssenceRecipeProvider.addRecipeProviders(event.getGenerator());
     event.getGenerator().addProvider(new EssenceLootTableProvider(event.getGenerator()));
     event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
     event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
@@ -164,11 +160,11 @@ public class Essence extends ModuleController {
     CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
     EssenceConditions.MATCH_MODIFIER = LootConditionManager.register("essence:match_modifier", new MatchModifier.Serializer());
 
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_CHICKEN.get(), ChickenEntity.func_234187_eI_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_COW.get(), CowEntity.func_234188_eI_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_CREEPER.get(), CreeperEntity.registerAttributes().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_GHAST.get(), GhastEntity.func_234290_eH_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistration.SHEARED_PIG.get(), PigEntity.func_234215_eI_().create());
+    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_CHICKEN.get(), ChickenEntity.func_234187_eI_().create());
+    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_COW.get(), CowEntity.func_234188_eI_().create());
+    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_CREEPER.get(), CreeperEntity.registerAttributes().create());
+    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), GhastEntity.func_234290_eH_().create());
+    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_PIG.get(), PigEntity.func_234215_eI_().create());
 
     // TODO: Fix Dispenser Behaviour
     EssenceDispenseBehaviours.init();
@@ -177,29 +173,22 @@ public class Essence extends ModuleController {
   @SuppressWarnings("unchecked")
   private void clientSetup (final FMLClientSetupEvent event) {
     new EssenceKeyHandler();
-
-    RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_LEAVES, RenderType.getCutout());
-    RenderTypeLookup.setRenderLayer(EssenceObjectHolders.ESSENCE_WOOD_SAPLING, RenderType.getCutout());
-    RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_TABLE, RenderType.getTranslucent());
-    RenderTypeLookup.setRenderLayer(EssenceObjectHolders.INFUSION_PEDESTAL, RenderType.getTranslucent());
-    ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_TABLE.getTileEntityType(), InfusionTableTESR::new);
-    ClientRegistry.bindTileEntityRenderer(EssenceObjectHolders.INFUSION_PEDESTAL.getTileEntityType(), InfusionPedestalTESR::new);
     // TODO: Figure out why the Glueball Entity isn't working!
     //Minecraft.getInstance().particles.registerFactory(EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get(), BreakingGlueballParticleFactory::new);
     // TODO: Reimplement once I get this working
     //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
 
     // Pull
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
 
     // Pulling
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_EMPOWERED, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_SUPREME, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW_DIVINE, new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
 
     // Toggled
     // TODO: Implement for Tablet of Muffling
@@ -209,18 +198,21 @@ public class Essence extends ModuleController {
   private void setupCreativeTabIcons () {
     CORE_TAB.addIconStacks(
             new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()),
-            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_SAPLING),
-            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LEAVES),
-            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_LOG),
-            new ItemStack(EssenceObjectHolders.ESSENCE_WOOD_PLANKS)
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LEAVES.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_PLANKS.get())
     );
 
     TOOL_TAB.addIconStacks(
-            new ItemStack(EssenceObjectHolders.ESSENCE_AXE),
-            new ItemStack(EssenceObjectHolders.ESSENCE_PICKAXE),
-            new ItemStack(EssenceObjectHolders.ESSENCE_SHOVEL),
-            new ItemStack(EssenceObjectHolders.ESSENCE_SWORD),
-            new ItemStack(EssenceObjectHolders.ESSENCE_HOE),
-            new ItemStack(EssenceObjectHolders.ESSENCE_OMNITOOL));
+            new ItemStack(EssenceItemRegistrate.ESSENCE_AXE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_PICKAXE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SHOVEL.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_HOE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_OMNITOOL.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SHEAR.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_BOW.get())
+    );
   }
 }

@@ -36,8 +36,8 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssencePickaxe (EssenceToolTiers tier) {
-    super(tier, tier.getAttackDamagePickaxeMod(), tier.getAttackSpeedPickaxeMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()));
+  public EssencePickaxe (Properties properties, EssenceToolTiers tier) {
+    super(tier, tier.getAttackDamagePickaxeMod(), tier.getAttackSpeedPickaxeMod(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.datagen.advancement;
 
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
@@ -27,7 +28,7 @@ public class CoreAdvancementProvider extends ExtendableAdvancementProvider {
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceObjectHolders.ESSENCE_ORE))
+            .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
             .register(consumer, "essence:core/root");
   }
 

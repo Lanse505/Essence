@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.entity.render;
 
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.client.particle.BreakingParticle;
 import net.minecraft.client.particle.IParticleFactory;
@@ -20,7 +21,7 @@ public class BreakingGlueballParticleFactory<BasicParticleType extends IParticle
   public class GlueBallFactory implements IParticleFactory<BasicParticleType> {
     @Override
     public Particle makeParticle (BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-      return new BreakingGlueballParticleFactory<BasicParticleType>(world, x, y, z, new ItemStack(EssenceObjectHolders.GLUE_BALL));
+      return new BreakingGlueballParticleFactory<BasicParticleType>(world, x, y, z, EssenceItemRegistrate.GLUE_BALL_ITEM.asStack());
     }
   }
 

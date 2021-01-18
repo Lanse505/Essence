@@ -39,8 +39,8 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceShovel (EssenceToolTiers tier) {
-    super(tier, tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), new Item.Properties().group(Essence.TOOL_TAB).rarity(tier.getRarity()).addToolType(ToolType.SHOVEL, tier.getHarvestLevel()));
+  public EssenceShovel (Properties properties, EssenceToolTiers tier) {
+    super(tier, tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();

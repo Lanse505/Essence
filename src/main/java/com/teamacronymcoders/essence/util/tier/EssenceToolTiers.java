@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.util.tier;
 
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Supplier;
 import net.minecraft.item.IItemTier;
@@ -11,22 +12,22 @@ public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
   ESSENCE("tier.essence.basic", 3, 2, 256, 384, 6.0F,
           2.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
           0, Rarity.COMMON, () -> {
-    return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL);
+    return Ingredient.fromItems(EssenceItemRegistrate.ESSENCE_INGOT.get());
   }),
   EMPOWERED_ESSENCE("tier.essence.empowered", 4, 3, 1561, 2332, 8.0F,
           3.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
           0, Rarity.UNCOMMON, () -> {
-    return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_EMPOWERED);
+    return Ingredient.fromItems(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get());
   }),
   SUPREME_ESSENCE("tier.essence.supreme", 5, 4, 2031, 3047, 9.0F,
           4.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
           0, Rarity.RARE, () -> {
-    return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_SUPREME);
+    return Ingredient.fromItems(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get());
   }),
   DIVINE_ESSENCE("tier.essence.divine", 6, 6, 4062, 6093, 10.0F,
           6.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
           0, Rarity.EPIC, () -> {
-    return Ingredient.fromItems(EssenceObjectHolders.ESSENCE_INFUSED_METAL_DIVINE);
+    return Ingredient.fromItems(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get());
   });
 
   private final String localName;
