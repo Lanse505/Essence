@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_shear"
+    ]
+  },
+  "criteria": {
+    "has_infused_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:infused_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_shear"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_infused_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

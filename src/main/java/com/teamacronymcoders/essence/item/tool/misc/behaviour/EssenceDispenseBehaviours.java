@@ -7,7 +7,6 @@ import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
 import java.util.HashMap;

@@ -1,7 +1,13 @@
 {
-    "variants": {
-        "type=bottom": { "model": "essence:block/essence_wood_slab" },
-        "type=top": { "model": "essence:block/essence_wood_slab_top" },
-        "type=double": { "model": "essence:block/essence_wood_planks" }
+  "variants": {
+    "type=top": {
+      "model": "essence:block/essence_wood_slab_top"
+    },
+    "type=bottom": {
+      "model": "essence:block/essence_wood_slab"
+    },
+    "type=double": {
+      "model": "essence:block/essence_wood_plank"
     }
+  }
 }

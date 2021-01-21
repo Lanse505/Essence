@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "has_infused_nugget_empowered": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_nugget_empowered"
+            "tag": "essence:infused_nugget_empowered"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_item",
+      "has_infused_nugget_empowered",
       "has_the_recipe"
     ]
   ]

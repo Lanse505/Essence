@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    "bnb",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "tag": "minecraft:stone_bricks"
+    },
+    "n": {
+      "tag": "essence:infused_nugget"
+    }
+  },
+  "result": {
+    "item": "essence:essence_bricks_cyan",
+    "count": 8
+  }
+}

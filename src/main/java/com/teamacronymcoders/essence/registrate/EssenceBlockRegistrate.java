@@ -6,8 +6,6 @@ import com.teamacronymcoders.essence.block.EssenceBlock;
 import com.teamacronymcoders.essence.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.block.EssenceCrystalOreBlock;
 import com.teamacronymcoders.essence.block.EssenceOreBlock;
-import com.teamacronymcoders.essence.block.base.CustomLeavesBlock;
-import com.teamacronymcoders.essence.block.base.CustomRotatedPillarBlock;
 import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.block.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
@@ -22,10 +20,11 @@ import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
-import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
+import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
@@ -43,7 +42,6 @@ import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.*;
 import net.minecraft.loot.functions.ApplyBonus;
@@ -53,6 +51,7 @@ import net.minecraft.state.properties.SlabType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.ToolType;
 
 public class EssenceBlockRegistrate {
@@ -85,7 +84,9 @@ public class EssenceBlockRegistrate {
 
   // MISC
   public static BlockEntry<EssenceCrystalOreBlock> ESSENCE_CRYSTAL_ORE = Essence.ESSENCE_REGISTRATE.object("essence_crystal_ore")
-          .block(Material.ROCK, EssenceCrystalOreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Infused Crystal Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_CRYSTAL_ORE)
+          .block(Material.ROCK, EssenceCrystalOreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE))
+          .lang("Essence-Infused Crystal Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_CRYSTAL_ORE)
+          .blockstate((context, provider) -> provider.simpleBlock(context.get()))
           .loot((registrateBlockLootTables, essenceCrystalOreBlock) -> registrateBlockLootTables.registerLootTable(essenceCrystalOreBlock, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -100,18 +101,21 @@ public class EssenceBlockRegistrate {
                           ))
                   )
           ))
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static BlockEntry<EssenceOreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
-          .block(Material.ROCK, EssenceOreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_CRYSTAL_ORE).loot(BlockLootTables::registerDropSelfLootTable)
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .block(Material.ROCK, EssenceOreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE).loot(BlockLootTables::registerDropSelfLootTable)
+          .blockstate((context, provider) -> provider.simpleBlock(context.get()))
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
 
   // Wood Blocks
   public static BlockEntry<LeavesBlock> ESSENCE_WOOD_LEAVES = Essence.ESSENCE_REGISTRATE.object("essence_wood_leaves")
-          .block(LeavesBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT).notSolid()).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Wood Leaves").tag(BlockTags.LEAVES)
+          .block(LeavesBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT).notSolid())
+          .lang("Essence-Wood Leaves").tag(BlockTags.LEAVES)
+          .blockstate((context, provider) -> provider.simpleBlock(context.get()))
           .loot((registrateBlockLootTables, customLeavesBlock) -> registrateBlockLootTables.registerLootTable(customLeavesBlock, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -145,27 +149,32 @@ public class EssenceBlockRegistrate {
                           )
                   )
           ))
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static BlockEntry<RotatedPillarBlock> ESSENCE_WOOD_LOG = Essence.ESSENCE_REGISTRATE.object("essence_wood_log")
           .block(RotatedPillarBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(2.0F).sound(SoundType.WOOD)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Wood Log").tag(EssenceTags.EssenceBlockTags.ESSENCE_WOOD_LOG, BlockTags.LOGS, BlockTags.LOGS_THAT_BURN).loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getCutout)
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG).build()
+          .blockstate((context, provider) -> provider.axisBlock(context.get()))
+          .item().group(() -> Essence.CORE_TAB).tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static BlockEntry<EssenceSaplingBlock> ESSENCE_WOOD_SAPLING = Essence.ESSENCE_REGISTRATE.object("essence_wood_sapling")
           .block(EssenceSaplingBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.doesNotBlockMovement().tickRandomly().hardnessAndResistance(0F).sound(SoundType.PLANT)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Wood Sapling").loot(BlockLootTables::registerDropSelfLootTable).tag(BlockTags.SAPLINGS).addLayer(() -> RenderType::getCutout)
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .blockstate((context, provider) -> provider.simpleBlock(context.get(), provider.models().cross(context.getId().getPath(), new ResourceLocation("essence:item/essence_wood_sapling"))))
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static BlockEntry<EssencePlankBlock> ESSENCE_WOOD_PLANKS = Essence.ESSENCE_REGISTRATE.object("essence_wood_plank")
           .block(EssencePlankBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Wood Planks").loot(BlockLootTables::registerDropSelfLootTable).tag(BlockTags.PLANKS)
           .recipe((context, provider) -> ShapelessRecipeBuilder.shapelessRecipe(context.get(), 4).addIngredient(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG).addCriterion("hasLog", DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG).getCritereon(provider)).build(provider))
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_PLANKS).build()
+          .blockstate((context, provider) -> provider.simpleBlock(context.get()))
+          .item().group(() -> Essence.CORE_TAB).tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_PLANKS)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static BlockEntry<EssenceSlabBlock> ESSENCE_WOOD_SLAB = Essence.ESSENCE_REGISTRATE.object("essence_wood_slab")
-          .block(EssenceSlabBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Wood Slab").tag(BlockTags.SLABS, BlockTags.WOODEN_SLABS)
+          .block(EssenceSlabBlock::new).initialProperties(Material.WOOD, MaterialColor.CYAN).properties(properties -> properties.hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD))
+          .lang("Essence-Wood Slab").tag(BlockTags.SLABS, BlockTags.WOODEN_SLABS)
+          .blockstate((context, provider) -> provider.slabBlock(context.get(), new ResourceLocation(Essence.MOD_ID, "block/essence_wood_plank"), new ResourceLocation(Essence.MOD_ID, "block/essence_wood_plank")))
           .loot((registrateBlockLootTables, essenceSlabBlock) -> registrateBlockLootTables.registerLootTable(essenceSlabBlock, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -181,24 +190,29 @@ public class EssenceBlockRegistrate {
                   )
           ))
           .recipe((context, provider) -> TitaniumShapedRecipeBuilder.shapedRecipe(context.get(), 4).setName(new ResourceLocation(Essence.MOD_ID, "essence_wood_slab_mid")).patternLine("   ").patternLine("ppp").patternLine("   ").key('p', EssenceTags.EssenceItemTags.ESSENCE_WOOD_PLANKS).addCriterion("hasPlanks", DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_PLANKS).getCritereon(provider)).build(provider))
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
 
   // Infusion Blocks
+  // TODO: Port the models and blockstates for these over to
   public static BlockEntry<InfusionTableBlock> INFUSION_TABLE = Essence.ESSENCE_REGISTRATE.object("essence_infusion_table")
-          .block(Material.ROCK, InfusionTableBlock::new).properties(properties -> properties.sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity()).lang("Infusion Table").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .block(Material.ROCK, InfusionTableBlock::new).properties(properties -> properties.sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity())
+          .lang("Infusion Table").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
+          .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionTableTile> INFUSION_TABLE_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_table", InfusionTableTile::new)
           .renderer(() -> InfusionTableTESR::new).validBlock(INFUSION_TABLE)
           .register();
 
   public static BlockEntry<InfusionPedestalBlock> INFUSION_PEDESTAL = Essence.ESSENCE_REGISTRATE.object("essence_infusion_pedestal")
-          .block(Material.ROCK, InfusionPedestalBlock::new).properties(properties -> properties.hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid()).lang("Infusion Pedestal").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
-          .blockstate((context, provider) -> {})
-          .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).build()
+          .block(Material.ROCK, InfusionPedestalBlock::new).properties(properties -> properties.hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid())
+          .lang("Infusion Pedestal").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
+          .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+          .item().group(() -> Essence.CORE_TAB)
+          .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionPedestalTile> INFUSION_PEDESTAL_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_pedestal", InfusionPedestalTile::new)
           .renderer(() -> InfusionPedestalTESR::new).validBlock(INFUSION_PEDESTAL)
@@ -214,7 +228,7 @@ public class EssenceBlockRegistrate {
             .properties(properties -> properties.sound(SoundType.METAL).speedFactor(1.25f))
             .loot(BlockLootTables::registerDropSelfLootTable)
             .lang("Essence-Infused Block")
-            .blockstate((context, provider) -> {})
+            .blockstate((context, provider) -> provider.simpleBlock(context.get(), provider.models().cubeAll(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + "essence_infused_block"))))
             .recipe((context, provider) -> {
               EssenceNuggetItem nugget = tier.getNugget().get().getKey().get();
               EssenceIngotItem ingot = tier.getIngot().get().getKey().get();
@@ -242,8 +256,7 @@ public class EssenceBlockRegistrate {
                       .build(provider, new ResourceLocation(Essence.MOD_ID, entryName + "_block_to_ingots"));
             })
             .item((essenceBlock, properties) -> essenceBlock.getBlockItem(properties.group(Essence.CORE_TAB)).create())
-            .model((context, provider) -> {})
-            .tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_BLOCK)
+            .model((context, provider) -> provider.blockItem(context)).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_BLOCK)
             .build()
             .register();
   }
@@ -253,9 +266,12 @@ public class EssenceBlockRegistrate {
 
   public static BlockEntry<EssenceBrickBlock> essenceBrickBlock(DyeColor color) {
     return Essence.ESSENCE_REGISTRATE.object("essence_bricks_" + color.getString())
-            .block(Material.IRON, properties -> new EssenceBrickBlock(properties, color)).properties(properties -> properties.sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE).hardnessAndResistance(1.5F, 1200F)).loot(BlockLootTables::registerDropSelfLootTable).lang(blockItem -> EssenceUtilHelper.getColorFormattedLangString("Essence-Infused Bricks", color)).tag(BlockTags.STONE_BRICKS, BlockTags.WITHER_IMMUNE, EssenceTags.EssenceBlockTags.ESSENCE_BRICKS)
-            .blockstate((context, provider) -> {})
-            .item().group(() -> Essence.CORE_TAB).model((context, provider) -> {}).tag(EssenceTags.EssenceItemTags.ESSENCE_BRICKS)
+            .block(Material.IRON, properties -> new EssenceBrickBlock(properties, color)).properties(properties -> properties.sound(SoundType.STONE).harvestLevel(1).harvestTool(ToolType.PICKAXE).hardnessAndResistance(1.5F, 1200F))
+            .loot(BlockLootTables::registerDropSelfLootTable).lang(EssenceUtilHelper.getColorFormattedLangString("Essence-Infused Bricks", color)).tag(BlockTags.STONE_BRICKS, BlockTags.WITHER_IMMUNE, EssenceTags.EssenceBlockTags.ESSENCE_BRICKS)
+            .blockstate((context, provider) -> {provider.simpleBlock(context.get());})
+            // Item Portion
+            .item().group(() -> Essence.CORE_TAB)
+            .model((context, provider) -> {provider.blockItem(context);}).tag(EssenceTags.EssenceItemTags.ESSENCE_BRICKS)
             .recipe((context, provider) -> {
               EssenceBrickBlock brickBlock = EssenceBrickBlock.dyeToColorMap.get(color).get();
               // Recolor
@@ -279,8 +295,7 @@ public class EssenceBlockRegistrate {
                 ShapelessRecipeBuilder.shapelessRecipe(Items.STONE_BRICKS).addIngredient(EssenceTags.EssenceItemTags.ESSENCE_BRICKS).addCriterion("has_" + provider.safeName(brickIngredient), brickIngredient.getCritereon(provider)).build(provider, new ResourceLocation(Essence.MOD_ID, "essence_brick_to_stone_brick"));
                 essenceToBrickRecipe = true;
               }
-            })
-            .build()
+            }).build()
             .register();
   }
 

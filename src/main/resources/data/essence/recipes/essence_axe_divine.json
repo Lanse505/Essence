@@ -1,37 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "values": [
-            {
-              "item": "essence:essence_axe_divine",
-              "type": "forge:item_exists"
-            }
-          ],
-          "type": "forge:and"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "ii ",
-          "is ",
-          " s "
-        ],
-        "key": {
-          "i": {
-            "item": "essence:essence_ingot_divine"
-          },
-          "s": {
-            "item": "essence:essence_wood_sticks"
-          }
-        },
-        "result": {
-          "item": "essence:essence_axe_divine"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ii ",
+    "is ",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "tag": "essence:infused_ingot_divine"
+    },
+    "s": {
+      "item": "essence:essence_stick"
     }
-  ]
+  },
+  "result": {
+    "item": "essence:essence_axe_divine_essence"
+  }
 }

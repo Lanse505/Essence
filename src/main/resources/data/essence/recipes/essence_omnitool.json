@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "asp",
+    " t ",
+    " t "
+  ],
+  "key": {
+    "a": {
+      "tag": "essence:essence_axe"
+    },
+    "s": {
+      "tag": "essence:essence_shovel"
+    },
+    "p": {
+      "tag": "essence:essence_pickaxe"
+    },
+    "t": {
+      "item": "essence:essence_stick"
+    }
+  },
+  "result": {
+    "item": "essence:essence_omnitool"
+  }
+}

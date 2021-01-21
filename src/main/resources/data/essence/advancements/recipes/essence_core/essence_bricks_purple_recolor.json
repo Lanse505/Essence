@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_bricks_purple_recolor"
+    ]
+  },
+  "criteria": {
+    "has_essence_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_bricks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_bricks_purple_recolor"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_essence_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}

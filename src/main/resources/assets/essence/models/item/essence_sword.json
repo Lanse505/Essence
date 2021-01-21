@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "essence:items/essence_sword"
+    "layer0": "essence:item/essence_sword"
   }
 }

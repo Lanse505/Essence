@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "essence:essence_ingot_empowered"
+      "tag": "essence:infused_ingot_empowered"
     }
   ],
   "result": {

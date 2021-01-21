@@ -4,7 +4,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTank;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.item.tome.TomeItem;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
+import com.teamacronymcoders.essence.registrate.EssenceFluidRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
@@ -112,10 +112,10 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
         return lazy.map(handler -> {
           if (getMode() == ExperienceModeEnum.FILL) {
             if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown()) {
-              int amount = handler.fill(new FluidStack(EssenceObjectHolders.EXP_FLUID.getSourceFluid(), experience), IFluidHandler.FluidAction.EXECUTE);
+              int amount = handler.fill(new FluidStack(EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid(), experience), IFluidHandler.FluidAction.EXECUTE);
               player.giveExperiencePoints(-amount);
             } else {
-              int amount = handler.fill(new FluidStack(EssenceObjectHolders.EXP_FLUID.getSourceFluid(), EssenceUtilHelper.getExperienceForLevelWithDestination(player.experienceLevel, player.experienceLevel - 1)), IFluidHandler.FluidAction.EXECUTE);
+              int amount = handler.fill(new FluidStack(EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid(), EssenceUtilHelper.getExperienceForLevelWithDestination(player.experienceLevel, player.experienceLevel - 1)), IFluidHandler.FluidAction.EXECUTE);
               player.giveExperiencePoints(-amount);
             }
             return ActionResultType.SUCCESS;
@@ -141,9 +141,9 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
   @Override
   public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
     if (stack != null && !stack.isEmpty() && nbt != null) {
-      return new ExperienceTomeProvider(stack, EssenceObjectHolders.EXP_FLUID.getSourceFluid(), nbt);
+      return new ExperienceTomeProvider(stack, EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid(), nbt);
     }
-    return new ExperienceTomeProvider(stack, EssenceObjectHolders.EXP_FLUID.getSourceFluid());
+    return new ExperienceTomeProvider(stack, EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid());
   }
 
   public ExperienceModeEnum getMode () {

@@ -1,9 +1,7 @@
 package com.teamacronymcoders.essence.util;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -75,9 +73,9 @@ public class EssenceTags {
   }
 
   public static class EssenceBlockTags {
-    public static final INamedTag<Block> FORGE_MOVEABLE_BLACKLIST = essenceBlockTag("block/moving/blacklist");
-    public static final INamedTag<Block> FORGE_MOVEABLE_WHITELIST = essenceBlockTag("block/moving/whitelist");
-    public static final INamedTag<Block> RELOCATION_NOT_SUPPORTED = essenceBlockTag("relocation_not_supported");
+    public static final INamedTag<Block> FORGE_MOVEABLE_BLACKLIST = forgeBlockTag("moving/blacklist");
+    public static final INamedTag<Block> FORGE_MOVEABLE_WHITELIST = forgeBlockTag("moving/whitelist");
+    public static final INamedTag<Block> RELOCATION_NOT_SUPPORTED = forgeBlockTag("relocation_not_supported");
 
     public static final INamedTag<Block> ESSENCE_CRYSTAL_ORE = essenceBlockTag("essence_crystal_ore");
     public static final INamedTag<Block> ESSENCE_WOOD_LOG = essenceBlockTag("essence_logs");
@@ -132,6 +130,10 @@ public class EssenceTags {
 
   public static ITag.INamedTag<TileEntityType<?>> essenceTileEntityTag(String path) {
     return ForgeTagHandler.makeWrapperTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation(Essence.MOD_ID, path));
+  }
+
+  public static ITag.INamedTag<Block> forgeBlockTag(String path) {
+    return BlockTags.createOptional(new ResourceLocation("forge", path));
   }
 
     public static ITag.INamedTag<Fluid> forgeFluidTag(String path) {

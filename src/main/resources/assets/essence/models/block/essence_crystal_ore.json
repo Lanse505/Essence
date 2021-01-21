@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "essence:blocks/essence_crystal_ore"
-    }
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "essence:block/essence_crystal_ore"
+  }
 }

@@ -1,11 +1,8 @@
 package com.teamacronymcoders.essence.item.tome;
 
-import com.teamacronymcoders.essence.Essence;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 

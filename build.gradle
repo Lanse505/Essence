@@ -19,6 +19,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "com.wynprice.cursemaven"
+apply plugin: "maven"
 
 version = "${minecraft_version}-" + getVersion()
 group = "${group}"
@@ -78,7 +79,7 @@ processResources {
     outputs.upToDateWhen { false }
     from(sourceSets.main.resources) {
         include "META-INF/mods.toml"
-        expand(version_properties)
+        expand version_properties
     }
     into "$buildDir/resources/main/"
 }
@@ -88,6 +89,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run/client')
+            properties 'fml.earlyprogresswindow': 'false'
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -98,6 +100,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run/server')
+            properties 'fml.earlyprogresswindow': 'false'
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -112,7 +115,7 @@ minecraft {
             properties 'mixin.env.disableRefMap': 'true'
             args '--all', '--output', file('src/generated/resources/'),
                     '--reports',
-                    '--mod', 'essence',  '--existing', sourceSets.main.resources.srcDirs[0]
+                    '--mod', 'essence',  '--existing', file('src/main/resources')
             mods {
                 essence {
                     source(sourceSets.main)
@@ -202,6 +205,20 @@ build.dependsOn reobfShadowJar
 build.dependsOn registrateJar
 build.dependsOn reobfRegistrateJar
 
+artifacts {
+    archives javadocJar
+    archives srcJar
+    archives shadowJar
+    archives registrateJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        }
+    }
+}
 
 String getVersion() {
     String version = "${mod_version}"
@@ -225,4 +242,10 @@ static String getBuildNumber() {
         buildNumber = System.getenv("bamboo_buildNumber") != null ? System.getenv("bamboo_buildNumber") : ""
     }
     return buildNumber
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "10000"
+    }
 }

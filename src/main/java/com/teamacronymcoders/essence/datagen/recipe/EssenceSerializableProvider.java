@@ -4,10 +4,10 @@ import com.hrznstudio.titanium.recipe.generator.IJSONGenerator;
 import com.hrznstudio.titanium.recipe.generator.IJsonFile;
 import com.hrznstudio.titanium.recipe.generator.TitaniumSerializableProvider;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.recipe.infusion.InfusionTableSerializableRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.api.recipe.infusion.InfusionTableSerializableRecipe;
 import java.util.Map;
 import net.minecraft.data.DataGenerator;
 

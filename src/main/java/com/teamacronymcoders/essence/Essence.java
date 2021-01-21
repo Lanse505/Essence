@@ -1,7 +1,5 @@
 package com.teamacronymcoders.essence;
 
-import com.hrznstudio.titanium.datagenerator.loot.TitaniumLootTableProvider;
-import com.hrznstudio.titanium.datagenerator.model.BlockItemModelGeneratorProvider;
 import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
@@ -13,23 +11,22 @@ import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.capability.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageCapability;
-import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
-import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
-import com.teamacronymcoders.essence.datagen.*;
+import com.teamacronymcoders.essence.datagen.EssenceAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
-import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
-import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
+import com.teamacronymcoders.essence.registrate.*;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
-import com.teamacronymcoders.essence.util.*;
+import com.teamacronymcoders.essence.util.EssenceEventHandlers;
+import com.teamacronymcoders.essence.util.EssenceItemProperties;
+import com.teamacronymcoders.essence.util.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
@@ -37,18 +34,15 @@ import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.proxy.EssenceCommonProxy;
 import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
-import com.teamacronymcoders.essence.util.registration.*;
+import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
+import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import com.tterrag.registrate.Registrate;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.command.arguments.ArgumentSerializer;
 import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -65,11 +59,9 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -77,7 +69,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -111,16 +102,20 @@ public class Essence extends ModuleController {
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     ESSENCE_REGISTRATE = Registrate.create("essence");
-    EssenceEntityRegistrate.init();
-    EssenceItemRegistrate.init();
-    EssenceBlockRegistrate.init();
-
     EssenceKnowledgeRegistration.register(eventBus);
     EssenceModifierRegistration.register(eventBus);
     EssenceSoundRegistration.register(eventBus);
     EssenceParticleTypeRegistration.register(eventBus);
     EssenceAdvancements.setup();
     EssenceEventHandlers.setup();
+
+    EssenceItemRegistrate.init();
+    EssenceBlockRegistrate.init();
+    EssenceFluidRegistrate.init();
+    EssenceEntityRegistrate.init();
+    EssenceTagRegistrate.init(ESSENCE_REGISTRATE);
+    EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
+
     DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     //setupCreativeTabIcons();
     eventBus.addListener(this::setup);
@@ -129,20 +124,16 @@ public class Essence extends ModuleController {
   }
 
   @Override
-  protected void initModules () {
-    addModule(EssenceModules.CORE);
-  }
+  protected void initModules () {}
 
   @Override
   public void addDataProvider (GatherDataEvent event) {
     super.addDataProvider(event);
-    EssenceTagProvider.addTagProviders(event.getGenerator(), event.getExistingFileHelper());
     EssenceRecipeProvider.addRecipeProviders(event.getGenerator());
-    event.getGenerator().addProvider(new EssenceLootTableProvider(event.getGenerator()));
+    // TODO: Port Advancements to Registrate
     event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
     event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
     event.getGenerator().addProvider(new KnowledgeAdvancementProvider(event.getGenerator()));
-    EssenceLangProvider.registerLangProviders(event.getGenerator());
   }
 
   private void setupCuriosIMC (final InterModEnqueueEvent event) {
@@ -173,8 +164,6 @@ public class Essence extends ModuleController {
   @SuppressWarnings("unchecked")
   private void clientSetup (final FMLClientSetupEvent event) {
     new EssenceKeyHandler();
-    // TODO: Figure out why the Glueball Entity isn't working!
-    //Minecraft.getInstance().particles.registerFactory(EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get(), BreakingGlueballParticleFactory::new);
     // TODO: Reimplement once I get this working
     //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
 
@@ -197,7 +186,7 @@ public class Essence extends ModuleController {
 
   private void setupCreativeTabIcons () {
     CORE_TAB.addIconStacks(
-            new ItemStack(EssenceObjectHolders.ESSENCE_FLUID.getBucketFluid()),
+            new ItemStack(EssenceFluidRegistrate.ESSENCE.get().getFilledBucket()),
             new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()),
             new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LEAVES.get()),
             new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.get()),

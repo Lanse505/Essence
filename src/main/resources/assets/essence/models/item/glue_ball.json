@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "essence:items/glue_ball"
-    }
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/glue_ball"
+  }
 }

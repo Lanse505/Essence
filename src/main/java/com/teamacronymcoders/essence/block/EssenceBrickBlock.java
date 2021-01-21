@@ -1,38 +1,26 @@
 package com.teamacronymcoders.essence.block;
 
-import com.hrznstudio.titanium.block.BasicBlock;
-import com.hrznstudio.titanium.datagenerator.loot.block.BasicBlockLootTables;
-import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
-import com.teamacronymcoders.essence.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTable.Builder;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.Constants;
 
 public class EssenceBrickBlock extends Block implements IColorProvider {

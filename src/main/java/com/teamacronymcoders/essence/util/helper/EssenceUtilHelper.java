@@ -133,7 +133,7 @@ public class EssenceUtilHelper {
       name = builder.toString() + input;
       return name;
     }
-    name = colorName.substring(0, 1).toUpperCase(Locale.ROOT) + colorName.substring(1) + input;
+    name = colorName.substring(0, 1).toUpperCase(Locale.ROOT) + colorName.substring(1) + " " + input;
     return name;
   }
 

@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "essence:items/tome_of_experience"
-    }
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/tome_of_experience"
+  }
 }

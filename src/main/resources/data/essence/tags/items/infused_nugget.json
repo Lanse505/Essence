@@ -1,9 +1,6 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_nugget",
-    "essence:essence_nugget_empowered",
-    "essence:essence_nugget_supreme",
-    "essence:essence_nugget_divine"
+    "essence:essence_nugget"
   ]
 }

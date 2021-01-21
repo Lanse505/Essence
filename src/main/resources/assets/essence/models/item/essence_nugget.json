@@ -1,6 +1,6 @@
 {
   "parent": "essence:item/item",
   "textures": {
-    "layer0": "essence:items/essence_nugget"
+    "layer0": "essence:item/essence_nugget"
   }
 }

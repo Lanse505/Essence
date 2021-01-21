@@ -1,6 +1,6 @@
 {
-    "parent": "block/cross",
-    "textures": {
-        "cross": "essence:items/essence_wood_sapling"
-    }
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "essence:item/essence_wood_sapling"
+  }
 }

@@ -1,37 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "values": [
-            {
-              "item": "essence:essence_shovel_empowered",
-              "type": "forge:item_exists"
-            }
-          ],
-          "type": "forge:and"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " i ",
-          " s ",
-          " s "
-        ],
-        "key": {
-          "i": {
-            "item": "essence:essence_ingot_empowered"
-          },
-          "s": {
-            "item": "essence:essence_wood_sticks"
-          }
-        },
-        "result": {
-          "item": "essence:essence_shovel_empowered"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    " s ",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    "s": {
+      "item": "essence:essence_stick"
     }
-  ]
+  },
+  "result": {
+    "item": "essence:essence_shovel_empowered_essence"
+  }
 }

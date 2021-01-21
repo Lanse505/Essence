@@ -4,7 +4,6 @@ import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 

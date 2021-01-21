@@ -4,13 +4,10 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import com.teamacronymcoders.essence.entity.impl.sheared.*;
 import com.teamacronymcoders.essence.entity.render.*;
-import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import net.minecraft.advancements.criterion.EntityFlagsPredicate;
 import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
 import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.EntityHasProperty;
@@ -18,10 +15,6 @@ import net.minecraft.loot.functions.LootingEnchantBonus;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.loot.functions.Smelt;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class EssenceEntityRegistrate {
 
@@ -30,7 +23,7 @@ public class EssenceEntityRegistrate {
   public static void init() {}
 
   public static EntityEntry<GlueBallEntity> GLUE_BALL = Essence.ESSENCE_REGISTRATE.object("glue_ball").<GlueBallEntity>entity(GlueBallEntity::new, EntityClassification.MISC).renderer(() -> GlueBallRenderer::new).register();
-  public static EntityEntry<ShearedChickenEntity> SHEARED_CHICKEN = Essence.ESSENCE_REGISTRATE.object("sheared_chicken").entity(ShearedChickenEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedChickenRenderer::new).spawnEgg(10592673, 16711680).build()
+  public static EntityEntry<ShearedChickenEntity> SHEARED_CHICKEN = Essence.ESSENCE_REGISTRATE.object("sheared_chicken").entity(ShearedChickenEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedChickenRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -43,8 +36,9 @@ public class EssenceEntityRegistrate {
                           )
                   )
           ))
+          .spawnEgg(10592673, 16711680).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation("item/template_spawn_egg"))).build()
           .register();
-  public static EntityEntry<ShearedCowEntity> SHEARED_COW = Essence.ESSENCE_REGISTRATE.object("sheared_cow").entity(ShearedCowEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedCowRenderer::new).spawnEgg(4470310, 10592673).build()
+  public static EntityEntry<ShearedCowEntity> SHEARED_COW = Essence.ESSENCE_REGISTRATE.object("sheared_cow").entity(ShearedCowEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedCowRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -57,8 +51,9 @@ public class EssenceEntityRegistrate {
                           )
                   )
           ))
+          .spawnEgg(4470310, 10592673).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation("item/template_spawn_egg"))).build()
           .register();
-  public static EntityEntry<ShearedCreeperEntity> SHEARED_CREEPER = Essence.ESSENCE_REGISTRATE.object("sheared_creeper").entity(ShearedCreeperEntity::new, EntityClassification.MONSTER).renderer(() -> ShearedCreeperRenderer::new).spawnEgg(894731, 0).build()
+  public static EntityEntry<ShearedCreeperEntity> SHEARED_CREEPER = Essence.ESSENCE_REGISTRATE.object("sheared_creeper").entity(ShearedCreeperEntity::new, EntityClassification.MONSTER).renderer(() -> ShearedCreeperRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -68,8 +63,9 @@ public class EssenceEntityRegistrate {
                           )
                   )
           ))
+          .spawnEgg(894731, 0).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation("item/template_spawn_egg"))).build()
           .register();
-  public static EntityEntry<ShearedGhastEntity> SHEARED_GHAST = Essence.ESSENCE_REGISTRATE.object("sheared_ghast").entity(ShearedGhastEntity::new, EntityClassification.MONSTER).renderer(() -> ShearedGhastRenderer::new).spawnEgg(16382457, 12369084).build()
+  public static EntityEntry<ShearedGhastEntity> SHEARED_GHAST = Essence.ESSENCE_REGISTRATE.object("sheared_ghast").entity(ShearedGhastEntity::new, EntityClassification.MONSTER).renderer(() -> ShearedGhastRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -79,8 +75,9 @@ public class EssenceEntityRegistrate {
                           )
                   )
           ))
+          .spawnEgg(16382457, 12369084).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation("item/template_spawn_egg"))).build()
           .register();
-  public static EntityEntry<ShearedPigEntity> SHEARED_PIG = Essence.ESSENCE_REGISTRATE.object("sheared_pig").entity(ShearedPigEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedPigRenderer::new).spawnEgg(15771042, 14377823).build()
+  public static EntityEntry<ShearedPigEntity> SHEARED_PIG = Essence.ESSENCE_REGISTRATE.object("sheared_pig").entity(ShearedPigEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedPigRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()
                   .addLootPool(LootPool.builder()
                           .rolls(ConstantRange.of(1))
@@ -93,5 +90,6 @@ public class EssenceEntityRegistrate {
                           )
                   )
           ))
+          .spawnEgg(15771042, 14377823).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation("item/template_spawn_egg"))).build()
           .register();
 }

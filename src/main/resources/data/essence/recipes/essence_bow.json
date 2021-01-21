@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "stn",
+    "s t",
+    "stn"
+  ],
+  "key": {
+    "t": {
+      "item": "essence:essence_stick"
+    },
+    "s": {
+      "tag": "forge:string"
+    },
+    "n": {
+      "tag": "essence:infused_nugget"
+    }
+  },
+  "result": {
+    "item": "essence:essence_bow"
+  }
+}

@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.util.tier;
 
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Supplier;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Rarity;

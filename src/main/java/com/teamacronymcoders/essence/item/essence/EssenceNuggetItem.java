@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.item.essence;
 
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import java.util.List;
 import javax.annotation.Nullable;

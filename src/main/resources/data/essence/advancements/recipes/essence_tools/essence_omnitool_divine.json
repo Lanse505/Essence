@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_omnitool_divine"
+    ]
+  },
+  "criteria": {
+    "has_essence_axe_divine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_axe_divine"
+          }
+        ]
+      }
+    },
+    "has_essence_shovel_divine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_shovel_divine"
+          }
+        ]
+      }
+    },
+    "has_essence_pickaxe_divine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_pickaxe_divine"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_omnitool_divine"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_essence_axe_divine",
+      "has_essence_shovel_divine",
+      "has_essence_pickaxe_divine",
+      "has_the_recipe"
+    ]
+  ]
+}

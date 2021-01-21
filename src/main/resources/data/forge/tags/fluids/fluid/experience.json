@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "essence:flowing_experience",
     "essence:experience"
   ]
 }

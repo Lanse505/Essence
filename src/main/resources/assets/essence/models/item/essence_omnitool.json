@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "essence:items/essence_omnitool"
-    }
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/essence_omnitool"
+  }
 }

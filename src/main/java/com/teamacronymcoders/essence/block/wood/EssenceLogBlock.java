@@ -4,7 +4,6 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.base.CustomRotatedPillarBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;

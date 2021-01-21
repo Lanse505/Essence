@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.item.misc;
 
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.hrznstudio.titanium.item.BasicItem;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Consumer;

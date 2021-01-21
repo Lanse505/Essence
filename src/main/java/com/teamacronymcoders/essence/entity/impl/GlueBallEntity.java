@@ -1,8 +1,7 @@
 package com.teamacronymcoders.essence.entity.impl;
 
-import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

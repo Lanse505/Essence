@@ -1,0 +1,6 @@
+{
+  "parent": "essence:fluid/fluid",
+  "textures": {
+    "particle": "essence:block/fluid/essence_still"
+  }
+}

@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:block/cube_all",
-    "textures": {
-        "all": "essence:blocks/essence_bricks_magenta"
-    }
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "essence:block/essence_bricks_magenta"
+  }
 }

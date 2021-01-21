@@ -4,7 +4,6 @@ import com.teamacronymcoders.essence.datagen.advancement.ExtendableAdvancementPr
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;

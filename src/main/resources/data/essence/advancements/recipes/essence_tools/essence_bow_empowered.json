@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_bow_empowered"
+    ]
+  },
+  "criteria": {
+    "has_infused_nugget_empowered": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:infused_nugget_empowered"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_bow_empowered"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_infused_nugget_empowered",
+      "has_the_recipe"
+    ]
+  ]
+}

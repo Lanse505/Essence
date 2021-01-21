@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "essence:block/essence_bricks_magenta" }
+  "variants": {
+    "": {
+      "model": "essence:block/essence_bricks_magenta"
     }
+  }
 }

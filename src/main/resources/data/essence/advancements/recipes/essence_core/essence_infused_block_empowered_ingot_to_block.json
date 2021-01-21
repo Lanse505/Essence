@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_item": {
+    "has_infused_ingot_empowered": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_ingot_empowered"
+            "tag": "essence:infused_ingot_empowered"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_item",
+      "has_infused_ingot_empowered",
       "has_the_recipe"
     ]
   ]

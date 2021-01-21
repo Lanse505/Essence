@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.item.wrench;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageProvider;
-import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import javax.annotation.Nullable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

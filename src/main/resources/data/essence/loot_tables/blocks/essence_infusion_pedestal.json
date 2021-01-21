@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "essence:essence_infusion_pedestal"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [

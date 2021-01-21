@@ -5,7 +5,6 @@ import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceMaterialTie
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceToolTypeAdvancements;
 import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;

@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import net.minecraft.client.particle.BreakingParticle;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;

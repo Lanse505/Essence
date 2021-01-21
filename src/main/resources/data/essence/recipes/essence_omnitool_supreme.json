@@ -1,43 +1,25 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "values": [
-            {
-              "item": "essence:essence_omnitool_supreme",
-              "type": "forge:item_exists"
-            }
-          ],
-          "type": "forge:and"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "asp",
-          " t ",
-          " t "
-        ],
-        "key": {
-          "a": {
-            "item": "essence:essence_axe_supreme"
-          },
-          "s": {
-            "item": "essence:essence_shovel_supreme"
-          },
-          "p": {
-            "item": "essence:essence_pickaxe_supreme"
-          },
-          "t": {
-            "item": "essence:essence_wood_sticks"
-          }
-        },
-        "result": {
-          "item": "essence:essence_omnitool_supreme"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "asp",
+    " t ",
+    " t "
+  ],
+  "key": {
+    "a": {
+      "tag": "essence:essence_axe_supreme"
+    },
+    "s": {
+      "tag": "essence:essence_shovel_supreme"
+    },
+    "p": {
+      "tag": "essence:essence_pickaxe_supreme"
+    },
+    "t": {
+      "item": "essence:essence_stick"
     }
-  ]
+  },
+  "result": {
+    "item": "essence:essence_omnitool_supreme_essence"
+  }
 }

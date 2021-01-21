@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.client.render.tesr;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import com.teamacronymcoders.essence.util.helper.EssenceRenderHelper;
 import java.util.Random;
 import net.minecraft.block.BlockState;

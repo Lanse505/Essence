@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_omnitool_empowered"
+    ]
+  },
+  "criteria": {
+    "has_essence_axe_empowered": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_axe_empowered"
+          }
+        ]
+      }
+    },
+    "has_essence_shovel_empowered": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_shovel_empowered"
+          }
+        ]
+      }
+    },
+    "has_essence_pickaxe_empowered": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:essence_pickaxe_empowered"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_omnitool_empowered"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_essence_axe_empowered",
+      "has_essence_shovel_empowered",
+      "has_essence_pickaxe_empowered",
+      "has_the_recipe"
+    ]
+  ]
+}

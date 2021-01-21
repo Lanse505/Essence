@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.generation;
 
 import com.google.common.collect.ImmutableList;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.OptionalInt;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;

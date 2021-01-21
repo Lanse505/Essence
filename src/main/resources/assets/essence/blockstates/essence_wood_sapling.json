@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "essence:block/essence_wood_sapling" }
+  "variants": {
+    "": {
+      "model": "essence:block/essence_wood_sapling"
     }
+  }
 }

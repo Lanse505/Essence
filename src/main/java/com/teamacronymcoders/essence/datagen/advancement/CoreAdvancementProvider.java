@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.datagen.advancement;
 
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.util.EssenceObjectHolders;
 import java.util.function.Consumer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;

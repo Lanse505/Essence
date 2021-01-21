@@ -1,26 +1,15 @@
 package com.teamacronymcoders.essence.block;
 
 import com.hrznstudio.titanium.api.IFactory;
-import com.hrznstudio.titanium.block.BasicBlock;
-import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
-import com.hrznstudio.titanium.recipe.generator.TitaniumShapelessRecipeBuilder;
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;

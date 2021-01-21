@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " i ",
+    " s ",
+    " s "
+  ],
+  "key": {
+    "i": {
+      "tag": "essence:infused_ingot"
+    },
+    "s": {
+      "item": "essence:essence_stick"
+    }
+  },
+  "result": {
+    "item": "essence:essence_shovel"
+  }
+}

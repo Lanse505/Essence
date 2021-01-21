@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "essence:block/essence_ore" }
+  "variants": {
+    "": {
+      "model": "essence:block/essence_ore"
     }
+  }
 }

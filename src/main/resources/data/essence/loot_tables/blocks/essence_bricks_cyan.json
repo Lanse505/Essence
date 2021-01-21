@@ -8,6 +8,11 @@
           "type": "minecraft:item",
           "name": "essence:essence_bricks_cyan"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
   ]
