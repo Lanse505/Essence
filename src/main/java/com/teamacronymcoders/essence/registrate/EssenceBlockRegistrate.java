@@ -1,5 +1,9 @@
 package com.teamacronymcoders.essence.registrate;
 
+import com.google.common.collect.Lists;
+import com.hrznstudio.titanium.annotation.Save;
+import com.hrznstudio.titanium.api.INBTHandler;
+import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.EssenceBlock;
@@ -25,6 +29,10 @@ import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
@@ -50,6 +58,7 @@ import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.ToolType;
@@ -204,6 +213,7 @@ public class EssenceBlockRegistrate {
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionTableTile> INFUSION_TABLE_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_table", InfusionTableTile::new)
+          .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionTableTile.class))
           .renderer(() -> InfusionTableTESR::new).validBlock(INFUSION_TABLE)
           .register();
 
@@ -215,6 +225,7 @@ public class EssenceBlockRegistrate {
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionPedestalTile> INFUSION_PEDESTAL_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_pedestal", InfusionPedestalTile::new)
+          .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionPedestalTile.class))
           .renderer(() -> InfusionPedestalTESR::new).validBlock(INFUSION_PEDESTAL)
           .register();
 

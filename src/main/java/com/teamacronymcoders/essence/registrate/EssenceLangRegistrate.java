@@ -1,28 +1,41 @@
 package com.teamacronymcoders.essence.registrate;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceKnowledgeAdvancements;
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceMaterialTierAdvancements;
 import com.teamacronymcoders.essence.datagen.advancement.misc.EssenceToolTypeAdvancements;
-import com.teamacronymcoders.essence.datagen.advancement.modifier.*;
-import com.teamacronymcoders.essence.registrate.lang.EssenceBaseLangProviderRegistrate;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.ArrowKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.AttributeKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.CosmeticKnowledgeAdvancements;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.EnchantmentKnowledgeAdvancementProvider;
+import com.teamacronymcoders.essence.datagen.advancement.modifier.InteractionKnowledgeAdvancements;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
-import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.*;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.EFFICIENCY_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.ENCHANTED_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.EXPANDER_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.FIERY_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.KEEN_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.KNOCKBACK_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.LUCK_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.RAINBOW_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.SILK_TOUCH_MODIFIER;
+import static com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration.UNBREAKING_MODIFIER;
 
 public class EssenceLangRegistrate {
 
-  public static ProviderType<EssenceBaseLangProviderRegistrate> EN_US_UD = ProviderType.register("essence_en_us_ud", (type) -> (p, e) -> new EssenceBaseLangProviderRegistrate(p, e.getGenerator(), "en_us"));
-
   public static void init(Registrate registrate) {
-    registrate.addDataGenerator(EN_US_UD, provider -> {
+    registrate.addDataGenerator(ProviderType.LANG, provider -> {
       addAdvancements(provider);
       addCommands(provider);
       addKnowledge(provider);
       addItemMisc(provider);
-      addItems(provider);
       addMisc(provider);
       addModifiers(provider);
       addModifierMisc(provider);
@@ -30,55 +43,72 @@ public class EssenceLangRegistrate {
     });
   }
 
-  private static void addAdvancements(EssenceBaseLangProviderRegistrate provider) {
-    provider.addAdvancement(CoreAdvancementProvider.getCore(), "Essence", "Essence Advancements");
-    provider.addAdvancement(KnowledgeAdvancementProvider.getKnowledgeRoot(), "Essence-tial Knowledge", "Knowledge Advancements");
-    provider.addAdvancement(KnowledgeAdvancementProvider.getKnowledgeModifierRoot(), "Tool-Knowledge", "Knowledge about Essence-Infused Tools");
-    provider.addAdvancement(KnowledgeAdvancementProvider.getKnowledgeToolRoot(), "Modifier-Knowledge", "Knowledge relating to Modifiers");
-    provider.addAdvancement(ArrowKnowledgeAdvancements.getArrow(), "Bow-Specific Modifiers", "Various Infusions with Bow-Specific Properties");
-    provider.addAdvancement(ArrowKnowledgeAdvancements.getBrewed(), "Brewed", "Brewed with 11 Secret Herbs and Spices");
-    provider.addAdvancement(ArrowKnowledgeAdvancements.getKeen(), "Keen", "You used Snipe, It Was Super-Effective!");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getAttribute(), "Attribute-Modifiers", "Various Infusions with Attribute-Altering Properties");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getArmor(), "Armor", "My Armor is Impenetrable!");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getArmorToughness(), "Armor-Toughness", "Tougher Than Your Average Piece of Spaghetti");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getAttackDamage(), "Attack-Damage", "The Harder You Hit, The Faster They Fall");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getMaxHealth(), "Max-Health", "I'm Healthy by Default");
-    provider.addAdvancement(AttributeKnowledgeAdvancements.getMovementSpeed(), "Movement-Speed", "We've Got To Hit The 88/mph Mark Marty!");
-    provider.addAdvancement(CosmeticKnowledgeAdvancements.getCosmetic(), "Cosmetic-Modifier", "Various Infusions with Cosmetic Properties");
-    provider.addAdvancement(CosmeticKnowledgeAdvancements.getEnchanted(), "Enchanted", "Sparkle like a Twinkling Star");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getEnchantment(), "Enchantment-Granting Modifiers", "Various Infusions with Enchanting Properties");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getEfficiency(), "Efficiency", "Efficiency is overrated, Just gotta go fast");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getInfinity(), "Infinity", "UNLIMITED POWAH!");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getKnockback(), "Knockback", "And it's going and going and going...");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getLuck(), "Luck", "Luck had nothing to do with it");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getMending(), "Mending", "Experience mends all wounds...");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getSilkTouch(), "Silk-Touch", "Silky Smooth");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getStrengthened(), "Strengthened", "IT'S OVER 9000!!!");
-    provider.addAdvancement(EnchantmentKnowledgeAdvancementProvider.getUnbreaking(), "Unbreaking", "Unbreakable Timmy Schmidt");
-    provider.addAdvancement(InteractionKnowledgeAdvancements.getInteraction(), "Interaction-Changing Modifiers", "Various Infusions with Interaction-Changing Properties");
-    provider.addAdvancement(InteractionKnowledgeAdvancements.getCascading(), "Cascading", "Cascading World Exception");
-    provider.addAdvancement(InteractionKnowledgeAdvancements.getExpander(), "Expander", "Well That's Quite the Reach!");
-    provider.addAdvancement(InteractionKnowledgeAdvancements.getFiery(), "Fiery", "Muy Caliente");
-    provider.addAdvancement(InteractionKnowledgeAdvancements.getRainbow(), "Rainbow", "Catch the rainbow, Taste the rainbow");
-    provider.addAdvancement(EssenceKnowledgeAdvancements.getMiscKnowledge(), "Miscellaneous Knowledge", "Assorted knowledge of the world");
-    provider.addAdvancement(EssenceKnowledgeAdvancements.getArborealKnowledge(), "Arboreal Knowledge", "Knowledge of The Essence of Trees");
-    provider.addAdvancement(EssenceMaterialTierAdvancements.getTiers(), "Material-Tiers", "Materials and Their Properties");
-    provider.addAdvancement(EssenceMaterialTierAdvancements.getBasic(), "Basic-Tier", "Basic-Quality Materials");
-    provider.addAdvancement(EssenceMaterialTierAdvancements.getEmpowered(), "Empowered-Tier", "Empowered-Quality Materials");
-    provider.addAdvancement(EssenceMaterialTierAdvancements.getSupreme(), "Supreme-Tier", "Supreme-Quality Materials");
-    provider.addAdvancement(EssenceMaterialTierAdvancements.getDivine(), "Divine-Tier", "Divine-Quality Materials");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getToolTypes(), "Tool-Types", "The various implementations of Essence-Infused Materials in Tools");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getAxe(), "Essence-Infused Axe", "A Axe holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getBow(), "Essence-Infused Bow", "A Bow holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getHoe(), "Essence-Infused Hoe", "A Hoe holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getOmniTool(), "Essence-Infused Omnitool", "A Omnitool holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getPickaxe(), "Essence-Infused Pickaxe", "A Pickaxe holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getShear(), "Essence-Infused Shears", "A Pair of Shears holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getShovel(), "Essence-Infused Shovel", "A Shovel holding the Essence of The World");
-    provider.addAdvancement(EssenceToolTypeAdvancements.getSword(), "Essence-Infused Sword", "A Sword holding the Essence of The World");
+  /**
+   * Helper function to add advancements to the lang generator
+   *
+   * @param advancement The advancement for localizations to be added
+   * @param title       The title of the advancement
+   * @param description The description of the advancement
+   */
+  private static void addAdvancement(RegistrateLangProvider provider, Advancement advancement, String title, String description) {
+    final DisplayInfo display = advancement.getDisplay();
+    provider.add(display.getTitle().getString(), title);
+    provider.add(display.getDescription().getString(), description);
   }
 
-  private static void addModifierMisc (EssenceBaseLangProviderRegistrate provider) {
+  public static void addModifier(RegistrateLangProvider provider, Modifier<?> modifier, String translation) {
+    provider.add(modifier.getTranslationName(), translation);
+  }
+
+  private static void addAdvancements(RegistrateLangProvider provider) {
+    addAdvancement(provider, CoreAdvancementProvider.getCore(), "Essence", "Essence Advancements");
+    addAdvancement(provider, KnowledgeAdvancementProvider.getKnowledgeRoot(), "Essence-tial Knowledge", "Knowledge Advancements");
+    addAdvancement(provider, KnowledgeAdvancementProvider.getKnowledgeModifierRoot(), "Tool-Knowledge", "Knowledge about Essence-Infused Tools");
+    addAdvancement(provider, KnowledgeAdvancementProvider.getKnowledgeToolRoot(), "Modifier-Knowledge", "Knowledge relating to Modifiers");
+    addAdvancement(provider, ArrowKnowledgeAdvancements.getArrow(), "Bow-Specific Modifiers", "Various Infusions with Bow-Specific Properties");
+    addAdvancement(provider, ArrowKnowledgeAdvancements.getBrewed(), "Brewed", "Brewed with 11 Secret Herbs and Spices");
+    addAdvancement(provider, ArrowKnowledgeAdvancements.getKeen(), "Keen", "You used Snipe, It Was Super-Effective!");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getAttribute(), "Attribute-Modifiers", "Various Infusions with Attribute-Altering Properties");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getArmor(), "Armor", "My Armor is Impenetrable!");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getArmorToughness(), "Armor-Toughness", "Tougher Than Your Average Piece of Spaghetti");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getAttackDamage(), "Attack-Damage", "The Harder You Hit, The Faster They Fall");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getMaxHealth(), "Max-Health", "I'm Healthy by Default");
+    addAdvancement(provider, AttributeKnowledgeAdvancements.getMovementSpeed(), "Movement-Speed", "We've Got To Hit The 88/mph Mark Marty!");
+    addAdvancement(provider, CosmeticKnowledgeAdvancements.getCosmetic(), "Cosmetic-Modifier", "Various Infusions with Cosmetic Properties");
+    addAdvancement(provider, CosmeticKnowledgeAdvancements.getEnchanted(), "Enchanted", "Sparkle like a Twinkling Star");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getEnchantment(), "Enchantment-Granting Modifiers", "Various Infusions with Enchanting Properties");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getEfficiency(), "Efficiency", "Efficiency is overrated, Just gotta go fast");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getInfinity(), "Infinity", "UNLIMITED POWAH!");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getKnockback(), "Knockback", "And it's going and going and going...");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getLuck(), "Luck", "Luck had nothing to do with it");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getMending(), "Mending", "Experience mends all wounds...");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getSilkTouch(), "Silk-Touch", "Silky Smooth");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getStrengthened(), "Strengthened", "IT'S OVER 9000!!!");
+    addAdvancement(provider, EnchantmentKnowledgeAdvancementProvider.getUnbreaking(), "Unbreaking", "Unbreakable Timmy Schmidt");
+    addAdvancement(provider, InteractionKnowledgeAdvancements.getInteraction(), "Interaction-Changing Modifiers", "Various Infusions with Interaction-Changing Properties");
+    addAdvancement(provider, InteractionKnowledgeAdvancements.getCascading(), "Cascading", "Cascading World Exception");
+    addAdvancement(provider, InteractionKnowledgeAdvancements.getExpander(), "Expander", "Well That's Quite the Reach!");
+    addAdvancement(provider, InteractionKnowledgeAdvancements.getFiery(), "Fiery", "Muy Caliente");
+    addAdvancement(provider, InteractionKnowledgeAdvancements.getRainbow(), "Rainbow", "Catch the rainbow, Taste the rainbow");
+    addAdvancement(provider, EssenceKnowledgeAdvancements.getMiscKnowledge(), "Miscellaneous Knowledge", "Assorted knowledge of the world");
+    addAdvancement(provider, EssenceKnowledgeAdvancements.getArborealKnowledge(), "Arboreal Knowledge", "Knowledge of The Essence of Trees");
+    addAdvancement(provider, EssenceMaterialTierAdvancements.getTiers(), "Material-Tiers", "Materials and Their Properties");
+    addAdvancement(provider, EssenceMaterialTierAdvancements.getBasic(), "Basic-Tier", "Basic-Quality Materials");
+    addAdvancement(provider, EssenceMaterialTierAdvancements.getEmpowered(), "Empowered-Tier", "Empowered-Quality Materials");
+    addAdvancement(provider, EssenceMaterialTierAdvancements.getSupreme(), "Supreme-Tier", "Supreme-Quality Materials");
+    addAdvancement(provider, EssenceMaterialTierAdvancements.getDivine(), "Divine-Tier", "Divine-Quality Materials");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getToolTypes(), "Tool-Types", "The various implementations of Essence-Infused Materials in Tools");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getAxe(), "Essence-Infused Axe", "A Axe holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getBow(), "Essence-Infused Bow", "A Bow holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getHoe(), "Essence-Infused Hoe", "A Hoe holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getOmniTool(), "Essence-Infused Omnitool", "A Omnitool holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getPickaxe(), "Essence-Infused Pickaxe", "A Pickaxe holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getShear(), "Essence-Infused Shears", "A Pair of Shears holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getShovel(), "Essence-Infused Shovel", "A Shovel holding the Essence of The World");
+    addAdvancement(provider, EssenceToolTypeAdvancements.getSword(), "Essence-Infused Sword", "A Sword holding the Essence of The World");
+  }
+
+  private static void addModifierMisc (RegistrateLangProvider provider) {
     provider.add("essence.brewed.contents", "Contents:");
     provider.add("essence.brewed.duration", "Duration %s");
     provider.add("essence.brewed.amplifier", "Amplifier %s");
@@ -92,7 +122,7 @@ public class EssenceLangRegistrate {
     provider.add("essence.strengthened.type.power", "Ranged");
   }
 
-  private static void addItemMisc (EssenceBaseLangProviderRegistrate provider) {
+  private static void addItemMisc (RegistrateLangProvider provider) {
     provider.add("essence.wrench.disclaimer", "Please note: ");
     provider.add("essence.wrench.disclaimer_message", "The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.");
     provider.add("essence.wrench.mode.tooltip", "Wrench Mode");
@@ -105,7 +135,7 @@ public class EssenceLangRegistrate {
     provider.add("tome.essence.experience.mode.absorb", "Absorb");
   }
 
-  private static void addCommands (EssenceBaseLangProviderRegistrate provider) {
+  private static void addCommands (RegistrateLangProvider provider) {
     provider.add("command.essence.generic.dump.knowledge", "Knowledge [%s] of Type: [%s]");
     provider.add("command.essence.generic.dump.modifier", "Modifier [%s] of Type: [%s]");
     provider.add("command.essence.knowledge.add", "Added Knowledge: [%s] to Player/UUID [%s]");
@@ -124,13 +154,7 @@ public class EssenceLangRegistrate {
     provider.add("command.essence.setup_dev", "Dev-World Successfully Setup!");
   }
 
-
-  private static void addItems(EssenceBaseLangProviderRegistrate provider) {
-    provider.add("item.essence.essence_bucket", "Bucket of Essence");
-    provider.add("item.essence.experience_bucket", "Bucket of Experience");
-  }
-
-  private static void addKnowledge(EssenceBaseLangProviderRegistrate provider) {
+  private static void addKnowledge(RegistrateLangProvider provider) {
     provider.add("knowledge.essence.brewed", "Brewed");
     provider.add("knowledge.essence.keen", "Keen");
     provider.add("knowledge.essence.enchanted", "Enchanted");
@@ -158,7 +182,7 @@ public class EssenceLangRegistrate {
     provider.add("knowledge.essence.divine_tier", "Divine-Tier");
   }
 
-  private static void addModifiers (EssenceBaseLangProviderRegistrate provider) {
+  private static void addModifiers (RegistrateLangProvider provider) {
     //Irregulars
     provider.add("modifier.essence.attribute", "Attribute [%s]");
     provider.add("modifier.essence.brewed", "Brewed [Hold %s for Info]");
@@ -168,19 +192,19 @@ public class EssenceLangRegistrate {
     provider.add("modifier.essence.strengthened.cleaned", "Strengthened [%s]");
 
     //Regulars
-    provider.addModifier(EFFICIENCY_MODIFIER.get(), "Efficiency");
-    provider.addModifier(ENCHANTED_MODIFIER.get(), "Enchanted");
-    provider.addModifier(EXPANDER_MODIFIER.get(), "Expander");
-    provider.addModifier(FIERY_MODIFIER.get(), "Fiery");
-    provider.addModifier(KEEN_MODIFIER.get(), "Keen");
-    provider.addModifier(KNOCKBACK_MODIFIER.get(), "Knockback");
-    provider.addModifier(LUCK_MODIFIER.get(), "Luck");
-    provider.addModifier(RAINBOW_MODIFIER.get(), "Rainbow");
-    provider.addModifier(SILK_TOUCH_MODIFIER.get(), "Silk Touch");
-    provider.addModifier(UNBREAKING_MODIFIER.get(), "Unbreaking");
+    addModifier(provider, EFFICIENCY_MODIFIER.get(), "Efficiency");
+    addModifier(provider, ENCHANTED_MODIFIER.get(), "Enchanted");
+    addModifier(provider, EXPANDER_MODIFIER.get(), "Expander");
+    addModifier(provider, FIERY_MODIFIER.get(), "Fiery");
+    addModifier(provider, KEEN_MODIFIER.get(), "Keen");
+    addModifier(provider, KNOCKBACK_MODIFIER.get(), "Knockback");
+    addModifier(provider, LUCK_MODIFIER.get(), "Luck");
+    addModifier(provider, RAINBOW_MODIFIER.get(), "Rainbow");
+    addModifier(provider, SILK_TOUCH_MODIFIER.get(), "Silk Touch");
+    addModifier(provider, UNBREAKING_MODIFIER.get(), "Unbreaking");
   }
 
-  private static void addMisc (EssenceBaseLangProviderRegistrate provider) {
+  private static void addMisc (RegistrateLangProvider provider) {
     provider.add("attribute.essence.armor", "Armor");
     provider.add("attribute.essence.armor_toughness", "Armor-Toughness");
     provider.add("attribute.essence.attack_damage", "Attack-Damage");
@@ -202,7 +226,7 @@ public class EssenceLangRegistrate {
     provider.add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
   }
 
-  private static void addTooltip (EssenceBaseLangProviderRegistrate provider) {
+  private static void addTooltip (RegistrateLangProvider provider) {
     provider.add("tooltip.essence.modifier", "Modifiers:");
     provider.add("tooltip.essence.modifier.free", "Free Modifiers: %s");
     provider.add("tooltip.essence.tool.tier", "Material Tier: ");

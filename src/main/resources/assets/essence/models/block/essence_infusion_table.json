@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "essence:blocks/infusion/essence_infusion_table",
-		"particle": "essence:blocks/infusion/essence_infusion_table"
+		"1": "essence:block/infusion/essence_infusion_table",
+		"particle": "essence:block/infusion/essence_infusion_table"
 	},
 	"elements": [
 		{

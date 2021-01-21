@@ -68,6 +68,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import static com.teamacronymcoders.essence.Essence.MOD_ID;
 
 public class EssenceEventHandlers {
@@ -142,6 +143,9 @@ public class EssenceEventHandlers {
   public static void setupServer () {
     EventManager.forge(RegisterCommandsEvent.class)
             .process(register -> EssenceCommands.registerCommands(register.getDispatcher()))
+            .subscribe();
+    EventManager.forge(FMLServerStartingEvent.class)
+            .process(event -> Essence.setupCreativeTabIcons())
             .subscribe();
   }
 

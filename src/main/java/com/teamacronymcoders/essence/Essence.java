@@ -117,7 +117,6 @@ public class Essence extends ModuleController {
     EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
 
     DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
-    setupCreativeTabIcons();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
     eventBus.addListener(this::setupCuriosIMC);
@@ -184,7 +183,7 @@ public class Essence extends ModuleController {
     //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "toggling"), EssenceItemProperties.TOGGLED);
   }
 
-  private void setupCreativeTabIcons () {
+  public static void setupCreativeTabIcons () {
     CORE_TAB.addIconStacks(
             new ItemStack(EssenceFluidRegistrate.ESSENCE.get().getFilledBucket()),
             new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()),

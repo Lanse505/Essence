@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.util.config;
 
 import com.teamacronymcoders.essence.util.config.extendables.EssenceCascadingConfig;
-import com.teamacronymcoders.essence.util.config.extendables.EssenceGrinderConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class EssenceModifierConfig {
