@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.block.infusion;
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -63,7 +65,7 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape (BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+  public VoxelShape getShape (BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
     return EssenceBlockModels.INFUSION_PEDESTAL[0];
   }
 
@@ -76,5 +78,10 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
   @Override
   public List<VoxelShape> getBoundingBoxes (BlockState state, IBlockReader source, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_PEDESTAL[0]);
+  }
+
+  @Override
+  public TileEntityType getTileEntityType () {
+    return EssenceBlockRegistrate.INFUSION_PEDESTAL_TILE.get();
   }
 }

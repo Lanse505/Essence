@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
+import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -132,5 +134,10 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
   @Override
   public List<VoxelShape> getBoundingBoxes (BlockState state, IBlockReader source, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_TABLE[0]);
+  }
+
+  @Override
+  public TileEntityType getTileEntityType () {
+    return EssenceBlockRegistrate.INFUSION_TABLE_TILE.get();
   }
 }

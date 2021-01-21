@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 
 public class EssenceSlabBlock extends SlabBlock {
+
   public EssenceSlabBlock (Properties properties) {
     super(properties);
   }

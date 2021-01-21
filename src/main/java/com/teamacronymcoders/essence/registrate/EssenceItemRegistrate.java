@@ -82,12 +82,12 @@ public class EssenceItemRegistrate {
   // Tomes
   public static ItemEntry<TomeOfKnowledgeItem> TOME_OF_KNOWLEDGE = Essence.ESSENCE_REGISTRATE.object("tome_of_knowledge")
           .item(TomeOfKnowledgeItem::new).properties(properties -> properties.group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0))
-          .lang("Tome of Experience")
+          .lang("Tome of Bound-Knowledge")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_knowledge")))
           .register();
   public static ItemEntry<TomeOfExperienceItem> TOME_OF_EXPERIENCE = Essence.ESSENCE_REGISTRATE.object("tome_of_experience")
           .item(TomeOfExperienceItem::new).properties(properties -> properties.group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0))
-          .lang("Tome of Bound-Knowledge")
+          .lang("Tome of Experience")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_experience")))
           .register();
 

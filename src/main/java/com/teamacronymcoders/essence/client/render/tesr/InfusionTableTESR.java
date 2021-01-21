@@ -34,7 +34,7 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
     }
     if (!infusionTableTile.getInfusable().getStackInSlot(0).isEmpty()) {
       ItemStack stack = infusionTableTile.getInfusable().getStackInSlot(0);
-      EssenceRenderHelper.renderItemStack(stack, infusionTableTile.getWorld(), infusionTableTile.getPos(), infusionTableTile.getTicksExisted(), 1.5f, partial, matrix, buffer, combinedOverlayIn);
+      EssenceRenderHelper.renderItemStack(stack, infusionTableTile.getWorld(), infusionTableTile.getPos(), infusionTableTile.getTicksExisted(), 1.5f, partial, matrix, buffer);
     }
   }
 

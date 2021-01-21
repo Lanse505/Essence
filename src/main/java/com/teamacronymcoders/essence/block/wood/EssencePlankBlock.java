@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 
 public class EssencePlankBlock extends Block {
+
   public EssencePlankBlock (Properties properties) {
     super(properties);
   }

@@ -87,7 +87,7 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
   }
 
   @Override
-  public DyeColor hasColor () {
+  public DyeColor getColor () {
     return this.color;
   }
 }

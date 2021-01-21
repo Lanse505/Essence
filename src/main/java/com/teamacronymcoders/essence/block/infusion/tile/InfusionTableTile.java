@@ -55,13 +55,13 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   public int ticks;
   public float field_195523_f;
   public float field_195524_g;
-  public float field_195525_h;
-  public float field_195526_i;
+  public float rawSpeedIncrement;
+  public float clampedSpeedIncrement;
   public float nextPageTurningSpeed;
   public float pageTurningSpeed;
   public float nextPageAngle;
   public float pageAngle;
-  public float field_195531_n;
+  public float playerTableAngle;
   @Save
   public Integer pageSoundLastPlayed = 0;
 
@@ -152,21 +152,19 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
       return;
     }
     PlayerEntity player = this.world.getClosestPlayer(((float) this.pos.getX() + 0.5F), ((float) this.pos.getY() + 0.5F), ((float) this.pos.getZ() + 0.5F), 3.0D, false);
-    PlayerEntity player1;
     if (player != null) {
-      player1 = player;
       double rangeX = player.getPosX() - ((double) this.pos.getX() + 0.5D);
       double rangeZ = player.getPosZ() - ((double) this.pos.getZ() + 0.5D);
-      this.field_195531_n = (float) MathHelper.atan2(rangeZ, rangeX);
+      this.playerTableAngle = (float) MathHelper.atan2(rangeZ, rangeX);
       this.nextPageTurningSpeed += 0.1F;
       if (this.nextPageTurningSpeed < 0.5F || Essence.RANDOM.nextInt(40) == 0) {
-        float lvt_6_1_ = this.field_195525_h;
+        float lvt_6_1_ = this.rawSpeedIncrement;
         do {
-          this.field_195525_h += (float) (Essence.RANDOM.nextInt(4) - Essence.RANDOM.nextInt(4));
-        } while (lvt_6_1_ == this.field_195525_h);
+          this.rawSpeedIncrement += (float) (Essence.RANDOM.nextInt(4) - Essence.RANDOM.nextInt(4));
+        } while (lvt_6_1_ == this.rawSpeedIncrement);
       }
     } else {
-      this.field_195531_n += 0.02F;
+      this.playerTableAngle += 0.02F;
       this.nextPageTurningSpeed -= 0.1F;
     }
 
@@ -182,16 +180,16 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
       this.nextPageAngle += 6.2831855F;
     }
 
-    while (this.field_195531_n >= 3.1415927F) {
-      this.field_195531_n -= 6.2831855F;
+    while (this.playerTableAngle >= 3.1415927F) {
+      this.playerTableAngle -= 6.2831855F;
     }
 
-    while (this.field_195531_n < -3.1415927F) {
-      this.field_195531_n += 6.2831855F;
+    while (this.playerTableAngle < -3.1415927F) {
+      this.playerTableAngle += 6.2831855F;
     }
 
     float lvt_2_2_;
-    lvt_2_2_ = this.field_195531_n - this.nextPageAngle;
+    lvt_2_2_ = this.playerTableAngle - this.nextPageAngle;
     while (lvt_2_2_ >= 3.1415927F) {
       lvt_2_2_ -= 6.2831855F;
     }
@@ -204,10 +202,10 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     this.nextPageTurningSpeed = MathHelper.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
     ++this.ticks;
     this.field_195524_g = this.field_195523_f;
-    float lvt_3_1_ = (this.field_195525_h - this.field_195523_f) * 0.4F;
+    float lvt_3_1_ = (this.rawSpeedIncrement - this.field_195523_f) * 0.4F;
     lvt_3_1_ = MathHelper.clamp(lvt_3_1_, -0.2F, 0.2F);
-    this.field_195526_i += (lvt_3_1_ - this.field_195526_i) * 0.9F;
-    this.field_195523_f += this.field_195526_i;
+    this.clampedSpeedIncrement += (lvt_3_1_ - this.clampedSpeedIncrement) * 0.9F;
+    this.field_195523_f += this.clampedSpeedIncrement;
   }
 
   public Boolean getWorking () {

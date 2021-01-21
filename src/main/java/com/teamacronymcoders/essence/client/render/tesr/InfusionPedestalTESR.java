@@ -31,7 +31,7 @@ public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTil
       ItemStack stack = tile.getStack();
 
       if (!stack.isEmpty()) {
-        EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer, overlay);
+        EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer);
       }
     }
   }

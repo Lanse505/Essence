@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +23,7 @@ public class EssenceRenderHelper {
   private static final Random random = new Random();
 
   @OnlyIn(Dist.CLIENT)
-  public static void renderItemStack (ItemStack stack, World world, BlockPos pos, int existedTicks, float yOffset, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay) {
+  public static void renderItemStack (ItemStack stack, World world, BlockPos pos, int existedTicks, float yOffset, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
     matrixStack.push();
     ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
     int i = stack.isEmpty() ? 187 : Item.getIdFromItem(stack.getItem()) + stack.getDamage();
@@ -35,7 +36,7 @@ public class EssenceRenderHelper {
     matrixStack.rotate(new Quaternion(0, -f3, 0, true));
 
     matrixStack.push();
-    renderer.renderItem(stack, ItemCameraTransforms.TransformType.GROUND, WorldRenderer.getCombinedLight(world, pos.up()), overlay, matrixStack, buffer);
+    renderer.renderItem(stack, ItemCameraTransforms.TransformType.GROUND, WorldRenderer.getCombinedLight(world, pos), OverlayTexture.NO_OVERLAY, matrixStack, buffer);
     matrixStack.pop();
 
     if (!flag) {
