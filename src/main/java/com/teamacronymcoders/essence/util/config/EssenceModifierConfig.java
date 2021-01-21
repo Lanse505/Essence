@@ -13,14 +13,11 @@ public class EssenceModifierConfig {
   private final EssenceCascadingConfig lumber;
   private final EssenceCascadingConfig vein;
 
-  private final EssenceGrinderConfig grinder;
-
   public EssenceModifierConfig (ForgeConfigSpec.Builder builder) {
     builder.push("Modifiers");
     this.excavation = new EssenceCascadingConfig(builder, "Excavation", 125, 25);
     this.lumber = new EssenceCascadingConfig(builder, "Lumber", 125, 75);
     this.vein = new EssenceCascadingConfig(builder, "Vein", 125, 25);
-    this.grinder = new EssenceGrinderConfig(builder, "minecraft,titanium,mekanism");
     builder.pop();
     this.spec = builder.build();
   }
@@ -49,9 +46,5 @@ public class EssenceModifierConfig {
 
   public EssenceCascadingConfig getVein () {
     return vein;
-  }
-
-  public EssenceGrinderConfig getGrinder () {
-    return grinder;
   }
 }

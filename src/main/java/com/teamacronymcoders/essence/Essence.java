@@ -117,7 +117,7 @@ public class Essence extends ModuleController {
     EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
 
     DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
-    //setupCreativeTabIcons();
+    setupCreativeTabIcons();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
     eventBus.addListener(this::setupCuriosIMC);

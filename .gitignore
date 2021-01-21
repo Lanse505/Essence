@@ -19,9 +19,7 @@ build
 
 # other
 eclipse
-run/client
-run/server
-run/data
+run
 generated
 logs
 

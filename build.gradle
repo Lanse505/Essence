@@ -88,8 +88,7 @@ minecraft {
     mappings channel: "snapshot", version: "${mappings_version}"
     runs {
         client {
-            workingDirectory project.file('run/client')
-            properties 'fml.earlyprogresswindow': 'false'
+            workingDirectory project.file('run')
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -99,8 +98,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run/server')
-            properties 'fml.earlyprogresswindow': 'false'
+            workingDirectory project.file('run')
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -110,7 +108,7 @@ minecraft {
         }
 
         data {
-            workingDirectory project.file('run/data')
+            workingDirectory project.file('run')
             properties 'fml.earlyprogresswindow': 'false'
             properties 'mixin.env.disableRefMap': 'true'
             args '--all', '--output', file('src/generated/resources/'),
