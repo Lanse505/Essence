@@ -15,12 +15,12 @@ public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTil
 
   private static final Random random = new Random();
 
-  public InfusionPedestalTESR (TileEntityRendererDispatcher rendererDispatcher) {
+  public InfusionPedestalTESR(TileEntityRendererDispatcher rendererDispatcher) {
     super(rendererDispatcher);
   }
 
   @Override
-  public void render (InfusionPedestalTile tile, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay, int light) {
+  public void render(InfusionPedestalTile tile, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay, int light) {
     if (tile.getWorld() != null) {
       tile.getWorld().getBlockState(tile.getPos());
       BlockState state = tile.getWorld().getBlockState(tile.getPos());

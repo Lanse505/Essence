@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.entity.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.teamacronymcoders.essence.entity.impl.sheared.ShearedPigEntity;
+import com.teamacronymcoders.essence.entity.sheared.ShearedPigEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -17,12 +17,12 @@ public class ShearedPigSaddleLayer extends LayerRenderer<ShearedPigEntity, PigMo
   private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/pig/pig_saddle.png");
   private final PigModel<PigEntity> pigModel = new PigModel<>(0.5F);
 
-  public ShearedPigSaddleLayer (IEntityRenderer<ShearedPigEntity, PigModel<ShearedPigEntity>> entityRenderer) {
+  public ShearedPigSaddleLayer(IEntityRenderer<ShearedPigEntity, PigModel<ShearedPigEntity>> entityRenderer) {
     super(entityRenderer);
   }
 
   @Override
-  public void render (MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int i, ShearedPigEntity shearedPigEntity, float v, float v1, float v2, float v3, float v4, float v5) {
+  public void render(MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int i, ShearedPigEntity shearedPigEntity, float v, float v1, float v2, float v3, float v4, float v5) {
     if (shearedPigEntity.isHorseSaddled()) {
       ((PigModel) this.getEntityModel()).copyModelAttributesTo(this.pigModel);
       this.pigModel.setLivingAnimations(shearedPigEntity, v, v1, v2);

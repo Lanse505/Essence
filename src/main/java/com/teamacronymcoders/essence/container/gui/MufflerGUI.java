@@ -4,7 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 
 public class MufflerGUI extends Screen {
-  protected MufflerGUI (ITextComponent titleIn) {
+  protected MufflerGUI(ITextComponent titleIn) {
     super(titleIn);
   }
 //

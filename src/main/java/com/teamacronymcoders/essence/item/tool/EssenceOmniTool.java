@@ -41,7 +41,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
   private int freeModifiers;
   private int additionalModifiers;
 
-  public EssenceOmniTool (Properties properties, EssenceToolTiers tier) {
+  public EssenceOmniTool(Properties properties, EssenceToolTiers tier) {
     super(tier.getAttackDamage(), tier.getEfficiency(), tier, EFFECTIVE_ON, properties.rarity(tier.getRarity())
             .addToolType(ToolType.AXE, tier.getHarvestLevel())
             .addToolType(ToolType.PICKAXE, tier.getHarvestLevel())
@@ -54,19 +54,19 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
   @Override
   @ParametersAreNonnullByDefault
-  public Rarity getRarity (ItemStack stack) {
+  public Rarity getRarity(ItemStack stack) {
     return tier.getRarity();
   }
 
   @Override
-  public boolean canHarvestBlock (BlockState state) {
+  public boolean canHarvestBlock(BlockState state) {
     if (state.getHarvestTool() == ToolType.AXE || state.getHarvestTool() == ToolType.PICKAXE || state.getHarvestTool() == ToolType.SHOVEL) {
       return getTier().getHarvestLevel() >= state.getHarvestLevel();
     }
     return super.canHarvestBlock(state);
   }
 
-  public ActionResultType onItemBehaviour (ItemUseContext context) {
+  public ActionResultType onItemBehaviour(ItemUseContext context) {
     World world = context.getWorld();
     Block block = world.getBlockState(context.getPos()).getBlock();
     ActionResultType result = world.getRecipeManager().getRecipes().stream()
@@ -86,7 +86,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
   @Override
   @ParametersAreNonnullByDefault
-  public ActionResultType onItemUse (ItemUseContext context) {
+  public ActionResultType onItemUse(ItemUseContext context) {
     World world = context.getWorld();
     PlayerEntity player = context.getPlayer();
     BlockPos pos = context.getPos();
@@ -136,7 +136,7 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
   }
 
   @Override
-  public ActionResultType onItemUseModified (ItemUseContext context, boolean isRecursive) {
+  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
     if (isRecursive) {
       return onItemBehaviour(context);
     }
@@ -145,67 +145,67 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
   @Override
   @ParametersAreNonnullByDefault
-  public boolean isEnchantable (ItemStack stack) {
+  public boolean isEnchantable(ItemStack stack) {
     return false;
   }
 
   @Override
-  public boolean isBookEnchantable (ItemStack stack, ItemStack book) {
-    return false;
-  }
-
-  @Override
-  @ParametersAreNonnullByDefault
-  public boolean isRepairable (ItemStack stack) {
+  public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
     return false;
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public boolean hasEffect (ItemStack stack) {
+  public boolean isRepairable(ItemStack stack) {
+    return false;
+  }
+
+  @Override
+  @ParametersAreNonnullByDefault
+  public boolean hasEffect(ItemStack stack) {
     return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
   }
 
   @Override
-  public int getMaxDamage (ItemStack stack) {
+  public int getMaxDamage(ItemStack stack) {
     return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public float getDestroySpeed (ItemStack stack, BlockState state) {
+  public float getDestroySpeed(ItemStack stack, BlockState state) {
     return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public int getHarvestLevel (ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+  public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
     return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public boolean hitEntity (ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     hitEntityFromModifiers(stack, target, attacker);
     return super.hitEntity(stack, target, attacker);
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public boolean onBlockDestroyed (ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+  public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
     onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
     return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public void inventoryTick (ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
     inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
     super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
   }
 
   @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers (EquipmentSlotType slot, ItemStack stack) {
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
     if (slot == EquipmentSlotType.MAINHAND) {
       return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
     }
@@ -214,24 +214,24 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
 
   @Override
   @ParametersAreNonnullByDefault
-  public void addInformation (ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
   }
 
   @Override
-  public void addModifierWithoutIncreasingAdditional (int increase) {
+  public void addModifierWithoutIncreasingAdditional(int increase) {
     freeModifiers += increase;
   }
 
   @Override
-  public void increaseFreeModifiers (int increase) {
+  public void increaseFreeModifiers(int increase) {
     freeModifiers += increase;
     additionalModifiers += increase;
   }
 
   @Override
-  public boolean decreaseFreeModifiers (int decrease) {
+  public boolean decreaseFreeModifiers(int decrease) {
     if (freeModifiers - decrease < 0) {
       return false;
     }
@@ -240,34 +240,29 @@ public class EssenceOmniTool extends ToolItem implements IModifiedTool {
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return freeModifiers;
   }
 
   @Override
-  public int getMaxModifiers () {
+  public int getMaxModifiers() {
     return baseModifiers + additionalModifiers;
   }
 
   @Override
-  public boolean recheck (ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+  public boolean recheck(List<ModifierInstance> modifierInstances) {
     int cmc = 0;
-    for (ModifierInstance<ItemStack> instance : modifierInstances) {
+    for (ModifierInstance instance : modifierInstances) {
       if (instance.getModifier() instanceof ItemCoreModifier) {
-        cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+        cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
       }
     }
     return cmc <= baseModifiers + additionalModifiers;
   }
 
-  @Override
-  public Class<ItemStack> getType () {
-    return ItemStack.class;
-  }
-
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
     if (!stack.isEmpty() && nbt != null) {
       return new ItemStackModifierProvider(stack, nbt);
     }

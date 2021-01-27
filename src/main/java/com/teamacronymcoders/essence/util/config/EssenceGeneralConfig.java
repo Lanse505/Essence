@@ -14,7 +14,7 @@ public class EssenceGeneralConfig {
   private final ForgeConfigSpec.EnumValue<BlockSerializationEnum> serializeBlock;
   private final ForgeConfigSpec.EnumValue<EntitySerializationEnum> serializeEntity;
 
-  public EssenceGeneralConfig (ForgeConfigSpec.Builder builder) {
+  public EssenceGeneralConfig(ForgeConfigSpec.Builder builder) {
     builder.push("General");
     enableDebugLogging = builder.comment("Should Debug-Logging be Enabled?").define("enableDebugLogging", false);
     serializeBlock = builder.defineEnum("Should serialization be done on a Whitelist or Blacklist for Blocks?", BlockSerializationEnum.BLACKLIST);
@@ -23,29 +23,29 @@ public class EssenceGeneralConfig {
     this.spec = builder.build();
   }
 
-  public static ForgeConfigSpec initialize () {
+  public static ForgeConfigSpec initialize() {
     EssenceGeneralConfig config = new EssenceGeneralConfig(new ForgeConfigSpec.Builder());
     instance = config;
     return config.getSpec();
   }
 
-  public static EssenceGeneralConfig getInstance () {
+  public static EssenceGeneralConfig getInstance() {
     return instance;
   }
 
-  public ForgeConfigSpec getSpec () {
+  public ForgeConfigSpec getSpec() {
     return spec;
   }
 
-  public ForgeConfigSpec.BooleanValue getEnableDebugLogging () {
+  public ForgeConfigSpec.BooleanValue getEnableDebugLogging() {
     return enableDebugLogging;
   }
 
-  public EnumValue<BlockSerializationEnum> getSerializeBlock () {
+  public EnumValue<BlockSerializationEnum> getSerializeBlock() {
     return serializeBlock;
   }
 
-  public EnumValue<EntitySerializationEnum> getSerializeEntity () {
+  public EnumValue<EntitySerializationEnum> getSerializeEntity() {
     return serializeEntity;
   }
 }

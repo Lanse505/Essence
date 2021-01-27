@@ -29,14 +29,14 @@ public class PortableCrafterItem extends Item implements IScreenAddonProvider, I
   private final InventoryComponent<?> grid;
   private final InventoryComponent<?> output;
 
-  public PortableCrafterItem (Properties properties) {
+  public PortableCrafterItem(Properties properties) {
     super(properties);
     grid = new InventoryComponent<>("grid", 26, 25, 9).setRange(3, 3);
     output = new InventoryComponent<>("grid", 133, 43, 1);
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick (World worldIn, PlayerEntity playerIn, Hand handIn) {
+  public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
     ItemStack stack = playerIn.getHeldItem(handIn);
     if (!worldIn.isRemote && stack.getItem() == this) {
       NetworkHooks.openGui((ServerPlayerEntity) playerIn, this, buffer -> buffer.writeString(handIn.name()));
@@ -45,26 +45,26 @@ public class PortableCrafterItem extends Item implements IScreenAddonProvider, I
   }
 
   @Override
-  public List<IFactory<? extends IScreenAddon>> getScreenAddons () {
+  public List<IFactory<? extends IScreenAddon>> getScreenAddons() {
     return Lists.newArrayList(grid, output).stream().map(IScreenAddonProvider::getScreenAddons).flatMap(List::stream).collect(Collectors.toList());
   }
 
-  public InventoryComponent<?> getGrid () {
+  public InventoryComponent<?> getGrid() {
     return grid;
   }
 
-  public InventoryComponent<?> getOutput () {
+  public InventoryComponent<?> getOutput() {
     return output;
   }
 
   @Override
-  public ITextComponent getDisplayName () {
+  public ITextComponent getDisplayName() {
     return new TranslationTextComponent("container.essence.portable.crafter").mergeStyle(TextFormatting.BLACK);
   }
 
   @Nullable
   @Override
-  public Container createMenu (int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+  public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
     return null;
   }
 

@@ -15,10 +15,7 @@ import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
-import com.teamacronymcoders.essence.datagen.EssenceAdvancementProvider;
 import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
-import com.teamacronymcoders.essence.datagen.advancement.CoreAdvancementProvider;
-import com.teamacronymcoders.essence.datagen.advancement.KnowledgeAdvancementProvider;
 import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.registrate.*;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
@@ -34,10 +31,6 @@ import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.proxy.EssenceCommonProxy;
 import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
-import com.teamacronymcoders.essence.util.registration.EssenceKnowledgeRegistration;
-import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
-import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
-import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import com.tterrag.registrate.Registrate;
@@ -52,7 +45,6 @@ import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
 import net.minecraft.loot.conditions.LootConditionManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -72,6 +64,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// TODO List:
+// 1. Make Crafting a thing
+// 2. Fix Dispenser Behaviours
+// 3. Work on finishing the unfinished things (Tablet of Muffling, Portable Crafter,
+
 @Mod("essence")
 public class Essence extends ModuleController {
 
@@ -88,7 +85,7 @@ public class Essence extends ModuleController {
 
   public static Registrate ESSENCE_REGISTRATE;
 
-  public Essence () {
+  public Essence() {
     instance = this;
     handler.init();
     JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
@@ -102,17 +99,21 @@ public class Essence extends ModuleController {
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     ESSENCE_REGISTRATE = Registrate.create("essence");
-    EssenceKnowledgeRegistration.register(eventBus);
-    EssenceModifierRegistration.register(eventBus);
-    EssenceSoundRegistration.register(eventBus);
-    EssenceParticleTypeRegistration.register(eventBus);
     EssenceAdvancements.setup();
     EssenceEventHandlers.setup();
 
+    // Registrates
     EssenceItemRegistrate.init();
     EssenceBlockRegistrate.init();
     EssenceFluidRegistrate.init();
     EssenceEntityRegistrate.init();
+    EssenceModifierRegistrate.init();
+    EssenceKnowledgeRegistrate.init();
+    EssenceParticleRegistrate.init();
+    EssenceSoundRegistrate.init();
+    // Data-Generators
+    EssenceAdvancementRegistrate.init(ESSENCE_REGISTRATE);
+    EssenceLootTableRegistrate.init(ESSENCE_REGISTRATE);
     EssenceTagRegistrate.init(ESSENCE_REGISTRATE);
     EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
 
@@ -123,24 +124,20 @@ public class Essence extends ModuleController {
   }
 
   @Override
-  protected void initModules () {}
+  protected void initModules() {}
 
   @Override
-  public void addDataProvider (GatherDataEvent event) {
+  public void addDataProvider(GatherDataEvent event) {
     super.addDataProvider(event);
     EssenceRecipeProvider.addRecipeProviders(event.getGenerator());
-    // TODO: Port Advancements to Registrate
-    event.getGenerator().addProvider(new EssenceAdvancementProvider(event.getGenerator()));
-    event.getGenerator().addProvider(new CoreAdvancementProvider(event.getGenerator()));
-    event.getGenerator().addProvider(new KnowledgeAdvancementProvider(event.getGenerator()));
   }
 
-  private void setupCuriosIMC (final InterModEnqueueEvent event) {
+  private void setupCuriosIMC(final InterModEnqueueEvent event) {
     //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("backpack").setSize(1).setEnabled(true).setHidden(false));
     //InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_ICON, () -> new Tuple<>("backpack", new ResourceLocation(MOD_ID, "items/curios/empty_backpack_slot")));
   }
 
-  private void setup (final FMLCommonSetupEvent event) {
+  private void setup(final FMLCommonSetupEvent event) {
     ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new ArgumentSerializer<>(EssenceHandArgumentType::new));
     ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new ArgumentSerializer<>(EssenceModifierArgumentType::new));
     ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new ArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
@@ -160,8 +157,7 @@ public class Essence extends ModuleController {
     EssenceDispenseBehaviours.init();
   }
 
-  @SuppressWarnings("unchecked")
-  private void clientSetup (final FMLClientSetupEvent event) {
+  private void clientSetup(final FMLClientSetupEvent event) {
     new EssenceKeyHandler();
     // TODO: Reimplement once I get this working
     //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
@@ -181,26 +177,5 @@ public class Essence extends ModuleController {
     // Toggled
     // TODO: Implement for Tablet of Muffling
     //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "toggling"), EssenceItemProperties.TOGGLED);
-  }
-
-  public static void setupCreativeTabIcons () {
-    CORE_TAB.addIconStacks(
-            new ItemStack(EssenceFluidRegistrate.ESSENCE.get().getFilledBucket()),
-            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()),
-            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LEAVES.get()),
-            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.get()),
-            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_PLANKS.get())
-    );
-
-    TOOL_TAB.addIconStacks(
-            new ItemStack(EssenceItemRegistrate.ESSENCE_AXE.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_PICKAXE.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_SHOVEL.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_HOE.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_OMNITOOL.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_SHEAR.get()),
-            new ItemStack(EssenceItemRegistrate.ESSENCE_BOW.get())
-    );
   }
 }

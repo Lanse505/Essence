@@ -22,7 +22,7 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
 
   private final EssenceBackpackTiers tier;
 
-  public EssenceBackpackItem (ResourceLocation resourceLocation, EssenceBackpackTiers tier) {
+  public EssenceBackpackItem(ResourceLocation resourceLocation, EssenceBackpackTiers tier) {
     super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1));
     setRegistryName(resourceLocation);
     this.tier = tier;
@@ -30,36 +30,36 @@ public class EssenceBackpackItem extends Item implements IComponentHarness {
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
     return new BackpackCapability(new InventoryComponent<EssenceBackpackItem>("backpackInventory", 0, 0, tier.getBackpackSlots())
             .setRange(tier.getBackpackX(), tier.getBackpackY()).setComponentHarness(this).setInputFilter((input, integer) -> !(input.getItem() instanceof EssenceBackpackItem)));
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick (World worldIn, PlayerEntity playerIn, Hand handIn) {
+  public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
     return super.onItemRightClick(worldIn, playerIn, handIn);
   }
 
   @Override
-  public void inventoryTick (ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 
   }
 
 
   @Override
-  public World getComponentWorld () {
+  public World getComponentWorld() {
     return null;
   }
 
   @Override
-  public void markComponentForUpdate (boolean b) {
+  public void markComponentForUpdate(boolean b) {
   }
 
   @Override
-  public void markComponentDirty () {
+  public void markComponentDirty() {
   }
 
-  public InventoryComponent<EssenceBackpackItem> getComponent (ItemStack stack) {
+  public InventoryComponent<EssenceBackpackItem> getComponent(ItemStack stack) {
     return (InventoryComponent<EssenceBackpackItem>) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
   }
 }

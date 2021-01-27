@@ -16,16 +16,15 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
   public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
   public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
-
   public Ingredient.IItemList[] inputList;
   public SerializableModifier[] modifiers;
   public int duration;
 
-  public InfusionTableSerializableRecipe (ResourceLocation id) {
+  public InfusionTableSerializableRecipe(ResourceLocation id) {
     super(id);
   }
 
-  public InfusionTableSerializableRecipe (ResourceLocation id, Ingredient.IItemList[] inputList, SerializableModifier[] modifiers, int duration) {
+  public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.IItemList[] inputList, SerializableModifier[] modifiers, int duration) {
     super(id);
     this.inputList = inputList;
     this.modifiers = modifiers;
@@ -33,44 +32,44 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
   }
 
   @Override
-  public boolean matches (IInventory p_77569_1_, World p_77569_2_) {
+  public boolean matches(IInventory p_77569_1_, World p_77569_2_) {
     return false;
   }
 
   @Override
-  public ItemStack getCraftingResult (IInventory p_77572_1_) {
+  public ItemStack getCraftingResult(IInventory p_77572_1_) {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean canFit (int p_194133_1_, int p_194133_2_) {
+  public boolean canFit(int p_194133_1_, int p_194133_2_) {
     return false;
   }
 
   @Override
-  public ItemStack getRecipeOutput () {
+  public ItemStack getRecipeOutput() {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public GenericSerializer<? extends SerializableRecipe> getSerializer () {
+  public GenericSerializer<? extends SerializableRecipe> getSerializer() {
     return SERIALIZER;
   }
 
   @Override
-  public IRecipeType<?> getType () {
+  public IRecipeType<?> getType() {
     return SERIALIZER.getRecipeType();
   }
 
-  public boolean isValid (ItemStack stack) {
+  public boolean isValid(ItemStack stack) {
     return Arrays.stream(getInputList()).map(list -> list.getStacks().stream().map(tagStack -> tagStack.isItemEqual(stack))).anyMatch(booleanStream -> booleanStream.findAny().orElse(false));
   }
 
-  private Ingredient.IItemList[] getInputList () {
+  private Ingredient.IItemList[] getInputList() {
     return this.inputList;
   }
 
-  public Set<ItemStack> getCollectedStacks () {
+  public Set<ItemStack> getCollectedStacks() {
     Set<ItemStack> stacks = new HashSet<>();
     for (Ingredient.IItemList itemList : getInputList()) {
       stacks.addAll(itemList.getStacks());
@@ -78,12 +77,12 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     return stacks;
   }
 
-  public SerializableModifier[] getModifiers () {
+  public SerializableModifier[] getModifiers() {
     return this.modifiers;
   }
 
 
-  public int getDuration () {
+  public int getDuration() {
     return duration;
   }
 }

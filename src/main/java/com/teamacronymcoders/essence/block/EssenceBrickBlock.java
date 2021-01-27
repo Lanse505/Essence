@@ -48,14 +48,14 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
 
   public final DyeColor color;
 
-  public EssenceBrickBlock (Properties properties, DyeColor color) {
+  public EssenceBrickBlock(Properties properties, DyeColor color) {
     super(properties);
     this.color = color;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public ActionResultType onBlockActivated (BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult result) {
+  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult result) {
     if (worldIn.isRemote) {
       return ActionResultType.PASS;
     }
@@ -82,12 +82,12 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
   }
 
   @Override
-  public MaterialColor getMaterialColor () {
+  public MaterialColor getMaterialColor() {
     return super.getMaterialColor();
   }
 
   @Override
-  public DyeColor getColor () {
+  public DyeColor getColor() {
     return this.color;
   }
 }

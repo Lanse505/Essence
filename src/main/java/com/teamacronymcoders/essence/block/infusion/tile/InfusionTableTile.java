@@ -9,12 +9,10 @@ import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
-import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
 import javax.annotation.Nonnull;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
@@ -63,9 +61,9 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   public float pageAngle;
   public float playerTableAngle;
   @Save
-  public Integer pageSoundLastPlayed = 0;
+  public Long pageSoundLastPlayed = 0L;
 
-  public InfusionTableTile () {
+  public InfusionTableTile() {
     super(EssenceBlockRegistrate.INFUSION_TABLE.get());
     addInventory(infusable = new InventoryComponent<InfusionTableTile>("input", 80, 20, 1)
             .setComponentHarness(this)
@@ -82,7 +80,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   }
 
   @Override
-  public void tick () {
+  public void tick() {
     super.tick();
     ticksExisted++;
     handleBookRender();
@@ -109,15 +107,15 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
 
   @Nonnull
   @Override
-  public InfusionTableTile getSelf () {
+  public InfusionTableTile getSelf() {
     return this;
   }
 
-  private boolean canExtractInfusable (ItemStack stack, int slot) {
+  private boolean canExtractInfusable(ItemStack stack, int slot) {
     return !isWorking;
   }
 
-  private NonNullList<ItemStack> getPedestalStacks () {
+  private NonNullList<ItemStack> getPedestalStacks() {
     BlockPos tablePosition = getPos();
     NonNullList<ItemStack> stacks = NonNullList.create();
     if (getWorld() != null) {
@@ -134,7 +132,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     return stacks;
   }
 
-  private void getInfusionRecipe (NonNullList<ItemStack> stacks) {
+  private void getInfusionRecipe(NonNullList<ItemStack> stacks) {
     if (getWorld() != null) {
       recipe = getWorld().getRecipeManager().getRecipes()
               .stream()
@@ -145,7 +143,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     }
   }
 
-  private void handleBookRender () {
+  private void handleBookRender() {
     this.pageTurningSpeed = this.nextPageTurningSpeed;
     this.pageAngle = this.nextPageAngle;
     if (world == null) {
@@ -168,8 +166,9 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
       this.nextPageTurningSpeed -= 0.1F;
     }
 
-    if (player != null && !world.isRemote()) {
-      world.playSound(player, pos, EssenceSoundRegistration.INFUSION_BOOK_SOUND.get(), SoundCategory.BLOCKS, 1f, 1f);
+    if (player != null && world.isRemote() && player.getEntityWorld().getGameTime() - pageSoundLastPlayed > 160) {
+      EssenceWorldHelper.playBookSound(this, true);
+      pageSoundLastPlayed = player.getEntityWorld().getGameTime();
     }
 
     while (this.nextPageAngle >= 3.1415927F) {
@@ -208,27 +207,31 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     this.field_195523_f += this.clampedSpeedIncrement;
   }
 
-  public Boolean getWorking () {
+  public Boolean getWorking() {
     return isWorking;
   }
 
-  public InventoryComponent<InfusionTableTile> getTome () {
+  public InventoryComponent<InfusionTableTile> getTome() {
     return tome;
   }
 
-  public InventoryComponent<InfusionTableTile> getInfusable () {
+  public InventoryComponent<InfusionTableTile> getInfusable() {
     return infusable;
   }
 
-  public void setShouldBeWorking (Boolean shouldBeWorking) {
+  public void setShouldBeWorking(Boolean shouldBeWorking) {
     this.shouldBeWorking = shouldBeWorking;
   }
 
-  public boolean hasTome () {
+  public boolean hasTome() {
     return !tome.getStackInSlot(0).isEmpty() && tome.getStackInSlot(0).getItem() instanceof TomeOfKnowledgeItem;
   }
 
-  public Integer getTicksExisted () {
+  public Integer getTicksExisted() {
     return ticksExisted;
+  }
+
+  public Long getPageSoundLastPlayed() {
+    return pageSoundLastPlayed;
   }
 }

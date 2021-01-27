@@ -11,12 +11,12 @@ public enum InfusionOperation {
   private final int id;
   private final String name;
 
-  InfusionOperation (int id, String name) {
+  InfusionOperation(int id, String name) {
     this.id = id;
     this.name = name;
   }
 
-  public static InfusionOperation byID (int id) {
+  public static InfusionOperation byID(int id) {
     if (id >= 0 && id < VALUES.length) {
       return VALUES[id];
     } else {
@@ -24,11 +24,11 @@ public enum InfusionOperation {
     }
   }
 
-  public int getID () {
+  public int getID() {
     return this.id;
   }
 
-  public String getName () {
+  public String getName() {
     return name;
   }
 }

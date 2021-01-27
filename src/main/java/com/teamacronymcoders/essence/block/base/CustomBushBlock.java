@@ -13,11 +13,11 @@ import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.IPlantable;
 
 public class CustomBushBlock extends BasicBlock implements IPlantable {
-  protected CustomBushBlock (Block.Properties properties) {
+  protected CustomBushBlock(Block.Properties properties) {
     super(properties);
   }
 
-  protected boolean isValidGround (BlockState state, IBlockReader worldIn, BlockPos pos) {
+  protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
     Block block = state.getBlock();
     return block == Blocks.GRASS_BLOCK || block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.PODZOL || block == Blocks.FARMLAND;
   }
@@ -29,12 +29,12 @@ public class CustomBushBlock extends BasicBlock implements IPlantable {
    * Note that this method should ideally consider only the specific face passed in.
    */
   @SuppressWarnings("deprecation")
-  public BlockState updatePostPlacement (BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+  public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
     return !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
   }
 
   @SuppressWarnings("deprecation")
-  public boolean isValidPosition (BlockState state, IWorldReader worldIn, BlockPos pos) {
+  public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
     BlockPos blockpos = pos.down();
     if (state.getBlock() == this) //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
     {
@@ -43,17 +43,17 @@ public class CustomBushBlock extends BasicBlock implements IPlantable {
     return this.isValidGround(worldIn.getBlockState(blockpos), worldIn, blockpos);
   }
 
-  public boolean propagatesSkylightDown (BlockState state, IBlockReader reader, BlockPos pos) {
+  public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
     return true;
   }
 
   @SuppressWarnings("deprecation")
-  public boolean allowsMovement (BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+  public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
     return type == PathType.AIR && !this.canCollide || super.allowsMovement(state, worldIn, pos, type);
   }
 
   @Override
-  public BlockState getPlant (IBlockReader world, BlockPos pos) {
+  public BlockState getPlant(IBlockReader world, BlockPos pos) {
     BlockState state = world.getBlockState(pos);
     if (state.getBlock() != this) {
       return getDefaultState();

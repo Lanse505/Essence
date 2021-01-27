@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.util.helper;
 
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
+import com.teamacronymcoders.essence.effect.sound.InfusionBookSound;
 import com.teamacronymcoders.essence.effect.sound.InfusionSound;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,7 @@ public class EssenceWorldHelper {
    * @param stack
    * @return
    */
-  public static boolean breakBlock (World world, BlockPos pos, boolean hasTileEntity, @Nullable Entity entity, ItemStack stack) {
+  public static boolean breakBlock(World world, BlockPos pos, boolean hasTileEntity, @Nullable Entity entity, ItemStack stack) {
     BlockState blockstate = world.getBlockState(pos);
     if (blockstate.getBlock().isAir(blockstate, world, pos)) {
       return false;
@@ -56,14 +57,14 @@ public class EssenceWorldHelper {
    * @return tile entity if found, null if either not found or not loaded
    */
   @Nullable
-  public static TileEntity getTileEntity (@Nullable World world, @Nonnull BlockPos pos) {
+  public static TileEntity getTileEntity(@Nullable World world, @Nonnull BlockPos pos) {
     if (world == null || !world.isBlockPresent(pos)) {
       return null;
     }
     return world.getTileEntity(pos);
   }
 
-  public static Set<RegistryKey<Biome>> getBiomes (BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
+  public static Set<RegistryKey<Biome>> getBiomes(BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
     Set<RegistryKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
     if (filterTypes.length == 0) {
       return biomes;
@@ -76,7 +77,7 @@ public class EssenceWorldHelper {
     return filtering;
   }
 
-  public static Set<RegistryKey<Biome>> getBiomes (BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
+  public static Set<RegistryKey<Biome>> getBiomes(BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
     Set<RegistryKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
     if (filterTypes.size() == 0) {
       return biomes;
@@ -90,7 +91,7 @@ public class EssenceWorldHelper {
   }
 
   @OnlyIn(Dist.CLIENT)
-  public static void playInfusionSound (@Nonnull InfusionTableTile tableTile, boolean distanceDelay) {
+  public static void playInfusionSound(@Nonnull InfusionTableTile tableTile, boolean distanceDelay) {
     double sqdt = Minecraft.getInstance().gameRenderer.getActiveRenderInfo()
             .getProjectedView().squareDistanceTo(tableTile.getPos().getX(), tableTile.getPos().getY(), tableTile.getPos().getZ());
     InfusionSound sound = new InfusionSound(tableTile);
@@ -101,5 +102,18 @@ public class EssenceWorldHelper {
       Minecraft.getInstance().getSoundHandler().play(sound);
     }
   }
+
+  @OnlyIn(Dist.CLIENT)
+  public static void playBookSound(@Nonnull InfusionTableTile tableTile, boolean distanceDelay) {
+    double sqdt = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().squareDistanceTo(tableTile.getPos().getX(), tableTile.getPos().getY(), tableTile.getPos().getZ());
+    InfusionBookSound sound = new InfusionBookSound(tableTile);
+    if (distanceDelay && sqdt > 100.0F) {
+      double sqrt = Math.sqrt(sqdt) / 40.0D;
+      Minecraft.getInstance().getSoundHandler().playDelayed(sound, (int) (sqrt * 20.0D));
+    } else {
+      Minecraft.getInstance().getSoundHandler().play(sound);
+    }
+  }
+
 
 }

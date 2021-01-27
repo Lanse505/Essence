@@ -17,7 +17,7 @@ import net.minecraft.util.Hand;
 public class RainbowModifier extends ItemInteractionCoreModifier {
 
   @Override
-  public List<ItemStack> onSheared (ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance<ItemStack> instance) {
+  public List<ItemStack> onShearedAltered(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance instance) {
     if (sheared instanceof SheepEntity) {
       List<ItemStack> modifiedList = new ArrayList<>();
       for (ItemStack s : stackList) {
@@ -33,7 +33,7 @@ public class RainbowModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return object.getItem() instanceof EssenceShear;
   }
 

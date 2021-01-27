@@ -8,11 +8,11 @@ public enum ExperienceModeEnum {
   public static final ExperienceModeEnum[] VALUES = new ExperienceModeEnum[] {FILL, DRAIN, ABSORB};
   private final String localeString;
 
-  ExperienceModeEnum (String localeString) {
+  ExperienceModeEnum(String localeString) {
     this.localeString = localeString;
   }
 
-  public static ExperienceModeEnum cycleMode (int id) {
+  public static ExperienceModeEnum cycleMode(int id) {
     if (id == 0) {
       return VALUES[1];
     } else if (id == 1) {
@@ -22,7 +22,7 @@ public enum ExperienceModeEnum {
     }
   }
 
-  public String getLocaleString () {
+  public String getLocaleString() {
     return localeString;
   }
 }

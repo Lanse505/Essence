@@ -19,9 +19,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public interface IModifiedTank extends IModified<ItemStack> {
+public interface IModifiedTank extends IModified {
 
-  default int getMaxCapacityFromModifiers (int currentCapacity, ItemStack stack) {
+  default int getMaxCapacityFromModifiers(int currentCapacity, ItemStack stack) {
     return stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER)
             .map(holder -> holder.getModifierInstances().stream()
                     .filter(instance -> instance.getModifier() instanceof HoldingModifier)
@@ -31,7 +31,7 @@ public interface IModifiedTank extends IModified<ItemStack> {
                     }).reduce(0, Integer::sum)).map(integer -> Math.min(integer, Integer.MAX_VALUE)).orElse(currentCapacity);
   }
 
-  default void addInformationFromModifiers (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+  default void addInformationFromModifiers(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
     int freeModifiers = stack.getItem() instanceof IModifiedTank ? ((IModifiedTank) stack.getItem()).getFreeModifiers() : 0;
     int maxModifiers = stack.getItem() instanceof IModifiedTank ? ((IModifiedTank) stack.getItem()).getMaxModifiers() : 0;
     list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).mergeStyle(TextFormatting.GRAY));

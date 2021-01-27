@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class EssenceBlock extends Block {
   private final EssenceItemTiers tier;
 
-  public EssenceBlock (Block.Properties properties, EssenceItemTiers tier) {
+  public EssenceBlock(Block.Properties properties, EssenceItemTiers tier) {
     super(properties);
     this.tier = tier;
   }
@@ -26,7 +26,7 @@ public class EssenceBlock extends Block {
   public IFactory<BlockItem> getBlockItem(Item.Properties properties) {
     return () -> (BlockItem) new BlockItem(this, properties.rarity(tier.getRarity())) {
       @Override
-      public void addInformation (@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
+      public void addInformation(@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
         list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
       }
     };

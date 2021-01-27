@@ -17,18 +17,18 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class SerializedEntityItem extends Item {
 
-  public SerializedEntityItem (Properties properties) {
+  public SerializedEntityItem(Properties properties) {
     super(properties);
   }
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
     return new EntityStorageProvider(stack);
   }
 
   @Override
-  public ActionResultType onItemUse (ItemUseContext context) {
+  public ActionResultType onItemUse(ItemUseContext context) {
     PlayerEntity player = context.getPlayer();
     World world = context.getWorld();
     ItemStack stack = context.getItem();
@@ -50,7 +50,7 @@ public class SerializedEntityItem extends Item {
   }
 
   @SuppressWarnings("ConstantConditions")
-  public boolean containsEntity (ItemStack stack) {
+  public boolean containsEntity(ItemStack stack) {
     return !stack.isEmpty() && stack.hasTag() && stack.getTag().contains("entity");
   }
 

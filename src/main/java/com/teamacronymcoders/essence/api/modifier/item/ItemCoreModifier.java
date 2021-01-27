@@ -5,53 +5,74 @@ import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 
-public abstract class ItemCoreModifier extends Modifier<ItemStack> {
+public abstract class ItemCoreModifier extends Modifier {
 
-  private static final Multimap<String, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
+  private static final Multimap<Attribute, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
 
-  public ItemCoreModifier () {
-    super(ItemStack.class);
+  public ItemCoreModifier() {
+    super();
   }
 
-  public ItemCoreModifier (int maxLevel) {
-    super(ItemStack.class, maxLevel);
+  public ItemCoreModifier(int maxLevel) {
+    super(maxLevel);
   }
 
-  public ItemCoreModifier (int maxLevel, int minLevel) {
-    super(ItemStack.class, maxLevel, minLevel);
+  public ItemCoreModifier(int minLevel, int maxLevel) {
+    super(minLevel, maxLevel);
   }
 
-  public Multimap<String, AttributeModifier> getAttributeModifiers (ItemStack stack, LivingEntity wielder, ModifierInstance<ItemStack> instance) {
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, ModifierInstance instance) {
     return EMPTY_ATTRIBUTE_MAP;
   }
 
-  public int getModifiedDurability (ItemStack stack, ModifierInstance<ItemStack> instance, int base) {
+  public int getModifiedDurability(ItemStack stack, ModifierInstance instance, int base) {
     return 0;
   }
 
-  public float getModifiedEfficiency (ItemStack stack, ModifierInstance<ItemStack> instance, float base) {
+  public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
     return 0;
   }
 
-  public int getModifiedHarvestLevel (ItemStack stack, ModifierInstance<ItemStack> instance, int base) {
+  public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance instance, int base) {
     return 0;
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject() {
     return false;
   }
 
-  @Override
-  public boolean countsTowardsLimit (int level, ItemStack object) {
-    return true;
+  public boolean canApplyOnObject(ItemStack stack) {
+    return canApplyOnObject();
   }
 
   @Override
-  public int getModifierCountValue (int level, ItemStack object) {
+  public boolean countsTowardsLimit(int level) {
+    return true;
+  }
+
+  public boolean countsTowardsLimit(int level, ItemStack stack) {
+    return countsTowardsLimit(level);
+  }
+
+  @Override
+  public int getModifierCountValue(int level) {
     return 1;
+  }
+
+  public int getModifierCountValue(int level, ItemStack stack) {
+    return getModifierCountValue(level);
+  }
+
+  public int getMinLevel(ItemStack stack) {
+    return getMinLevel();
+  }
+
+  public int getMaxLevel(ItemStack stack) {
+    return getMaxLevel();
   }
 }

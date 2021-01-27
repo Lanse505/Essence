@@ -8,7 +8,7 @@ public class EssenceTreeConfig {
   private final ForgeConfigSpec.DoubleValue extraChance;
   private final ForgeConfigSpec.IntValue extraCount;
 
-  public EssenceTreeConfig (ForgeConfigSpec.Builder builder, String variant, boolean shouldGenerate, float extraChance, int extraCount) {
+  public EssenceTreeConfig(ForgeConfigSpec.Builder builder, String variant, boolean shouldGenerate, float extraChance, int extraCount) {
     builder.push(variant);
     builder.comment("Generation Settings for Essence Tree variant: " + variant + ".");
     this.shouldGenerate = builder.comment("Determines if " + variant + " variant should be added to world generation.").define("shouldGenerate", shouldGenerate);
@@ -17,15 +17,15 @@ public class EssenceTreeConfig {
     builder.pop();
   }
 
-  public ForgeConfigSpec.BooleanValue getShouldGenerate () {
+  public ForgeConfigSpec.BooleanValue getShouldGenerate() {
     return shouldGenerate;
   }
 
-  public ForgeConfigSpec.DoubleValue getExtraChance () {
+  public ForgeConfigSpec.DoubleValue getExtraChance() {
     return extraChance;
   }
 
-  public ForgeConfigSpec.IntValue getExtraCount () {
+  public ForgeConfigSpec.IntValue getExtraCount() {
     return extraCount;
   }
 }

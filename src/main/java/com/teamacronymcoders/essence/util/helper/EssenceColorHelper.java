@@ -54,7 +54,7 @@ public class EssenceColorHelper {
     tagToDye.put(Tags.Items.DYES_BLACK, DyeColor.BLACK);
   }
 
-  public static Color getColor (int rainbowValue) {
+  public static Color getColor(int rainbowValue) {
     return colors.get(MathHelper.clamp(rainbowValue, 0, colors.size() - 1));
   }
 

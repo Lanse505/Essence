@@ -23,12 +23,12 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
   public static final RenderMaterial MATERIAL_TEXTURE_BOOK = new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(Essence.MOD_ID, "entity/tome_of_knowledge"));
   private final BookModel model = new BookModel();
 
-  public InfusionTableTESR (TileEntityRendererDispatcher dispatcher) {
+  public InfusionTableTESR(TileEntityRendererDispatcher dispatcher) {
     super(dispatcher);
   }
 
   @Override
-  public void render (InfusionTableTile infusionTableTile, float partial, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+  public void render(InfusionTableTile infusionTableTile, float partial, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
     if (infusionTableTile.hasTome()) {
       renderBook(infusionTableTile, matrix, partial, buffer, combinedLightIn, combinedOverlayIn);
     }
@@ -38,7 +38,7 @@ public class InfusionTableTESR extends TileEntityRenderer<InfusionTableTile> {
     }
   }
 
-  public void renderBook (InfusionTableTile infusionTableTile, MatrixStack matrix, float partial, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+  public void renderBook(InfusionTableTile infusionTableTile, MatrixStack matrix, float partial, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
     matrix.push();
     matrix.translate(0.5D, 0.75D, 0.5D);
     float f = (float) infusionTableTile.ticks + partial;

@@ -24,11 +24,11 @@ public class FieryLootModifier extends LootModifier {
    *
    * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
    */
-  protected FieryLootModifier (ILootCondition[] conditionsIn) {
+  protected FieryLootModifier(ILootCondition[] conditionsIn) {
     super(conditionsIn);
   }
 
-  private static ItemStack smelt (ItemStack stack, LootContext context) {
+  private static ItemStack smelt(ItemStack stack, LootContext context) {
     if (stack.isEmpty()) {
       return stack;
     }
@@ -52,18 +52,18 @@ public class FieryLootModifier extends LootModifier {
 
   @Nonnull
   @Override
-  protected List<ItemStack> doApply (List<ItemStack> generatedLoot, LootContext context) {
+  protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
     return generatedLoot.stream().map(stack -> smelt(stack, context)).collect(Collectors.toList());
   }
 
   public static class Serializer extends GlobalLootModifierSerializer<FieryLootModifier> {
     @Override
-    public FieryLootModifier read (ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+    public FieryLootModifier read(ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
       return new FieryLootModifier(ailootcondition);
     }
 
     @Override
-    public JsonObject write (FieryLootModifier instance) {
+    public JsonObject write(FieryLootModifier instance) {
       return new JsonObject();
     }
   }

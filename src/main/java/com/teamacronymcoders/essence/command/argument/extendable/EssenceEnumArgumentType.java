@@ -20,24 +20,24 @@ public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<
   private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
           new TranslationTextComponent("command.argument.essence.enum.invalid", input));
 
-  public EssenceEnumArgumentType (Class<E> eVal) {
+  public EssenceEnumArgumentType(Class<E> eVal) {
     this.eVal = eVal.getEnumConstants();
     this.eClass = eVal;
   }
 
   @Override
-  public E parse (StringReader reader) throws CommandSyntaxException {
+  public E parse(StringReader reader) throws CommandSyntaxException {
     String input = read(reader);
     return Optional.of(Enum.valueOf(eClass, input))
             .orElseThrow(() -> exceptionType.create(input));
   }
 
   @Override
-  public <S> CompletableFuture<Suggestions> listSuggestions (CommandContext<S> context, SuggestionsBuilder builder) {
+  public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
     return ISuggestionProvider.suggest(Arrays.stream(eVal).map(Enum::name), builder);
   }
 
-  public String read (StringReader reader) throws CommandSyntaxException {
+  public String read(StringReader reader) throws CommandSyntaxException {
     int i = reader.getCursor();
 
     while (reader.canRead() && isValidCharacter(reader.peek())) {
@@ -54,7 +54,7 @@ public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<
     }
   }
 
-  public static boolean isValidCharacter (char charIn) {
+  public static boolean isValidCharacter(char charIn) {
     return charIn != ' ';
   }
 }

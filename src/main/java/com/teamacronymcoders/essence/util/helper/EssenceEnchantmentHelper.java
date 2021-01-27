@@ -26,7 +26,7 @@ public class EssenceEnchantmentHelper {
    * @param stack       The ItemStack to Enchant
    * @param enchantment The Enchantment to add
    */
-  public static void createOrUpdateEnchantment (ItemStack stack, Enchantment enchantment, ModifierInstance instance, int multiplier) {
+  public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance, int multiplier) {
     CompoundNBT stackNBT = stack.getOrCreateTag();
     ListNBT enchantments = stack.getEnchantmentTagList();
     int level = instance.getLevel() * multiplier;
@@ -60,7 +60,7 @@ public class EssenceEnchantmentHelper {
    * @param stack       The ItemStack to Enchant
    * @param enchantment The Enchantment to add
    */
-  public static void createOrUpdateEnchantment (ItemStack stack, Enchantment enchantment, ModifierInstance instance) {
+  public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance) {
     CompoundNBT stackNBT = stack.getOrCreateTag();
     ListNBT enchantments = stack.getEnchantmentTagList();
     int level = instance.getLevel();
@@ -93,7 +93,7 @@ public class EssenceEnchantmentHelper {
    *
    * @param stack The ItemStack to check for Enchantments on
    */
-  public static void checkEnchantmentsForRemoval (ItemStack stack, LazyOptional<ItemStackModifierHolder> holderLazyOptional) {
+  public static void checkEnchantmentsForRemoval(ItemStack stack, LazyOptional<ItemStackModifierHolder> holderLazyOptional) {
     ListNBT enchantments = stack.getEnchantmentTagList();
     if (!enchantments.isEmpty()) {
       Map<String, CompoundNBT> enchantmentIDs = new HashMap<>();

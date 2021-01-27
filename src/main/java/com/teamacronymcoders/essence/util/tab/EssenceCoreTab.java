@@ -4,12 +4,12 @@ import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 
 public class EssenceCoreTab extends AdvancedTitaniumTab {
 
-  public EssenceCoreTab () {
+  public EssenceCoreTab() {
     super("essence_core", true);
   }
 
   @Override
-  public boolean hasScrollbar () {
+  public boolean hasScrollbar() {
     return true;
   }
 

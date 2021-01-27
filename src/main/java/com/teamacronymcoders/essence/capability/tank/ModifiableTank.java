@@ -13,25 +13,25 @@ public class ModifiableTank extends FluidTank implements IFluidHandlerItem {
   private final ItemStack stack;
   private final int originalCapacity;
 
-  public ModifiableTank (int capacity, ItemStack stack) {
+  public ModifiableTank(int capacity, ItemStack stack) {
     super(capacity);
     this.originalCapacity = capacity;
     this.stack = stack;
   }
 
-  public ModifiableTank (int capacity, ItemStack stack, Predicate<FluidStack> validator) {
+  public ModifiableTank(int capacity, ItemStack stack, Predicate<FluidStack> validator) {
     super(capacity, validator);
     this.originalCapacity = capacity;
     this.stack = stack;
   }
 
   @Override
-  public int getCapacity () {
+  public int getCapacity() {
     return stack.getItem() instanceof IModifiedTank ? Math.min(originalCapacity + ((IModifiedTank) stack.getItem()).getMaxCapacityFromModifiers(originalCapacity, stack), Integer.MAX_VALUE) : capacity;
   }
 
   @Override
-  public int fill (FluidStack resource, FluidAction action) {
+  public int fill(FluidStack resource, FluidAction action) {
     if (resource.isEmpty() || !isFluidValid(resource)) {
       return 0;
     }
@@ -67,13 +67,13 @@ public class ModifiableTank extends FluidTank implements IFluidHandlerItem {
   }
 
   @Override
-  public int getSpace () {
+  public int getSpace() {
     return Math.max(0, getCapacity() - fluid.getAmount());
   }
 
   @Nonnull
   @Override
-  public ItemStack getContainer () {
+  public ItemStack getContainer() {
     return stack;
   }
 }

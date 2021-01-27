@@ -16,18 +16,18 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   private final Function<PlayerAdvancements, T> createNew;
   private final Map<PlayerAdvancements, T> listeners = Maps.newHashMap();
 
-  protected EssenceCriterionTrigger (ResourceLocation id, Function<PlayerAdvancements, T> createNew) {
+  protected EssenceCriterionTrigger(ResourceLocation id, Function<PlayerAdvancements, T> createNew) {
     this.id = id;
     this.createNew = createNew;
   }
 
   @Override
-  public ResourceLocation getId () {
+  public ResourceLocation getId() {
     return this.id;
   }
 
   @Override
-  public void addListener (PlayerAdvancements playerAdvancements, Listener<U> listener) {
+  public void addListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
     T listeners = this.listeners.get(playerAdvancements);
     if (listeners == null) {
       listeners = createNew.apply(playerAdvancements);
@@ -37,7 +37,7 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   }
 
   @Override
-  public void removeListener (PlayerAdvancements playerAdvancements, Listener<U> listener) {
+  public void removeListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
     T listeners = this.listeners.get(playerAdvancements);
     if (listeners != null) {
       listeners.remove(listener);
@@ -48,17 +48,17 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   }
 
   @Override
-  public void removeAllListeners (PlayerAdvancements playerAdvancements) {
+  public void removeAllListeners(PlayerAdvancements playerAdvancements) {
     this.listeners.remove(playerAdvancements);
   }
 
   @Override
-  public U deserialize (JsonObject object, ConditionArrayParser conditions) {
+  public U deserialize(JsonObject object, ConditionArrayParser conditions) {
     return null;
   }
 
   @Nullable
-  public T getListeners (PlayerAdvancements playerAdvancements) {
+  public T getListeners(PlayerAdvancements playerAdvancements) {
     return this.listeners.get(playerAdvancements);
   }
 }

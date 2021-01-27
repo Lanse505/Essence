@@ -26,7 +26,7 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
   private final Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> ingot;
   private final Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> block;
 
-  EssenceItemTiers (String localString, Rarity rarity, Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> nugget, Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> ingot, Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> block) {
+  EssenceItemTiers(String localString, Rarity rarity, Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> nugget, Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> ingot, Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> block) {
     this.localString = localString;
     this.rarity = rarity;
     this.nugget = nugget;
@@ -35,28 +35,28 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
   }
 
   @Override
-  public String getLocaleString () {
+  public String getLocaleString() {
     return localString;
   }
 
-  public Rarity getRarity () {
+  public Rarity getRarity() {
     return rarity;
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return 0;
   }
 
-  public Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> getNugget () {
+  public Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> getNugget() {
     return nugget;
   }
 
-  public Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> getIngot () {
+  public Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> getIngot() {
     return ingot;
   }
 
-  public Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> getBlock () {
+  public Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> getBlock() {
     return block;
   }
 }

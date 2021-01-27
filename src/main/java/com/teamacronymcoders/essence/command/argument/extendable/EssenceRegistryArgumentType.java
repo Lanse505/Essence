@@ -25,17 +25,17 @@ public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> imple
   private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
           new TranslationTextComponent("command.argument.essence.registry.invalid", input));
 
-  public EssenceRegistryArgumentType () {
+  public EssenceRegistryArgumentType() {
     this.registry = null;
     this.examples = new ArrayList<>();
   }
 
-  public EssenceRegistryArgumentType (IForgeRegistry<T> registry) {
+  public EssenceRegistryArgumentType(IForgeRegistry<T> registry) {
     this.registry = registry;
     this.examples = createExamples(registry);
   }
 
-  private static <T extends IForgeRegistryEntry<T>> List<String> createExamples (IForgeRegistry<T> registry) {
+  private static <T extends IForgeRegistryEntry<T>> List<String> createExamples(IForgeRegistry<T> registry) {
     List<String> examples = Lists.newArrayList();
     Iterator<ResourceLocation> iterator = registry.getKeys().iterator();
     int i = 0;
@@ -47,19 +47,19 @@ public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> imple
   }
 
   @Override
-  public T parse (StringReader reader) throws CommandSyntaxException {
+  public T parse(StringReader reader) throws CommandSyntaxException {
     ResourceLocation resourceLocation = ResourceLocation.read(reader);
     return Optional.ofNullable(registry.getValue(resourceLocation))
             .orElseThrow(() -> exceptionType.create(resourceLocation));
   }
 
   @Override
-  public <S> CompletableFuture<Suggestions> listSuggestions (CommandContext<S> context, SuggestionsBuilder builder) {
+  public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
     return ISuggestionProvider.func_212476_a(registry.getKeys().stream(), builder);
   }
 
   @Override
-  public List<String> getExamples () {
+  public List<String> getExamples() {
     return examples;
   }
 }

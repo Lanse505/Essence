@@ -34,10 +34,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
-public interface IModifiedTool extends IModified<ItemStack> {
-  ActionResultType onItemUseModified (ItemUseContext context, boolean isRecursive);
+public interface IModifiedTool extends IModified {
 
-  default int getMaxDamageFromModifiers (ItemStack stack, EssenceToolTiers tier) {
+  ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive);
+
+  default int getMaxDamageFromModifiers(ItemStack stack, EssenceToolTiers tier) {
     return stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemCoreModifier)
             .map(instance -> {
@@ -46,7 +47,7 @@ public interface IModifiedTool extends IModified<ItemStack> {
             }).reduce(0, Integer::sum)).orElse(tier.getMaxUses());
   }
 
-  default float getDestroySpeedFromModifiers (float baseDestroySpeed, ItemStack stack) {
+  default float getDestroySpeedFromModifiers(float baseDestroySpeed, ItemStack stack) {
     return stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemCoreModifier)
             .map(instance -> {
@@ -55,7 +56,7 @@ public interface IModifiedTool extends IModified<ItemStack> {
             }).reduce(0f, Float::sum)).orElse(baseDestroySpeed);
   }
 
-  default int getHarvestLevelFromModifiers (int baseHarvestLevel, ItemStack stack) {
+  default int getHarvestLevelFromModifiers(int baseHarvestLevel, ItemStack stack) {
     return stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemCoreModifier)
             .map(instance -> {
@@ -64,19 +65,19 @@ public interface IModifiedTool extends IModified<ItemStack> {
             }).reduce(0, Integer::sum)).orElse(baseHarvestLevel);
   }
 
-  default void hitEntityFromModifiers (ItemStack stack, LivingEntity entity, LivingEntity player) {
+  default void hitEntityFromModifiers(ItemStack stack, LivingEntity entity, LivingEntity player) {
     stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemInteractionCoreModifier)
             .forEach(instance -> ((ItemInteractionCoreModifier) instance.getModifier()).onHitEntity(stack, entity, player, instance)));
   }
 
-  default void onBlockDestroyedFromModifiers (ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+  default void onBlockDestroyedFromModifiers(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
     stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemInteractionCoreModifier)
             .forEach(instance -> ((ItemInteractionCoreModifier) instance.getModifier()).onBlockDestroyed(stack, world, state, pos, miner, instance)));
   }
 
-  default Optional<ActionResultType> onItemUseFromModifiers (ItemUseContext context) {
+  default Optional<ActionResultType> onItemUseFromModifiers(ItemUseContext context) {
     return context.getItem().getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof ItemInteractionCoreModifier)
             .map(instance -> ((ItemInteractionCoreModifier) instance.getModifier()).onItemUse(context, instance))
@@ -84,18 +85,18 @@ public interface IModifiedTool extends IModified<ItemStack> {
             .findFirst()).orElse(Optional.of(ActionResultType.PASS));
   }
 
-  default void inventoryTickFromModifiers (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
+  default void inventoryTickFromModifiers(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem) {
     LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     EssenceEnchantmentHelper.checkEnchantmentsForRemoval(stack, holderLazyOptional);
     holderLazyOptional.ifPresent(holder -> {
-      List<ModifierInstance<ItemStack>> list = holder.getModifierInstances();
+      List<ModifierInstance> list = holder.getModifierInstances();
       list.stream()
               .filter(instance -> instance.getModifier() instanceof ItemInteractionCoreModifier)
               .forEach(instance -> ((ItemInteractionCoreModifier) instance.getModifier()).onInventoryTick(stack, world, entity, inventorySlot, isCurrentItem, instance));
     });
   }
 
-  default Multimap<Attribute, AttributeModifier> getAttributeModifiersFromModifiers (Multimap<Attribute, AttributeModifier> baseAttributes, EquipmentSlotType slot, ItemStack stack) {
+  default Multimap<Attribute, AttributeModifier> getAttributeModifiersFromModifiers(Multimap<Attribute, AttributeModifier> baseAttributes, EquipmentSlotType slot, ItemStack stack) {
     if (slot == EquipmentSlotType.MAINHAND) {
       stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> holder.getModifierInstances().stream()
               .filter(instance -> instance.getModifier() instanceof ItemAttributeModifier)
@@ -105,7 +106,7 @@ public interface IModifiedTool extends IModified<ItemStack> {
     return baseAttributes;
   }
 
-  default void addInformationFromModifiers (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
+  default void addInformationFromModifiers(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
     int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
     int maxModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getMaxModifiers() : 0;
     list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
@@ -124,8 +125,4 @@ public interface IModifiedTool extends IModified<ItemStack> {
     }
   }
 
-  @Override
-  default Class<ItemStack> getType () {
-    return ItemStack.class;
-  }
 }

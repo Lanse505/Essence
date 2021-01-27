@@ -13,23 +13,27 @@ import net.minecraft.world.World;
 
 public class SilkTouchModifier extends ItemEnchantmentCoreModifier {
 
+  public SilkTouchModifier() {
+    super();
+  }
+
   @Override
-  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+  public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
     EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
   }
 
   @Override
-  public Enchantment getLinkedEnchantment (ItemStack stack) {
+  public Enchantment getLinkedEnchantment(ItemStack stack) {
     return Enchantments.SILK_TOUCH;
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof LuckModifier);
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return object.getItem() instanceof EssencePickaxe;
   }
 

@@ -21,12 +21,12 @@ import net.minecraftforge.common.util.Constants;
 public class TabletOfMuffledSoundsItem extends TabletItem {
 
   @Override
-  public boolean showDurabilityBar (ItemStack stack) {
+  public boolean showDurabilityBar(ItemStack stack) {
     return false;
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick (World world, PlayerEntity player, Hand hand) {
+  public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
     ItemStack stack = player.getHeldItem(hand);
     if (EssenceKeyHandler.CYCLING.isKeyDown()) {
       toggle(player, stack);
@@ -36,7 +36,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     return ActionResult.resultSuccess(stack);
   }
 
-  public boolean shouldMuffleSound (ItemStack stack, ResourceLocation sound) {
+  public boolean shouldMuffleSound(ItemStack stack, ResourceLocation sound) {
     if (!stack.hasTag()) {
       return false;
     }
@@ -60,7 +60,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     return isWhiteList;
   }
 
-  public void toggleWhiteList (ItemStack stack) {
+  public void toggleWhiteList(ItemStack stack) {
     boolean isWhiteList = false;
     if (stack.hasTag()) {
       CompoundNBT compound = stack.getTag();
@@ -80,7 +80,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     }
   }
 
-  public void mute (ItemStack stack, ResourceLocation sound) {
+  public void mute(ItemStack stack, ResourceLocation sound) {
     CompoundNBT compound = stack.hasTag() ? stack.getTag() : new CompoundNBT();
     if (compound == null) {
       return;
@@ -98,7 +98,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     stack.setTag(compound);
   }
 
-  public void unmute (ItemStack stack, ResourceLocation sound) {
+  public void unmute(ItemStack stack, ResourceLocation sound) {
     if (stack.hasTag()) {
       CompoundNBT compound = stack.getTag();
       if (compound != null && compound.contains("sounds")) {
@@ -117,7 +117,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     }
   }
 
-  private boolean hasSound (ListNBT tags, ResourceLocation check) {
+  private boolean hasSound(ListNBT tags, ResourceLocation check) {
     for (int i = 0; i < tags.size(); ++i) {
       CompoundNBT s = tags.getCompound(i);
       String recorded = s.getString("sound");
@@ -128,7 +128,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     return false;
   }
 
-  private boolean isDisabled (ItemStack stack) {
+  private boolean isDisabled(ItemStack stack) {
     if (stack.hasTag()) {
       CompoundNBT compound = stack.getTag();
       return compound.getBoolean("toggled");
@@ -136,7 +136,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     return false;
   }
 
-  private void toggle (PlayerEntity playerIn, ItemStack stack) {
+  private void toggle(PlayerEntity playerIn, ItemStack stack) {
     if (stack.hasTag()) {
       CompoundNBT compound = stack.getTag();
       if (compound != null && (compound.contains("toggled") || compound.contains("toggled") && compound.getBoolean("toggled"))) {
@@ -157,7 +157,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
   }
 
   @Override
-  public void addInformation (ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     tooltip.add(new TranslationTextComponent("item.sound_muffler_bauble.tooltip.header"));
     if (stack.hasTag()) {
       CompoundNBT compound = stack.getTag();

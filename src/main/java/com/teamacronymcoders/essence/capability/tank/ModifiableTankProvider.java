@@ -20,12 +20,12 @@ public class ModifiableTankProvider implements ICapabilityProvider, ICapabilityS
   private ModifiableTank tank;
   private final LazyOptional<ModifiableTank> optional = LazyOptional.of(() -> tank);
 
-  public ModifiableTankProvider (ItemStack stack, Fluid fluid) {
+  public ModifiableTankProvider(ItemStack stack, Fluid fluid) {
     this.stack = stack;
     tank = new ModifiableTank(16000, stack, fluidStack -> fluidStack.getFluid().isEquivalentTo(fluid));
   }
 
-  public ModifiableTankProvider (ItemStack stack, CompoundNBT nbt, Fluid fluid) {
+  public ModifiableTankProvider(ItemStack stack, CompoundNBT nbt, Fluid fluid) {
     this.stack = stack;
     tank = new ModifiableTank(16000, stack, fluidStack -> fluidStack.getFluid().isEquivalentTo(fluid));
     CompoundNBT stackNBT = stack.getOrCreateTag();
@@ -35,12 +35,12 @@ public class ModifiableTankProvider implements ICapabilityProvider, ICapabilityS
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     return cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY ? optional.cast() : LazyOptional.empty();
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     if (stack.getTag() != null && stack.getTag().contains(MODIFIABLE_TANK)) {
       return tank.writeToNBT(stack.getTag().getCompound(MODIFIABLE_TANK));
     }
@@ -48,7 +48,7 @@ public class ModifiableTankProvider implements ICapabilityProvider, ICapabilityS
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
     tank.readFromNBT(nbt);
   }
 }

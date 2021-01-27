@@ -36,22 +36,22 @@ public class EssenceKeyHandler extends KeyHandler {
           .addBinding(EXTENDED_INFORMATION, false)
           .addBinding(CYCLING, false);
 
-  public EssenceKeyHandler () {
+  public EssenceKeyHandler() {
     super(BINDINGS);
     ClientRegistry.registerKeyBinding(EXTENDED_INFORMATION);
     ClientRegistry.registerKeyBinding(CYCLING);
     MinecraftForge.EVENT_BUS.addListener(this::onTick);
   }
 
-  private void onTick (InputEvent.KeyInputEvent event) {
+  private void onTick(InputEvent.KeyInputEvent event) {
     keyTick();
   }
 
   @Override
-  public void keyDown (KeyBinding kb, boolean isRepeat) {
+  public void keyDown(KeyBinding kb, boolean isRepeat) {
   }
 
   @Override
-  public void keyUp (KeyBinding kb) {
+  public void keyUp(KeyBinding kb) {
   }
 }

@@ -22,17 +22,17 @@ public class ModifierPredicate {
   private final ItemPredicate itemPredicate;
   private final SerializableModifierPredicateObject[] modifiers;
 
-  public ModifierPredicate () {
+  public ModifierPredicate() {
     this.itemPredicate = null;
     this.modifiers = null;
   }
 
-  public ModifierPredicate (@Nullable ItemPredicate itemPredicate, SerializableModifierPredicateObject... modifiers) {
+  public ModifierPredicate(@Nullable ItemPredicate itemPredicate, SerializableModifierPredicateObject... modifiers) {
     this.itemPredicate = itemPredicate;
     this.modifiers = SerializableModifierPredicateObject.getNewArray(modifiers);
   }
 
-  public static ModifierPredicate deserializer (@Nullable JsonElement element) {
+  public static ModifierPredicate deserializer(@Nullable JsonElement element) {
     if (element != null && !element.isJsonNull()) {
       JsonObject object = element.getAsJsonObject();
       ItemPredicate itemPredicate = ItemPredicate.deserialize(object.get("itemPredicate"));
@@ -46,11 +46,11 @@ public class ModifierPredicate {
     return ANY;
   }
 
-  public boolean test (ItemStack stack) {
+  public boolean test(ItemStack stack) {
     return (this.itemPredicate != null && this.itemPredicate.test(stack)) && Arrays.stream(this.modifiers).allMatch(object -> object.test(stack));
   }
 
-  public JsonElement serialize () {
+  public JsonElement serialize() {
     if (this == ANY) {
       return JsonNull.INSTANCE;
     } else {

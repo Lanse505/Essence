@@ -29,13 +29,13 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
 
   private final CascadingType type;
 
-  public CascadingModifier (CascadingType type) {
+  public CascadingModifier(CascadingType type) {
     super();
     this.type = type;
   }
 
   @Override
-  public boolean onBlockDestroyed (ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance<ItemStack> instance) {
+  public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
     if (state.getBlock().isIn(this.type.getBlockTag())) {
       if (miner instanceof PlayerEntity) {
         PlayerEntity player = (PlayerEntity) miner;
@@ -80,22 +80,23 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public String getTranslationName () {
+  public String getTranslationName() {
     return "modifier.essence.cascading";
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
-    return object.getItem().isIn(this.type.getToolTag());
+  public boolean canApplyOnObject(ItemStack stack) {
+    return stack.getItem().isIn(this.type.getToolTag());
+  }
+
+
+  @Override
+  public boolean canApplyTogether(IModifier modifier) {
+    return !(modifier instanceof CascadingModifier) && !(modifier instanceof ExpanderModifier);
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
-    return !(modifier instanceof CascadingModifier && !(((CascadingModifier) modifier).getType().equals(this.type))) && !(modifier instanceof ExpanderModifier);
-  }
-
-  @Override
-  public ITextComponent getTextComponentName (int level) {
+  public ITextComponent getTextComponentName(int level) {
     if (level == -1) {
       return new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("essence.cascading.type." + this.type.getName()));
     }
@@ -103,13 +104,13 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public List<ITextComponent> getRenderedText (ModifierInstance<ItemStack> instance) {
+  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
     List<ITextComponent> textComponents = new ArrayList<>();
     textComponents.add(new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("essence.cascading.type." + this.type.getName()).mergeStyle(this.type.getFormatting())).mergeStyle(TextFormatting.GRAY)));
     return textComponents;
   }
 
-  public CascadingType getCascadingType () {
+  public CascadingType getCascadingType() {
     return this.type;
   }
 }

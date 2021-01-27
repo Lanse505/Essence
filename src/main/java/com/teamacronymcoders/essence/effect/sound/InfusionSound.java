@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.effect.sound;
 
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
-import com.teamacronymcoders.essence.util.registration.EssenceSoundRegistration;
+import com.teamacronymcoders.essence.registrate.EssenceSoundRegistrate;
 import net.minecraft.client.audio.TickableSound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -13,11 +13,11 @@ public class InfusionSound extends TickableSound {
 
   private final InfusionTableTile tableTile;
 
-  public InfusionSound (InfusionTableTile tableTile) {
-    this(EssenceSoundRegistration.INFUSION_SOUND.get(), SoundCategory.BLOCKS, 1.0f, 1.0f, tableTile);
+  public InfusionSound(InfusionTableTile tableTile) {
+    this(EssenceSoundRegistrate.INFUSION_SOUND.get(), SoundCategory.BLOCKS, 1.0f, 1.0f, tableTile);
   }
 
-  public InfusionSound (SoundEvent soundIn, SoundCategory categoryIn, float volume, float pitch, InfusionTableTile tableTile) {
+  public InfusionSound(SoundEvent soundIn, SoundCategory categoryIn, float volume, float pitch, InfusionTableTile tableTile) {
     super(soundIn, categoryIn);
     this.volume = volume;
     this.pitch = pitch;
@@ -30,7 +30,7 @@ public class InfusionSound extends TickableSound {
   }
 
   @Override
-  public void tick () {
+  public void tick() {
     if (!tableTile.getWorking()) {
       this.finishPlaying();
     }

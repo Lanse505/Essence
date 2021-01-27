@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 public class EssenceServerProxy extends EssenceCommonProxy {
 
   @Override
-  public PlayerEntity getPlayer (Supplier<Context> context) {
+  public PlayerEntity getPlayer(Supplier<Context> context) {
     return null;
   }
 }

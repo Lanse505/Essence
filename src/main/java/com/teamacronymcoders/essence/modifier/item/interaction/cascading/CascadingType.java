@@ -25,7 +25,7 @@ public enum CascadingType {
   private final Supplier<Integer> blockLimit;
   private final Supplier<Integer> searchLimit;
 
-  CascadingType (int id, String name, ITag.INamedTag<Item> toolTag, ITag.INamedTag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
+  CascadingType(int id, String name, ITag.INamedTag<Item> toolTag, ITag.INamedTag<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, TextFormatting... formatting) {
     this.id = id;
     this.name = name;
     this.toolTag = toolTag;
@@ -35,7 +35,7 @@ public enum CascadingType {
     this.formatting = formatting;
   }
 
-  public static CascadingType byID (int id) {
+  public static CascadingType byID(int id) {
     if (id >= 0 && id < VALUES.length) {
       return VALUES[id];
     } else {
@@ -43,35 +43,35 @@ public enum CascadingType {
     }
   }
 
-  public static CascadingType byName (String name) {
+  public static CascadingType byName(String name) {
     return Arrays.stream(VALUES).filter(enumToCheck -> enumToCheck.name.equals(name)).findAny().orElse(NONE);
   }
 
-  public int getId () {
+  public int getId() {
     return id;
   }
 
-  public String getName () {
+  public String getName() {
     return name;
   }
 
-  public ITag.INamedTag<Item> getToolTag () {
+  public ITag.INamedTag<Item> getToolTag() {
     return toolTag;
   }
 
-  public ITag.INamedTag<Block> getBlockTag () {
+  public ITag.INamedTag<Block> getBlockTag() {
     return blockTag;
   }
 
-  public Supplier<Integer> getBlockLimit () {
+  public Supplier<Integer> getBlockLimit() {
     return blockLimit;
   }
 
-  public Supplier<Integer> getSearchLimit () {
+  public Supplier<Integer> getSearchLimit() {
     return searchLimit;
   }
 
-  public TextFormatting[] getFormatting () {
+  public TextFormatting[] getFormatting() {
     return formatting;
   }
 }

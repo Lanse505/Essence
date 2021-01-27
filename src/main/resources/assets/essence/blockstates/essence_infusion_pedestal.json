@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "essence:block/essence_infusion_pedestal"}
+    "": {
+      "model": "essence:block/essence_infusion_pedestal"
+    }
   }
 }

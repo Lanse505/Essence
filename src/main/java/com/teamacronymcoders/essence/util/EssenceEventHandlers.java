@@ -6,7 +6,8 @@ import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
 import com.teamacronymcoders.essence.api.modified.IModifiedBlock;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.recipe.infusion.InfusionTableSerializableRecipe;
+import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeConversion;
+import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
@@ -21,6 +22,8 @@ import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceFluidRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.serializable.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
@@ -69,13 +72,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import static com.teamacronymcoders.essence.Essence.MOD_ID;
+import static com.teamacronymcoders.essence.Essence.*;
 
 public class EssenceEventHandlers {
 
-  public static EssenceEventHandlers handlers = new EssenceEventHandlers();
-
-  public static void setup () {
+  public static void setup() {
     setupRegistries();
     setupModifierCapabilities();
     setupKnowledgeCapabilities();
@@ -84,14 +85,15 @@ public class EssenceEventHandlers {
   }
 
   // Registration Handlers
-  private static void setupRegistries () {
+  private static void setupRegistries() {
     EventManager.modGeneric(RegistryEvent.Register.class, IRecipeSerializer.class)
             .process(register -> {
               ((RegistryEvent.Register) register).getRegistry().registerAll(
                       AxeStrippingRecipe.SERIALIZER,
                       HoeTillingRecipe.SERIALIZER,
-                      InfusionTableSerializableRecipe.SERIALIZER,
-                      ShovelPathingRecipe.SERIALIZER
+                      ShovelPathingRecipe.SERIALIZER,
+                      InfusionRecipeConversion.SERIALIZER,
+                      InfusionRecipeModifier.SERIALIZER
               );
             }).subscribe();
     EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
@@ -109,7 +111,7 @@ public class EssenceEventHandlers {
 //            }).subscribe();
   }
 
-  private static void setupModifierCapabilities () {
+  private static void setupModifierCapabilities() {
     EventManager.forgeGeneric(AttachCapabilitiesEvent.class, ItemStack.class)
             .process(attach -> {
               if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedTool) {
@@ -124,7 +126,7 @@ public class EssenceEventHandlers {
             }).subscribe();
   }
 
-  private static void setupKnowledgeCapabilities () {
+  private static void setupKnowledgeCapabilities() {
     EventManager.forgeGeneric(AttachCapabilitiesEvent.class, World.class)
             .filter(attach -> ((AttachCapabilitiesEvent) attach).getObject() instanceof World && ((World) ((AttachCapabilitiesEvent) attach).getObject()).getDimensionKey().getRegistryName().compareTo(DimensionType.OVERWORLD_ID) > 0)
             .process(attach -> {
@@ -140,16 +142,37 @@ public class EssenceEventHandlers {
   }
 
   // Server Handlers
-  public static void setupServer () {
+  public static void setupServer() {
     EventManager.forge(RegisterCommandsEvent.class)
             .process(register -> EssenceCommands.registerCommands(register.getDispatcher()))
             .subscribe();
     EventManager.forge(FMLServerStartingEvent.class)
-            .process(event -> Essence.setupCreativeTabIcons())
+            .process(event -> setupCreativeTabIcons())
             .subscribe();
   }
 
-  public static void setupWorldgen () {
+  public static void setupCreativeTabIcons() {
+    CORE_TAB.addIconStacks(
+            new ItemStack(EssenceFluidRegistrate.ESSENCE.get().getFilledBucket()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LEAVES.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.get()),
+            new ItemStack(EssenceBlockRegistrate.ESSENCE_WOOD_PLANKS.get())
+    );
+
+    TOOL_TAB.addIconStacks(
+            new ItemStack(EssenceItemRegistrate.ESSENCE_AXE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_PICKAXE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SHOVEL.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SWORD.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_HOE.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_OMNITOOL.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_SHEAR.get()),
+            new ItemStack(EssenceItemRegistrate.ESSENCE_BOW.get())
+    );
+  }
+
+  public static void setupWorldgen() {
     // Add Ores to Overworld
     EventManager.forge(BiomeLoadingEvent.class)
             .filter(biome -> {
@@ -205,7 +228,7 @@ public class EssenceEventHandlers {
   }
 
   @OnlyIn(Dist.CLIENT)
-  public static void setupClientEventHandlers () {
+  public static void setupClientEventHandlers() {
     // Atlas Texture Handler
     EventManager.mod(TextureStitchEvent.Pre.class)
             .filter(stitch -> stitch.getMap().getTextureLocation().equals(PlayerContainer.LOCATION_BLOCKS_TEXTURE))

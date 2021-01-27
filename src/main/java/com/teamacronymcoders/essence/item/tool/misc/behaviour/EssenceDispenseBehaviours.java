@@ -3,12 +3,12 @@ package com.teamacronymcoders.essence.item.tool.misc.behaviour;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.entity.impl.GlueBallEntity;
+import com.teamacronymcoders.essence.entity.GlueBallEntity;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
+import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.util.registration.EssenceModifierRegistration;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.block.DispenserBlock;
@@ -25,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IForgeShearable;
 
 public class EssenceDispenseBehaviours {
   public static Map<IItemProvider, IDispenseItemBehavior> dispenserBehaviours = new HashMap<>();
@@ -33,8 +32,8 @@ public class EssenceDispenseBehaviours {
   static {
     dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR.get(), new OptionalDispenseBehavior() {
       @Override
-      protected ItemStack dispenseStack (IBlockSource source, ItemStack stack) {
-        ModifierInstance<?> instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistration.EXPANDER_MODIFIER.get());
+      protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+        ModifierInstance instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistrate.EXPANDER_MODIFIER.get());
         World world = source.getWorld();
         Direction dir = source.getBlockState().get(DispenserBlock.FACING);
         BlockPos sourcePos = source.getBlockPos();
@@ -47,7 +46,7 @@ public class EssenceDispenseBehaviours {
           this.setSuccessful(false);
           EssenceShear shear = (EssenceShear) stack.getItem();
           world.getEntitiesInAABBexcluding(null, new AxisAlignedBB(vec1, vec2),
-                  e -> e instanceof LivingEntity && e instanceof IForgeShearable && !e.isSpectator())
+                  e -> e instanceof LivingEntity && !e.isSpectator())
                   .forEach(e -> {
                     shear.itemInteractionForEntity(stack, null, (LivingEntity) e, Hand.MAIN_HAND);
                     Essence.LOGGER.info("Attempted to Shear at " + e.getPosition().toString());
@@ -58,13 +57,13 @@ public class EssenceDispenseBehaviours {
     });
     dispenserBehaviours.put(EssenceItemRegistrate.GLUE_BALL_ITEM.get(), new ProjectileDispenseBehavior() {
       @Override
-      protected ProjectileEntity getProjectileEntity (World worldIn, IPosition position, ItemStack stackIn) {
+      protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
         return stackIn.getItem() instanceof GlueBallItem ? Util.make(new GlueBallEntity(worldIn, position.getX(), position.getY(), position.getZ()), glueBallEntity -> glueBallEntity.setItem(stackIn)) : null;
       }
     });
   }
 
-  public static void init () {
+  public static void init() {
     dispenserBehaviours.forEach(DispenserBlock::registerDispenseBehavior);
   }
 }

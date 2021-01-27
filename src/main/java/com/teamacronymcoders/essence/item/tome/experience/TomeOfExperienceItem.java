@@ -44,7 +44,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
   private int freeModifiers;
   private int additionalModifiers;
 
-  public TomeOfExperienceItem (Properties properties) {
+  public TomeOfExperienceItem(Properties properties) {
     mode = ExperienceModeEnum.FILL;
     this.baseModifiers = 3;
     this.freeModifiers = 3;
@@ -53,7 +53,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
 
 
   @Override
-  public void addInformation (ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (!EssenceInformationHelper.isSneakKeyDown()) {
       tooltip.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, (baseModifiers + additionalModifiers)))).mergeStyle(TextFormatting.GRAY));
@@ -75,7 +75,7 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
   }
 
   @Override
-  public ActionResultType onItemUse (ItemUseContext context) {
+  public ActionResultType onItemUse(ItemUseContext context) {
     if (context.getWorld().isRemote()) {
       return ActionResultType.SUCCESS;
     }
@@ -139,30 +139,30 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
     if (stack != null && !stack.isEmpty() && nbt != null) {
       return new ExperienceTomeProvider(stack, EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid(), nbt);
     }
     return new ExperienceTomeProvider(stack, EssenceFluidRegistrate.EXPERIENCE.get().getStillFluid());
   }
 
-  public ExperienceModeEnum getMode () {
+  public ExperienceModeEnum getMode() {
     return mode;
   }
 
   @Override
-  public void addModifierWithoutIncreasingAdditional (int increase) {
+  public void addModifierWithoutIncreasingAdditional(int increase) {
     freeModifiers += increase;
   }
 
   @Override
-  public void increaseFreeModifiers (int increase) {
+  public void increaseFreeModifiers(int increase) {
     freeModifiers += increase;
     additionalModifiers += increase;
   }
 
   @Override
-  public boolean decreaseFreeModifiers (int decrease) {
+  public boolean decreaseFreeModifiers(int decrease) {
     if (freeModifiers - decrease < 0) {
       return false;
     }
@@ -171,37 +171,32 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return freeModifiers;
   }
 
   @Override
-  public int getMaxModifiers () {
+  public int getMaxModifiers() {
     return baseModifiers + additionalModifiers;
   }
 
   @Override
-  public boolean recheck (ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+  public boolean recheck(List<ModifierInstance> modifierInstances) {
     int cmc = 0;
-    for (ModifierInstance<ItemStack> instance : modifierInstances) {
+    for (ModifierInstance instance : modifierInstances) {
       if (instance.getModifier() instanceof ItemCoreModifier) {
-        cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+        cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
       }
     }
     return cmc <= baseModifiers + additionalModifiers;
   }
 
-  @Override
-  public Class<ItemStack> getType () {
-    return ItemStack.class;
-  }
-
-  public void setMode (ExperienceModeEnum mode) {
+  public void setMode(ExperienceModeEnum mode) {
     this.mode = mode;
   }
 
   @Override
-  public void handlePacketData (IWorld world, ItemStack stack, PacketBuffer dataStream) {
+  public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer dataStream) {
     if (!world.isRemote()) {
       setMode(dataStream.readEnumValue(ExperienceModeEnum.class));
     }

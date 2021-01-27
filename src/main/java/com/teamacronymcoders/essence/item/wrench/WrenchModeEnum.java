@@ -8,11 +8,11 @@ public enum WrenchModeEnum {
   public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[] {SERIALIZE, ROTATE, TRIGGER};
   private final String localeName;
 
-  WrenchModeEnum (String localeName) {
+  WrenchModeEnum(String localeName) {
     this.localeName = localeName;
   }
 
-  public static WrenchModeEnum cycleMode (int id) {
+  public static WrenchModeEnum cycleMode(int id) {
     if (id == 0) {
       return VALUES[1];
     } else if (id == 1) {
@@ -22,7 +22,7 @@ public enum WrenchModeEnum {
     }
   }
 
-  public String getLocaleName () {
+  public String getLocaleName() {
     return localeName;
   }
 

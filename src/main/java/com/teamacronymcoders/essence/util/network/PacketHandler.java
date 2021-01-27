@@ -35,7 +35,7 @@ public class PacketHandler {
 
   private int index = 0;
 
-  private static String getProtocolVersion () {
+  private static String getProtocolVersion() {
     return Essence.instance == null ? "999.999.999" : Essence.instance.versionNumber;
   }
 
@@ -45,7 +45,7 @@ public class PacketHandler {
    * @param dataValues - an Object[] of data to encode
    * @param output     - the output stream to write to
    */
-  public static void encode (Object[] dataValues, PacketBuffer output) {
+  public static void encode(Object[] dataValues, PacketBuffer output) {
     for (Object data : dataValues) {
       if (data instanceof Byte) {
         output.writeByte((Byte) data);
@@ -93,25 +93,25 @@ public class PacketHandler {
     }
   }
 
-  public static void log (String log) {
+  public static void log(String log) {
     if (EssenceGeneralConfig.getInstance().getEnableDebugLogging().get()) {
       Essence.LOGGER.info(log);
     }
   }
 
-  public static PlayerEntity getPlayer (Supplier<NetworkEvent.Context> context) {
+  public static PlayerEntity getPlayer(Supplier<NetworkEvent.Context> context) {
     return Essence.proxy.getPlayer(context);
   }
 
-  public void init () {
+  public void init() {
     registerMessage(PacketItemStack.class, PacketItemStack::encode, PacketItemStack::decode, PacketItemStack::handle);
   }
 
-  private <MSG> void registerMessage (Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
+  private <MSG> void registerMessage(Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
     registerMessage(index++, type, encoder, decoder, consumer);
   }
 
-  public <MSG> void registerMessage (int id, Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
+  public <MSG> void registerMessage(int id, Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
     handler.registerMessage(id, type, encoder, decoder, consumer);
   }
 
@@ -121,7 +121,7 @@ public class PacketHandler {
    * @param message - the message to send
    * @param player  - the player to send it to
    */
-  public <MSG> void sendTo (MSG message, ServerPlayerEntity player) {
+  public <MSG> void sendTo(MSG message, ServerPlayerEntity player) {
     handler.sendTo(message, player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
   }
 
@@ -130,7 +130,7 @@ public class PacketHandler {
    *
    * @param message - the message to send
    */
-  public <MSG> void sendToServer (MSG message) {
+  public <MSG> void sendToServer(MSG message) {
     handler.sendToServer(message);
   }
 

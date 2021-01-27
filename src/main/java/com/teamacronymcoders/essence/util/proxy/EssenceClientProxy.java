@@ -8,7 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class EssenceClientProxy extends EssenceCommonProxy {
   @Override
-  public PlayerEntity getPlayer (Supplier<NetworkEvent.Context> context) {
+  public PlayerEntity getPlayer(Supplier<NetworkEvent.Context> context) {
     if (context.get().getDirection() == NetworkDirection.PLAY_TO_SERVER || context.get().getDirection() == NetworkDirection.LOGIN_TO_SERVER) {
       return context.get().getSender();
     }

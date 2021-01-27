@@ -5,7 +5,7 @@ import net.minecraft.data.DataGenerator;
 
 public class EssenceRecipeProvider {
 
-  public static void addRecipeProviders (DataGenerator generator) {
+  public static void addRecipeProviders(DataGenerator generator) {
     generator.addProvider(new EssenceSerializableProvider(generator));
   }
 }

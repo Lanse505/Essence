@@ -20,33 +20,33 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
 
   private final StrengthenedType type;
 
-  public StrengthenedModifier (StrengthenedType type) {
+  public StrengthenedModifier(StrengthenedType type) {
     super(5);
     this.type = type;
   }
 
   @Override
-  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+  public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
     EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
   }
 
   @Override
-  public Enchantment getLinkedEnchantment (ItemStack stack) {
+  public Enchantment getLinkedEnchantment(ItemStack stack) {
     return this.type.getEnchantment();
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof StrengthenedModifier);
   }
 
   @Override
-  public String getTranslationName () {
+  public String getTranslationName() {
     return "modifier.essence.strengthened";
   }
 
   @Override
-  public ITextComponent getTextComponentName (int level) {
+  public ITextComponent getTextComponentName(int level) {
     if (level == -1) {
       return new TranslationTextComponent(getTranslationName() + ".cleaned", new TranslationTextComponent("essence.strengthened.type." + this.type.getName()));
     }
@@ -54,13 +54,13 @@ public class StrengthenedModifier extends ItemEnchantmentCoreModifier {
   }
 
   @Override
-  public List<ITextComponent> getRenderedText (ModifierInstance<ItemStack> instance) {
+  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
     List<ITextComponent> textComponents = new ArrayList<>();
     textComponents.add(new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslationTextComponent("essence.strengthened.type." + this.type.getName()).mergeStyle(this.type.getTextFormatting())).mergeStyle(TextFormatting.GRAY)));
     return textComponents;
   }
 
-  public StrengthenedType getStrengthenedType () {
+  public StrengthenedType getStrengthenedType() {
     return type;
   }
 }

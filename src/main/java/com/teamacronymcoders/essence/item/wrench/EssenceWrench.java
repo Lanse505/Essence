@@ -59,13 +59,13 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   private int freeModifiers;
   private final int additionalModifiers = 0;
 
-  public EssenceWrench (Properties properties) {
+  public EssenceWrench(Properties properties) {
     super(properties);
     this.mode = WrenchModeEnum.SERIALIZE;
     this.freeModifiers = 1;
   }
 
-  private static <T extends Comparable<T>> String getStatePropertyValue (BlockState state, Property<T> property) {
+  private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, Property<T> property) {
     T prop = state.get(property);
     return property.getName(prop);
   }
@@ -73,13 +73,13 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   @Override
   @ParametersAreNonnullByDefault
   @MethodsReturnNonnullByDefault
-  public ActionResultType itemInteractionForEntity (ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+  public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
     if (target.getEntityWorld().isRemote) {
       return ActionResultType.FAIL;
     }
     LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     return lazy.isPresent() ? lazy.map(holder -> {
-      Optional<ModifierInstance<ItemStack>> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
+      Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
       ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
       boolean successful;
       if (optional.isPresent()) {
@@ -96,7 +96,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   }
 
   @Override
-  public ActionResultType onItemUseFirst (ItemStack stack, ItemUseContext context) {
+  public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
     World world = context.getWorld();
     BlockPos pos = context.getPos();
     BlockState state = world.getBlockState(pos);
@@ -109,25 +109,25 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
 
     if (player != null) {
-        if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPushReaction().equals(PushReaction.BLOCK))) {
-          ItemStack drop = new ItemStack(state.getBlock());
-          CompoundNBT stateNBT = new CompoundNBT();
-          state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
-          // Serializes the BlockState
-          drop.setTagInfo("BlockStateTag", stateNBT);
-          // Serializes the TE
-          if (te != null) {
-            drop.setTagInfo("BlockEntityTag", te.serializeNBT());
-          }
-          // Adds the Stats
-          player.addStat(EssenceStats.INSTANCE.SERIALIZED);
-          player.addStat(Stats.ITEM_USED.get(this));
-          // Cleans up the World and Drops the Item
-          world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-          world.addEntity(Util.make(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop), ItemEntity::setDefaultPickupDelay));
-          stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-          return ActionResultType.SUCCESS;
+      if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPushReaction().equals(PushReaction.BLOCK))) {
+        ItemStack drop = new ItemStack(state.getBlock());
+        CompoundNBT stateNBT = new CompoundNBT();
+        state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
+        // Serializes the BlockState
+        drop.setTagInfo("BlockStateTag", stateNBT);
+        // Serializes the TE
+        if (te != null) {
+          drop.setTagInfo("BlockEntityTag", te.serializeNBT());
         }
+        // Adds the Stats
+        player.addStat(EssenceStats.INSTANCE.SERIALIZED);
+        player.addStat(Stats.ITEM_USED.get(this));
+        // Cleans up the World and Drops the Item
+        world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
+        world.addEntity(Util.make(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop), ItemEntity::setDefaultPickupDelay));
+        stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+        return ActionResultType.SUCCESS;
+      }
 
       if (mode == WrenchModeEnum.ROTATE) {
         if (EssenceInformationHelper.isSneakKeyDown()) {
@@ -143,7 +143,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
   @Override
   @ParametersAreNonnullByDefault
-  public void addInformation (ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+  public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
     addInformationFromModifiers(stack, world, list, flag, EssenceItemTiers.ESSENCE);
     list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD).appendString(": ").mergeStyle(TextFormatting.WHITE).append(new TranslationTextComponent(mode.getLocaleName())));
     if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
@@ -154,14 +154,14 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities (ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
     if (nbt != null && !nbt.isEmpty()) {
       return new ItemStackModifierProvider(stack, nbt);
     }
     return new ItemStackModifierProvider(stack);
   }
 
-  public boolean serializeEntity (ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
+  public boolean serializeEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
     if (target.getEntityWorld().isRemote) {
       return false;
     }
@@ -192,46 +192,46 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }).orElse(false);
   }
 
-  public WrenchModeEnum getMode () {
+  public WrenchModeEnum getMode() {
     return mode;
   }
 
-  public void setMode (WrenchModeEnum mode) {
+  public void setMode(WrenchModeEnum mode) {
     this.mode = mode;
   }
 
   @Override
-  public void handlePacketData (IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
+  public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
     if (!world.isRemote()) {
       setMode(packetBuffer.readEnumValue(WrenchModeEnum.class));
     }
   }
 
   @SuppressWarnings("ConstantConditions")
-  public boolean isEntityBlacklisted (String entityID) {
+  public boolean isEntityBlacklisted(String entityID) {
     return EssenceEntityTags.BLACKLIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
   }
 
   @SuppressWarnings("ConstantConditions")
-  public boolean isEntityWhitelisted (String entityID) {
+  public boolean isEntityWhitelisted(String entityID) {
     return EssenceEntityTags.WHITELIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
   }
 
   @Override
-  public ActionResultType onItemUseModified (ItemUseContext context, boolean isRecursive) {
+  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
     return ActionResultType.PASS;
   }
 
   @Override
-  public void addModifierWithoutIncreasingAdditional (int increase) {
+  public void addModifierWithoutIncreasingAdditional(int increase) {
   }
 
   @Override
-  public void increaseFreeModifiers (int increase) {
+  public void increaseFreeModifiers(int increase) {
   }
 
   @Override
-  public boolean decreaseFreeModifiers (int decrease) {
+  public boolean decreaseFreeModifiers(int decrease) {
     if (freeModifiers - decrease < 0) {
       return false;
     }
@@ -240,21 +240,21 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return freeModifiers;
   }
 
   @Override
-  public int getMaxModifiers () {
+  public int getMaxModifiers() {
     return baseModifiers + additionalModifiers;
   }
 
   @Override
-  public boolean recheck (ItemStack object, List<ModifierInstance<ItemStack>> modifierInstances) {
+  public boolean recheck(List<ModifierInstance> modifierInstances) {
     int cmc = 0;
-    for (ModifierInstance<ItemStack> instance : modifierInstances) {
+    for (ModifierInstance instance : modifierInstances) {
       if (instance.getModifier() instanceof ItemCoreModifier) {
-        cmc += instance.getModifier().getModifierCountValue(instance.getLevel(), object);
+        cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
       }
     }
     return cmc <= baseModifiers + additionalModifiers;

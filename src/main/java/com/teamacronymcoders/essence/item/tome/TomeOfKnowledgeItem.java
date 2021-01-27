@@ -10,12 +10,12 @@ public class TomeOfKnowledgeItem extends TomeItem {
 
   private static final String playerUUID = "PLAYER_UUID";
 
-  public TomeOfKnowledgeItem (Properties properties) {
+  public TomeOfKnowledgeItem(Properties properties) {
     super(properties);
   }
 
   @Override
-  public ActionResultType onItemUse (ItemUseContext context) {
+  public ActionResultType onItemUse(ItemUseContext context) {
     ItemStack stack = context.getItem();
     PlayerEntity player = context.getPlayer();
     CompoundNBT compoundNBT = stack.getOrCreateTag();

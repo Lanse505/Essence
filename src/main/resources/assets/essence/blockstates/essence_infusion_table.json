@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "essence:block/essence_infusion_table"}
+    "": {
+      "model": "essence:block/essence_infusion_table"
+    }
   }
 }

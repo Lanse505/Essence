@@ -5,11 +5,11 @@ import net.minecraftforge.fml.DistExecutor.SafeSupplier;
 
 public class EssenceSafeSuppliers {
 
-  public static Supplier<SafeSupplier<EssenceCommonProxy>> getClientProxy () {
+  public static Supplier<SafeSupplier<EssenceCommonProxy>> getClientProxy() {
     return EssenceClientProvider::new;
   }
 
-  public static Supplier<SafeSupplier<EssenceCommonProxy>> getServerProxy () {
+  public static Supplier<SafeSupplier<EssenceCommonProxy>> getServerProxy() {
     return EssenceServerProvider::new;
   }
 }

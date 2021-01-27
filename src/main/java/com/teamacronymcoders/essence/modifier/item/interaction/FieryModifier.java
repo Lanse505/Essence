@@ -14,30 +14,29 @@ import net.minecraft.world.World;
 
 public class FieryModifier extends ItemEnchantmentCoreModifier {
 
-  public FieryModifier () {
-    super(1);
+  public FieryModifier() {
+    super();
   }
 
   @Override
-  //TODO: Figure out why Fiery is broken
-  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+  public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
     if (stack.getItem() instanceof EssenceSword || stack.getItem() instanceof EssenceBow) {
       EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance, 2);
     }
   }
 
   @Override
-  public int getMaxLevel (ItemStack stack) {
+  public int getMaxLevel(ItemStack stack) {
     return (stack.getItem() instanceof EssenceBow || stack.getItem() instanceof EssenceSword) ? 5 : 1;
   }
 
   @Override
-  public Enchantment getLinkedEnchantment (ItemStack stack) {
+  public Enchantment getLinkedEnchantment(ItemStack stack) {
     return stack.getItem() instanceof EssenceBow ? Enchantments.FLAME : Enchantments.FIRE_ASPECT;
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return !(object.getItem() instanceof EssenceHoe);
   }
 

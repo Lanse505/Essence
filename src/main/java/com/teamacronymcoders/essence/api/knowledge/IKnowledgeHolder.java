@@ -7,27 +7,27 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IKnowledgeHolder extends INBTSerializable<CompoundNBT> {
-  void addPlayerUUID (UUID player);
+  void addPlayerUUID(UUID player);
 
-  void addPlayerUUID (PlayerEntity player);
+  void addPlayerUUID(PlayerEntity player);
 
-  void addKnowledge (UUID player, Knowledge<?>... knowledge);
+  void addKnowledge(UUID player, Knowledge... knowledge);
 
-  void addKnowledge (PlayerEntity player, Knowledge<?>... knowledge);
+  void addKnowledge(PlayerEntity player, Knowledge... knowledge);
 
-  void removeKnowledge (UUID player, Knowledge<?>... knowledge);
+  void removeKnowledge(UUID player, Knowledge... knowledge);
 
-  void removeKnowledge (PlayerEntity player, Knowledge<?>... knowledge);
+  void removeKnowledge(PlayerEntity player, Knowledge... knowledge);
 
-  void clearKnowledge (UUID player);
+  void clearKnowledge(UUID player);
 
-  void clearKnowledge (PlayerEntity player);
+  void clearKnowledge(PlayerEntity player);
 
-  List<Knowledge<?>> getKnowledgeAsList (UUID uuid);
+  List<Knowledge> getKnowledgeAsList(UUID uuid);
 
-  List<Knowledge<?>> getKnowledgeAsList (PlayerEntity player);
+  List<Knowledge> getKnowledgeAsList(PlayerEntity player);
 
-  Knowledge<?>[] getKnowledgeAsArray (UUID uuid);
+  Knowledge[] getKnowledgeAsArray(UUID uuid);
 
-  Knowledge<?>[] getKnowledgeAsArray (PlayerEntity player);
+  Knowledge[] getKnowledgeAsArray(PlayerEntity player);
 }

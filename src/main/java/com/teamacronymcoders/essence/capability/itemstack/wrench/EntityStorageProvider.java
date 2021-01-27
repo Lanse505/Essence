@@ -17,13 +17,13 @@ public class EntityStorageProvider implements ICapabilityProvider, ICapabilitySe
   private EntityStorageCapability cap;
   private final LazyOptional<EntityStorageCapability> optional = LazyOptional.of(() -> cap);
 
-  public EntityStorageProvider (ItemStack stack) {
+  public EntityStorageProvider(ItemStack stack) {
     cap = new EntityStorageCapability(stack);
   }
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == EssenceCoreCapability.ENTITY_STORAGE) {
       return optional.cast();
     }
@@ -31,15 +31,15 @@ public class EntityStorageProvider implements ICapabilityProvider, ICapabilitySe
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     return cap.serializeNBT();
   }
 
-  public void deserializeNBT (CompoundNBT nbt, World world) {
+  public void deserializeNBT(CompoundNBT nbt, World world) {
     cap.deserializeNBT(nbt, world);
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
   }
 }

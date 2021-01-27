@@ -13,28 +13,24 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implements IModifier {
+public abstract class Modifier extends ForgeRegistryEntry<Modifier> implements IModifier {
 
-  private final Class<T> type;
   private final int maxLevel;
   private final int minLevel;
 
-  public Modifier (Class<T> type) {
-    this.type = type;
+  public Modifier() {
     this.maxLevel = 1;
     this.minLevel = 0;
   }
 
-  public Modifier (Class<T> type, int maxLevel) {
-    this.type = type;
+  public Modifier(int maxLevel) {
     this.maxLevel = maxLevel;
     this.minLevel = 0;
   }
 
-  public Modifier (Class<T> type, int maxLevel, int minLevel) {
-    this.type = type;
-    this.maxLevel = maxLevel;
+  public Modifier(int minLevel, int maxLevel) {
     this.minLevel = minLevel;
+    this.maxLevel = maxLevel;
   }
 
   /**
@@ -42,7 +38,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
    * @return Returns if the provided Modifier can be applied with this one.
    */
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return true;
   }
 
@@ -50,7 +46,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
    * @return Returns the Translation Key for the Modifier.
    */
   @Nonnull
-  public String getTranslationName () {
+  public String getTranslationName() {
     final ResourceLocation id = this.getRegistryName();
     return "modifier." + id.getNamespace() + "." + id.getPath();
   }
@@ -61,7 +57,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
    * @param level Level of the Modifier
    * @return Returns the formatted TextComponent
    */
-  public ITextComponent getTextComponentName (int level) {
+  public ITextComponent getTextComponentName(int level) {
     if (level == -1) {
       return new TranslationTextComponent(getTranslationName()).mergeStyle(TextFormatting.GRAY);
     }
@@ -74,7 +70,7 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
   /**
    * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
    */
-  public List<ITextComponent> getRenderedText (ModifierInstance<T> instance) {
+  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
     List<ITextComponent> textComponents = new ArrayList<>();
     if (instance == null) {
       return textComponents;
@@ -84,29 +80,24 @@ public abstract class Modifier<T> extends ForgeRegistryEntry<Modifier<?>> implem
   }
 
   @Override
-  public void update (CompoundNBT compoundNBT) {
-  }
+  public void update(CompoundNBT compoundNBT) {}
 
-  public abstract boolean countsTowardsLimit (int level, T object);
+  public abstract boolean countsTowardsLimit(int level);
 
-  public abstract int getModifierCountValue (int level, T object);
+  public abstract int getModifierCountValue(int level);
 
-  public abstract boolean canApplyOnObject (T object);
+  public abstract boolean canApplyOnObject();
 
-
-  public int getMinLevel (T object) {
+  public int getMinLevel() {
     return minLevel;
   }
 
-  public int getMaxLevel (T object) {
+  public int getMaxLevel() {
     return maxLevel;
   }
 
-  public int getLevelInRange (int level, T object) {
-    return Math.max(Math.min(level, this.getMaxLevel(object)), this.getMinLevel(object));
+  public int getLevelInRange(int level) {
+    return Math.max(Math.min(level, this.getMaxLevel()), this.getMinLevel());
   }
 
-  public Class<T> getType () {
-    return type;
-  }
 }

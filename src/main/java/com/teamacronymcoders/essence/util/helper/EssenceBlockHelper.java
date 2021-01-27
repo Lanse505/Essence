@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class EssenceBlockHelper {
 
-  public static ImmutableMap<Property<?>, Comparable<?>> getCommonProperties (BlockState oldState, BlockState newState) {
+  public static ImmutableMap<Property<?>, Comparable<?>> getCommonProperties(BlockState oldState, BlockState newState) {
     ImmutableMap.Builder<Property<?>, Comparable<?>> values = ImmutableMap.builder();
     for (Property<?> property : oldState.getProperties()) {
       if (newState.getProperties().contains(property)) {
@@ -24,7 +24,7 @@ public class EssenceBlockHelper {
     return values.build();
   }
 
-  public static List<BlockPos> findPositions (BlockState state, BlockPos origin, World world, int maxBlocks, int maxRange) {
+  public static List<BlockPos> findPositions(BlockState state, BlockPos origin, World world, int maxBlocks, int maxRange) {
     List<BlockPos> found = new ArrayList<>();
     Set<BlockPos> checked = new ObjectOpenHashSet<>();
     found.add(origin);
@@ -49,7 +49,7 @@ public class EssenceBlockHelper {
     return found;
   }
 
-  public static List<BlockPos> findPositions (BlockState state, BlockPos origin, World world, CascadingType type) {
+  public static List<BlockPos> findPositions(BlockState state, BlockPos origin, World world, CascadingType type) {
     List<BlockPos> found = new ArrayList<>();
     Set<BlockPos> checked = new ObjectOpenHashSet<>();
     found.add(origin);

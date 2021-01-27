@@ -11,7 +11,7 @@ public class EssenceWorldGenTree extends Tree {
 
   @Nullable
   @Override
-  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature (Random random, boolean b) {
+  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
     return random.nextInt(10) >= 8 ? EssenceFeatures.NORMAL_ESSENCE_TREE_FEATURE : EssenceFeatures.FANCY_ESSENCE_TREE_FEATURE;
   }
 

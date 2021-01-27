@@ -16,33 +16,33 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
   private final ItemStack stack;
   private UUID uuid;
 
-  public EntityStorageCapability () {
+  public EntityStorageCapability() {
     stack = ItemStack.EMPTY;
   }
 
-  public EntityStorageCapability (ItemStack stack) {
+  public EntityStorageCapability(ItemStack stack) {
     this.stack = stack;
   }
 
   @Override
-  public void setEntity (LivingEntity entity) {
+  public void setEntity(LivingEntity entity) {
     uuid = entity.getUniqueID();
     SerializableMobRenderer.entityCache.put(uuid, entity);
     this.stack.setTag(serializeNBT(entity));
   }
 
   @Override
-  public LivingEntity getEntity (CompoundNBT nbt, World world) {
+  public LivingEntity getEntity(CompoundNBT nbt, World world) {
     uuid = nbt.getUniqueId("uuid");
     return getEntityFromNBT(nbt, world);
   }
 
   @Override
-  public UUID getUUID () {
+  public UUID getUUID() {
     return uuid;
   }
 
-  public CompoundNBT serializeNBT (LivingEntity entity) {
+  public CompoundNBT serializeNBT(LivingEntity entity) {
     uuid = entity.getUniqueID();
     CompoundNBT nbt = new CompoundNBT();
     nbt.putUniqueId("uuid", uuid);
@@ -53,13 +53,13 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     return new CompoundNBT();
   }
 
   @SuppressWarnings("rawtypes")
   @Nullable
-  public static LivingEntity getEntityFromNBT (CompoundNBT nbt, World world) {
+  public static LivingEntity getEntityFromNBT(CompoundNBT nbt, World world) {
     if (nbt.contains("entity")) {
       EntityType type = EntityType.byKey(nbt.getString("entity")).orElse(null);
       if (type != null) {
@@ -74,7 +74,7 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
     return null;
   }
 
-  public void deserializeNBT (CompoundNBT nbt, World world) {
+  public void deserializeNBT(CompoundNBT nbt, World world) {
     uuid = nbt.getUniqueId("uuid");
     LivingEntity entity = getEntityFromNBT(nbt, world);
     if (entity != null) {
@@ -84,6 +84,6 @@ public class EntityStorageCapability implements IEntityStorage, INBTSerializable
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
   }
 }

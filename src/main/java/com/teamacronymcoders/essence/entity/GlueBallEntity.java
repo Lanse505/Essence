@@ -1,8 +1,8 @@
-package com.teamacronymcoders.essence.entity.impl;
+package com.teamacronymcoders.essence.entity;
 
 import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.util.registration.EssenceParticleTypeRegistration;
+import com.teamacronymcoders.essence.registrate.EssenceParticleRegistrate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,31 +24,31 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class GlueBallEntity extends ProjectileItemEntity {
 
-  public GlueBallEntity (EntityType<? extends GlueBallEntity> type, World world) {
+  public GlueBallEntity(EntityType<? extends GlueBallEntity> type, World world) {
     super(type, world);
   }
 
-  public GlueBallEntity (World worldIn, LivingEntity throwerIn) {
+  public GlueBallEntity(World worldIn, LivingEntity throwerIn) {
     super(EssenceEntityRegistrate.GLUE_BALL.get(), throwerIn, worldIn);
   }
 
-  public GlueBallEntity (World worldIn, double x, double y, double z) {
+  public GlueBallEntity(World worldIn, double x, double y, double z) {
     super(EssenceEntityRegistrate.GLUE_BALL.get(), x, y, z, worldIn);
   }
 
   @Override
-  protected Item getDefaultItem () {
+  protected Item getDefaultItem() {
     return EssenceItemRegistrate.GLUE_BALL_ITEM.get();
   }
 
   @OnlyIn(Dist.CLIENT)
-  private IParticleData makeParticle () {
+  private IParticleData makeParticle() {
     ItemStack itemstack = this.func_213882_k();
-    return (IParticleData) (itemstack.isEmpty() ? EssenceParticleTypeRegistration.GLUE_BALL_PARTICLE.get() : new ItemParticleData(ParticleTypes.ITEM, itemstack));
+    return (IParticleData) (itemstack.isEmpty() ? EssenceParticleRegistrate.GLUE_BALL_PARTICLE.get() : new ItemParticleData(ParticleTypes.ITEM, itemstack));
   }
 
   @OnlyIn(Dist.CLIENT)
-  public void handleStatusUpdate (byte id) {
+  public void handleStatusUpdate(byte id) {
     if (id == 3) {
       IParticleData data = this.makeParticle();
       for (int i = 0; i < 8; ++i) {
@@ -58,7 +58,7 @@ public class GlueBallEntity extends ProjectileItemEntity {
   }
 
   @Override
-  protected void onImpact (RayTraceResult result) {
+  protected void onImpact(RayTraceResult result) {
     if (result.getType() == RayTraceResult.Type.ENTITY) {
       Entity entity = ((EntityRayTraceResult) result).getEntity();
       if (entity instanceof LivingEntity) {
@@ -80,7 +80,7 @@ public class GlueBallEntity extends ProjectileItemEntity {
   }
 
   @Override
-  public IPacket<?> createSpawnPacket () {
+  public IPacket<?> createSpawnPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

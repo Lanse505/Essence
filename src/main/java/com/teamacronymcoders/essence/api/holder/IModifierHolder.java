@@ -8,24 +8,24 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IModifierHolder<T> extends INBTSerializable<ListNBT> {
 
-  boolean addModifierInstance (boolean simulate, T object, ModifierInstance<T>... instance);
+  boolean addModifierInstance(boolean simulate, T object, ModifierInstance... instance);
 
-  boolean removeModifierInstance (boolean simulate, T object, ModifierInstance<T>... instance);
+  boolean removeModifierInstance(boolean simulate, T object, Modifier... modifiers);
 
-  boolean levelUpModifier (boolean simulate, T object, int increase, Modifier<T>... modifiers);
+  boolean levelUpModifier(boolean simulate, int increase, T object, Modifier... modifiers);
 
-  boolean levelUpModifier (boolean simulate, T object, int increase, ModifierInstance<T>... modifiersWithData);
+  boolean levelUpModifier(boolean simulate, int increase, T object, ModifierInstance... modifiersWithData);
 
-  boolean levelDownModifier (boolean simulate, T object, int decrease, Modifier<T>... modifiers);
+  boolean levelDownModifier(boolean simulate, int decrease, T object, Modifier... modifiers);
 
-  boolean levelDownModifier (boolean simulate, T object, int decrease, ModifierInstance<T>... modifiersWithData);
+  boolean levelDownModifier(boolean simulate, int decrease, T object, ModifierInstance... modifiersWithData);
 
-  boolean levelSetModifier (boolean simulate, T object, int level, Modifier<T>... modifiers);
+  boolean levelSetModifier(boolean simulate, int level, T object, Modifier... modifiers);
 
-  boolean levelSetModifier (boolean simulate, T object, int level, ModifierInstance<T>... modifiersWithData);
+  boolean levelSetModifier(boolean simulate, int level, T object, ModifierInstance... modifiersWithData);
 
   @Nonnull
-  List<ModifierInstance<T>> getModifierInstances ();
+  List<ModifierInstance> getModifierInstances();
 
-  void clearModifiers ();
+  void clearModifiers();
 }

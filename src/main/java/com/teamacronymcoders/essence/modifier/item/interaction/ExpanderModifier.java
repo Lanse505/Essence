@@ -31,12 +31,12 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ExpanderModifier extends ItemInteractionCoreModifier {
 
-  public ExpanderModifier () {
+  public ExpanderModifier() {
     super(2);
   }
 
   @Override
-  public ActionResultType onItemUse (ItemUseContext context, ModifierInstance instance) {
+  public ActionResultType onItemUse(ItemUseContext context, ModifierInstance instance) {
     ItemStack stack = context.getItem();
     if (context.getPlayer() != null) {
       PlayerEntity player = context.getPlayer();
@@ -62,7 +62,7 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public boolean onBlockDestroyed (ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+  public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
     Direction dir = world.rayTraceBlocks(new RayTraceContext(miner.getPositionVec(), new Vector3d(pos.getX(), pos.getY(), pos.getZ()), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, miner)).getFace();
     Vector3i vector3i = Direction.getFacingFromAxis(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getDirectionVec();
     BlockPos offset = new BlockPos(new Vector3d(vector3i.getX(), vector3i.getY(), vector3i.getZ()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
@@ -101,22 +101,22 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public float getModifiedEfficiency (ItemStack stack, ModifierInstance instance, float base) {
+  public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
     return (float) -(base * 0.275) * instance.getLevel();
   }
 
   @Override
-  public int getModifierCountValue (int level, ItemStack stack) {
+  public int getModifierCountValue(int level, ItemStack stack) {
     return level;
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof CascadingModifier);
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return !(object.getItem() instanceof EssenceSword || object.getItem() instanceof EssenceBow);
   }
 

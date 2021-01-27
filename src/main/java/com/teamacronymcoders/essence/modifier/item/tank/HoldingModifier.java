@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 
 public class HoldingModifier extends ItemAttributeModifier {
 
-  public HoldingModifier () {
+  public HoldingModifier() {
     super(3);
   }
 
-  public int getTankSizeModifier (int level, int currentCapacity) {
+  public int getTankSizeModifier(int level, int currentCapacity) {
     if (level == 1) {
       return (255532 - currentCapacity) / 2;
     }
@@ -26,12 +26,12 @@ public class HoldingModifier extends ItemAttributeModifier {
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return object.getItem() instanceof IModifiedTank;
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof HoldingModifier);
   }
 }

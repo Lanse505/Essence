@@ -15,12 +15,12 @@ public class BlockModifierProvider implements ICapabilityProvider, ICapabilitySe
   private final BlockModifierHolder modifierHolder = new BlockModifierHolder();
   private final LazyOptional<BlockModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
-  public BlockModifierProvider () {
+  public BlockModifierProvider() {
   }
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == EssenceCoreCapability.BLOCK_MODIFIER_HOLDER) {
       return optional.cast();
     }
@@ -28,12 +28,12 @@ public class BlockModifierProvider implements ICapabilityProvider, ICapabilitySe
   }
 
   @Override
-  public ListNBT serializeNBT () {
+  public ListNBT serializeNBT() {
     return modifierHolder.serializeNBT();
   }
 
   @Override
-  public void deserializeNBT (ListNBT nbt) {
+  public void deserializeNBT(ListNBT nbt) {
     modifierHolder.deserializeNBT(nbt);
   }
 }

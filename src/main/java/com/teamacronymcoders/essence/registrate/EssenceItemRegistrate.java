@@ -16,11 +16,9 @@ import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
 import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +27,6 @@ import java.util.function.Supplier;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -92,7 +89,7 @@ public class EssenceItemRegistrate {
           .register();
 
   // Tools
-    // MISC
+  // MISC
   public static ItemEntry<PortableCrafterItem> PORTABLE_CRAFTER = Essence.ESSENCE_REGISTRATE.object("portable_crafter")
           .item(PortableCrafterItem::new).properties(properties -> properties.maxStackSize(1).group(Essence.TOOL_TAB).rarity(Rarity.RARE))
           .lang("Portable Crafter")
@@ -105,14 +102,14 @@ public class EssenceItemRegistrate {
   public static ItemEntry<SerializedEntityItem> SERIALIZED_ENTITY = Essence.ESSENCE_REGISTRATE.object("serialized_entity")
           .item(SerializedEntityItem::new).properties(properties -> properties.setISTER(() -> SerializableMobRenderer::new).group(Essence.CORE_TAB))
           .lang("Serialized Entity")
-          .setData(ProviderType.ITEM_MODEL, NonNullBiConsumer.noop())
+          .model((context, provider) -> provider.getBuilder(context.getId().getPath()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity"))))
           .register();
   public static ItemEntry<GlueBallItem> GLUE_BALL_ITEM = Essence.ESSENCE_REGISTRATE.object("glue_ball").item(GlueBallItem::new).properties(properties -> properties.group(Essence.CORE_TAB))
           .lang("Ball of Glue")
           .model((context, provider) -> provider.handheld(context))
           .register();
 
-    // Tier 1
+  // Tier 1
   public static ItemEntry<EssenceAxe> ESSENCE_AXE = getTool("essence_axe_", "Essence Axe", EssenceAxe.class, EssenceToolTiers.ESSENCE, axeRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL), new ResourceLocation(Essence.MOD_ID, "essence_axe")), EssenceTags.EssenceItemTags.ESSENCE_AXE);
   public static ItemEntry<EssencePickaxe> ESSENCE_PICKAXE = getTool("essence_pickaxe_", "Essence Pickaxe", EssencePickaxe.class, EssenceToolTiers.ESSENCE, pickaxeRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL), new ResourceLocation(Essence.MOD_ID, "essence_pickaxe")), EssenceTags.EssenceItemTags.ESSENCE_PICKAXE);
   public static ItemEntry<EssenceShovel> ESSENCE_SHOVEL = getTool("essence_shovel_", "Essence Shovel", EssenceShovel.class, EssenceToolTiers.ESSENCE, shovelRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL), new ResourceLocation(Essence.MOD_ID, "essence_shovel")), EssenceTags.EssenceItemTags.ESSENCE_SHOVEL);
@@ -131,7 +128,7 @@ public class EssenceItemRegistrate {
   public static ItemEntry<EssenceOmniTool> ESSENCE_OMNITOOL_EMPOWERED = getTool("essence_omnitool_", "Essence Omni-Tool", EssenceOmniTool.class, EssenceToolTiers.EMPOWERED_ESSENCE, omnitoolRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_AXE_EMPOWERED), () -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_SHOVEL_EMPOWERED), () -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_PICKAXE_EMPOWERED), new ResourceLocation(Essence.MOD_ID, "essence_omnitool_empowered")), EssenceTags.EssenceItemTags.ESSENCE_OMNITOOL_EMPOWERED);
   public static ItemEntry<EssenceShear> ESSENCE_SHEAR_EMPOWERED = getTool("essence_shear_", "Essence Shear", EssenceShear.class, EssenceToolTiers.EMPOWERED_ESSENCE, shearRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_EMPOWERED), new ResourceLocation(Essence.MOD_ID, "essence_shear_empowered")), EssenceTags.EssenceItemTags.ESSENCE_SHEAR_EMPOWERED);
   public static ItemEntry<EssenceBow> ESSENCE_BOW_EMPOWERED = getTool("essence_bow_", "Essence Bow", EssenceBow.class, EssenceToolTiers.EMPOWERED_ESSENCE, bowRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_EMPOWERED), new ResourceLocation(Essence.MOD_ID, "essence_bow_empowered")), EssenceTags.EssenceItemTags.ESSENCE_BOW_EMPOWERED);
-    // Tier 3
+  // Tier 3
   public static ItemEntry<EssenceAxe> ESSENCE_AXE_SUPREME = getTool("essence_axe_", "Essence Axe", EssenceAxe.class, EssenceToolTiers.SUPREME_ESSENCE, axeRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_SUPREME), new ResourceLocation(Essence.MOD_ID, "essence_axe_supreme")), EssenceTags.EssenceItemTags.ESSENCE_AXE_SUPREME);
   public static ItemEntry<EssencePickaxe> ESSENCE_PICKAXE_SUPREME = getTool("essence_pickaxe_", "Essence Pickaxe", EssencePickaxe.class, EssenceToolTiers.SUPREME_ESSENCE, pickaxeRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_SUPREME), new ResourceLocation(Essence.MOD_ID, "essence_pickaxe_supreme")), EssenceTags.EssenceItemTags.ESSENCE_PICKAXE_SUPREME);
   public static ItemEntry<EssenceShovel> ESSENCE_SHOVEL_SUPREME = getTool("essence_shovel_", "Essence Shovel", EssenceShovel.class, EssenceToolTiers.SUPREME_ESSENCE, shovelRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_SUPREME), new ResourceLocation(Essence.MOD_ID, "essence_shovel_supreme")), EssenceTags.EssenceItemTags.ESSENCE_SHOVEL_SUPREME);
@@ -153,67 +150,67 @@ public class EssenceItemRegistrate {
   @SuppressWarnings("unchecked")
   public static <T extends Item> ItemEntry<T> getTool(String name, String lang, Class<T> tool, EssenceToolTiers tier, NonNullBiConsumer<DataGenContext<Item, Item>, RegistrateRecipeProvider> recipeConsumer, ITag.INamedTag<Item>... tags) {
     String tierType = tier == EssenceToolTiers.ESSENCE ? "" : tier.toString().toLowerCase();
-    String entryName = tierType.equals("") ? name.substring(0, name.length() - 1): name + tierType;
+    String entryName = tierType.equals("") ? name.substring(0, name.length() - 1) : name + tierType;
     return (ItemEntry<T>) Essence.ESSENCE_REGISTRATE.object(entryName)
-      .item(properties -> constructorMap.get(tool).apply(properties, tier))
-      .model((context, provider) -> {
-        String id = name.substring(0, name.length() - 1);
-        if (!tool.equals(EssenceBow.class)) {
-          if (tier == EssenceToolTiers.ESSENCE) {
-            provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/" + id));
-          } else {
-            provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/" + id));
-          }
-        } else {
-          if (tier == EssenceToolTiers.ESSENCE) {
-            provider.generated(context)
-                    .texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow"))
-                    .transforms()
-                      .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(-80, 260, -40).translation(-1, -2, 2.5f).scale(0.9f).end()
-                      .transform(ModelBuilder.Perspective.THIRDPERSON_LEFT).rotation(-80, -280, 40).translation(-1, -2, 2.5f).scale(0.9f).end()
-                      .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, -90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f).end()
-                      .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f).end()
-                    .end()
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0")))
-                    .end()
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.65f)
-                      .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1")))
-                    .end()
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.9f)
-                      .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2")))
-                    .end();
-            provider.withExistingParent("essence_bow_pulling_0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0"));
-            provider.withExistingParent("essence_bow_pulling_1", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1"));
-            provider.withExistingParent("essence_bow_pulling_2", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2"));
-          } else {
-            provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_bow"))
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0")))
-                    .end()
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.65f)
-                      .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1")))
-                    .end()
-                    .override()
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
-                      .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.9f)
-                      .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2")))
-                    .end();
-          }
-        }
-      })
-      .lang(lang).tag(tags)
-      .recipe(recipeConsumer)
-      .group(() -> Essence.TOOL_TAB)
-      .register();
+            .item(properties -> constructorMap.get(tool).apply(properties, tier))
+            .model((context, provider) -> {
+              String id = name.substring(0, name.length() - 1);
+              if (!tool.equals(EssenceBow.class)) {
+                if (tier == EssenceToolTiers.ESSENCE) {
+                  provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/" + id));
+                } else {
+                  provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/" + id));
+                }
+              } else {
+                if (tier == EssenceToolTiers.ESSENCE) {
+                  provider.generated(context)
+                          .texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow"))
+                          .transforms()
+                          .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT).rotation(-80, 260, -40).translation(-1, -2, 2.5f).scale(0.9f).end()
+                          .transform(ModelBuilder.Perspective.THIRDPERSON_LEFT).rotation(-80, -280, 40).translation(-1, -2, 2.5f).scale(0.9f).end()
+                          .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT).rotation(0, -90, 25).translation(1.13f, 3.2f, 1.13f).scale(0.68f).end()
+                          .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT).rotation(0, 90, -25).translation(1.13f, 3.2f, 1.13f).scale(0.68f).end()
+                          .end()
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0")))
+                          .end()
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.65f)
+                          .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1")))
+                          .end()
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.9f)
+                          .model(new ModelFile.UncheckedModelFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2")))
+                          .end();
+                  provider.withExistingParent("essence_bow_pulling_0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0"));
+                  provider.withExistingParent("essence_bow_pulling_1", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1"));
+                  provider.withExistingParent("essence_bow_pulling_2", new ResourceLocation(Essence.MOD_ID, "item/essence_bow")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2"));
+                } else {
+                  provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_bow"))
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_0")))
+                          .end()
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.65f)
+                          .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_1")))
+                          .end()
+                          .override()
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pulling"), 1)
+                          .predicate(new ResourceLocation(Essence.MOD_ID, "pull"), 0.9f)
+                          .model(provider.getExistingFile(new ResourceLocation(Essence.MOD_ID, "item/essence_bow_pulling_2")))
+                          .end();
+                }
+              }
+            })
+            .lang(lang).tag(tags)
+            .recipe(recipeConsumer)
+            .group(() -> Essence.TOOL_TAB)
+            .register();
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> axeRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {

@@ -12,7 +12,7 @@ public class EssenceModifierConfig {
   private final EssenceCascadingConfig lumber;
   private final EssenceCascadingConfig vein;
 
-  public EssenceModifierConfig (ForgeConfigSpec.Builder builder) {
+  public EssenceModifierConfig(ForgeConfigSpec.Builder builder) {
     builder.push("Modifiers");
     this.excavation = new EssenceCascadingConfig(builder, "Excavation", 125, 25);
     this.lumber = new EssenceCascadingConfig(builder, "Lumber", 125, 75);
@@ -21,29 +21,29 @@ public class EssenceModifierConfig {
     this.spec = builder.build();
   }
 
-  public static ForgeConfigSpec initialize () {
+  public static ForgeConfigSpec initialize() {
     EssenceModifierConfig config = new EssenceModifierConfig(new ForgeConfigSpec.Builder());
     instance = config;
     return config.getSpec();
   }
 
-  public static EssenceModifierConfig getInstance () {
+  public static EssenceModifierConfig getInstance() {
     return instance;
   }
 
-  public ForgeConfigSpec getSpec () {
+  public ForgeConfigSpec getSpec() {
     return spec;
   }
 
-  public EssenceCascadingConfig getExcavation () {
+  public EssenceCascadingConfig getExcavation() {
     return excavation;
   }
 
-  public EssenceCascadingConfig getLumber () {
+  public EssenceCascadingConfig getLumber() {
     return lumber;
   }
 
-  public EssenceCascadingConfig getVein () {
+  public EssenceCascadingConfig getVein() {
     return vein;
   }
 }

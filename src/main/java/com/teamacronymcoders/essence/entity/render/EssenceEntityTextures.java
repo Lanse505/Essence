@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.entity;
+package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.Essence;
 import net.minecraft.util.ResourceLocation;

@@ -30,12 +30,12 @@ import net.minecraft.world.World;
 
 public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
 
-  public InfusionTableBlock (Properties properties) {
+  public InfusionTableBlock(Properties properties) {
     super(properties, InfusionTableTile.class);
   }
 
   @Override
-  public ActionResultType onBlockActivated (BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
+  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
     if (worldIn.isRemote) {
       return ActionResultType.SUCCESS;
     }
@@ -85,12 +85,12 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
   }
 
   @Override
-  public IFactory<InfusionTableTile> getTileEntityFactory () {
+  public IFactory<InfusionTableTile> getTileEntityFactory() {
     return InfusionTableTile::new;
   }
 
   @Override
-  public void animateTick (BlockState state, World world, BlockPos pos, Random random) {
+  public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
     super.animateTick(state, world, pos, random);
     InfusionTableTile te = world.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) world.getTileEntity(pos) : null;
     if (te != null && te.getWorking()) {
@@ -115,29 +115,29 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
   @SuppressWarnings("deprecation")
   @Override
   @ParametersAreNonnullByDefault
-  public BlockRenderType getRenderType (BlockState state) {
+  public BlockRenderType getRenderType(BlockState state) {
     return BlockRenderType.MODEL;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape (BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
+  public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
     return EssenceBlockModels.INFUSION_TABLE[0];
   }
 
   @Nonnull
   @Override
-  public VoxelShape getCollisionShape (BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
     return EssenceBlockModels.INFUSION_TABLE[0];
   }
 
   @Override
-  public List<VoxelShape> getBoundingBoxes (BlockState state, IBlockReader source, BlockPos pos) {
+  public List<VoxelShape> getBoundingBoxes(BlockState state, IBlockReader source, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_TABLE[0]);
   }
 
   @Override
-  public TileEntityType getTileEntityType () {
+  public TileEntityType getTileEntityType() {
     return EssenceBlockRegistrate.INFUSION_TABLE_TILE.get();
   }
 }

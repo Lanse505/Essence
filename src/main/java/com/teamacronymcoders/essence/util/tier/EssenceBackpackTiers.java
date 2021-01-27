@@ -15,7 +15,7 @@ public enum EssenceBackpackTiers implements IEssenceBaseTier {
   private final int backpackX;
   private final int backpackY;
 
-  EssenceBackpackTiers (String localString, Rarity rarity, int freeModifiers, int backpackSlots, int backpackX, int backpackY) {
+  EssenceBackpackTiers(String localString, Rarity rarity, int freeModifiers, int backpackSlots, int backpackX, int backpackY) {
     this.localString = localString;
     this.rarity = rarity;
     this.freeModifiers = freeModifiers;
@@ -24,33 +24,33 @@ public enum EssenceBackpackTiers implements IEssenceBaseTier {
     this.backpackY = backpackY;
   }
 
-  public String getLocalString () {
+  public String getLocalString() {
     return localString;
   }
 
   @Override
-  public String getLocaleString () {
+  public String getLocaleString() {
     return localString;
   }
 
-  public Rarity getRarity () {
+  public Rarity getRarity() {
     return rarity;
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return freeModifiers;
   }
 
-  public int getBackpackSlots () {
+  public int getBackpackSlots() {
     return backpackSlots;
   }
 
-  public int getBackpackX () {
+  public int getBackpackX() {
     return backpackX;
   }
 
-  public int getBackpackY () {
+  public int getBackpackY() {
     return backpackY;
   }
 }

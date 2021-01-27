@@ -30,7 +30,6 @@ public class EssenceTagRegistrate {
       provider.getOrCreateBuilder(EssenceTags.EssenceModifierTags.CASCADING_EXCAVATION).addTags(Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
       provider.getOrCreateBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST).add(Blocks.BEDROCK, Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME).addTags(BlockTags.LOGS, BlockTags.LEAVES, Tags.Blocks.ORES, Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL);
       provider.getOrCreateBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_WHITELIST).add(Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.FURNACE, Blocks.BLAST_FURNACE, Blocks.SMOKER, Blocks.HOPPER, Blocks.BARREL);
-      provider.getOrCreateBuilder(EssenceTags.EssenceBlockTags.RELOCATION_NOT_SUPPORTED);
     });
 
     // Misc Entity Tags
@@ -57,11 +56,6 @@ public class EssenceTagRegistrate {
       );
     });
 
-    // Misc Tile-Entity Tags
-    registrate.addDataGenerator(TILE_ENTITY, provider -> {
-      provider.getOrCreateBuilder(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED);
-      provider.getOrCreateBuilder(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE);
-    });
   }
 
 }

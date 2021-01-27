@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -26,9 +25,9 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.util.Constants;
 
-public interface IModifiedBlock extends IModified<Block> {
+public interface IModifiedBlock extends IModified {
 
-  default float getBlockHardnessFromModifiers (BlockState state, IBlockReader world, BlockPos pos, TileEntity te, float defaultHardness) {
+  default float getBlockHardnessFromModifiers(BlockState state, IBlockReader world, BlockPos pos, TileEntity te, float defaultHardness) {
     return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
@@ -37,7 +36,7 @@ public interface IModifiedBlock extends IModified<Block> {
             }).reduce(0f, Float::sum)).orElse(defaultHardness);
   }
 
-  default float getExplosionResistanceFromModifiers (BlockState state, IBlockReader reader, BlockPos pos, @Nullable Entity exploder, Explosion explosion, TileEntity te, float defaultExplosionResistance) {
+  default float getExplosionResistanceFromModifiers(BlockState state, IBlockReader reader, BlockPos pos, @Nullable Entity exploder, Explosion explosion, TileEntity te, float defaultExplosionResistance) {
     return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
@@ -46,7 +45,7 @@ public interface IModifiedBlock extends IModified<Block> {
             }).reduce(0f, Float::sum)).orElse(defaultExplosionResistance);
   }
 
-  default int getLightValueFromModifiers (BlockState state, IBlockReader world, BlockPos pos, TileEntity te, int defaultLightValue) {
+  default int getLightValueFromModifiers(BlockState state, IBlockReader world, BlockPos pos, TileEntity te, int defaultLightValue) {
     return te.getCapability(EssenceCoreCapability.BLOCK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream()
             .filter(instance -> instance.getModifier() instanceof BlockCoreModifier)
             .map(instance -> {
@@ -55,7 +54,7 @@ public interface IModifiedBlock extends IModified<Block> {
             }).reduce(0, Integer::sum)).orElse(defaultLightValue);
   }
 
-  default void addInformation (ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
+  default void addInformation(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> list, ITooltipFlag flag, IEssenceBaseTier tier) {
     int freeModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getFreeModifiers() : 0;
     int maxModifiers = stack.getItem() instanceof IModifiedTool ? ((IModifiedTool) stack.getItem()).getMaxModifiers() : 0;
     list.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));

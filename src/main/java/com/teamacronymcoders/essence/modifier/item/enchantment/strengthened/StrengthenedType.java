@@ -16,14 +16,14 @@ public enum StrengthenedType {
   private final Enchantment enchantment;
   private final TextFormatting[] textFormatting;
 
-  StrengthenedType (int id, String name, Enchantment enchantment, TextFormatting... textFormatting) {
+  StrengthenedType(int id, String name, Enchantment enchantment, TextFormatting... textFormatting) {
     this.id = id;
     this.name = name;
     this.enchantment = enchantment;
     this.textFormatting = textFormatting;
   }
 
-  public static StrengthenedType byID (int id) {
+  public static StrengthenedType byID(int id) {
     if (id >= 0 && id < VALUES.length) {
       return VALUES[id];
     } else {
@@ -31,19 +31,19 @@ public enum StrengthenedType {
     }
   }
 
-  public int getId () {
+  public int getId() {
     return id;
   }
 
-  public String getName () {
+  public String getName() {
     return name;
   }
 
-  public Enchantment getEnchantment () {
+  public Enchantment getEnchantment() {
     return enchantment;
   }
 
-  public TextFormatting[] getTextFormatting () {
+  public TextFormatting[] getTextFormatting() {
     return textFormatting;
   }
 }

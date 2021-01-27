@@ -11,7 +11,7 @@ public class EssenceOreConfig {
   private final ForgeConfigSpec.ConfigValue<Integer> topOffset;
   private final ForgeConfigSpec.IntValue maxHeight;
 
-  public EssenceOreConfig (ForgeConfigSpec.Builder builder, String ore, boolean shouldGenerate, int perChunk, int maxVeinSize, int bottomOffset, int topOffset, int maxHeight) {
+  public EssenceOreConfig(ForgeConfigSpec.Builder builder, String ore, boolean shouldGenerate, int perChunk, int maxVeinSize, int bottomOffset, int topOffset, int maxHeight) {
     builder.push(ore);
     builder.comment("Generation Settings for " + ore + " ore.");
     this.shouldGenerate = builder.comment("Determines if " + ore + " ore should be added to world generation.").define("shouldGenerate", shouldGenerate);
@@ -38,27 +38,27 @@ public class EssenceOreConfig {
     builder.pop();
   }
 
-  public ForgeConfigSpec.BooleanValue getShouldGenerate () {
+  public ForgeConfigSpec.BooleanValue getShouldGenerate() {
     return shouldGenerate;
   }
 
-  public ForgeConfigSpec.IntValue getPerChunk () {
+  public ForgeConfigSpec.IntValue getPerChunk() {
     return perChunk;
   }
 
-  public ForgeConfigSpec.IntValue getMaxVeinSize () {
+  public ForgeConfigSpec.IntValue getMaxVeinSize() {
     return maxVeinSize;
   }
 
-  public ForgeConfigSpec.ConfigValue<Integer> getBottomOffset () {
+  public ForgeConfigSpec.ConfigValue<Integer> getBottomOffset() {
     return bottomOffset;
   }
 
-  public ForgeConfigSpec.ConfigValue<Integer> getTopOffset () {
+  public ForgeConfigSpec.ConfigValue<Integer> getTopOffset() {
     return topOffset;
   }
 
-  public ForgeConfigSpec.IntValue getMaxHeight () {
+  public ForgeConfigSpec.IntValue getMaxHeight() {
     return maxHeight;
   }
 }

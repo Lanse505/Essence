@@ -49,52 +49,52 @@ public class AxeStrippingRecipe extends SerializableRecipe {
   public Block from;
   public BlockState to;
 
-  public AxeStrippingRecipe (ResourceLocation resourceLocation) {
+  public AxeStrippingRecipe(ResourceLocation resourceLocation) {
     super(resourceLocation);
   }
 
-  public AxeStrippingRecipe (ResourceLocation resourceLocation, Block from, BlockState to) {
+  public AxeStrippingRecipe(ResourceLocation resourceLocation, Block from, BlockState to) {
     super(resourceLocation);
     this.from = from;
     this.to = to;
   }
 
   @Override
-  public boolean matches (IInventory inv, World worldIn) {
+  public boolean matches(IInventory inv, World worldIn) {
     return false;
   }
 
   @Override
-  public ItemStack getCraftingResult (IInventory inv) {
+  public ItemStack getCraftingResult(IInventory inv) {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean canFit (int width, int height) {
+  public boolean canFit(int width, int height) {
     return false;
   }
 
   @Override
-  public ItemStack getRecipeOutput () {
+  public ItemStack getRecipeOutput() {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public GenericSerializer<? extends SerializableRecipe> getSerializer () {
+  public GenericSerializer<? extends SerializableRecipe> getSerializer() {
     return SERIALIZER;
   }
 
   @Override
-  public IRecipeType<?> getType () {
+  public IRecipeType<?> getType() {
     return SERIALIZER.getRecipeType();
   }
 
-  public boolean matches (Block block) {
+  public boolean matches(Block block) {
     return block == from;
   }
 
   @SuppressWarnings("unchecked")
-  public ActionResultType resolveRecipe (ItemUseContext context) {
+  public ActionResultType resolveRecipe(ItemUseContext context) {
     World world = context.getWorld();
     BlockPos blockpos = context.getPos();
     PlayerEntity player = context.getPlayer();
@@ -123,11 +123,11 @@ public class AxeStrippingRecipe extends SerializableRecipe {
     return ActionResultType.PASS;
   }
 
-  public Block getFrom () {
+  public Block getFrom() {
     return from;
   }
 
-  public BlockState getTo () {
+  public BlockState getTo() {
     return to;
   }
 }

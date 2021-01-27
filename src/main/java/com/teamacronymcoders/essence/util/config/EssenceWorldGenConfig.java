@@ -12,7 +12,7 @@ public class EssenceWorldGenConfig {
   private static EssenceTreeGenConfig treeGenConfig;
   private final ForgeConfigSpec spec;
 
-  public EssenceWorldGenConfig (ForgeConfigSpec.Builder builder) {
+  public EssenceWorldGenConfig(ForgeConfigSpec.Builder builder) {
     builder.push("WorldGen");
     oreGenConfig = new EssenceOreGenConfig(builder);
     treeGenConfig = new EssenceTreeGenConfig(builder);
@@ -20,25 +20,25 @@ public class EssenceWorldGenConfig {
     this.spec = builder.build();
   }
 
-  public static ForgeConfigSpec initialize () {
+  public static ForgeConfigSpec initialize() {
     EssenceWorldGenConfig config = new EssenceWorldGenConfig(new ForgeConfigSpec.Builder());
     instance = config;
     return config.getSpec();
   }
 
-  public static EssenceWorldGenConfig getInstance () {
+  public static EssenceWorldGenConfig getInstance() {
     return Objects.requireNonNull(instance, "Called for Worldgen Config before it's Initialization");
   }
 
-  public static EssenceOreGenConfig getOreGenConfig () {
+  public static EssenceOreGenConfig getOreGenConfig() {
     return oreGenConfig;
   }
 
-  public static EssenceTreeGenConfig getTreeGenConfig () {
+  public static EssenceTreeGenConfig getTreeGenConfig() {
     return treeGenConfig;
   }
 
-  public ForgeConfigSpec getSpec () {
+  public ForgeConfigSpec getSpec() {
     return spec;
   }
 }

@@ -23,7 +23,7 @@ public class EssenceRenderHelper {
   private static final Random random = new Random();
 
   @OnlyIn(Dist.CLIENT)
-  public static void renderItemStack (ItemStack stack, World world, BlockPos pos, int existedTicks, float yOffset, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
+  public static void renderItemStack(ItemStack stack, World world, BlockPos pos, int existedTicks, float yOffset, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer) {
     matrixStack.push();
     ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
     int i = stack.isEmpty() ? 187 : Item.getIdFromItem(stack.getItem()) + stack.getDamage();

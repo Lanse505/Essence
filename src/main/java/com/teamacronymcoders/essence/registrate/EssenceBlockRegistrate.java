@@ -1,8 +1,5 @@
 package com.teamacronymcoders.essence.registrate;
 
-import com.google.common.collect.Lists;
-import com.hrznstudio.titanium.annotation.Save;
-import com.hrznstudio.titanium.api.INBTHandler;
 import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
@@ -29,10 +26,6 @@ import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
@@ -58,7 +51,6 @@ import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.ToolType;
@@ -204,12 +196,11 @@ public class EssenceBlockRegistrate {
           .register();
 
   // Infusion Blocks
-  // TODO: Port the models and blockstates for these over to
   public static BlockEntry<InfusionTableBlock> INFUSION_TABLE = Essence.ESSENCE_REGISTRATE.object("essence_infusion_table")
           .block(Material.ROCK, InfusionTableBlock::new).properties(properties -> properties.sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity())
           .lang("Infusion Table").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
           .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
-          .item().group(() -> Essence.CORE_TAB)
+          .item().properties(properties -> properties.group(Essence.CORE_TAB))
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionTableTile> INFUSION_TABLE_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_table", InfusionTableTile::new)
@@ -221,7 +212,7 @@ public class EssenceBlockRegistrate {
           .block(Material.ROCK, InfusionPedestalBlock::new).properties(properties -> properties.hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid())
           .lang("Infusion Pedestal").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
           .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
-          .item().group(() -> Essence.CORE_TAB)
+          .item().properties(properties -> properties.group(Essence.CORE_TAB))
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
   public static TileEntityEntry<InfusionPedestalTile> INFUSION_PEDESTAL_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_pedestal", InfusionPedestalTile::new)
@@ -233,7 +224,7 @@ public class EssenceBlockRegistrate {
   public static BlockEntry<EssenceBlock> essenceBlock(EssenceItemTiers tier) {
     String name = "essence_infused_block_";
     String tierType = tier == EssenceItemTiers.ESSENCE ? "" : tier.toString().toLowerCase();
-    String entryName = tierType.equals("") ? name.substring(0, name.length() - 1): name + tierType.split("_")[0];
+    String entryName = tierType.equals("") ? name.substring(0, name.length() - 1) : name + tierType.split("_")[0];
     return Essence.ESSENCE_REGISTRATE.object(entryName)
             .block(Material.IRON, properties -> new EssenceBlock(properties, tier))
             .properties(properties -> properties.sound(SoundType.METAL).speedFactor(1.25f))
@@ -282,7 +273,9 @@ public class EssenceBlockRegistrate {
             .blockstate((context, provider) -> {provider.simpleBlock(context.get());})
             // Item Portion
             .item().group(() -> Essence.CORE_TAB)
-            .model((context, provider) -> {provider.blockItem(context);}).tag(EssenceTags.EssenceItemTags.ESSENCE_BRICKS)
+            .model((context, provider) -> {
+              provider.blockItem(context);
+            }).tag(EssenceTags.EssenceItemTags.ESSENCE_BRICKS)
             .recipe((context, provider) -> {
               EssenceBrickBlock brickBlock = EssenceBrickBlock.dyeToColorMap.get(color).get();
               // Recolor

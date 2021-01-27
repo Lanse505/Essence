@@ -12,17 +12,17 @@ public class MovementSpeedModifier extends ItemAttributeModifier {
 
   public static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("90742179-0f40-4ab8-8254-70ea451c9afb");
 
-  public MovementSpeedModifier () {
+  public MovementSpeedModifier() {
     super(Attributes.MOVEMENT_SPEED, "movement_speed_modifier", MOVEMENT_SPEED_UUID, 2.5d, 4, AttributeModifier.Operation.ADDITION);
   }
 
   @Override
-  public boolean canApplyOnObject (ItemStack object) {
+  public boolean canApplyOnObject(ItemStack object) {
     return true;
   }
 
   @Override
-  public ITextComponent getTextComponentName (int level) {
+  public ITextComponent getTextComponentName(int level) {
     if (level == -1) {
       return new TranslationTextComponent("modifier.essence.attribute", new TranslationTextComponent("attribute.essence.movement_speed"));
     }

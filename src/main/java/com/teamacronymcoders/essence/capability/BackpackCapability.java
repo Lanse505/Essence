@@ -14,13 +14,13 @@ import net.minecraftforge.items.IItemHandler;
 public class BackpackCapability implements ICapabilityProvider {
   private final LazyOptional<IItemHandler> optional;
 
-  public BackpackCapability (InventoryComponent<EssenceBackpackItem> inventory) {
+  public BackpackCapability(InventoryComponent<EssenceBackpackItem> inventory) {
     this.optional = LazyOptional.of(() -> inventory);
   }
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return optional.cast();
     }

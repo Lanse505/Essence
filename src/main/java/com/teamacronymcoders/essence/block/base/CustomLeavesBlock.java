@@ -26,12 +26,12 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
   public static final IntegerProperty DISTANCE = BlockStateProperties.DISTANCE_1_7;
   public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
-  public CustomLeavesBlock (Block.Properties properties) {
+  public CustomLeavesBlock(Block.Properties properties) {
     super(properties);
     this.setDefaultState(this.stateContainer.getBaseState().with(DISTANCE, 7).with(PERSISTENT, Boolean.FALSE));
   }
 
-  private static BlockState updateDistance (BlockState state, IWorld worldIn, BlockPos pos) {
+  private static BlockState updateDistance(BlockState state, IWorld worldIn, BlockPos pos) {
     int i = 7;
     BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
@@ -46,7 +46,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
     return state.with(DISTANCE, Integer.valueOf(i));
   }
 
-  private static int getDistance (BlockState neighbor) {
+  private static int getDistance(BlockState neighbor) {
     if (BlockTags.LOGS.contains(neighbor.getBlock())) {
       return 0;
     } else {
@@ -58,7 +58,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
    * Returns whether or not this block is of a type that needs random ticking. Called for ref-counting purposes by
    * ExtendedBlockStorage in order to broadly cull a chunk from the random chunk update list for efficiency's sake.
    */
-  public boolean ticksRandomly (BlockState state) {
+  public boolean ticksRandomly(BlockState state) {
     return state.get(DISTANCE) == 7 && !state.get(PERSISTENT);
   }
 
@@ -66,7 +66,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
    * Performs a random tick on a block.
    */
   @SuppressWarnings("deprecation")
-  public void randomTick (BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+  public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
     if (!state.get(PERSISTENT) && state.get(DISTANCE) == 7) {
       spawnDrops(state, worldIn, pos);
       worldIn.removeBlock(pos, false);
@@ -74,12 +74,12 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
   }
 
   @SuppressWarnings("deprecation")
-  public void tick (BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+  public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
     worldIn.setBlockState(pos, updateDistance(state, worldIn, pos), 3);
   }
 
   @SuppressWarnings("deprecation")
-  public int getOpacity (BlockState state, IBlockReader worldIn, BlockPos pos) {
+  public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
     return 1;
   }
 
@@ -90,7 +90,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
    * Note that this method should ideally consider only the specific face passed in.
    */
   @SuppressWarnings("deprecation")
-  public BlockState updatePostPlacement (BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+  public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
     int i = getDistance(facingState) + 1;
     if (i != 1 || stateIn.get(DISTANCE) != i) {
       worldIn.getPendingBlockTicks().scheduleTick(currentPos, this, 1);
@@ -105,7 +105,7 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
    * of whether the block can receive random update ticks
    */
   @OnlyIn(Dist.CLIENT)
-  public void animateTick (BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+  public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
     if (worldIn.isRainingAt(pos.up())) {
       if (rand.nextInt(15) == 1) {
         BlockPos blockpos = pos.down();
@@ -120,21 +120,21 @@ public class CustomLeavesBlock extends BasicBlock implements IForgeShearable {
     }
   }
 
-  protected void fillStateContainer (StateContainer.Builder<Block, BlockState> builder) {
+  protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
     builder.add(DISTANCE, PERSISTENT);
   }
 
-  public BlockState getStateForPlacement (BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockItemUseContext context) {
     return updateDistance(this.getDefaultState().with(PERSISTENT, Boolean.TRUE), context.getWorld(), context.getPos());
   }
 
   @Override
-  public boolean isFlammable (BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+  public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
     return true;
   }
 
   @Override
-  public int getFlammability (BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+  public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
     return 150;
   }
 }

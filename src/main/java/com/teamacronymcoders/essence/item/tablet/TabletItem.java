@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 
 public class TabletItem extends Item {
 
-  public TabletItem () {
+  public TabletItem() {
     super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0));
   }
 

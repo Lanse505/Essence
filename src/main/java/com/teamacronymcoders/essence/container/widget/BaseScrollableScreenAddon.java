@@ -13,7 +13,7 @@ public abstract class BaseScrollableScreenAddon extends BasicScreenAddon {
   protected final int barHeight;
   protected final int maxBarHeight;
 
-  protected BaseScrollableScreenAddon (int posX, int posY, int barXShift, int barYShift, int barWidth, int barHeight, int maxBarHeight) {
+  protected BaseScrollableScreenAddon(int posX, int posY, int barXShift, int barYShift, int barWidth, int barHeight, int maxBarHeight) {
     super(posX, posY);
     this.barX = this.getXSize() + barXShift;
     this.barY = this.getYSize() + barYShift;
@@ -22,11 +22,11 @@ public abstract class BaseScrollableScreenAddon extends BasicScreenAddon {
     this.maxBarHeight = maxBarHeight;
   }
 
-  protected abstract int getMaxElements ();
+  protected abstract int getMaxElements();
 
-  protected abstract int getFocusedElements ();
+  protected abstract int getFocusedElements();
 
-  public void onClick (double mouseX, double mouseY) {
+  public void onClick(double mouseX, double mouseY) {
 //        int scroll  = getScroll();
 //        if (mouseX >= barX && mouseX <= barX + barWidth && mouseY >= barY + scroll && mouseY <= barY + scroll + barHeight) {
 //            if (needsScrollBars()) {
@@ -40,15 +40,15 @@ public abstract class BaseScrollableScreenAddon extends BasicScreenAddon {
 //        }
   }
 
-  protected boolean needsScrollBars () {
+  protected boolean needsScrollBars() {
     return getMaxElements() > getFocusedElements();
   }
 
-  private int getMax () {
+  private int getMax() {
     return maxBarHeight - barHeight;
   }
 
-  protected int getScroll () {
+  protected int getScroll() {
     int max = getMax();
     return Math.max(Math.min((int) (scroll * max), max), 0);
   }

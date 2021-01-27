@@ -15,13 +15,13 @@ public class EssenceIngotItem extends Item {
 
   private final EssenceItemTiers tier;
 
-  public EssenceIngotItem (Properties properties, EssenceItemTiers tier) {
+  public EssenceIngotItem(Properties properties, EssenceItemTiers tier) {
     super(properties.rarity(tier.getRarity()));
     this.tier = tier;
   }
 
   @Override
-  public void addInformation (ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     tooltip.add(new TranslationTextComponent("tooltip.essence.tool.tier").mergeStyle(TextFormatting.GRAY).append(new TranslationTextComponent(tier.getLocaleString()).mergeStyle(tier.getRarity().color)));
   }
 }

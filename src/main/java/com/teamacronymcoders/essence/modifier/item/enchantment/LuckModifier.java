@@ -16,27 +16,27 @@ import net.minecraft.world.World;
 
 public class LuckModifier extends ItemEnchantmentCoreModifier {
 
-  public LuckModifier () {
+  public LuckModifier() {
     super(5);
   }
 
   @Override
-  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+  public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
     EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
   }
 
   @Override
-  public Enchantment getLinkedEnchantment (ItemStack stack) {
+  public Enchantment getLinkedEnchantment(ItemStack stack) {
     return stack.getItem() instanceof EssenceSword ? Enchantments.LOOTING : Enchantments.FORTUNE;
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof SilkTouchModifier);
   }
 
   @Override
-  public List<ITextComponent> getRenderedText (ModifierInstance<ItemStack> instance) {
+  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
     super.getRenderedText(instance).add(0, super.getRenderedText(instance).get(0).copyRaw().mergeStyle(TextFormatting.BLUE));
     return super.getRenderedText(instance);
   }

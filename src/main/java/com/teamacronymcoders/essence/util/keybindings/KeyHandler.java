@@ -38,13 +38,13 @@ public abstract class KeyHandler {
    *
    * @param bindings Bindings to set
    */
-  public KeyHandler (Builder bindings) {
+  public KeyHandler(Builder bindings) {
     keyBindings = bindings.getBindings();
     repeatings = bindings.getRepeatFlags();
     keyDown = new BitSet();
   }
 
-  public static boolean getIsKeyPressed (KeyBinding keyBinding) {
+  public static boolean getIsKeyPressed(KeyBinding keyBinding) {
     if (keyBinding.isKeyDown()) {
       return true;
     }
@@ -56,7 +56,7 @@ public abstract class KeyHandler {
     return KeyModifier.isKeyCodeModifier(keyBinding.getKey()) && isKeyDown(keyBinding);
   }
 
-  public static boolean isKeyDown (KeyBinding keyBinding) {
+  public static boolean isKeyDown(KeyBinding keyBinding) {
     InputMappings.Input key = keyBinding.getKey();
     int keyCode = key.getKeyCode();
     if (keyCode != InputMappings.INPUT_INVALID.getKeyCode()) {
@@ -73,7 +73,7 @@ public abstract class KeyHandler {
     return false;
   }
 
-  public void keyTick () {
+  public void keyTick() {
     for (int i = 0; i < keyBindings.length; i++) {
       KeyBinding keyBinding = keyBindings[i];
       boolean state = keyBinding.isKeyDown();
@@ -89,16 +89,16 @@ public abstract class KeyHandler {
     }
   }
 
-  public abstract void keyDown (KeyBinding kb, boolean isRepeat);
+  public abstract void keyDown(KeyBinding kb, boolean isRepeat);
 
-  public abstract void keyUp (KeyBinding kb);
+  public abstract void keyUp(KeyBinding kb);
 
   public static class Builder {
 
     private final List<KeyBinding> bindings;
     private final BitSet repeatFlags = new BitSet();
 
-    public Builder (int expectedCapacity) {
+    public Builder(int expectedCapacity) {
       this.bindings = new ArrayList<>(expectedCapacity);
     }
 
@@ -108,17 +108,17 @@ public abstract class KeyHandler {
      * @param k          the KeyBinding to add
      * @param repeatFlag true if keyDown pseudo-events continue to be sent while key is held
      */
-    public Builder addBinding (KeyBinding k, boolean repeatFlag) {
+    public Builder addBinding(KeyBinding k, boolean repeatFlag) {
       repeatFlags.set(bindings.size(), repeatFlag);
       bindings.add(k);
       return this;
     }
 
-    protected BitSet getRepeatFlags () {
+    protected BitSet getRepeatFlags() {
       return repeatFlags;
     }
 
-    protected KeyBinding[] getBindings () {
+    protected KeyBinding[] getBindings() {
       return bindings.toArray(new KeyBinding[0]);
     }
   }

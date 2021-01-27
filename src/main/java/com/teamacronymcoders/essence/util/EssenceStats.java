@@ -19,15 +19,15 @@ public class EssenceStats {
   public final ResourceLocation SERIALIZED;
   private final List<ResourceLocation> stats = NonNullList.create();
 
-  public EssenceStats () {
+  public EssenceStats() {
     SERIALIZED = registerStat("serialized");
   }
 
-  public ResourceLocation registerStat (String key) {
+  public ResourceLocation registerStat(String key) {
     return this.registerStat(key, IStatFormatter.DEFAULT);
   }
 
-  public ResourceLocation registerStat (String key, IStatFormatter formatter) {
+  public ResourceLocation registerStat(String key, IStatFormatter formatter) {
     final ResourceLocation statIdentifier = new ResourceLocation(Essence.MOD_ID, key);
     Registry.register(Registry.CUSTOM_STAT, key, statIdentifier);
     Stats.CUSTOM.get(statIdentifier, formatter);
@@ -35,7 +35,7 @@ public class EssenceStats {
     return statIdentifier;
   }
 
-  public List<ResourceLocation> getStatIdentifiers () {
+  public List<ResourceLocation> getStatIdentifiers() {
     return ImmutableList.copyOf(this.stats);
   }
 

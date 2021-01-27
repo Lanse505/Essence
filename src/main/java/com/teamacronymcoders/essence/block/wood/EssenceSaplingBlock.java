@@ -5,7 +5,7 @@ import net.minecraft.block.SaplingBlock;
 
 public class EssenceSaplingBlock extends SaplingBlock {
 
-  public EssenceSaplingBlock (Properties properties) {
+  public EssenceSaplingBlock(Properties properties) {
     super(new EssenceSaplingTree(), properties);
   }
 

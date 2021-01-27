@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 public class EssenceSaplingTree extends Tree {
   @Nullable
   @Override
-  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature (Random random, boolean b) {
+  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
     return random.nextInt(10) >= 8 ? EssenceFeatures.SAPLING_ESSENCE_TREE_FEATURE : EssenceFeatures.FANCY_ESSENCE_TREE_FEATURE;
   }
 }

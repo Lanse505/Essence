@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class KnowledgeCommand implements Command<CommandSource> {
 
-  public static ArgumentBuilder<CommandSource, ?> register (CommandDispatcher<CommandSource> dispatcher) {
+  public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
     return Commands.literal("knowledge")
             .requires(cs -> cs.hasPermissionLevel(4))
             .then(Commands.literal("add")
@@ -89,7 +89,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
                     ));
   }
 
-  public static int addPlayerKnowledge (CommandContext<CommandSource> context, PlayerEntity playerEntity, Knowledge<?> knowledge) {
+  public static int addPlayerKnowledge(CommandContext<CommandSource> context, PlayerEntity playerEntity, Knowledge knowledge) {
     CommandSource source = context.getSource();
     World world = source.getWorld();
     world.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
@@ -99,7 +99,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int addPlayerKnowledge (CommandContext<CommandSource> context, String playerUUID, Knowledge<?> knowledge) {
+  public static int addPlayerKnowledge(CommandContext<CommandSource> context, String playerUUID, Knowledge knowledge) {
     CommandSource source = context.getSource();
     UUID uuid = UUID.fromString(playerUUID);
     World world = source.getWorld();
@@ -110,7 +110,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int removePlayerKnowledge (CommandContext<CommandSource> context, PlayerEntity playerEntity, Knowledge<?> knowledge) {
+  public static int removePlayerKnowledge(CommandContext<CommandSource> context, PlayerEntity playerEntity, Knowledge knowledge) {
     CommandSource source = context.getSource();
     World world = source.getWorld();
     world.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
@@ -120,7 +120,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int removePlayerKnowledge (CommandContext<CommandSource> context, String playerUUID, Knowledge<?> knowledge) {
+  public static int removePlayerKnowledge(CommandContext<CommandSource> context, String playerUUID, Knowledge knowledge) {
     CommandSource source = context.getSource();
     UUID uuid = UUID.fromString(playerUUID);
     World world = source.getWorld();
@@ -131,7 +131,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int clearPlayerKnowledge (CommandContext<CommandSource> context, PlayerEntity playerEntity) {
+  public static int clearPlayerKnowledge(CommandContext<CommandSource> context, PlayerEntity playerEntity) {
     CommandSource source = context.getSource();
     World world = source.getWorld();
     world.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
@@ -141,7 +141,7 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int clearPlayerKnowledge (CommandContext<CommandSource> context, String playerUUID) {
+  public static int clearPlayerKnowledge(CommandContext<CommandSource> context, String playerUUID) {
     CommandSource source = context.getSource();
     UUID uuid = UUID.fromString(playerUUID);
     World world = source.getWorld();
@@ -152,62 +152,62 @@ public class KnowledgeCommand implements Command<CommandSource> {
     return 1;
   }
 
-  public static int dumpAllPlayerKnowledge (CommandContext<CommandSource> context, PlayerEntity player) {
+  public static int dumpAllPlayerKnowledge(CommandContext<CommandSource> context, PlayerEntity player) {
     CommandSource source = context.getSource();
     World world = source.getWorld();
     world.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
-      List<Knowledge<?>> knowledges = holder.getKnowledgeAsList(player.getUniqueID());
+      List<Knowledge> knowledges = holder.getKnowledgeAsList(player.getUniqueID());
       source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump", player.getName()), true);
       knowledges.forEach(knowledge -> {
-        source.sendFeedback(new TranslationTextComponent("command.essence.generic.dump.knowledge", new TranslationTextComponent(knowledge.getTranslationString()), knowledge.getTypeString()), true);
+        source.sendFeedback(new TranslationTextComponent("command.essence.generic.dump.knowledge", new TranslationTextComponent(knowledge.getTranslationString())), true);
       });
     });
     return 1;
   }
 
-  public static int dumpAllPlayerKnowledge (CommandContext<CommandSource> context, String playerUUID) {
+  public static int dumpAllPlayerKnowledge(CommandContext<CommandSource> context, String playerUUID) {
     CommandSource source = context.getSource();
     UUID uuid = UUID.fromString(playerUUID);
     World world = source.getWorld();
     world.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
-      List<Knowledge<?>> knowledges = holder.getKnowledgeAsList(uuid);
+      List<Knowledge> knowledges = holder.getKnowledgeAsList(uuid);
       source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump", uuid.toString()), true);
       knowledges.forEach(knowledge -> {
-        source.sendFeedback(new TranslationTextComponent("command.essence.generic.dump.knowledge", new TranslationTextComponent(knowledge.getTranslationString()), knowledge.getTypeString()), true);
+        source.sendFeedback(new TranslationTextComponent("command.essence.generic.dump.knowledge", new TranslationTextComponent(knowledge.getTranslationString())), true);
       });
     });
     return 1;
   }
 
-  public static int dumpSomePlayerKnowledge (CommandContext<CommandSource> context, PlayerEntity player, int amountToDump) {
+  public static int dumpSomePlayerKnowledge(CommandContext<CommandSource> context, PlayerEntity player, int amountToDump) {
     CommandSource source = context.getSource();
     World world = source.getWorld();
-    List<Knowledge<?>> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(player.getUniqueID())).orElse(new ArrayList<>());
+    List<Knowledge> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(player.getUniqueID())).orElse(new ArrayList<>());
     source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump", player.getName()), true);
     for (int i = 0; i < amountToDump; i++) {
-      Knowledge<?> knowledge = knowledges.get(i);
-      source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump.type", knowledge.getTypeString()), true);
+      Knowledge knowledge = knowledges.get(i);
+      source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump.type"), true);
       source.sendFeedback(new TranslationTextComponent(knowledge.getTranslationString()), true);
     }
     return 1;
   }
 
-  public static int dumpSomePlayerKnowledge (CommandContext<CommandSource> context, String playerUUID, int amountToDump) {
+  public static int dumpSomePlayerKnowledge(CommandContext<CommandSource> context, String playerUUID, int amountToDump) {
     CommandSource source = context.getSource();
     UUID uuid = UUID.fromString(playerUUID);
     World world = source.getWorld();
-    List<Knowledge<?>> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(uuid)).orElse(new ArrayList<>());
+    List<Knowledge> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(uuid)).orElse(new ArrayList<>());
     source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump", uuid.toString()), true);
     for (int i = 0; i < amountToDump; i++) {
-      Knowledge<?> knowledge = knowledges.get(i);
-      source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump.type", knowledge.getTypeString()), true);
+      Knowledge knowledge = knowledges.get(i);
+      source.sendFeedback(new TranslationTextComponent("command.essence.knowledge.dump.type"), true);
       source.sendFeedback(new TranslationTextComponent(knowledge.getTranslationString()), true);
     }
     return 1;
   }
 
   @Override
-  public int run (CommandContext<CommandSource> context) throws CommandSyntaxException {
+  public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
     return 1;
   }
 }

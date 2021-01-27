@@ -8,29 +8,29 @@ import net.minecraft.item.ItemStack;
 
 public abstract class ItemEnchantmentCoreModifier extends ItemInteractionCoreModifier {
 
-  public ItemEnchantmentCoreModifier () {
+  public ItemEnchantmentCoreModifier() {
     super(1);
   }
 
-  public ItemEnchantmentCoreModifier (int maxLevel) {
+  public ItemEnchantmentCoreModifier(int maxLevel) {
     super(maxLevel);
   }
 
-  public ItemEnchantmentCoreModifier (int maxLevel, int minLevel) {
+  public ItemEnchantmentCoreModifier(int maxLevel, int minLevel) {
     super(maxLevel, minLevel);
   }
 
-  public ItemEnchantmentCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
+  public ItemEnchantmentCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, operation);
   }
 
-  public ItemEnchantmentCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
+  public ItemEnchantmentCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, maxLevel, operation);
   }
 
-  public ItemEnchantmentCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
+  public ItemEnchantmentCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
   }
 
-  public abstract Enchantment getLinkedEnchantment (ItemStack stack);
+  public abstract Enchantment getLinkedEnchantment(ItemStack stack);
 }

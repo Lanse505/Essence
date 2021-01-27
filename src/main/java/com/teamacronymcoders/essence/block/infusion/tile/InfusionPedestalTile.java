@@ -15,7 +15,7 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
   @Save
   private final InventoryComponent<InfusionPedestalTile> inventory;
 
-  public InfusionPedestalTile () {
+  public InfusionPedestalTile() {
     super(EssenceBlockRegistrate.INFUSION_PEDESTAL.get());
     addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
             .setComponentHarness(this)
@@ -25,26 +25,26 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
   }
 
   @Override
-  public void tick () {
+  public void tick() {
     super.tick();
     ticksExisted++;
   }
 
   @Nonnull
   @Override
-  public InfusionPedestalTile getSelf () {
+  public InfusionPedestalTile getSelf() {
     return this;
   }
 
-  public void addItem (ItemStack stack) {
+  public void addItem(ItemStack stack) {
     this.inventory.insertItem(0, stack, false);
   }
 
-  public ItemStack getStack () {
+  public ItemStack getStack() {
     return this.inventory.getStackInSlot(0);
   }
 
-  public Integer getTicksExisted () {
+  public Integer getTicksExisted() {
     return ticksExisted;
   }
 }

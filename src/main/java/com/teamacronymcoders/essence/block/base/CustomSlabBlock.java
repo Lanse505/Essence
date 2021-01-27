@@ -31,21 +31,21 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
   protected static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
   protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-  public CustomSlabBlock (Properties properties) {
+  public CustomSlabBlock(Properties properties) {
     super(properties);
   }
 
   @SuppressWarnings("deprecation")
-  public boolean isTransparent (BlockState state) {
+  public boolean isTransparent(BlockState state) {
     return state.get(TYPE) != SlabType.DOUBLE;
   }
 
-  protected void fillStateContainer (StateContainer.Builder<Block, BlockState> builder) {
+  protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
     builder.add(TYPE, WATERLOGGED);
   }
 
   @SuppressWarnings("deprecation")
-  public VoxelShape getShape (BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+  public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
     SlabType slabtype = state.get(TYPE);
     switch (slabtype) {
       case DOUBLE:
@@ -58,7 +58,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
   }
 
   @Nullable
-  public BlockState getStateForPlacement (BlockItemUseContext context) {
+  public BlockState getStateForPlacement(BlockItemUseContext context) {
     BlockPos blockpos = context.getPos();
     BlockState blockstate = context.getWorld().getBlockState(blockpos);
     if (blockstate.getBlock() == this) {
@@ -72,7 +72,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
   }
 
   @SuppressWarnings("deprecation")
-  public boolean isReplaceable (BlockState state, BlockItemUseContext useContext) {
+  public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
     ItemStack itemstack = useContext.getItem();
     SlabType slabtype = state.get(TYPE);
     if (slabtype != SlabType.DOUBLE && itemstack.getItem() == this.asItem()) {
@@ -93,15 +93,15 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
   }
 
   @SuppressWarnings("deprecation")
-  public FluidState getFluidState (BlockState state) {
+  public FluidState getFluidState(BlockState state) {
     return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
   }
 
-  public boolean receiveFluid (IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
+  public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
     return state.get(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
   }
 
-  public boolean canContainFluid (IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+  public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
     return state.get(TYPE) != SlabType.DOUBLE && IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
   }
 
@@ -112,7 +112,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
    * Note that this method should ideally consider only the specific face passed in.
    */
   @SuppressWarnings("deprecation")
-  public BlockState updatePostPlacement (BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+  public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
     if (stateIn.get(WATERLOGGED)) {
       worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
     }
@@ -121,7 +121,7 @@ public class CustomSlabBlock extends BasicBlock implements IWaterLoggable {
   }
 
   @SuppressWarnings("deprecation")
-  public boolean allowsMovement (BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+  public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
     switch (type) {
       case LAND:
         return false;

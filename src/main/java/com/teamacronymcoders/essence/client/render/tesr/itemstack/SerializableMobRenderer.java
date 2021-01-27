@@ -29,7 +29,7 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
           .build();
 
   @Override
-  public void func_239207_a_ (ItemStack stack, ItemCameraTransforms.TransformType transform, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+  public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType transform, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
     if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem) {
       stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).ifPresent(storage -> {
         if (storage.getUUID() != null) {
@@ -42,7 +42,7 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
     }
   }
 
-  public <E extends Entity> void renderEntityStatic (E entity, MatrixStack matrix, IRenderTypeBuffer buffer, int light) {
+  public <E extends Entity> void renderEntityStatic(E entity, MatrixStack matrix, IRenderTypeBuffer buffer, int light) {
     Minecraft minecraft = Minecraft.getInstance();
     EntityRendererManager manager = minecraft.getRenderManager();
     EntityRenderer<? super E> renderer = manager.getRenderer(entity);

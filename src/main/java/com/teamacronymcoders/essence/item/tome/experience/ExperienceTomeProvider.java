@@ -29,7 +29,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
   private final LazyOptional<ItemStackModifierHolder> optional_holder = LazyOptional.of(() -> modifierHolder);
   private final LazyOptional<FluidTank> optional_tank = LazyOptional.of(() -> tank);
 
-  public ExperienceTomeProvider (ItemStack stack, Fluid fluid) {
+  public ExperienceTomeProvider(ItemStack stack, Fluid fluid) {
     this.stack = stack;
     tank = new ModifiableTank(10252, stack, fluidStack -> fluidStack.getFluid().isEquivalentTo(fluid));
     modifierHolder = new ItemStackModifierHolder(stack);
@@ -42,7 +42,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
     this.stack.setTag(nbt);
   }
 
-  public ExperienceTomeProvider (ItemStack stack, Fluid fluid, CompoundNBT inputNBT) {
+  public ExperienceTomeProvider(ItemStack stack, Fluid fluid, CompoundNBT inputNBT) {
     this.stack = stack;
     tank = new ModifiableTank(10252, stack, fluidStack -> fluidStack.getFluid().isEquivalentTo(fluid));
     modifierHolder = new ItemStackModifierHolder(stack);
@@ -58,7 +58,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
       return optional_tank.cast();
     }
@@ -69,7 +69,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     CompoundNBT nbt = stack.getOrCreateTag();
     nbt.put(MODIFIABLE_TANK, tank.writeToNBT(new CompoundNBT()));
     nbt.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, modifierHolder.serializeNBT());
@@ -77,7 +77,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
     tank.readFromNBT(nbt.getCompound(MODIFIABLE_TANK));
     modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
   }

@@ -1,6 +1,9 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.nbt.CompoundNBT;
 
 public class SerializableModifier {
@@ -9,36 +12,30 @@ public class SerializableModifier {
   public CompoundNBT modifierData;
   public InfusionOperation operation;
 
-  public SerializableModifier (Modifier modifier, int level, CompoundNBT modifierData, InfusionOperation operation) {
+  public SerializableModifier(Modifier modifier, int level, CompoundNBT modifierData, InfusionOperation operation) {
     this.modifier = modifier;
     this.level = level;
     this.modifierData = modifierData;
     this.operation = operation;
   }
 
-  public static SerializableModifier[] getNewArray (SerializableModifier... modifiers) {
-    SerializableModifier[] modifierArray = new SerializableModifier[modifiers.length];
-    int counter = 0;
-    for (SerializableModifier modifier : modifiers) {
-      modifierArray[counter] = modifier;
-      counter++;
-    }
-    return modifierArray;
+  public static List<SerializableModifier> getSerializableModifiers(SerializableModifier... modifiers) {
+    return new ArrayList<>(Arrays.asList(modifiers));
   }
 
-  public Modifier getModifier () {
+  public Modifier getModifier() {
     return modifier;
   }
 
-  public int getLevel () {
+  public int getLevel() {
     return level;
   }
 
-  public CompoundNBT getModifierData () {
+  public CompoundNBT getModifierData() {
     return modifierData;
   }
 
-  public InfusionOperation getOperation () {
+  public InfusionOperation getOperation() {
     return operation;
   }
 

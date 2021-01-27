@@ -9,19 +9,19 @@ import net.minecraft.loot.ConditionArraySerializer;
 import net.minecraft.util.ResourceLocation;
 
 public class UnlockKnowledgeCriterionInstance extends CriterionInstance {
-  private final Knowledge<?> knowledge;
+  private final Knowledge knowledge;
 
-  public UnlockKnowledgeCriterionInstance (Knowledge<?> knowledge, EntityPredicate.AndPredicate predicate) {
+  public UnlockKnowledgeCriterionInstance(Knowledge knowledge, EntityPredicate.AndPredicate predicate) {
     super(new ResourceLocation(Essence.MOD_ID, "knowledge"), predicate);
     this.knowledge = knowledge;
   }
 
-  public boolean test (Knowledge<?> other) {
+  public boolean test(Knowledge other) {
     return knowledge == other;
   }
 
   @Override
-  public JsonObject serialize (ConditionArraySerializer conditions) {
+  public JsonObject serialize(ConditionArraySerializer conditions) {
     JsonObject object = new JsonObject();
     object.addProperty("knowledge_id", knowledge.getRegistryName().toString());
     return object;

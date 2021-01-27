@@ -19,18 +19,18 @@ public class ItemStackModifierProvider implements ICapabilityProvider, ICapabili
   private ItemStackModifierHolder modifierHolder;
   private final LazyOptional<ItemStackModifierHolder> optional = LazyOptional.of(() -> modifierHolder);
 
-  public ItemStackModifierProvider (ItemStack stack) {
+  public ItemStackModifierProvider(ItemStack stack) {
     modifierHolder = new ItemStackModifierHolder(stack);
   }
 
-  public ItemStackModifierProvider (ItemStack stack, CompoundNBT nbt) {
+  public ItemStackModifierProvider(ItemStack stack, CompoundNBT nbt) {
     modifierHolder = new ItemStackModifierHolder(stack);
     modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
   }
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER) {
       return optional.cast();
     }
@@ -38,12 +38,12 @@ public class ItemStackModifierProvider implements ICapabilityProvider, ICapabili
   }
 
   @Override
-  public ListNBT serializeNBT () {
+  public ListNBT serializeNBT() {
     return modifierHolder.serializeNBT();
   }
 
   @Override
-  public void deserializeNBT (ListNBT nbt) {
+  public void deserializeNBT(ListNBT nbt) {
     modifierHolder.deserializeNBT(nbt);
   }
 }

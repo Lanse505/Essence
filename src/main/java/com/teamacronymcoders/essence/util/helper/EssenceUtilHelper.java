@@ -28,7 +28,7 @@ public class EssenceUtilHelper {
     roman.put(1, "I");
   }
 
-  public static String toRoman (int number) {
+  public static String toRoman(int number) {
     int l = roman.floorKey(number);
     if (number == l) {
       return roman.get(number);
@@ -36,7 +36,7 @@ public class EssenceUtilHelper {
     return roman.get(l) + toRoman(number - l);
   }
 
-  public static TextFormatting getTextColor (int current, int max) {
+  public static TextFormatting getTextColor(int current, int max) {
     int val = current / max;
     if (val <= 0.33) {
       return TextFormatting.RED;
@@ -47,11 +47,11 @@ public class EssenceUtilHelper {
     }
   }
 
-  public static int nextIntInclusive (int min, int max) {
+  public static int nextIntInclusive(int min, int max) {
     return Essence.RANDOM.nextInt(max - min + 1) + min;
   }
 
-  public static String getDurationString (int seconds) {
+  public static String getDurationString(int seconds) {
 
     int hours = seconds / 3600;
     int minutes = (seconds % 3600) / 60;
@@ -60,7 +60,7 @@ public class EssenceUtilHelper {
     return twoDigitString(hours) + ":" + twoDigitString(minutes) + ":" + twoDigitString(seconds);
   }
 
-  private static String twoDigitString (int number) {
+  private static String twoDigitString(int number) {
 
     if (number == 0) {
       return "00";
@@ -73,15 +73,15 @@ public class EssenceUtilHelper {
     return String.valueOf(number);
   }
 
-  private static boolean isEssenceItemTier (IItemTier tier) {
+  private static boolean isEssenceItemTier(IItemTier tier) {
     return tier instanceof EssenceToolTiers;
   }
 
-  public static EssenceToolTiers getEssenceItemTier (IItemTier tier) {
+  public static EssenceToolTiers getEssenceItemTier(IItemTier tier) {
     return isEssenceItemTier(tier) ? (EssenceToolTiers) tier : null;
   }
 
-  public static int getLevelForExperience (int experience) {
+  public static int getLevelForExperience(int experience) {
     int i = 0;
     while (getExperienceForLevel(i) <= experience) {
       i++;
@@ -89,7 +89,7 @@ public class EssenceUtilHelper {
     return i - 1;
   }
 
-  public static int getExperienceForLevel (int level) {
+  public static int getExperienceForLevel(int level) {
     if (level == 0) {
       return 0;
     }
@@ -102,7 +102,7 @@ public class EssenceUtilHelper {
     return (int) (4.5 * level * level - 162.5 * level + 2220);
   }
 
-  public static int getExperienceForLevelWithDestination (int currentLevel, int destination) {
+  public static int getExperienceForLevelWithDestination(int currentLevel, int destination) {
     int exp = 0;
     for (; currentLevel > destination; currentLevel--) {
       if (currentLevel <= 16) {

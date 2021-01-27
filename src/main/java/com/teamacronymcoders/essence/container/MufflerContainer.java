@@ -18,12 +18,12 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
 //    private GuiSlider rangeSlider; // TODO: Figure out this Implementation
 //    private GuiSoundList soundList; // TODO: Figure out this Implementation
 
-  public MufflerContainer (Container screenContainer, PlayerInventory inv) {
+  public MufflerContainer(Container screenContainer, PlayerInventory inv) {
     super(screenContainer, inv, new TranslationTextComponent("gui.sound_muffler.title"));
   }
 
   @Override
-  protected void init () {
+  protected void init() {
     super.init();
 //        String key = muffler.isWhiteList() ? "tile.sound_muffler.gui.button.mode.white_list" : "tile.sound_muffler.gui.button.mode.black_list";
 //        modeButton = new Button(0, guiTop + 5, guiLeft + 159, 90, I18n.format(key), pressed -> {
@@ -54,11 +54,11 @@ public class MufflerContainer extends ContainerScreen<Container> implements Slid
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer (MatrixStack matrixStack, float partialTicks, int x, int y) {
+  protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
   }
 
 
   @Override
-  public void onChangeSliderValue (Slider slider) {
+  public void onChangeSliderValue(Slider slider) {
   }
 }

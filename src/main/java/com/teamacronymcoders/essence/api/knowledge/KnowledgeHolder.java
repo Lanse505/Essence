@@ -16,21 +16,21 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   private static final String PLAYER_KNOWLEDGE = "Player_Knowledge";
   private static final String PLAYER_INSTANCES = "Player_Knowledge_Instances";
 
-  private final Map<UUID, List<Knowledge<?>>> playerToKnowledgeMap;
+  private final Map<UUID, List<Knowledge>> playerToKnowledgeMap;
 
-  public KnowledgeHolder () {
+  public KnowledgeHolder() {
     this.playerToKnowledgeMap = new HashMap<>();
   }
 
   @Override
-  public void addPlayerUUID (PlayerEntity player) {
+  public void addPlayerUUID(PlayerEntity player) {
     if (!playerToKnowledgeMap.containsKey(player.getUniqueID())) {
       playerToKnowledgeMap.put(player.getUniqueID(), new ArrayList<>());
     }
   }
 
   @Override
-  public void addPlayerUUID (UUID player) {
+  public void addPlayerUUID(UUID player) {
     if (!playerToKnowledgeMap.containsKey(player)) {
       playerToKnowledgeMap.put(player, new ArrayList<>());
     }
@@ -44,9 +44,9 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
    * @param knowledge Knowledge VarArg to remove.
    */
   @Override
-  public void addKnowledge (UUID player, Knowledge<?>... knowledge) {
-    List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player);
-    for (Knowledge<?> instance : knowledge) {
+  public void addKnowledge(UUID player, Knowledge... knowledge) {
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player);
+    for (Knowledge instance : knowledge) {
       if (!knowledges.contains(instance)) {
         knowledges.add(instance);
       }
@@ -54,13 +54,13 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void addKnowledge (PlayerEntity player, Knowledge<?>... knowledge) {
+  public void addKnowledge(PlayerEntity player, Knowledge... knowledge) {
     ServerPlayerEntity serverPlayer = null;
-    List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
     if (player instanceof ServerPlayerEntity) {
       serverPlayer = (ServerPlayerEntity) player;
     }
-    for (Knowledge<?> instance : knowledge) {
+    for (Knowledge instance : knowledge) {
       boolean notCancelled = false;
       if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !knowledges.contains(instance)) {
         knowledges.add(instance);
@@ -82,60 +82,60 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
    *                  THIS VERSION DOES NOT FIRE EVENTS!
    */
   @Override
-  public void removeKnowledge (UUID player, Knowledge<?>... knowledge) {
-    List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player);
-    for (Knowledge<?> instance : knowledge) {
+  public void removeKnowledge(UUID player, Knowledge... knowledge) {
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player);
+    for (Knowledge instance : knowledge) {
       knowledges.remove(instance);
     }
   }
 
   @Override
-  public void removeKnowledge (PlayerEntity player, Knowledge<?>... knowledge) {
-    List<Knowledge<?>> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
-    for (Knowledge<?> instance : knowledge) {
+  public void removeKnowledge(PlayerEntity player, Knowledge... knowledge) {
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
+    for (Knowledge instance : knowledge) {
       MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
       knowledges.remove(instance);
     }
   }
 
   @Override
-  public List<Knowledge<?>> getKnowledgeAsList (UUID uuid) {
+  public List<Knowledge> getKnowledgeAsList(UUID uuid) {
     return playerToKnowledgeMap.get(uuid);
   }
 
-  public List<Knowledge<?>> getKnowledgeAsList (PlayerEntity player) {
+  public List<Knowledge> getKnowledgeAsList(PlayerEntity player) {
     return playerToKnowledgeMap.get(player.getUniqueID());
   }
 
   @Override
-  public Knowledge<?>[] getKnowledgeAsArray (UUID uuid) {
-    return (Knowledge<?>[]) playerToKnowledgeMap.get(uuid).toArray();
+  public Knowledge[] getKnowledgeAsArray(UUID uuid) {
+    return (Knowledge[]) playerToKnowledgeMap.get(uuid).toArray();
   }
 
   @Override
-  public Knowledge<?>[] getKnowledgeAsArray (PlayerEntity player) {
-    return (Knowledge<?>[]) playerToKnowledgeMap.get(player.getUniqueID()).toArray();
+  public Knowledge[] getKnowledgeAsArray(PlayerEntity player) {
+    return (Knowledge[]) playerToKnowledgeMap.get(player.getUniqueID()).toArray();
   }
 
   @Override
-  public void clearKnowledge (UUID player) {
+  public void clearKnowledge(UUID player) {
     playerToKnowledgeMap.get(player).clear();
   }
 
   @Override
-  public void clearKnowledge (PlayerEntity player) {
+  public void clearKnowledge(PlayerEntity player) {
     playerToKnowledgeMap.get(player.getUniqueID()).clear();
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     final CompoundNBT nbt = new CompoundNBT();
     final ListNBT listNBT = new ListNBT();
-    for (Map.Entry<UUID, List<Knowledge<?>>> entry : playerToKnowledgeMap.entrySet()) {
+    for (Map.Entry<UUID, List<Knowledge>> entry : playerToKnowledgeMap.entrySet()) {
       final CompoundNBT entryNBT = new CompoundNBT();
       final ListNBT knowledge = new ListNBT();
       entryNBT.putUniqueId(PLAYER_UUID, entry.getKey());
-      for (Knowledge<?> knowledges : entry.getValue()) {
+      for (Knowledge knowledges : entry.getValue()) {
         listNBT.add(knowledges.serializeNBT());
       }
       entryNBT.put(PLAYER_KNOWLEDGE, knowledge);
@@ -146,14 +146,14 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
     final ListNBT instances = nbt.getList(PLAYER_INSTANCES, Constants.NBT.TAG_COMPOUND);
     for (int i = 0; i < instances.size(); i++) {
       final CompoundNBT compoundNBT = instances.getCompound(i);
       final UUID uuid = compoundNBT.getUniqueId(PLAYER_UUID);
       final ListNBT knowledges = compoundNBT.getList(PLAYER_KNOWLEDGE, Constants.NBT.TAG_COMPOUND);
       for (int j = 0; j < knowledges.size(); j++) {
-        final Knowledge<?> knowledge = new Knowledge<>();
+        final Knowledge knowledge = new Knowledge();
         knowledge.deserializeNBT(knowledges.getCompound(j));
         if (playerToKnowledgeMap.computeIfAbsent(uuid, entry -> new ArrayList<>()).stream().noneMatch(tracked -> tracked == knowledge)) {
           playerToKnowledgeMap.get(uuid).add(knowledge);

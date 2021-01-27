@@ -22,17 +22,17 @@ public class PacketItemStack {
   private PacketBuffer storedBuffer;
   private final Hand currentHand;
 
-  public PacketItemStack (Hand hand, List<Object> params) {
+  public PacketItemStack(Hand hand, List<Object> params) {
     currentHand = hand;
     parameters = params;
   }
 
-  private PacketItemStack (Hand hand, PacketBuffer storedBuffer) {
+  private PacketItemStack(Hand hand, PacketBuffer storedBuffer) {
     currentHand = hand;
     this.storedBuffer = storedBuffer;
   }
 
-  public static void handle (PacketItemStack message, Supplier<NetworkEvent.Context> context) {
+  public static void handle(PacketItemStack message, Supplier<NetworkEvent.Context> context) {
     PlayerEntity player = PacketHandler.getPlayer(context);
     if (player == null) {
       return;
@@ -52,7 +52,7 @@ public class PacketItemStack {
     context.get().setPacketHandled(true);
   }
 
-  public static void encode (PacketItemStack pkt, PacketBuffer buf) {
+  public static void encode(PacketItemStack pkt, PacketBuffer buf) {
     buf.writeEnumValue(pkt.currentHand);
     MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
     if (server != null) {
@@ -61,7 +61,7 @@ public class PacketItemStack {
     PacketHandler.encode(pkt.parameters.toArray(), buf);
   }
 
-  public static PacketItemStack decode (PacketBuffer buf) {
+  public static PacketItemStack decode(PacketBuffer buf) {
     return new PacketItemStack(buf.readEnumValue(Hand.class), new PacketBuffer(buf.copy()));
   }
 

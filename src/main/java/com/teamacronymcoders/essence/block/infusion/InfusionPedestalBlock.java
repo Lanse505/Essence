@@ -23,12 +23,12 @@ import net.minecraft.world.World;
 
 public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> {
 
-  public InfusionPedestalBlock (Properties properties) {
+  public InfusionPedestalBlock(Properties properties) {
     super(properties, InfusionPedestalTile.class);
   }
 
   @Override
-  public ActionResultType onBlockActivated (BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
+  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
     if (worldIn.isRemote) {
       return ActionResultType.SUCCESS;
     }
@@ -59,29 +59,29 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
   }
 
   @Override
-  public IFactory<InfusionPedestalTile> getTileEntityFactory () {
+  public IFactory<InfusionPedestalTile> getTileEntityFactory() {
     return InfusionPedestalTile::new;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape (BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
     return EssenceBlockModels.INFUSION_PEDESTAL[0];
   }
 
   @Nonnull
   @Override
-  public VoxelShape getCollisionShape (BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
     return EssenceBlockModels.INFUSION_PEDESTAL[0];
   }
 
   @Override
-  public List<VoxelShape> getBoundingBoxes (BlockState state, IBlockReader source, BlockPos pos) {
+  public List<VoxelShape> getBoundingBoxes(BlockState state, IBlockReader source, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_PEDESTAL[0]);
   }
 
   @Override
-  public TileEntityType getTileEntityType () {
+  public TileEntityType getTileEntityType() {
     return EssenceBlockRegistrate.INFUSION_PEDESTAL_TILE.get();
   }
 }

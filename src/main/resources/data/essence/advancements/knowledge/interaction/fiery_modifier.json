@@ -20,7 +20,7 @@
     "knowledge": {
       "trigger": "essence:knowledge",
       "conditions": {
-        "knowledge_id": "essence:fiery"
+        "knowledge_id": "essence:fiery_modifier"
       }
     },
     "tome_of_knowledge": {

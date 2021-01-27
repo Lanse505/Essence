@@ -3,43 +3,43 @@ package com.teamacronymcoders.essence.modifier.item.arrow;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
+import static com.teamacronymcoders.essence.util.helper.EssenceBowHelper.TAG_EFFECTS;
 
 public class BrewedModifier extends ItemArrowCoreModifier {
 
-  public static final String TAG_EFFECTS = "Effects";
   private final List<EffectInstance> effects = new ArrayList<>();
 
-  public BrewedModifier () {
+  public BrewedModifier() {
+    super();
   }
 
   @Override
-  public void alterArrowEntity (AbstractArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance<ItemStack> instance) {
-    if (abstractArrowEntity instanceof ArrowEntity) {
-      ArrowEntity arrowEntity = (ArrowEntity) abstractArrowEntity;
-      for (EffectInstance effect : effects) {
-        arrowEntity.addEffect(effect);
-      }
+  public void onCollide(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {}
+
+  @Override
+  public void alterArrowEntity(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
+    for (EffectInstance effect : effects) {
+      modifiableArrowEntity.addEffect(effect);
     }
   }
 
   @Override
-  public void update (CompoundNBT compoundNBT) {
+  public void update(CompoundNBT compoundNBT) {
     List<EffectInstance> instances = new ArrayList<>();
     final ListNBT listNBT = compoundNBT.getList(TAG_EFFECTS, Constants.NBT.TAG_COMPOUND);
     for (int i = 0; i < listNBT.size(); i++) {
@@ -53,12 +53,12 @@ public class BrewedModifier extends ItemArrowCoreModifier {
   }
 
   @Override
-  public boolean canApplyTogether (IModifier modifier) {
+  public boolean canApplyTogether(IModifier modifier) {
     return !(modifier instanceof BrewedModifier);
   }
 
   @Override
-  public ITextComponent getTextComponentName (int level) {
+  public ITextComponent getTextComponentName(int level) {
     if (level == -1) {
       return new TranslationTextComponent(getTranslationName() + ".cleaned");
     }
@@ -66,7 +66,7 @@ public class BrewedModifier extends ItemArrowCoreModifier {
   }
 
   @Override
-  public List<ITextComponent> getRenderedText (ModifierInstance<ItemStack> instance) {
+  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
     List<ITextComponent> textComponents = new ArrayList<>();
     if (!EssenceKeyHandler.EXTENDED_INFORMATION.isKeyDown()) {
       textComponents.add(new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent(EssenceKeyHandler.EXTENDED_INFORMATION.getKey().getTranslationKey())).mergeStyle(TextFormatting.GREEN)));

@@ -49,7 +49,7 @@ public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
   private final Rarity rarity;
   private final LazyValue<Ingredient> repairMaterial;
 
-  EssenceToolTiers (String localName, int freeModifiers, int harvestLevel, int maxUses, int maxUsesBow, float efficiency, float attackDamageGeneral, float attackDamageAxeMod, int attackDamagePickaxeMod, float attackDamageShovelMod, int attackDamageSwordMod, float attackSpeedAxeMod, float attackSpeedHoeMod, float attackSpeedPickaxeMod, float attackSpeedShovelMod, float attackSpeedSwordMod, int enchantability, Rarity rarity, Supplier<Ingredient> repairMaterial) {
+  EssenceToolTiers(String localName, int freeModifiers, int harvestLevel, int maxUses, int maxUsesBow, float efficiency, float attackDamageGeneral, float attackDamageAxeMod, int attackDamagePickaxeMod, float attackDamageShovelMod, int attackDamageSwordMod, float attackSpeedAxeMod, float attackSpeedHoeMod, float attackSpeedPickaxeMod, float attackSpeedShovelMod, float attackSpeedSwordMod, int enchantability, Rarity rarity, Supplier<Ingredient> repairMaterial) {
     this.localName = localName;
     this.freeModifiers = freeModifiers;
     this.harvestLevel = harvestLevel;
@@ -72,87 +72,87 @@ public enum EssenceToolTiers implements IItemTier, IEssenceBaseTier {
   }
 
   @Override
-  public int getFreeModifiers () {
+  public int getFreeModifiers() {
     return freeModifiers;
   }
 
   @Override
-  public int getHarvestLevel () {
+  public int getHarvestLevel() {
     return this.harvestLevel;
   }
 
   @Override
-  public int getMaxUses () {
+  public int getMaxUses() {
     return this.maxUses;
   }
 
-  public int getMaxUsesBow () {
+  public int getMaxUsesBow() {
     return maxUsesBow;
   }
 
   @Override
-  public float getEfficiency () {
+  public float getEfficiency() {
     return this.efficiency;
   }
 
   @Override
-  public float getAttackDamage () {
+  public float getAttackDamage() {
     return this.attackDamageGeneral;
   }
 
-  public float getAttackDamageAxeMod () {
+  public float getAttackDamageAxeMod() {
     return attackDamageAxeMod;
   }
 
-  public int getAttackDamagePickaxeMod () {
+  public int getAttackDamagePickaxeMod() {
     return attackDamagePickaxeMod;
   }
 
-  public float getAttackDamageShovelMod () {
+  public float getAttackDamageShovelMod() {
     return attackDamageShovelMod;
   }
 
-  public int getAttackDamageSwordMod () {
+  public int getAttackDamageSwordMod() {
     return attackDamageSwordMod;
   }
 
-  public float getAttackSpeedAxeMod () {
+  public float getAttackSpeedAxeMod() {
     return attackSpeedAxeMod;
   }
 
-  public float getAttackSpeedHoeMod () {
+  public float getAttackSpeedHoeMod() {
     return attackSpeedHoeMod;
   }
 
-  public float getAttackSpeedPickaxeMod () {
+  public float getAttackSpeedPickaxeMod() {
     return attackSpeedPickaxeMod;
   }
 
-  public float getAttackSpeedShovelMod () {
+  public float getAttackSpeedShovelMod() {
     return attackSpeedShovelMod;
   }
 
-  public float getAttackSpeedSwordMod () {
+  public float getAttackSpeedSwordMod() {
     return attackSpeedSwordMod;
   }
 
   @Override
-  public int getEnchantability () {
+  public int getEnchantability() {
     return this.enchantability;
   }
 
   @Override
-  public String getLocaleString () {
+  public String getLocaleString() {
     return localName;
   }
 
   @Override
-  public Rarity getRarity () {
+  public Rarity getRarity() {
     return rarity;
   }
 
   @Override
-  public Ingredient getRepairMaterial () {
+  public Ingredient getRepairMaterial() {
     return this.repairMaterial.getValue();
   }
 }

@@ -17,7 +17,7 @@ public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerial
 
   @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability (@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == EssenceCapability.KNOWLEDGE) {
       return optional.cast();
     }
@@ -25,12 +25,12 @@ public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerial
   }
 
   @Override
-  public CompoundNBT serializeNBT () {
+  public CompoundNBT serializeNBT() {
     return knowledgeHolder.serializeNBT();
   }
 
   @Override
-  public void deserializeNBT (CompoundNBT nbt) {
+  public void deserializeNBT(CompoundNBT nbt) {
     knowledgeHolder.deserializeNBT(nbt);
   }
 }

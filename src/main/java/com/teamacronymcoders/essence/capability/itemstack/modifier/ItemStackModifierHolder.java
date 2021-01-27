@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.capability.itemstack.modifier;
 
+import com.google.common.collect.Lists;
 import com.teamacronymcoders.essence.api.holder.ModifierHolder;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModified;
@@ -15,38 +16,34 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   private ItemStack stack;
 
-  public ItemStackModifierHolder () {
-    super(ItemStack.class);
+  public ItemStackModifierHolder() {
+    super();
   }
 
-  public ItemStackModifierHolder (ItemStack stack) {
-    super(ItemStack.class);
+  public ItemStackModifierHolder(ItemStack stack) {
+    super();
     this.stack = stack;
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean addModifierInstance (boolean simulate, ItemStack object, ModifierInstance<ItemStack>... instances) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
-      for (ModifierInstance<ItemStack> instance : instances) {
-        if (instance.getModifier().getType() == getType()) {
-          if (!sim.contains(instance)) {
-            sim.add(instance);
-          }
+  public boolean addModifierInstance(boolean simulate, ItemStack object, ModifierInstance... instances) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
+      for (ModifierInstance instance : instances) {
+        if (!sim.contains(instance)) {
+          sim.add(instance);
         }
       }
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      for (ModifierInstance<ItemStack> instance : instances) {
-        if (instance.getModifier().getType() == getType()) {
-          if (!getModifierInstances().contains(instance)) {
-            getModifierInstances().add(instance);
-            modified.decreaseFreeModifiers(instance.getModifier().getModifierCountValue(instance.getLevel(), object));
-          }
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      for (ModifierInstance instance : instances) {
+        if (!getModifierInstances().contains(instance)) {
+          getModifierInstances().add(instance);
+          modified.decreaseFreeModifiers(instance.getModifier().getModifierCountValue(instance.getLevel()));
         }
       }
       return true;
@@ -56,59 +53,60 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean removeModifierInstance (boolean simulate, ItemStack object, ModifierInstance<ItemStack>... instances) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
-      Arrays.stream(instances).forEach(sim::remove);
-      return modified.recheck(object, sim);
+  public boolean removeModifierInstance(boolean simulate, ItemStack object, Modifier... modifiers) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = Lists.newArrayList(getModifierInstances());
+      Arrays.stream(modifiers).forEach(modifier -> sim.stream().filter(instance -> instance.getModifier() == modifier).forEach(sim::remove));
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      int cmc = Arrays.stream(instances).map(instance -> getModifierInstances().stream()
-              .filter(trueInstance -> trueInstance.getModifier().equals(instance.getModifier()) && trueInstance.getModifierData() == instance.getModifierData())
-              .map(trueInstance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  getModifierInstances().remove(trueInstance);
-                  return trueInstance.getModifier().getModifierCountValue(trueInstance.getLevel(), object);
-                }
-                return 0;
-              }).reduce(0, Integer::sum)).reduce(0, Integer::sum);
-      modified.addModifierWithoutIncreasingAdditional(cmc);
-      return true;
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      if (modifiers != null && modifiers.length > 0) {
+        int cmc = Arrays.stream(modifiers).map(modifier -> {
+          if (modifier != null) {
+            return this.getModifierInstances().stream().filter(instance -> instance != null && instance.getModifier() == modifier)
+                    .map(instance -> {
+                      int v = instance.getModifier().getModifierCountValue(instance.getLevel());
+                      this.getModifierInstances().remove(instance);
+                      return v;
+                    }).reduce(0, Integer::sum);
+          }
+          return 0;
+        }).reduce(0, Integer::sum);
+        modified.addModifierWithoutIncreasingAdditional(cmc);
+        return true;
+      }
+      return false;
     }
     return false;
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean levelUpModifier (boolean simulate, ItemStack object, int increase, Modifier<ItemStack>... modifiers) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelUpModifier(boolean simulate, int increase, ItemStack object, Modifier... modifiers) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  Modifier<ItemStack> stackCoreModifier = instance.getModifier();
-                  instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
-                }
+                Modifier stackCoreModifier = instance.getModifier();
+                instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  Modifier<ItemStack> stackCoreModifier = instance.getModifier();
-                  int x = stackCoreModifier.getModifierCountValue(instance.getLevel(), object);
-                  int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
-                  instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
-                  if (x < y) {
-                    modified.decreaseFreeModifiers(y - x);
-                  }
+                Modifier stackCoreModifier = instance.getModifier();
+                int x = stackCoreModifier.getModifierCountValue(instance.getLevel());
+                int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
+                instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
+                if (x < y) {
+                  modified.decreaseFreeModifiers(y - x);
                 }
               });
       return true;
@@ -116,35 +114,31 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
     return false;
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({"rawtypes"})
   @Override
-  public boolean levelUpModifier (boolean simulate, ItemStack object, int increase, ModifierInstance<ItemStack>... modifiersWithData) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelUpModifier(boolean simulate, int increase, ItemStack object, ModifierInstance... modifiersWithData) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  Modifier<ItemStack> stackCoreModifier = instance.getModifier();
-                  instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
-                }
+                Modifier stackCoreModifier = instance.getModifier();
+                instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  Modifier<ItemStack> stackCoreModifier = instance.getModifier();
-                  int x = stackCoreModifier.getModifierCountValue(instance.getLevel(), object);
-                  int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)), object);
-                  instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel(object)));
-                  if (x < y) {
-                    modified.decreaseFreeModifiers(y - x);
-                  }
+                Modifier stackCoreModifier = instance.getModifier();
+                int x = stackCoreModifier.getModifierCountValue(instance.getLevel());
+                int y = stackCoreModifier.getModifierCountValue(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
+                instance.setLevel(Math.min(instance.getLevel() + increase, stackCoreModifier.getMaxLevel()));
+                if (x < y) {
+                  modified.decreaseFreeModifiers(y - x);
                 }
               });
       return true;
@@ -154,40 +148,36 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean levelDownModifier (boolean simulate, ItemStack object, int decrease, Modifier<ItemStack>... modifiers) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelDownModifier(boolean simulate, int decrease, ItemStack object, Modifier... modifiers) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int level = instance.getLevel();
-                  if (level - decrease < instance.getModifier().getMinLevel(object)) {
-                    sim.remove(instance);
-                    return;
-                  }
-                  instance.setLevel(instance.getLevel() - decrease);
+                int level = instance.getLevel();
+                if (level - decrease < instance.getModifier().getMinLevel()) {
+                  sim.remove(instance);
+                  return;
                 }
+                instance.setLevel(instance.getLevel() - decrease);
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> modifier == instance.getModifier()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int level = instance.getLevel();
-                  if (level - decrease < instance.getModifier().getMinLevel(object)) {
-                    removeModifierInstance(false, object, instance);
-                    return;
-                  }
-                  int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(instance.getLevel() - decrease, object);
-                  instance.setLevel(instance.getLevel() - decrease);
-                  if (x > 0) {
-                    modified.addModifierWithoutIncreasingAdditional(x);
-                  }
+                int level = instance.getLevel();
+                if (level - decrease < instance.getModifier().getMinLevel()) {
+                  removeModifierInstance(false, object, instance.getModifier());
+                  return;
+                }
+                int x = instance.getModifier().getModifierCountValue(instance.getLevel()) - instance.getModifier().getModifierCountValue(instance.getLevel() - decrease);
+                instance.setLevel(instance.getLevel() - decrease);
+                if (x > 0) {
+                  modified.addModifierWithoutIncreasingAdditional(x);
                 }
               });
       return true;
@@ -197,40 +187,36 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean levelDownModifier (boolean simulate, ItemStack object, int decrease, ModifierInstance<ItemStack>... modifiersWithData) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelDownModifier(boolean simulate, int decrease, ItemStack object, ModifierInstance... modifiersWithData) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int level = instance.getLevel();
-                  if (level - decrease < instance.getModifier().getMinLevel(object)) {
-                    sim.remove(instance);
-                    return;
-                  }
-                  instance.setLevel(instance.getLevel() - decrease);
+                int level = instance.getLevel();
+                if (level - decrease < instance.getModifier().getMinLevel()) {
+                  sim.remove(instance);
+                  return;
                 }
+                instance.setLevel(instance.getLevel() - decrease);
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int level = instance.getLevel();
-                  if (level - decrease < instance.getModifier().getMinLevel(object)) {
-                    removeModifierInstance(false, object, instance);
-                    return;
-                  }
-                  int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(instance.getLevel() - decrease, object);
-                  instance.setLevel(instance.getLevel() - decrease);
-                  if (x > 0) {
-                    modified.addModifierWithoutIncreasingAdditional(x);
-                  }
+                int level = instance.getLevel();
+                if (level - decrease < instance.getModifier().getMinLevel()) {
+                  removeModifierInstance(false, object, instance.getModifier());
+                  return;
+                }
+                int x = instance.getModifier().getModifierCountValue(instance.getLevel()) - instance.getModifier().getModifierCountValue(instance.getLevel() - decrease);
+                instance.setLevel(instance.getLevel() - decrease);
+                if (x > 0) {
+                  modified.addModifierWithoutIncreasingAdditional(x);
                 }
               });
       return true;
@@ -240,33 +226,29 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean levelSetModifier (boolean simulate, ItemStack object, int level, Modifier<ItemStack>... modifiers) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelSetModifier(boolean simulate, int level, ItemStack object, Modifier... modifiers) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  instance.setLevel(level);
-                }
+                instance.setLevel(level);
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiers).anyMatch(modifier -> instance.getModifier() == modifier))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
-                  instance.setLevel(level);
-                  if (x > 0) {
-                    modified.addModifierWithoutIncreasingAdditional(x);
-                  }
-                  if (x < 0) {
-                    modified.decreaseFreeModifiers(x);
-                  }
+                int x = instance.getModifier().getModifierCountValue(instance.getLevel()) - instance.getModifier().getModifierCountValue(level);
+                instance.setLevel(level);
+                if (x > 0) {
+                  modified.addModifierWithoutIncreasingAdditional(x);
+                }
+                if (x < 0) {
+                  modified.decreaseFreeModifiers(x);
                 }
               });
       return true;
@@ -276,33 +258,29 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public boolean levelSetModifier (boolean simulate, ItemStack object, int level, ModifierInstance<ItemStack>... modifiersWithData) {
-    if (simulate && object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
-      List<ModifierInstance<ItemStack>> sim = getModifierInstances();
+  public boolean levelSetModifier(boolean simulate, int level, ItemStack object, ModifierInstance... modifiersWithData) {
+    if (simulate && object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
+      List<ModifierInstance> sim = getModifierInstances();
       sim.stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  instance.setLevel(level);
-                }
+                instance.setLevel(level);
               });
-      return modified.recheck(object, sim);
+      return modified.recheck(sim);
     }
-    if (object.getItem() instanceof IModified && ((IModified) object.getItem()).getType() == getType()) {
-      IModified<ItemStack> modified = (IModified<ItemStack>) object.getItem();
+    if (object.getItem() instanceof IModified) {
+      IModified modified = (IModified) object.getItem();
       getModifierInstances().stream()
               .filter(instance -> Arrays.stream(modifiersWithData).anyMatch(modifier -> instance.getModifier() == modifier.getModifier() && instance.getModifierData() == modifier.getModifierData()))
               .forEach(instance -> {
-                if (instance.getModifier().getType() == getType()) {
-                  int x = instance.getModifier().getModifierCountValue(instance.getLevel(), object) - instance.getModifier().getModifierCountValue(level, object);
-                  instance.setLevel(level);
-                  if (x > 0) {
-                    modified.addModifierWithoutIncreasingAdditional(x);
-                  }
-                  if (x < 0) {
-                    modified.decreaseFreeModifiers(x);
-                  }
+                int x = instance.getModifier().getModifierCountValue(instance.getLevel()) - instance.getModifier().getModifierCountValue(level);
+                instance.setLevel(level);
+                if (x > 0) {
+                  modified.addModifierWithoutIncreasingAdditional(x);
+                }
+                if (x < 0) {
+                  modified.decreaseFreeModifiers(x);
                 }
               });
       return true;
@@ -311,9 +289,9 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
   }
 
   @Override
-  public ListNBT serializeNBT () {
+  public ListNBT serializeNBT() {
     final ListNBT listNBT = new ListNBT();
-    for (ModifierInstance<ItemStack> instance : getModifierInstances()) {
+    for (ModifierInstance instance : getModifierInstances()) {
       listNBT.add(instance.serializeNBT());
     }
     stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, listNBT);
@@ -321,7 +299,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
   }
 
   @Override
-  public void deserializeNBT (ListNBT nbt) {
+  public void deserializeNBT(ListNBT nbt) {
     super.deserializeNBT(nbt.size() > 0 ? nbt : stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
   }
 }

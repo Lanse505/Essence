@@ -6,9 +6,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 
 public interface IEntityStorage {
-  void setEntity (LivingEntity entity);
+  void setEntity(LivingEntity entity);
 
-  LivingEntity getEntity (CompoundNBT nbt, World world);
+  LivingEntity getEntity(CompoundNBT nbt, World world);
 
-  UUID getUUID ();
+  UUID getUUID();
 }

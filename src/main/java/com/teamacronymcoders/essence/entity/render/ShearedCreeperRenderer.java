@@ -1,9 +1,8 @@
 package com.teamacronymcoders.essence.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.teamacronymcoders.essence.entity.EssenceEntityTextures;
-import com.teamacronymcoders.essence.entity.impl.sheared.ShearedCreeperEntity;
 import com.teamacronymcoders.essence.entity.render.layer.ShearedCreeperChargedLayer;
+import com.teamacronymcoders.essence.entity.sheared.ShearedCreeperEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.CreeperModel;
@@ -12,13 +11,13 @@ import net.minecraft.util.math.MathHelper;
 
 public class ShearedCreeperRenderer extends MobRenderer<ShearedCreeperEntity, CreeperModel<ShearedCreeperEntity>> {
 
-  public ShearedCreeperRenderer (EntityRendererManager manager) {
+  public ShearedCreeperRenderer(EntityRendererManager manager) {
     super(manager, new CreeperModel<>(), 0.5F);
     this.addLayer(new ShearedCreeperChargedLayer(this));
   }
 
   @Override
-  protected void preRenderCallback (ShearedCreeperEntity entity, MatrixStack matrixStack, float v) {
+  protected void preRenderCallback(ShearedCreeperEntity entity, MatrixStack matrixStack, float v) {
     float intensity = entity.getCreeperFlashIntensity(v);
     float v1 = 1.0F + MathHelper.sin(intensity * 100.0F) * intensity * 0.01F;
     intensity = MathHelper.clamp(intensity, 0.0F, 1.0F);
@@ -30,13 +29,13 @@ public class ShearedCreeperRenderer extends MobRenderer<ShearedCreeperEntity, Cr
   }
 
   @Override
-  protected float getOverlayProgress (ShearedCreeperEntity entity, float v) {
+  protected float getOverlayProgress(ShearedCreeperEntity entity, float v) {
     float intensity = entity.getCreeperFlashIntensity(v);
     return (int) (intensity * 10.0F) % 2 == 0 ? 0.0F : MathHelper.clamp(intensity, 0.5F, 1.0F);
   }
 
   @Override
-  public ResourceLocation getEntityTexture (ShearedCreeperEntity entity) {
+  public ResourceLocation getEntityTexture(ShearedCreeperEntity entity) {
     return EssenceEntityTextures.SHEARED_CREEPER;
   }
 }

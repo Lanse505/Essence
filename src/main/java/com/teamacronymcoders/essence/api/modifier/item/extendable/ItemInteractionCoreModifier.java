@@ -19,46 +19,46 @@ import net.minecraft.world.World;
 
 public abstract class ItemInteractionCoreModifier extends ItemAttributeModifier {
 
-  public ItemInteractionCoreModifier () {
+  public ItemInteractionCoreModifier() {
     super(1);
   }
 
-  public ItemInteractionCoreModifier (int maxLevel) {
+  public ItemInteractionCoreModifier(int maxLevel) {
     super(maxLevel);
   }
 
-  public ItemInteractionCoreModifier (int maxLevel, int minLevel) {
+  public ItemInteractionCoreModifier(int maxLevel, int minLevel) {
     super(maxLevel, minLevel);
   }
 
-  public ItemInteractionCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
+  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, operation);
   }
 
-  public ItemInteractionCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
+  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, maxLevel, operation);
   }
 
-  public ItemInteractionCoreModifier (Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
+  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
     super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
   }
 
-  public ActionResultType onItemUse (ItemUseContext context, ModifierInstance<ItemStack> instance) {
+  public ActionResultType onItemUse(ItemUseContext context, ModifierInstance instance) {
     return ActionResultType.PASS;
   }
 
-  public boolean onHitEntity (ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance<ItemStack> instance) {
+  public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance instance) {
     return false;
   }
 
-  public boolean onBlockDestroyed (ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance<ItemStack> instance) {
+  public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
     return false;
   }
 
-  public void onInventoryTick (ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance<ItemStack> instance) {
+  public void onInventoryTick(ItemStack stack, World world, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
   }
 
-  public List<ItemStack> onSheared (ItemStack stack, @Nullable PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance<ItemStack> instance) {
+  public List<ItemStack> onShearedAltered(ItemStack stack, @Nullable PlayerEntity player, LivingEntity sheared, Hand hand, List<ItemStack> stackList, ModifierInstance instance) {
     return stackList;
   }
 
