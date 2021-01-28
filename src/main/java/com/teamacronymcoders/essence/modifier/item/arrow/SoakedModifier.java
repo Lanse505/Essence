@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.modifier.item.arrow;
 
+import com.google.common.collect.Lists;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
@@ -7,6 +8,7 @@ import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModi
 import com.teamacronymcoders.essence.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.util.helper.EssenceBowHelper;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -20,14 +22,18 @@ public class SoakedModifier extends ItemArrowCoreModifier {
   }
 
   @Override
-  public void onCollide(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {
+  public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {
     int level = instance.getLevel();
+    Optional<ItemStackModifierHolder> holder = bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).resolve();
+    Optional<List<EffectInstance>> instances = holder.flatMap(itemStackModifierHolder -> itemStackModifierHolder.getModifierInstances().stream().filter(savedInstance -> savedInstance.getModifier() instanceof BrewedModifier).map(correctInstance -> EssenceBowHelper.getEffectInstancesFromNBT(correctInstance.getModifierData())).reduce((effectInstances, effectInstances2) -> {
+      effectInstances.addAll(effectInstances2);
+      return effectInstances;
+    }));
+    List<EffectInstance> finalInstances = instances.orElseGet(Lists::newArrayList);
     if (level == 1) {
-      List<EffectInstance> instances = EssenceBowHelper.getEffectInstancesFromNBT(instance.getModifierData());
-      EssenceBowHelper.onSplashHit(instances, null, modifiableArrowEntity);
+      EssenceBowHelper.onSplashHit(finalInstances, null, modifiableArrowEntity);
     } else if (level == 2) {
-      List<EffectInstance> instances = EssenceBowHelper.getEffectInstancesFromNBT(instance.getModifierData());
-      EssenceBowHelper.makeAreaOfEffectCloud(instances, modifiableArrowEntity);
+      EssenceBowHelper.makeAreaOfEffectCloud(finalInstances, modifiableArrowEntity);
     }
   }
 

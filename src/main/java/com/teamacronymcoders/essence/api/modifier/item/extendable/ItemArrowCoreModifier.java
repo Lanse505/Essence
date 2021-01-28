@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.entity.ModifiableArrowEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockRayTraceResult;
 
 public abstract class ItemArrowCoreModifier extends ItemCoreModifier {
@@ -20,7 +21,7 @@ public abstract class ItemArrowCoreModifier extends ItemCoreModifier {
     super(minLevel, maxLevel);
   }
 
-  public abstract void onCollide(ModifiableArrowEntity abstractArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance);
+  public abstract void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance);
 
   public abstract void alterArrowEntity(ModifiableArrowEntity abstractArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance);
 }

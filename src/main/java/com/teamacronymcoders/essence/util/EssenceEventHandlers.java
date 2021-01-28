@@ -15,7 +15,6 @@ import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.command.EssenceCommands;
-import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
 import com.teamacronymcoders.essence.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.EssenceShear;
@@ -31,7 +30,8 @@ import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
+import com.teamacronymcoders.essence.util.network.message.server.PacketItemStack;
+import com.teamacronymcoders.essence.world.generation.EssenceFeatureConfig;
 import java.awt.Color;
 import java.util.Collections;
 import java.util.List;

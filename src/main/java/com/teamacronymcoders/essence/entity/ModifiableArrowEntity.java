@@ -196,17 +196,7 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
   }
 
   protected ItemStack getArrowStack() {
-    if (this.customPotionEffects.isEmpty() && this.potion == Potions.EMPTY) {
-      return new ItemStack(Items.ARROW);
-    } else {
-      ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
-      PotionUtils.addPotionToItemStack(itemstack, this.potion);
-      PotionUtils.appendEffects(itemstack, this.customPotionEffects);
-      if (this.fixedColor) {
-        itemstack.getOrCreateTag().putInt("CustomPotionColor", this.getColor());
-      }
-      return itemstack;
-    }
+    return new ItemStack(Items.ARROW);
   }
 
   /**
@@ -237,8 +227,9 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
     Entity shooter = this.func_234616_v_();
     if (EssenceItemstackModifierHelpers.hasSoakedModifier(bowStack)) {
       bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)).ifPresent(instances -> instances.forEach(instance -> {
+        //LOGGER.info("This is a test logger message");
         ItemArrowCoreModifier modifier = (ItemArrowCoreModifier) instance.getModifier();
-        modifier.onCollide(this, (PlayerEntity) shooter, result, instance);
+        modifier.onCollide(bowStack, this, (PlayerEntity) shooter, result, instance);
       }));
     }
   }

@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.client.render.tesr.itemstack;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -30,15 +29,17 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
 
   @Override
   public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType transform, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-    if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem) {
-      stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).ifPresent(storage -> {
-        if (storage.getUUID() != null) {
-          LivingEntity entity = entityCache.getIfPresent(storage.getUUID());
-          if (entity != null) {
-            renderEntityStatic(entity, matrixStack, buffer, combinedLight);
-          }
+    if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem && stack.getTag() != null) {
+      UUID uuid = stack.getTag().getUniqueId("uuid");
+      LivingEntity entity = entityCache.getIfPresent(uuid);
+      if (entity != null) {
+        renderEntityStatic(entity, matrixStack, buffer, combinedLight);
+      } else {
+        LivingEntity nbtEntity = SerializedEntityItem.getEntityFromNBT(stack.getTag(), Minecraft.getInstance().world);
+        if (nbtEntity != null) {
+          entityCache.put(uuid, nbtEntity);
         }
-      });
+      }
     }
   }
 
@@ -53,10 +54,9 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
     double z = 1.0f + vec3d.getZ();
     float yaw = 1.0f;
 
-    matrix.push();
-    matrix.translate(x, y, z);
-    renderer.render(entity, yaw, minecraft.getRenderPartialTicks(), matrix, buffer, light);
-    matrix.pop();
-
+    matrix.scale(0.35f, 0.35f, 0.35f);
+    matrix.translate(0.4, -0.5, 0.5);
+    manager.renderEntityStatic(entity, x, y, z, yaw, minecraft.getRenderPartialTicks(), matrix, buffer, light);
   }
+
 }

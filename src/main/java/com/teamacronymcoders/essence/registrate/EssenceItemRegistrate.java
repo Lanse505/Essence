@@ -97,10 +97,10 @@ public class EssenceItemRegistrate {
           .register();
   public static ItemEntry<EssenceWrench> ESSENCE_WRENCH = Essence.ESSENCE_REGISTRATE.object("essence_wrench")
           .item(EssenceWrench::new).properties(properties -> properties.group(Essence.TOOL_TAB).maxStackSize(1).maxDamage(2048).rarity(Rarity.RARE))
-          .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/portable_crafter")))
+          .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/essence_wrench")))
           .lang("Essence-Infused Wrench").register();
   public static ItemEntry<SerializedEntityItem> SERIALIZED_ENTITY = Essence.ESSENCE_REGISTRATE.object("serialized_entity")
-          .item(SerializedEntityItem::new).properties(properties -> properties.setISTER(() -> SerializableMobRenderer::new).group(Essence.CORE_TAB))
+          .item(SerializedEntityItem::new).properties(properties -> properties.setISTER(() -> SerializableMobRenderer::new).maxStackSize(1))
           .lang("Serialized Entity")
           .model((context, provider) -> provider.getBuilder(context.getId().getPath()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity"))))
           .register();

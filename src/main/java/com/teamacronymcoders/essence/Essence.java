@@ -10,14 +10,13 @@ import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.capability.block.BlockModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
-import com.teamacronymcoders.essence.capability.itemstack.wrench.EntityStorageCapability;
 import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
-import com.teamacronymcoders.essence.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.registrate.*;
+import com.teamacronymcoders.essence.registrate.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
 import com.teamacronymcoders.essence.serializable.loot.condition.EssenceConditions;
 import com.teamacronymcoders.essence.serializable.loot.condition.MatchModifier;
@@ -111,6 +110,7 @@ public class Essence extends ModuleController {
     EssenceKnowledgeRegistrate.init();
     EssenceParticleRegistrate.init();
     EssenceSoundRegistrate.init();
+
     // Data-Generators
     EssenceAdvancementRegistrate.init(ESSENCE_REGISTRATE);
     EssenceLootTableRegistrate.init(ESSENCE_REGISTRATE);
@@ -142,7 +142,6 @@ public class Essence extends ModuleController {
     ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new ArgumentSerializer<>(EssenceModifierArgumentType::new));
     ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new ArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
     CapabilityManager.INSTANCE.register(BlockModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), BlockModifierHolder::new);
-    CapabilityManager.INSTANCE.register(EntityStorageCapability.class, NBTCapabilityStorage.create(CompoundNBT.class), EntityStorageCapability::new);
     CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
     CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
     EssenceConditions.MATCH_MODIFIER = LootConditionManager.register("essence:match_modifier", new MatchModifier.Serializer());

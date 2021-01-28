@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.datagen.recipe;
+package com.teamacronymcoders.essence.registrate.datagen.recipe;
 
 import com.hrznstudio.titanium.recipe.generator.IJSONGenerator;
 import com.hrznstudio.titanium.recipe.generator.IJsonFile;

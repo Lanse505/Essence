@@ -6,6 +6,7 @@ import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import com.teamacronymcoders.essence.item.wrench.config.BlockSerializationEnum;
 import com.teamacronymcoders.essence.item.wrench.config.EntitySerializationEnum;
 import com.teamacronymcoders.essence.modifier.item.enchantment.EfficiencyModifier;
@@ -20,6 +21,7 @@ import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import mcp.MethodsReturnNonnullByDefault;
@@ -83,9 +85,9 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
       ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
       boolean successful;
       if (optional.isPresent()) {
-        successful = serializeEntity(serialized, player, target, hand, true);
+        successful = serializeEntity(serialized, target, true);
       } else {
-        successful = serializeEntity(serialized, player, target, hand, false);
+        successful = serializeEntity(serialized, target, false);
       }
       if (successful) {
         player.addItemStackToInventory(serialized);
@@ -161,7 +163,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     return new ItemStackModifierProvider(stack);
   }
 
-  public boolean serializeEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand, boolean checkBoss) {
+  public boolean serializeEntity(ItemStack stack, LivingEntity target, boolean checkBoss) {
     if (target.getEntityWorld().isRemote) {
       return false;
     }
@@ -174,22 +176,30 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         return false;
       }
     }
-    return stack.getCapability(EssenceCoreCapability.ENTITY_STORAGE).map(storage -> {
-      String entityID = EntityType.getKey(target.getType()).toString();
-      if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
-        if (isEntityBlacklisted(entityID)) {
-          return false;
-        }
-      } else {
-        if (!isEntityWhitelisted(entityID)) {
-          return false;
-        }
+    UUID uuid = target.getUniqueID();
+    String entityID = EntityType.getKey(target.getType()).toString();
+    if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
+      if (isEntityBlacklisted(entityID)) {
+        return false;
       }
-      storage.setEntity(target);
-      playerIn.swingArm(hand);
-      target.remove(true);
-      return true;
-    }).orElse(false);
+    } else {
+      if (!isEntityWhitelisted(entityID)) {
+        return false;
+      }
+    }
+    SerializableMobRenderer.entityCache.put(uuid, target);
+    stack.setTag(serializeNBT(target));
+    target.remove();
+    return true;
+  }
+
+  public CompoundNBT serializeNBT(LivingEntity entity) {
+    CompoundNBT nbt = new CompoundNBT();
+    nbt.putUniqueId("uuid", entity.getUniqueID());
+    String entityID = EntityType.getKey(entity.getType()).toString();
+    nbt.putString("entity", entityID);
+    entity.writeWithoutTypeId(nbt);
+    return nbt;
   }
 
   public WrenchModeEnum getMode() {

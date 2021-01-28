@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.util.network;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.util.network.message.PacketItemStack;
+import com.teamacronymcoders.essence.util.network.message.server.PacketItemStack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +36,7 @@ public class PacketHandler {
   private int index = 0;
 
   private static String getProtocolVersion() {
-    return Essence.instance == null ? "999.999.999" : Essence.instance.versionNumber;
+    return Essence.instance == null ? "999.999.999" : Essence.versionNumber;
   }
 
   /**

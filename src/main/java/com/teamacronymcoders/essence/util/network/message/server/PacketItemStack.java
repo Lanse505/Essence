@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.util.network.message;
+package com.teamacronymcoders.essence.util.network.message.server;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
@@ -20,15 +20,15 @@ public class PacketItemStack {
 
   private List<Object> parameters;
   private PacketBuffer storedBuffer;
-  private final Hand currentHand;
+  private final Hand hand;
 
   public PacketItemStack(Hand hand, List<Object> params) {
-    currentHand = hand;
+    this.hand = hand;
     parameters = params;
   }
 
   private PacketItemStack(Hand hand, PacketBuffer storedBuffer) {
-    currentHand = hand;
+    this.hand = hand;
     this.storedBuffer = storedBuffer;
   }
 
@@ -38,7 +38,7 @@ public class PacketItemStack {
       return;
     }
     context.get().enqueueWork(() -> {
-      ItemStack stack = player.getHeldItem(message.currentHand);
+      ItemStack stack = player.getHeldItem(message.hand);
       if (!stack.isEmpty() && stack.getItem() instanceof IItemNetwork) {
         IItemNetwork network = (IItemNetwork) stack.getItem();
         try {
@@ -53,7 +53,7 @@ public class PacketItemStack {
   }
 
   public static void encode(PacketItemStack pkt, PacketBuffer buf) {
-    buf.writeEnumValue(pkt.currentHand);
+    buf.writeEnumValue(pkt.hand);
     MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
     if (server != null) {
       PacketHandler.log("Sending ItemStack packet");

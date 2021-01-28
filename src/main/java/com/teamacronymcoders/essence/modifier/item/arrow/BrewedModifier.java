@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.potion.EffectInstance;
@@ -29,7 +30,7 @@ public class BrewedModifier extends ItemArrowCoreModifier {
   }
 
   @Override
-  public void onCollide(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {}
+  public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {}
 
   @Override
   public void alterArrowEntity(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {

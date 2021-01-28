@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.util.registration;
 
-import com.teamacronymcoders.essence.generation.EssenceFeatureConfig;
+import com.teamacronymcoders.essence.world.generation.EssenceFeatureConfig;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "essence:item/portable_crafter"
+    "layer0": "essence:item/essence_wrench"
   }
 }

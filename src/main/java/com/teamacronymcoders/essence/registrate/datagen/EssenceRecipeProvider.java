@@ -1,6 +1,6 @@
-package com.teamacronymcoders.essence.datagen;
+package com.teamacronymcoders.essence.registrate.datagen;
 
-import com.teamacronymcoders.essence.datagen.recipe.EssenceSerializableProvider;
+import com.teamacronymcoders.essence.registrate.datagen.recipe.EssenceSerializableProvider;
 import net.minecraft.data.DataGenerator;
 
 public class EssenceRecipeProvider {

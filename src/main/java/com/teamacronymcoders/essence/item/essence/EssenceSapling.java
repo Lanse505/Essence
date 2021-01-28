@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.item.essence;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.base.CustomSaplingBlock;
-import com.teamacronymcoders.essence.generation.tree.essence_tree.EssenceTree;
+import com.teamacronymcoders.essence.world.generation.tree.essence_tree.EssenceTree;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 

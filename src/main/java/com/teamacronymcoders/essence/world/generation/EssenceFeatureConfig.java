@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.generation;
+package com.teamacronymcoders.essence.world.generation;
 
 import com.google.common.collect.ImmutableList;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;

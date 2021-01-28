@@ -5,6 +5,7 @@ import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
 import com.teamacronymcoders.essence.entity.ModifiableArrowEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockRayTraceResult;
 
 public class KeenModifier extends ItemArrowCoreModifier {
@@ -14,7 +15,7 @@ public class KeenModifier extends ItemArrowCoreModifier {
   }
 
   @Override
-  public void onCollide(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {}
+  public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, BlockRayTraceResult result, ModifierInstance instance) {}
 
   @Override
   public void alterArrowEntity(ModifiableArrowEntity modifiableArrowEntity, PlayerEntity shooter, float velocity, ModifierInstance instance) {
