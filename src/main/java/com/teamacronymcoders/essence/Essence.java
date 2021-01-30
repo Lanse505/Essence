@@ -65,8 +65,7 @@ import org.apache.logging.log4j.Logger;
 
 // TODO List:
 // 1. Make Crafting a thing
-// 2. Fix Dispenser Behaviours
-// 3. Work on finishing the unfinished things (Tablet of Muffling, Portable Crafter,
+// 2. Work on finishing the unfinished things (Tablet of Muffling, Portable Crafter, etc)
 
 @Mod("essence")
 public class Essence extends ModuleController {
@@ -87,15 +86,21 @@ public class Essence extends ModuleController {
   public Essence() {
     instance = this;
     handler.init();
+
+    // Titanium Serializers
     JSONSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::writeSerializableModifier, EssenceSerializableObjectHandler::readSerializableModifier);
     JSONSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::writeSerializableModifierArray, EssenceSerializableObjectHandler::readSerializableModifierArray);
     JSONSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::writeBlockState, EssenceSerializableObjectHandler::readBlockState);
     CompoundSerializableDataHandler.map(SerializableModifier.class, EssenceSerializableObjectHandler::readSerializableModifier, EssenceSerializableObjectHandler::writeSerializableModifier);
     CompoundSerializableDataHandler.map(SerializableModifier[].class, EssenceSerializableObjectHandler::readSerializableModifierArray, EssenceSerializableObjectHandler::writeSerializableModifierArray);
     CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
+
+    // Configs
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
+
+    // Registrates
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     ESSENCE_REGISTRATE = Registrate.create("essence");
     EssenceAdvancements.setup();
@@ -117,6 +122,7 @@ public class Essence extends ModuleController {
     EssenceTagRegistrate.init(ESSENCE_REGISTRATE);
     EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
 
+    // Misc Setup
     DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -152,7 +158,6 @@ public class Essence extends ModuleController {
     GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), GhastEntity.func_234290_eH_().create());
     GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_PIG.get(), PigEntity.func_234215_eI_().create());
 
-    // TODO: Fix Dispenser Behaviour
     EssenceDispenseBehaviours.init();
   }
 

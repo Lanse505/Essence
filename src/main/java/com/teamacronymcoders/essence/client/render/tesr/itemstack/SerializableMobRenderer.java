@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3d;
@@ -34,7 +35,7 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
       LivingEntity entity = entityCache.getIfPresent(uuid);
       if (entity != null) {
         renderEntityStatic(entity, matrixStack, buffer, combinedLight);
-      } else {
+      } else if (!stack.getTag().getString("entity").equals(EntityType.getKey(EntityType.IRON_GOLEM).toString())) {
         LivingEntity nbtEntity = SerializedEntityItem.getEntityFromNBT(stack.getTag(), Minecraft.getInstance().world);
         if (nbtEntity != null) {
           entityCache.put(uuid, nbtEntity);
