@@ -4,14 +4,12 @@ import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
-import com.teamacronymcoders.essence.api.modified.IModifiedBlock;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeConversion;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.capability.block.BlockModifierProvider;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.command.EssenceCommands;
@@ -37,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -109,12 +106,6 @@ public class EssenceEventHandlers {
             .process(attach -> {
               if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedTool) {
                 ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MOD_ID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) ((AttachCapabilitiesEvent) attach).getObject()));
-              }
-            }).subscribe();
-    EventManager.forgeGeneric(AttachCapabilitiesEvent.class, Block.class)
-            .process(attach -> {
-              if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedBlock) {
-                ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MOD_ID, "block_modifier_holder"), new BlockModifierProvider());
               }
             }).subscribe();
   }
