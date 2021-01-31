@@ -192,7 +192,7 @@ public class EssenceLangRegistrate {
     provider.add("attribute.essence.attack_damage", "Attack-Damage");
     provider.add("attribute.essence.max_health", "Max-Health");
     provider.add("attribute.essence.movement_speed", "Movement Speed");
-    provider.add("container.essence.portable_crafter", "Portable-Crafter");
+    provider.add("container.essence.portable.crafter", "Crafting Cracker");
     provider.add("curios.identifier.backpack", "Backpack");
     provider.add("fluid.essence.essence", "Essence");
     provider.add("itemGroup.resources", "Titanium Resources");

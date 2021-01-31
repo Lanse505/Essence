@@ -23,7 +23,7 @@ public class EssenceEntityRegistrate {
 
   public static void init() {}
 
-  public static EntityEntry<ModifiableArrowEntity> ARROW_ENTITY = Essence.ESSENCE_REGISTRATE.object("modifiable_entity").<ModifiableArrowEntity>entity(ModifiableArrowEntity::new, EntityClassification.MISC).renderer(() -> ModifiableArrowRenderer::new).register();
+  public static EntityEntry<ModifiableArrowEntity> ARROW_ENTITY = Essence.ESSENCE_REGISTRATE.object("modifiable_arrow").<ModifiableArrowEntity>entity(ModifiableArrowEntity::new, EntityClassification.MISC).renderer(() -> ModifiableArrowRenderer::new).register();
   public static EntityEntry<GlueBallEntity> GLUE_BALL = Essence.ESSENCE_REGISTRATE.object("glue_ball").<GlueBallEntity>entity(GlueBallEntity::new, EntityClassification.MISC).renderer(() -> GlueBallRenderer::new).register();
   public static EntityEntry<ShearedChickenEntity> SHEARED_CHICKEN = Essence.ESSENCE_REGISTRATE.object("sheared_chicken").entity(ShearedChickenEntity::new, EntityClassification.CREATURE).renderer(() -> ShearedChickenRenderer::new)
           .loot((tables, type) -> tables.registerLootTable(type, LootTable.builder()

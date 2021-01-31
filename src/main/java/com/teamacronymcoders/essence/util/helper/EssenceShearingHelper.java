@@ -85,79 +85,81 @@ public class EssenceShearingHelper {
   }
 
   public static ActionResultType handleHardcodedEntity(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand) {
-    if (sheared instanceof HorseEntity) {
-      List<ItemStack> loot = new ArrayList<>();
-      if (!player.getEntityWorld().isRemote()) {
-        LootTableManager manager = player.world.getServer().getLootTableManager();
-        ServerWorld world = (ServerWorld) player.getEntityWorld();
-        LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
-        loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_HORSE).generate(context);
+    if (player != null) {
+      if (sheared instanceof HorseEntity) {
+        List<ItemStack> loot = new ArrayList<>();
+        if (!player.getEntityWorld().isRemote()) {
+          LootTableManager manager = player.world.getServer().getLootTableManager();
+          ServerWorld world = (ServerWorld) player.getEntityWorld();
+          LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
+          loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_HORSE).generate(context);
+        }
+        // Handle dropping the final list of ItemStacks
+        loot.forEach(s -> {
+          ItemEntity entity = sheared.entityDropItem(s);
+          entity.setMotion(entity.getMotion().add(
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
+                  Essence.RANDOM.nextFloat() * 0.05F,
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
+        });
+        // Damage the ItemStack
+        stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
+
+        ZombieHorseEntity zombie = new ZombieHorseEntity(EntityType.ZOMBIE_HORSE, sheared.world);
+        zombie.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
+        zombie.getEntityWorld().addEntity(zombie);
+        sheared.remove();
+        return ActionResultType.SUCCESS;
+      } else if (sheared instanceof ZombieHorseEntity) {
+        List<ItemStack> loot = new ArrayList<>();
+        if (!player.getEntityWorld().isRemote()) {
+          LootTableManager manager = player.world.getServer().getLootTableManager();
+          ServerWorld world = (ServerWorld) player.getEntityWorld();
+          LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
+          loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_ZOMBIE_HORSE).generate(context);
+        }
+        // Handle dropping the final list of ItemStacks
+        loot.forEach(s -> {
+          ItemEntity entity = sheared.entityDropItem(s);
+          entity.setMotion(entity.getMotion().add(
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
+                  Essence.RANDOM.nextFloat() * 0.05F,
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
+        });
+        // Damage the ItemStack
+        stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
+
+        SkeletonHorseEntity skeleton = new SkeletonHorseEntity(EntityType.SKELETON_HORSE, sheared.world);
+        skeleton.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
+        skeleton.getEntityWorld().addEntity(skeleton);
+        sheared.remove();
+        return ActionResultType.SUCCESS;
+      } else if (sheared instanceof ZombieEntity) {
+        List<ItemStack> loot = new ArrayList<>();
+        if (!player.getEntityWorld().isRemote()) {
+          LootTableManager manager = player.world.getServer().getLootTableManager();
+          ServerWorld world = (ServerWorld) player.getEntityWorld();
+          LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
+          loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_ZOMBIE).generate(context);
+        }
+        // Handle dropping the final list of ItemStacks
+        loot.forEach(s -> {
+          ItemEntity entity = sheared.entityDropItem(s);
+          entity.setMotion(entity.getMotion().add(
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
+                  Essence.RANDOM.nextFloat() * 0.05F,
+                  (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
+        });
+        // Damage the ItemStack
+        stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
+
+        SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, sheared.world);
+        skeleton.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
+        skeleton.getEntityWorld().addEntity(skeleton);
+        sheared.remove();
+        return ActionResultType.SUCCESS;
       }
-      // Handle dropping the final list of ItemStacks
-      loot.forEach(s -> {
-        ItemEntity entity = sheared.entityDropItem(s);
-        entity.setMotion(entity.getMotion().add(
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
-                Essence.RANDOM.nextFloat() * 0.05F,
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
-      });
-      // Damage the ItemStack
-      stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
-
-      ZombieHorseEntity zombie = new ZombieHorseEntity(EntityType.ZOMBIE_HORSE, sheared.world);
-      zombie.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
-      zombie.getEntityWorld().addEntity(zombie);
-      sheared.remove();
-
-    } else if (sheared instanceof ZombieHorseEntity) {
-      List<ItemStack> loot = new ArrayList<>();
-      if (!player.getEntityWorld().isRemote()) {
-        LootTableManager manager = player.world.getServer().getLootTableManager();
-        ServerWorld world = (ServerWorld) player.getEntityWorld();
-        LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
-        loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_ZOMBIE_HORSE).generate(context);
-      }
-      // Handle dropping the final list of ItemStacks
-      loot.forEach(s -> {
-        ItemEntity entity = sheared.entityDropItem(s);
-        entity.setMotion(entity.getMotion().add(
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
-                Essence.RANDOM.nextFloat() * 0.05F,
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
-      });
-      // Damage the ItemStack
-      stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
-
-      SkeletonHorseEntity skeleton = new SkeletonHorseEntity(EntityType.SKELETON_HORSE, sheared.world);
-      skeleton.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
-      skeleton.getEntityWorld().addEntity(skeleton);
-      sheared.remove();
-
-    } else if (sheared instanceof ZombieEntity) {
-      List<ItemStack> loot = new ArrayList<>();
-      if (!player.getEntityWorld().isRemote()) {
-        LootTableManager manager = player.world.getServer().getLootTableManager();
-        ServerWorld world = (ServerWorld) player.getEntityWorld();
-        LootContext context = new LootContext.Builder(world).withParameter(LootParameters.THIS_ENTITY, sheared).withParameter(LootParameters.DAMAGE_SOURCE, DamageSource.GENERIC).withParameter(LootParameters.field_237457_g_, sheared.getPositionVec()).withLuck(EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)).withSeed(world.getSeed()).build(LootParameterSets.ENTITY);
-        loot = manager.getLootTableFromLocation(EssenceLootTableRegistrate.SHEARING_ZOMBIE).generate(context);
-      }
-      // Handle dropping the final list of ItemStacks
-      loot.forEach(s -> {
-        ItemEntity entity = sheared.entityDropItem(s);
-        entity.setMotion(entity.getMotion().add(
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F,
-                Essence.RANDOM.nextFloat() * 0.05F,
-                (Essence.RANDOM.nextFloat() - Essence.RANDOM.nextFloat()) * 0.1F));
-      });
-      // Damage the ItemStack
-      stack.damageItem(1, sheared, entity -> entity.sendBreakAnimation(hand));
-
-      SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, sheared.world);
-      skeleton.setPosition(sheared.getPosX(), sheared.getPosY(), sheared.getPosZ());
-      skeleton.getEntityWorld().addEntity(skeleton);
-      sheared.remove();
     }
-
     return ActionResultType.FAIL;
   }
 }

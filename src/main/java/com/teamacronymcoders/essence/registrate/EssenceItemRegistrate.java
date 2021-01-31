@@ -3,13 +3,13 @@ package com.teamacronymcoders.essence.registrate;
 import com.hrznstudio.titanium.item.BasicItem;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
+import com.teamacronymcoders.essence.item.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.item.tool.*;
-import com.teamacronymcoders.essence.item.tool.misc.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
 import com.teamacronymcoders.essence.util.EssenceTags;
@@ -92,7 +92,7 @@ public class EssenceItemRegistrate {
   // MISC
   public static ItemEntry<PortableCrafterItem> PORTABLE_CRAFTER = Essence.ESSENCE_REGISTRATE.object("portable_crafter")
           .item(PortableCrafterItem::new).properties(properties -> properties.maxStackSize(1).group(Essence.TOOL_TAB).rarity(Rarity.RARE))
-          .lang("Portable Crafter")
+          .lang("Crafting Cracker")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/portable_crafter")))
           .register();
   public static ItemEntry<EssenceWrench> ESSENCE_WRENCH = Essence.ESSENCE_REGISTRATE.object("essence_wrench")

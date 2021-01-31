@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.api.holder;
 
 import com.google.common.collect.Lists;
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modified.IModified;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import java.util.ArrayList;
@@ -295,6 +294,5 @@ public abstract class ModifierHolder<T> implements IModifierHolder<T>, INBTSeria
       instance.deserializeNBT(compoundNBT);
       this.modifiers.add(instance);
     }
-    Essence.LOGGER.info("Held Modifiers: " + this.modifiers.size());
   }
 }

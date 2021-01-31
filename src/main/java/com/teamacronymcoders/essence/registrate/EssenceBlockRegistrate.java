@@ -6,7 +6,6 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.block.EssenceBlock;
 import com.teamacronymcoders.essence.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.block.EssenceCrystalOreBlock;
-import com.teamacronymcoders.essence.block.EssenceOreBlock;
 import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.block.infusion.InfusionTableBlock;
 import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
@@ -21,19 +20,14 @@ import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
-import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.RenderType;
@@ -41,6 +35,7 @@ import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Items;
 import net.minecraft.loot.*;
@@ -105,8 +100,8 @@ public class EssenceBlockRegistrate {
           .item().group(() -> Essence.CORE_TAB)
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
-  public static BlockEntry<EssenceOreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
-          .block(Material.ROCK, EssenceOreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE).loot(BlockLootTables::registerDropSelfLootTable)
+  public static BlockEntry<OreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
+          .block(Material.ROCK, OreBlock::new).properties(properties -> properties.hardnessAndResistance(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLootTables::registerDropSelfLootTable).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE).loot(BlockLootTables::registerDropSelfLootTable)
           .blockstate((context, provider) -> provider.simpleBlock(context.get()))
           .item().group(() -> Essence.CORE_TAB)
           .model((context, provider) -> provider.blockItem(context)).build()
@@ -199,10 +194,8 @@ public class EssenceBlockRegistrate {
   public static BlockEntry<InfusionTableBlock> INFUSION_TABLE = Essence.ESSENCE_REGISTRATE.object("essence_infusion_table")
           .block(Material.ROCK, InfusionTableBlock::new).properties(properties -> properties.sound(SoundType.STONE).hardnessAndResistance(3.5F).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid().variableOpacity())
           .lang("Infusion Table").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
-          .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
-          .item().properties(properties -> properties.group(Essence.CORE_TAB))
-          .model((context, provider) -> provider.blockItem(context)).build()
-          .register();
+          .blockstate((context, provider) -> provider.models().getExistingFile(new ResourceLocation(Essence.MOD_ID, "essence_infusion_table")))
+          .item((table, properties) -> new BlockItem(table, properties.group(Essence.CORE_TAB))).model((context, provider) -> provider.blockItem(context)).build().register();
   public static TileEntityEntry<InfusionTableTile> INFUSION_TABLE_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_table", InfusionTableTile::new)
           .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionTableTile.class))
           .renderer(() -> InfusionTableTESR::new).validBlock(INFUSION_TABLE)
@@ -211,10 +204,8 @@ public class EssenceBlockRegistrate {
   public static BlockEntry<InfusionPedestalBlock> INFUSION_PEDESTAL = Essence.ESSENCE_REGISTRATE.object("essence_infusion_pedestal")
           .block(Material.ROCK, InfusionPedestalBlock::new).properties(properties -> properties.hardnessAndResistance(3).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(2).notSolid())
           .lang("Infusion Pedestal").loot(BlockLootTables::registerDropSelfLootTable).addLayer(() -> RenderType::getTranslucent)
-          .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
-          .item().properties(properties -> properties.group(Essence.CORE_TAB))
-          .model((context, provider) -> provider.blockItem(context)).build()
-          .register();
+          .blockstate((context, provider) -> provider.models().getExistingFile(new ResourceLocation(Essence.MOD_ID, "essence_infusion_pedestal")))
+          .item((pedestal, properties) -> new BlockItem(pedestal, properties.group(Essence.CORE_TAB))).model((context, provider) -> provider.blockItem(context)).build().register();
   public static TileEntityEntry<InfusionPedestalTile> INFUSION_PEDESTAL_TILE = Essence.ESSENCE_REGISTRATE.tileEntity("essence_infusion_pedestal", InfusionPedestalTile::new)
           .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionPedestalTile.class))
           .renderer(() -> InfusionPedestalTESR::new).validBlock(INFUSION_PEDESTAL)

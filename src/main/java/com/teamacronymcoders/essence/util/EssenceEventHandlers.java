@@ -102,13 +102,6 @@ public class EssenceEventHandlers {
                       new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "fiery_modifier"))
               );
             }).subscribe();
-//        EventManager.mod(RegistryEvent.Register.class)
-//            .filter(register -> register.getGenericType().equals(ContainerType.class))
-//            .process(register -> {
-//                register.getRegistry().registerAll(
-//                    IForgeContainerType.create(PortableCrafterContainer::new).setRegistryName(new ResourceLocation(MODID, "portable_crafter"))
-//                );
-//            }).subscribe();
   }
 
   private static void setupModifierCapabilities() {

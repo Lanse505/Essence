@@ -14,7 +14,7 @@ import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.command.argument.extendable.EssenceEnumArgumentType;
-import com.teamacronymcoders.essence.item.tool.misc.behaviour.EssenceDispenseBehaviours;
+import com.teamacronymcoders.essence.item.behaviour.EssenceDispenseBehaviours;
 import com.teamacronymcoders.essence.registrate.*;
 import com.teamacronymcoders.essence.registrate.datagen.EssenceRecipeProvider;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceAdvancements;
@@ -74,8 +74,8 @@ public class Essence extends ModuleController {
   public static final String versionNumber = "1.0.0-alpha";
   public static final Random RANDOM = new Random();
   public static final Logger LOGGER = LogManager.getLogger("Essence");
-  public static final AdvancedTitaniumTab CORE_TAB = new EssenceCoreTab();
-  public static final AdvancedTitaniumTab TOOL_TAB = new EssenceToolTab();
+  public static AdvancedTitaniumTab CORE_TAB;
+  public static AdvancedTitaniumTab TOOL_TAB;
 
   public static Essence instance;
   public static EssenceCommonProxy proxy = DistExecutor.safeRunForDist(EssenceSafeSuppliers.getClientProxy(), EssenceSafeSuppliers.getServerProxy());
@@ -102,7 +102,9 @@ public class Essence extends ModuleController {
 
     // Registrates
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    ESSENCE_REGISTRATE = Registrate.create("essence");
+    CORE_TAB = new EssenceCoreTab();
+    TOOL_TAB = new EssenceToolTab();
+    ESSENCE_REGISTRATE = Registrate.create("essence").itemGroup(() -> CORE_TAB);
     EssenceAdvancements.setup();
     EssenceEventHandlers.setup();
 
@@ -115,6 +117,7 @@ public class Essence extends ModuleController {
     EssenceKnowledgeRegistrate.init();
     EssenceParticleRegistrate.init();
     EssenceSoundRegistrate.init();
+    EssenceGUIRegistrate.init();
 
     // Data-Generators
     EssenceAdvancementRegistrate.init(ESSENCE_REGISTRATE);
@@ -163,8 +166,6 @@ public class Essence extends ModuleController {
 
   private void clientSetup(final FMLClientSetupEvent event) {
     new EssenceKeyHandler();
-    // TODO: Reimplement once I get this working
-    //ScreenManager.registerFactory(PortableCrafterContainer.type, PortableCrafterContainerScreen::new);
 
     // Pull
     ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);

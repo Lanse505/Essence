@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.capability;
 
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
-import com.teamacronymcoders.essence.item.tool.misc.EssenceBackpackItem;
+import com.teamacronymcoders.essence.item.EssenceBackpackItem;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.util.Direction;
