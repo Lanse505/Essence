@@ -2,19 +2,19 @@ package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.entity.ModifiableArrowEntity;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.TippedArrowRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.TippableArrowRenderer;
+import net.minecraft.resources.ResourceLocation;
 
 public class ModifiableArrowRenderer extends ArrowRenderer<ModifiableArrowEntity> {
 
-  public ModifiableArrowRenderer(EntityRendererManager renderManagerIn) {
-    super(renderManagerIn);
+  public ModifiableArrowRenderer(EntityRendererProvider.Context context) {
+    super(context);
   }
 
   @Override
-  public ResourceLocation getEntityTexture(ModifiableArrowEntity entity) {
-    return entity.getColor() > 0 ? TippedArrowRenderer.RES_TIPPED_ARROW : TippedArrowRenderer.RES_ARROW;
+  public ResourceLocation getTextureLocation(ModifiableArrowEntity entity) {
+    return entity.getColor() > 0 ? TippableArrowRenderer.TIPPED_ARROW_LOCATION : TippableArrowRenderer.NORMAL_ARROW_LOCATION;
   }
 
 }

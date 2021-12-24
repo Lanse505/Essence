@@ -11,16 +11,16 @@ import com.teamacronymcoders.essence.modifier.item.enchantment.*;
 import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedModifier;
 import com.teamacronymcoders.essence.modifier.item.enchantment.strengthened.StrengthenedType;
 import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
-import com.teamacronymcoders.essence.modifier.item.interaction.FieryModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.cascading.CascadingType;
 import com.teamacronymcoders.essence.modifier.item.tank.HoldingModifier;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import java.util.function.Supplier;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+
+import java.util.function.Supplier;
 
 public class EssenceModifierRegistrate {
 

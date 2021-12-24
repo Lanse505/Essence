@@ -1,14 +1,16 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public abstract class ExtendableInfusionRecipe extends SerializableRecipe {
 
@@ -28,27 +30,27 @@ public abstract class ExtendableInfusionRecipe extends SerializableRecipe {
   }
 
   @Override
-  public boolean matches(IInventory inv, World worldIn) {
+  public boolean matches(Container container, Level level) {
     return false;
   }
 
   @Override
-  public ItemStack getCraftingResult(IInventory inv) {
+  public ItemStack assemble(Container container) {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean canFit(int width, int height) {
+  public boolean canCraftInDimensions(int width, int height) {
     return false;
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 
   public boolean isValid(NonNullList<ItemStack> stacks) {
-    return inputIngredients.stream().map(list -> Arrays.stream(list.getMatchingStacks()).map(tagStack -> stacks.stream().map(tagStack::isItemEqual))).anyMatch(booleanStream -> booleanStream.findAny().isPresent() && booleanStream.findAny().get().anyMatch(Boolean::booleanValue));
+    return inputIngredients.stream().map(list -> Arrays.stream(list.getItems()).map(tagStack -> stacks.stream().map(tagStack::sameItem))).anyMatch(booleanStream -> booleanStream.findAny().isPresent() && booleanStream.findAny().get().anyMatch(Boolean::booleanValue));
   }
 
   public ItemStack resolveRecipe(ItemStack stack) {

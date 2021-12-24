@@ -3,14 +3,14 @@ package com.teamacronymcoders.essence.serializable.loot.condition;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class MatchModifier implements ILootCondition {
+public class MatchModifier implements LootItemCondition {
   private final ModifierPredicate predicate;
 
   public MatchModifier(ModifierPredicate predicate) {
@@ -19,16 +19,16 @@ public class MatchModifier implements ILootCondition {
 
   @Override
   public boolean test(LootContext context) {
-    ItemStack stack = context.get(LootParameters.TOOL);
+    ItemStack stack = context.getParam(LootContextParams.TOOL);
     return stack != null && this.predicate.test(stack);
   }
 
   @Override
-  public LootConditionType func_230419_b_() {
+  public LootItemConditionType getType() {
     return null;
   }
 
-  public static class Serializer implements ILootSerializer<MatchModifier> {
+  public static class ModifierSerializer implements Serializer<MatchModifier> {
     @Override
     public void serialize(JsonObject json, MatchModifier condition, JsonSerializationContext context) {
       json.add("predicate", condition.predicate.serialize());

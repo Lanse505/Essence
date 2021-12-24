@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.item.tome;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class TomeOfKnowledgeItem extends TomeItem {
 
@@ -15,14 +15,14 @@ public class TomeOfKnowledgeItem extends TomeItem {
   }
 
   @Override
-  public ActionResultType onItemUse(ItemUseContext context) {
-    ItemStack stack = context.getItem();
-    PlayerEntity player = context.getPlayer();
-    CompoundNBT compoundNBT = stack.getOrCreateTag();
+  public InteractionResult useOn(UseOnContext context) {
+    ItemStack stack = context.getItemInHand();
+    Player player = context.getPlayer();
+    CompoundTag compoundNBT = stack.getOrCreateTag();
     if (player != null && !compoundNBT.contains(playerUUID)) {
-      compoundNBT.putUniqueId(playerUUID, player.getUniqueID());
+      compoundNBT.putUUID(playerUUID, player.getUUID());
     }
-    return super.onItemUse(context);
+    return super.useOn(context);
   }
 
 }

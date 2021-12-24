@@ -9,8 +9,9 @@ import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import java.util.Map;
 import net.minecraft.data.DataGenerator;
+
+import java.util.Map;
 
 public class EssenceSerializableProvider extends TitaniumSerializableProvider {
 

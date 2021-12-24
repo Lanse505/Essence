@@ -1,26 +1,26 @@
 package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.entity.sheared.ShearedChickenEntity;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.model.ChickenModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.ChickenModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class ShearedChickenRenderer extends MobRenderer<ShearedChickenEntity, ChickenModel<ShearedChickenEntity>> {
 
-  public ShearedChickenRenderer(EntityRendererManager manager) {
-    super(manager, new ChickenModel<>(), 0.3F);
+  public ShearedChickenRenderer(EntityRendererProvider.Context context) {
+    super(context, new ChickenModel<>(context.bakeLayer(EssenceEntityTextures.SHEARED_CHICKEN_LAYER)), 0.3F);
   }
 
   @Override
-  public ResourceLocation getEntityTexture(ShearedChickenEntity entity) {
+  public ResourceLocation getTextureLocation(ShearedChickenEntity entity) {
     return EssenceEntityTextures.SHEARED_CHICKEN;
   }
 
   protected float handleRotationFloat(ShearedChickenEntity entity, float v) {
-    float lerp = MathHelper.lerp(v, entity.oFlap, entity.wingRotation);
-    float lerp1 = MathHelper.lerp(v, entity.oFlapSpeed, entity.destPos);
-    return (MathHelper.sin(lerp) + 1.0F) * lerp1;
+    float lerp = Mth.lerp(v, entity.oFlap, entity.flap);
+    float lerp1 = Mth.lerp(v, entity.oFlapSpeed, entity.flapSpeed);
+    return (Mth.sin(lerp) + 1.0F) * lerp1;
   }
 }

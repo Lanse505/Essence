@@ -9,14 +9,18 @@ import com.teamacronymcoders.essence.block.infusion.InfusionPedestalBlock;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
+import javax.annotation.Nonnull;
+
+public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntity> {
 
   private static final BlockPos[] pedestal_positions = new BlockPos[] {
           new BlockPos(-4, 0, 0),
@@ -45,9 +49,9 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   private Integer ticksExisted = 0;
 
   @Save
-  private final InventoryComponent<InfusionTableTile> infusable;
+  private final InventoryComponent<InfusionTableBlockEntity> infusable;
   @Save
-  private final InventoryComponent<InfusionTableTile> tome;
+  private final InventoryComponent<InfusionTableBlockEntity> tome;
 
   // Book Rendering Variables
   public int ticks;
@@ -63,14 +67,14 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   @Save
   public Long pageSoundLastPlayed = 0L;
 
-  public InfusionTableTile() {
-    super(EssenceBlockRegistrate.INFUSION_TABLE.get());
-    addInventory(infusable = new InventoryComponent<InfusionTableTile>("input", 80, 20, 1)
+  public InfusionTableBlockEntity(BlockPos pos, BlockState state) {
+    super(EssenceBlockRegistrate.INFUSION_TABLE.get(), pos, state);
+    addInventory(infusable = new InventoryComponent<InfusionTableBlockEntity>("input", 80, 20, 1)
             .setComponentHarness(this)
             .setOutputFilter(this::canExtractInfusable)
             .setSlotLimit(1)
     );
-    addInventory(tome = new InventoryComponent<InfusionTableTile>("tome", 9, 10, 1)
+    addInventory(tome = new InventoryComponent<InfusionTableBlockEntity>("tome", 9, 10, 1)
             .setComponentHarness(this)
             .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))
             .setInputFilter((stack, integer) -> false)
@@ -80,8 +84,8 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   }
 
   @Override
-  public void tick() {
-    super.tick();
+  public void serverTick(Level level, BlockPos pos, BlockState state, InfusionTableBlockEntity blockEntity) {
+    super.serverTick(level, pos, state, blockEntity);
     ticksExisted++;
     handleBookRender();
     if (shouldBeWorking || isWorking) {
@@ -107,7 +111,7 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
 
   @Nonnull
   @Override
-  public InfusionTableTile getSelf() {
+  public InfusionTableBlockEntity getSelf() {
     return this;
   }
 
@@ -116,13 +120,13 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   }
 
   private NonNullList<ItemStack> getPedestalStacks() {
-    BlockPos tablePosition = getPos();
+    BlockPos tablePosition = getBlockPos();
     NonNullList<ItemStack> stacks = NonNullList.create();
-    if (getWorld() != null) {
+    if (getLevel() != null) {
       for (BlockPos pos : pedestal_positions) {
-        BlockPos pedestalPosition = tablePosition.add(pos.getX(), pos.getY(), pos.getZ());
-        if (getWorld().getBlockState(pedestalPosition).getBlock() instanceof InfusionPedestalBlock && getWorld().getTileEntity(pedestalPosition) instanceof InfusionPedestalTile) {
-          InfusionPedestalTile pedestal = (InfusionPedestalTile) getWorld().getTileEntity(pos);
+        BlockPos pedestalPosition = tablePosition.offset(pos.getX(), pos.getY(), pos.getZ());
+        if (getLevel().getBlockState(pedestalPosition).getBlock() instanceof InfusionPedestalBlock && getLevel().getBlockEntity(pedestalPosition) instanceof InfusionPedestalBlockEntity) {
+          InfusionPedestalBlockEntity pedestal = (InfusionPedestalBlockEntity) getLevel().getBlockEntity(pos);
           if (pedestal != null) {
             stacks.add(pedestal.getStack());
           }
@@ -133,8 +137,8 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   }
 
   private void getInfusionRecipe(NonNullList<ItemStack> stacks) {
-    if (getWorld() != null) {
-      recipe = getWorld().getRecipeManager().getRecipes()
+    if (getLevel() != null) {
+      recipe = getLevel().getRecipeManager().getRecipes()
               .stream()
               .filter(iRecipe -> iRecipe instanceof ExtendableInfusionRecipe)
               .map(iRecipe -> (ExtendableInfusionRecipe) iRecipe)
@@ -146,14 +150,14 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
   private void handleBookRender() {
     this.pageTurningSpeed = this.nextPageTurningSpeed;
     this.pageAngle = this.nextPageAngle;
-    if (world == null) {
+    if (getLevel() == null) {
       return;
     }
-    PlayerEntity player = this.world.getClosestPlayer(((float) this.pos.getX() + 0.5F), ((float) this.pos.getY() + 0.5F), ((float) this.pos.getZ() + 0.5F), 3.0D, false);
+    Player player = this.level.getNearestPlayer(((float) this.worldPosition.getX() + 0.5F), ((float) this.worldPosition.getY() + 0.5F), ((float) this.worldPosition.getZ() + 0.5F), 3.0D, false);
     if (player != null) {
-      double rangeX = player.getPosX() - ((double) this.pos.getX() + 0.5D);
-      double rangeZ = player.getPosZ() - ((double) this.pos.getZ() + 0.5D);
-      this.playerTableAngle = (float) MathHelper.atan2(rangeZ, rangeX);
+      double rangeX = player.getX() - ((double) this.worldPosition.getX() + 0.5D);
+      double rangeZ = player.getZ() - ((double) this.worldPosition.getZ() + 0.5D);
+      this.playerTableAngle = (float) Mth.atan2(rangeZ, rangeX);
       this.nextPageTurningSpeed += 0.1F;
       if (this.nextPageTurningSpeed < 0.5F || Essence.RANDOM.nextInt(40) == 0) {
         float lvt_6_1_ = this.rawSpeedIncrement;
@@ -166,9 +170,9 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
       this.nextPageTurningSpeed -= 0.1F;
     }
 
-    if (player != null && world.isRemote() && player.getEntityWorld().getGameTime() - pageSoundLastPlayed > 160) {
+    if (player != null && level.isClientSide() && player.getLevel().getGameTime() - pageSoundLastPlayed > 160) {
       EssenceWorldHelper.playBookSound(this, true);
-      pageSoundLastPlayed = player.getEntityWorld().getGameTime();
+      pageSoundLastPlayed = player.getLevel().getGameTime();
     }
 
     while (this.nextPageAngle >= 3.1415927F) {
@@ -187,23 +191,23 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
       this.playerTableAngle += 6.2831855F;
     }
 
-    float lvt_2_2_;
-    lvt_2_2_ = this.playerTableAngle - this.nextPageAngle;
-    while (lvt_2_2_ >= 3.1415927F) {
-      lvt_2_2_ -= 6.2831855F;
+    float angleDelta;
+    angleDelta = this.playerTableAngle - this.nextPageAngle;
+    while (angleDelta >= 3.1415927F) {
+      angleDelta -= 6.2831855F;
     }
 
-    while (lvt_2_2_ < -3.1415927F) {
-      lvt_2_2_ += 6.2831855F;
+    while (angleDelta < -3.1415927F) {
+      angleDelta += 6.2831855F;
     }
 
-    this.nextPageAngle += lvt_2_2_ * 0.4F;
-    this.nextPageTurningSpeed = MathHelper.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
+    this.nextPageAngle += angleDelta * 0.4F;
+    this.nextPageTurningSpeed = Mth.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
     ++this.ticks;
     this.field_195524_g = this.field_195523_f;
-    float lvt_3_1_ = (this.rawSpeedIncrement - this.field_195523_f) * 0.4F;
-    lvt_3_1_ = MathHelper.clamp(lvt_3_1_, -0.2F, 0.2F);
-    this.clampedSpeedIncrement += (lvt_3_1_ - this.clampedSpeedIncrement) * 0.9F;
+    float speedDelta = (this.rawSpeedIncrement - this.field_195523_f) * 0.4F;
+    speedDelta = Mth.clamp(speedDelta, -0.2F, 0.2F);
+    this.clampedSpeedIncrement += (speedDelta - this.clampedSpeedIncrement) * 0.9F;
     this.field_195523_f += this.clampedSpeedIncrement;
   }
 
@@ -211,11 +215,11 @@ public class InfusionTableTile extends ActiveTile<InfusionTableTile> {
     return isWorking;
   }
 
-  public InventoryComponent<InfusionTableTile> getTome() {
+  public InventoryComponent<InfusionTableBlockEntity> getTome() {
     return tome;
   }
 
-  public InventoryComponent<InfusionTableTile> getInfusable() {
+  public InventoryComponent<InfusionTableBlockEntity> getInfusable() {
     return infusable;
   }
 

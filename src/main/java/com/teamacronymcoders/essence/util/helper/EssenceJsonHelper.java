@@ -5,18 +5,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.teamacronymcoders.essence.Essence;
-import java.util.Map;
-import java.util.Optional;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.state.Property;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.Map;
+import java.util.Optional;
 
 public class EssenceJsonHelper {
 
@@ -37,7 +39,7 @@ public class EssenceJsonHelper {
     }
     if (json.isJsonPrimitive()) {
       final String rawId = json.getAsString();
-      final ResourceLocation registryId = ResourceLocation.tryCreate(rawId);
+      final ResourceLocation registryId = ResourceLocation.tryParse(rawId);
       if (registryId != null) {
         final T registryEntry = registry.getValue(registryId);
         if (registryEntry != null) {
@@ -49,7 +51,7 @@ public class EssenceJsonHelper {
         throw new JsonSyntaxException("Registry id " + rawId + " for property " + memberName + " was not a valid format.");
       }
     } else {
-      throw new JsonSyntaxException("Expected " + memberName + " to be a JSON primitive. was " + JSONUtils.toString(json));
+      throw new JsonSyntaxException("Expected " + memberName + " to be a JSON primitive. was " + GsonHelper.getType(json));
     }
   }
 
@@ -57,8 +59,12 @@ public class EssenceJsonHelper {
     return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.BLOCKS);
   }
 
-  public static Effect getPotion(JsonObject json, String memberName) {
+  public static Potion getPotion(JsonObject json, String memberName) {
     return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.POTIONS);
+  }
+
+  public static MobEffect getMobEffect(JsonObject json, String memberName) {
+    return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.MOB_EFFECTS);
   }
 
   public static JsonElement serializeBlockState(BlockState state) {
@@ -78,7 +84,7 @@ public class EssenceJsonHelper {
     // Read the block from the forge registry.
     final Block block = getBlock(json, "block");
     // Start off with the default state.
-    BlockState state = block.getDefaultState();
+    BlockState state = block.defaultBlockState();
     // If the properties member exists, attempt to assign properties to the block state.
     if (json.has("properties")) {
       final JsonElement propertiesElement = json.get("properties");
@@ -88,16 +94,16 @@ public class EssenceJsonHelper {
         // primitive string structure.
         for (final Map.Entry<String, JsonElement> property : props.entrySet()) {
           // Check the block for the property. Keys = property names.
-          final Property blockProperty = block.getStateContainer().getProperty(property.getKey());
+          final Property blockProperty = block.getStateDefinition().getProperty(property.getKey());
           if (blockProperty != null) {
             if (property.getValue().isJsonPrimitive()) {
               // Attempt to parse the value with the the property.
               final String valueString = property.getValue().getAsString();
-              final Optional<Comparable> propValue = blockProperty.parseValue(valueString);
+              final Optional<Comparable> propValue = blockProperty.getValue(valueString);
               if (propValue.isPresent()) {
                 // Update the state with the new property.
                 try {
-                  state = state.with(blockProperty, propValue.get());
+                  state = state.setValue(blockProperty, propValue.get());
                 } catch (final Exception e) {
                   Essence.LOGGER.error("Failed to update state for block {}. The mod that adds this block has issues.", block.getRegistryName());
                   Essence.LOGGER.catching(e);
@@ -106,37 +112,37 @@ public class EssenceJsonHelper {
                 throw new JsonSyntaxException("The property " + property.getKey() + " with value " + valueString + " coul not be parsed!");
               }
             } else {
-              throw new JsonSyntaxException("Expected property value for " + property.getKey() + " to be primitive string. Got " + JSONUtils.toString(property.getValue()));
+              throw new JsonSyntaxException("Expected property value for " + property.getKey() + " to be primitive string. Got " + GsonHelper.getType(property.getValue()));
             }
           } else {
             throw new JsonSyntaxException("The property " + property.getKey() + " is not valid for block " + block.getRegistryName());
           }
         }
       } else {
-        throw new JsonSyntaxException("Expected properties to be an object. Got " + JSONUtils.toString(propertiesElement));
+        throw new JsonSyntaxException("Expected properties to be an object. Got " + GsonHelper.getType(propertiesElement));
       }
     }
     return state;
   }
 
-  public static JsonElement serializeEffectInstance(EffectInstance instance) {
+  public static JsonElement serializeEffectInstance(MobEffectInstance instance) {
     final JsonObject object = new JsonObject();
-    object.addProperty("effect", instance.getPotion().getRegistryName().toString());
+    object.addProperty("effect", instance.getEffect().getRegistryName().toString());
     object.addProperty("duration", instance.getDuration());
     final JsonObject propertiesElement = new JsonObject();
     if (instance.getAmplifier() > 0) {
       propertiesElement.addProperty("amplifier", instance.getAmplifier());
       propertiesElement.addProperty("ambient", instance.isAmbient());
-      propertiesElement.addProperty("showParticles", instance.doesShowParticles());
-      propertiesElement.addProperty("showIcon", instance.isShowIcon());
+      propertiesElement.addProperty("showParticles", instance.isVisible());
+      propertiesElement.addProperty("showIcon", instance.showIcon());
     }
     object.add("properties", propertiesElement);
     return object;
   }
 
-  public static EffectInstance deserializeEffectInstance(JsonObject json) {
+  public static MobEffectInstance deserializeEffectInstance(JsonObject json) {
     // Read the effect from the forge registry.
-    final Effect effect = getPotion(json, "effect");
+    final MobEffect effect = getMobEffect(json, "effect");
     final int duration = json.get("duration").getAsInt();
     if (json.has("properties")) {
       final JsonElement propertiesElement = json.get("properties");
@@ -150,17 +156,17 @@ public class EssenceJsonHelper {
               final boolean showParticles = properties.getAsJsonObject("showParticles").getAsBoolean();
               if (properties.has("showIcon")) {
                 final boolean showIcon = properties.getAsJsonObject("showIcon").getAsBoolean();
-                return new EffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon);
+                return new MobEffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon);
               }
-              return new EffectInstance(effect, duration, amplifier, ambient, showParticles);
+              return new MobEffectInstance(effect, duration, amplifier, ambient, showParticles);
             } else {
               throw new JsonSyntaxException("EffectInstance requires both Value for 'ambient' and Value for 'showParticles'");
             }
           }
-          return new EffectInstance(effect, duration, amplifier);
+          return new MobEffectInstance(effect, duration, amplifier);
         }
       }
     }
-    return new EffectInstance(effect, duration);
+    return new MobEffectInstance(effect, duration);
   }
 }

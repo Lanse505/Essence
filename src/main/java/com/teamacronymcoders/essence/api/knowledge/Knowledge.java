@@ -1,16 +1,17 @@
 package com.teamacronymcoders.essence.api.knowledge;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSerializable<CompoundNBT> {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSerializable<CompoundTag> {
   private static final String TAG_KNOWLEDGE = "Knowledge";
   private static final String TAG_MODIFIER_INSTANCES = "ModifierInstances";
 
@@ -30,10 +31,10 @@ public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSeri
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    final CompoundNBT nbt = new CompoundNBT();
+  public CompoundTag serializeNBT() {
+    final CompoundTag nbt = new CompoundTag();
     nbt.putString(TAG_KNOWLEDGE, getRegistryName().toString());
-    final ListNBT modifierInstances = new ListNBT();
+    final ListTag modifierInstances = new ListTag();
     for (ModifierInstance instance : this.modifierInstances) {
       modifierInstances.add(instance.serializeNBT());
     }
@@ -42,11 +43,11 @@ public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSeri
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT nbt) {
+  public void deserializeNBT(CompoundTag nbt) {
     final List<ModifierInstance> modifierInstances = new ArrayList<>();
-    final ListNBT listNBT = nbt.getList(TAG_MODIFIER_INSTANCES, Constants.NBT.TAG_COMPOUND);
+    final ListTag listNBT = nbt.getList(TAG_MODIFIER_INSTANCES, Tag.TAG_COMPOUND);
     for (int i = 0; i < listNBT.size(); i++) {
-      final CompoundNBT subCNBT = listNBT.getCompound(i);
+      final CompoundTag subCNBT = listNBT.getCompound(i);
       final ModifierInstance instance = new ModifierInstance();
       instance.deserializeNBT(subCNBT);
       modifierInstances.add(instance);

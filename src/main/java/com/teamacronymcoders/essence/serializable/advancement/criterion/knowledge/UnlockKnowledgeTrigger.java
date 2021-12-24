@@ -6,10 +6,9 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.registrate.EssenceKnowledgeRegistrate;
 import com.teamacronymcoders.essence.serializable.advancement.criterion.EssenceCriterionTrigger;
-import net.minecraft.advancements.criterion.EntityPredicate.AndPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowledgeListerners, UnlockKnowledgeCriterionInstance> {
 
@@ -17,7 +16,7 @@ public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowle
     super(new ResourceLocation(Essence.MOD_ID, "knowledge"), UnlockKnowledgeListerners::new);
   }
 
-  public void trigger(ServerPlayerEntity playerEntity, Knowledge knowledge) {
+  public void trigger(ServerPlayer playerEntity, Knowledge knowledge) {
     UnlockKnowledgeListerners listerners = this.getListeners(playerEntity.getAdvancements());
     if (listerners != null) {
       listerners.trigger(knowledge);
@@ -25,12 +24,12 @@ public class UnlockKnowledgeTrigger extends EssenceCriterionTrigger<UnlockKnowle
   }
 
   @Override
-  public UnlockKnowledgeCriterionInstance deserialize(JsonObject json, ConditionArrayParser conditions) {
+  public UnlockKnowledgeCriterionInstance createInstance(JsonObject json, DeserializationContext context) {
     if (json.has("knowledge_id")) {
       String knowledgeID = json.get("knowledge_id").getAsString();
       Knowledge knowledge = EssenceKnowledgeRegistrate.REGISTRY.get().getValue(new ResourceLocation(knowledgeID));
       if (knowledge != null) {
-        return new UnlockKnowledgeCriterionInstance(knowledge, AndPredicate.ANY_AND);
+        return new UnlockKnowledgeCriterionInstance(knowledge);
       }
       throw new JsonParseException("No Knowledge found for id " + knowledgeID);
     }

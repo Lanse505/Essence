@@ -1,19 +1,19 @@
 package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.entity.sheared.ShearedCowEntity;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.model.CowModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.CowModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class ShearedCowRenderer extends MobRenderer<ShearedCowEntity, CowModel<ShearedCowEntity>> {
 
-  public ShearedCowRenderer(EntityRendererManager manager) {
-    super(manager, new CowModel<>(), 0.7F);
+  public ShearedCowRenderer(EntityRendererProvider.Context context) {
+    super(context, new CowModel<>(context.bakeLayer(EssenceEntityTextures.SHEARED_COW_LAYER)), 0.3F);
   }
 
   @Override
-  public ResourceLocation getEntityTexture(ShearedCowEntity entity) {
+  public ResourceLocation getTextureLocation(ShearedCowEntity entity) {
     return EssenceEntityTextures.SHEARED_COW;
   }
 

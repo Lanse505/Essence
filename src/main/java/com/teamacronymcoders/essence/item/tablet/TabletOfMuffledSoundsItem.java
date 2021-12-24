@@ -2,38 +2,39 @@ package com.teamacronymcoders.essence.item.tablet;
 
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.keybindings.EssenceKeyHandler;
-import java.util.List;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+
 import javax.annotation.Nullable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import java.util.List;
 
 public class TabletOfMuffledSoundsItem extends TabletItem {
 
   @Override
-  public boolean showDurabilityBar(ItemStack stack) {
+  public boolean isBarVisible(ItemStack stack) {
     return false;
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-    ItemStack stack = player.getHeldItem(hand);
-    if (EssenceKeyHandler.CYCLING.isKeyDown()) {
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+    if (EssenceKeyHandler.CYCLING.isDown()) {
       toggle(player, stack);
     } else {
 //            playerIn.openGui(SuperSoundMuffler.instance, GuiHandler.SOUND_MUFFLER_BAUBLE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
     }
-    return ActionResult.resultSuccess(stack);
+    return InteractionResultHolder.success(stack);
   }
 
   public boolean shouldMuffleSound(ItemStack stack, ResourceLocation sound) {
@@ -41,7 +42,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
       return false;
     }
 
-    CompoundNBT compound = stack.getTag();
+    CompoundTag compound = stack.getTag();
     if (compound == null) {
       return false;
     }
@@ -51,7 +52,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
 
     boolean isWhiteList = compound.contains("whiteList") && compound.getBoolean("whiteList");
     if (compound.contains("sounds")) {
-      ListNBT tags = compound.getList("sounds", Constants.NBT.TAG_COMPOUND);
+      ListTag tags = compound.getList("sounds", Tag.TAG_COMPOUND);
       if (hasSound(tags, sound)) {
         return !isWhiteList;
       }
@@ -63,7 +64,7 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
   public void toggleWhiteList(ItemStack stack) {
     boolean isWhiteList = false;
     if (stack.hasTag()) {
-      CompoundNBT compound = stack.getTag();
+      CompoundTag compound = stack.getTag();
       if (compound == null) {
         return;
       }
@@ -74,24 +75,24 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
       compound.putBoolean("whiteList", !isWhiteList);
       stack.setTag(compound);
     } else {
-      CompoundNBT compound = new CompoundNBT();
+      CompoundTag compound = new CompoundTag();
       compound.putBoolean("whiteList", true);
       stack.setTag(compound);
     }
   }
 
   public void mute(ItemStack stack, ResourceLocation sound) {
-    CompoundNBT compound = stack.hasTag() ? stack.getTag() : new CompoundNBT();
+    CompoundTag compound = stack.hasTag() ? stack.getTag() : new CompoundTag();
     if (compound == null) {
       return;
     }
 
-    ListNBT tags = compound.contains("sounds") ? compound.getList("sounds", Constants.NBT.TAG_COMPOUND) : new ListNBT();
+    ListTag tags = compound.contains("sounds") ? compound.getList("sounds", Tag.TAG_COMPOUND) : new ListTag();
     if (hasSound(tags, sound)) {
       return;
     }
 
-    CompoundNBT tag = new CompoundNBT();
+    CompoundTag tag = new CompoundTag();
     tag.putString("sound", sound.toString());
     tags.add(tag);
     compound.put("sounds", tags);
@@ -100,12 +101,12 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
 
   public void unmute(ItemStack stack, ResourceLocation sound) {
     if (stack.hasTag()) {
-      CompoundNBT compound = stack.getTag();
+      CompoundTag compound = stack.getTag();
       if (compound != null && compound.contains("sounds")) {
-        ListNBT tags = compound.getList("sounds", Constants.NBT.TAG_COMPOUND);
-        ListNBT newTags = new ListNBT();
+        ListTag tags = compound.getList("sounds", Tag.TAG_COMPOUND);
+        ListTag newTags = new ListTag();
         for (int i = 0; i < tags.size(); ++i) {
-          CompoundNBT s = tags.getCompound(i);
+          CompoundTag s = tags.getCompound(i);
           String soundLocation = s.getString("sound");
           if (!soundLocation.equals(sound.toString())) {
             newTags.add(s);
@@ -117,9 +118,9 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
     }
   }
 
-  private boolean hasSound(ListNBT tags, ResourceLocation check) {
+  private boolean hasSound(ListTag tags, ResourceLocation check) {
     for (int i = 0; i < tags.size(); ++i) {
-      CompoundNBT s = tags.getCompound(i);
+      CompoundTag s = tags.getCompound(i);
       String recorded = s.getString("sound");
       if (recorded.equals(check.toString())) {
         return true;
@@ -130,56 +131,56 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
 
   private boolean isDisabled(ItemStack stack) {
     if (stack.hasTag()) {
-      CompoundNBT compound = stack.getTag();
+      CompoundTag compound = stack.getTag();
       return compound.getBoolean("toggled");
     }
     return false;
   }
 
-  private void toggle(PlayerEntity playerIn, ItemStack stack) {
+  private void toggle(Player playerIn, ItemStack stack) {
     if (stack.hasTag()) {
-      CompoundNBT compound = stack.getTag();
+      CompoundTag compound = stack.getTag();
       if (compound != null && (compound.contains("toggled") || compound.contains("toggled") && compound.getBoolean("toggled"))) {
         compound.putBoolean("disabled", false);
         stack.setTag(compound);
-        playerIn.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.1F, 1F);
+        playerIn.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 1F);
       } else if (compound != null) {
         compound.putBoolean("disabled", true);
         stack.setTag(compound);
-        playerIn.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.1F, 0.8F);
+        playerIn.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.8F);
       }
     } else {
-      CompoundNBT compound = new CompoundNBT();
+      CompoundTag compound = new CompoundTag();
       compound.putBoolean("disabled", true);
       stack.setTag(compound);
-      playerIn.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.1F, 0.8F);
+      playerIn.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.8F);
     }
   }
 
   @Override
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    tooltip.add(new TranslationTextComponent("item.sound_muffler_bauble.tooltip.header"));
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    tooltip.add(new TranslatableComponent("item.sound_muffler_bauble.tooltip.header"));
     if (stack.hasTag()) {
-      CompoundNBT compound = stack.getTag();
+      CompoundTag compound = stack.getTag();
       boolean showWhiteListTooltip = compound != null && (!compound.contains("whiteList") || compound.getBoolean("whiteList"));
       String key = showWhiteListTooltip ? "item.sound_muffler.tooltip.mode.white_list" : "item.sound_muffler.tooltip.mode.black_list";
-      tooltip.add(new TranslationTextComponent(key));
+      tooltip.add(new TranslatableComponent(key));
       if (compound != null && compound.contains("sounds")) {
-        ListNBT tagList = compound.getList("sounds", 10);
+        ListTag tagList = compound.getList("sounds", Tag.TAG_COMPOUND);
         int count = tagList.size();
-        tooltip.add(new TranslationTextComponent("item.sound_muffler.tooltip.sounds.count", count));
+        tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", count));
         if (EssenceInformationHelper.isSneakKeyDown()) {
           for (int i = 0; i < tagList.size(); ++i) {
-            CompoundNBT sound = tagList.getCompound(i);
-            tooltip.add(new TranslationTextComponent("item.sound_muffler.tooltip.sound", sound.getString("sound")));
+            CompoundTag sound = tagList.getCompound(i);
+            tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sound", sound.getString("sound")));
           }
         }
       } else {
-        tooltip.add(new TranslationTextComponent("item.sound_muffler.tooltip.sounds.count", 0));
+        tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", 0));
       }
     } else {
-      tooltip.add(new TranslationTextComponent("item.sound_muffler.tooltip.mode.black_list"));
-      tooltip.add(new TranslationTextComponent("item.sound_muffler.tooltip.sounds.count", 0));
+      tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.mode.black_list"));
+      tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", 0));
     }
   }
 

@@ -4,20 +4,21 @@ import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.modifier.item.tank.HoldingModifier;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 public interface IModifiedTank extends IModified {
 
@@ -28,16 +29,16 @@ public interface IModifiedTank extends IModified {
                     .map(instance -> {
                       HoldingModifier modifier = (HoldingModifier) instance.getModifier();
                       return modifier.getTankSizeModifier(instance.getLevel(), currentCapacity);
-                    }).reduce(0, Integer::sum)).map(integer -> Math.min(integer, Integer.MAX_VALUE)).orElse(currentCapacity);
+                    }).reduce(0, Integer::sum)).orElse(currentCapacity);
   }
 
-  default void addInformationFromModifiers(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
+  default void addInformationFromModifiers(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
     int freeModifiers = stack.getItem() instanceof IModifiedTank ? ((IModifiedTank) stack.getItem()).getFreeModifiers() : 0;
     int maxModifiers = stack.getItem() instanceof IModifiedTank ? ((IModifiedTank) stack.getItem()).getMaxModifiers() : 0;
-    list.add(new TranslationTextComponent("tooltip.essence.modifier.free", new StringTextComponent(String.valueOf(freeModifiers)).mergeStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).mergeStyle(TextFormatting.GRAY));
-    if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && !stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND).isEmpty()) {
-      list.add(new TranslationTextComponent("tooltip.essence.modifier").mergeStyle(TextFormatting.GOLD));
-      Map<String, List<ITextComponent>> sorting_map = new HashMap<>();
+    list.add(new TranslatableComponent("tooltip.essence.modifier.free", new TextComponent(String.valueOf(freeModifiers)).withStyle(EssenceUtilHelper.getTextColor(freeModifiers, maxModifiers))).withStyle(ChatFormatting.GRAY));
+    if (stack.getOrCreateTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && !stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND).isEmpty()) {
+      list.add(new TranslatableComponent("tooltip.essence.modifier").withStyle(ChatFormatting.GOLD));
+      Map<String, List<Component>> sorting_map = new HashMap<>();
       stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER)
               .ifPresent(holder -> holder.getModifierInstances()
                       .forEach(instance -> sorting_map.put(instance.getModifier().getRenderedText(instance).get(0).getString(), instance.getModifier().getRenderedText(instance))));
@@ -45,7 +46,7 @@ public interface IModifiedTank extends IModified {
               .sorted(Map.Entry.comparingByKey())
               .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (string, component) -> component, LinkedHashMap::new))
               .forEach((s, iTextComponents) -> list.addAll(iTextComponents));
-      list.add(new StringTextComponent(""));
+      list.add(new TextComponent(""));
     }
   }
 }

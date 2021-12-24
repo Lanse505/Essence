@@ -3,20 +3,22 @@ package com.teamacronymcoders.essence.api.recipe.infusion;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+
 import java.util.*;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public class InfusionTableSerializableRecipe extends SerializableRecipe {
 
   public static GenericSerializer<InfusionTableSerializableRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "modifier_infusion"), InfusionTableSerializableRecipe.class);
   public static List<InfusionTableSerializableRecipe> RECIPES = new ArrayList<>();
 
-  public Ingredient.IItemList[] inputList;
+  public Ingredient.ItemValue[] inputList;
   public SerializableModifier[] modifiers;
   public int duration;
 
@@ -24,7 +26,7 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
     super(id);
   }
 
-  public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.IItemList[] inputList, SerializableModifier[] modifiers, int duration) {
+  public InfusionTableSerializableRecipe(ResourceLocation id, Ingredient.ItemValue[] inputList, SerializableModifier[] modifiers, int duration) {
     super(id);
     this.inputList = inputList;
     this.modifiers = modifiers;
@@ -32,22 +34,22 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
   }
 
   @Override
-  public boolean matches(IInventory p_77569_1_, World p_77569_2_) {
+  public boolean matches(Container container, Level level) {
     return false;
   }
 
   @Override
-  public ItemStack getCraftingResult(IInventory p_77572_1_) {
+  public ItemStack assemble(Container pContainer) {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean canFit(int p_194133_1_, int p_194133_2_) {
+  public boolean canCraftInDimensions(int width, int height) {
     return false;
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 
@@ -57,22 +59,22 @@ public class InfusionTableSerializableRecipe extends SerializableRecipe {
   }
 
   @Override
-  public IRecipeType<?> getType() {
+  public RecipeType<?> getType() {
     return SERIALIZER.getRecipeType();
   }
 
   public boolean isValid(ItemStack stack) {
-    return Arrays.stream(getInputList()).map(list -> list.getStacks().stream().map(tagStack -> tagStack.isItemEqual(stack))).anyMatch(booleanStream -> booleanStream.findAny().orElse(false));
+    return Arrays.stream(getInputList()).map(list -> list.getItems().stream().map(tagStack -> tagStack.sameItem(stack))).anyMatch(booleanStream -> booleanStream.findAny().orElse(false));
   }
 
-  private Ingredient.IItemList[] getInputList() {
+  private Ingredient.ItemValue[] getInputList() {
     return this.inputList;
   }
 
   public Set<ItemStack> getCollectedStacks() {
     Set<ItemStack> stacks = new HashSet<>();
-    for (Ingredient.IItemList itemList : getInputList()) {
-      stacks.addAll(itemList.getStacks());
+    for (Ingredient.ItemValue itemList : getInputList()) {
+      stacks.addAll(itemList.getItems());
     }
     return stacks;
   }

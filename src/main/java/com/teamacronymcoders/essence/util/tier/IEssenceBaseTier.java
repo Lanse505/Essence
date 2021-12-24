@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.util.tier;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 
 public interface IEssenceBaseTier {
   String getLocaleString();

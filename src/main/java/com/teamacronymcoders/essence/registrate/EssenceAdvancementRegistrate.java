@@ -5,12 +5,12 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateAdvancementProvider;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 public class EssenceAdvancementRegistrate {
 
@@ -86,546 +86,546 @@ public class EssenceAdvancementRegistrate {
   }
 
   public static void coreAdvancements(RegistrateAdvancementProvider provider) {
-    core = Advancement.Builder.builder()
-            .withDisplay(
+    core = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.core.root.title"),
-                    new TranslationTextComponent("advancements.essence.core.root.description"),
+                    new TranslatableComponent("advancements.essence.core.root.title"),
+                    new TranslatableComponent("advancements.essence.core.root.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withCriterion("essence_ore", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
-            .register(provider, "essence:core/root");
+            .addCriterion("essence_ore", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
+            .save(provider, "essence:core/root");
   }
 
   public static void knowledgeAdvancements(RegistrateAdvancementProvider provider) {
-    knowledgeRoot = Advancement.Builder.builder()
-            .withDisplay(
+    knowledgeRoot = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.root.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.root.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.root.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.root.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/root");
-    knowledgeModifierRoot = Advancement.Builder.builder()
-            .withDisplay(
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/root");
+    knowledgeModifierRoot = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.root_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.root_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.root_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.root_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(getKnowledgeRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/root_modifier");
-    knowledgeToolRoot = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/root_modifier");
+    knowledgeToolRoot = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.root_tools.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.root_tools.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.root_tools.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.root_tools.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(getKnowledgeRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/root_tools");
+            .parent(getKnowledgeRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/root_tools");
   }
 
   public static void modifierAdvancements(RegistrateAdvancementProvider provider) {
-    arrow = Advancement.Builder.builder()
-            .withDisplay(
+    arrow = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.arrow_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.arrow_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.arrow_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.arrow_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/arrow/arrow_modifier");
-    brewed = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/arrow/arrow_modifier");
+    brewed = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.brewed_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.brewed_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.brewed_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.brewed_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(arrow)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BREWED_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
-            .register(provider, "essence:knowledge/arrow/brewed_modifier");
-    keen = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(arrow)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BREWED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
+            .save(provider, "essence:knowledge/arrow/brewed_modifier");
+    keen = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.keen_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.keen_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.keen_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.keen_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(arrow)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KEEN_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
-            .register(provider, "essence:knowledge/arrow/keen_modifier");
-    attribute = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(arrow)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KEEN_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
+            .save(provider, "essence:knowledge/arrow/keen_modifier");
+    attribute = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.attribute_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.attribute_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.attribute_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.attribute_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/attribute_modifier");
-    armor = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/attribute_modifier");
+    armor = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.armor_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.armor_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.armor_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.armor_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(attribute)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/armor_modifier");
-    armorToughness = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(attribute)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/armor_modifier");
+    armorToughness = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.armor_toughness_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.armor_toughness_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.armor_toughness_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.armor_toughness_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(attribute)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/armor_toughness_modifier");
-    attackDamage = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(attribute)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/armor_toughness_modifier");
+    attackDamage = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.attack_damage_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.attack_damage_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.attack_damage_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.attack_damage_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(attribute)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/attack_damage_modifier");
-    maxHealth = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(attribute)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/attack_damage_modifier");
+    maxHealth = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.max_health_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.max_health_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.max_health_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.max_health_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(attribute)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MAX_HEALTH_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/max_health_modifier");
-    movementSpeed = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(attribute)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MAX_HEALTH_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/max_health_modifier");
+    movementSpeed = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.movement_speed_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.movement_speed_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.movement_speed_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.movement_speed_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(attribute)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/attribute/movement_speed_modifier");
-    cosmetic = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(attribute)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/attribute/movement_speed_modifier");
+    cosmetic = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.cosmetic_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.cosmetic_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.cosmetic_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/cosmetic/cosmetic_modifier");
-    enchanted = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/cosmetic/cosmetic_modifier");
+    enchanted = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.enchanted_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.enchanted_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.enchanted_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(cosmetic)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ENCHANTED_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/cosmetic/enchanted_modifier");
-    enchantment = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(cosmetic)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ENCHANTED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/cosmetic/enchanted_modifier");
+    enchantment = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.enchantment_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.enchantment_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.enchantment_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.enchantment_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/enchantment_modifier");
-    efficiency = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/enchantment_modifier");
+    efficiency = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.efficiency_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.efficiency_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.efficiency_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EFFICIENCY_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/efficiency_modifier");
-    infinity = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EFFICIENCY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/efficiency_modifier");
+    infinity = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.infinity_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.infinity_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.infinity_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.infinity_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.INFINITY_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/infinity_modifier");
-    knockback = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.INFINITY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/infinity_modifier");
+    knockback = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.knockback_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.knockback_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.knockback_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.knockback_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KNOCKBACK_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/knockback_modifier");
-    luck = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KNOCKBACK_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/knockback_modifier");
+    luck = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.luck_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.luck_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.luck_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.luck_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.LUCK_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/luck_modifier");
-    mending = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.LUCK_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/luck_modifier");
+    mending = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.mending_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.mending_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.mending_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.mending_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MENDING_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/mending_modifier");
-    silkTouch = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MENDING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/mending_modifier");
+    silkTouch = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.silk_touch_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.silk_touch_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.silk_touch_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.silk_touch_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SILK_TOUCH_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/silk_touch_modifier");
-    strengthened = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SILK_TOUCH_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/silk_touch_modifier");
+    strengthened = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.strengthened_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.strengthened_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.strengthened_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.strengthened_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.STRENGTHENED_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/strengthened_modifier");
-    unbreaking = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.STRENGTHENED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/strengthened_modifier");
+    unbreaking = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.unbreaking_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.unbreaking_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.unbreaking_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.unbreaking_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(enchantment)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.UNBREAKING_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/enchantment/unbreaking_modifier");
-    interaction = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(enchantment)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.UNBREAKING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/enchantment/unbreaking_modifier");
+    interaction = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.interaction_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.interaction_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.interaction_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.interaction_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/interaction/interaction_modifier");
-    cascading = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/interaction/interaction_modifier");
+    cascading = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.cascading_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.cascading_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.cascading_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.cascading_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(interaction)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.CASCADING_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/interaction/cascading_modifier");
-    expander = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(interaction)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.CASCADING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/interaction/cascading_modifier");
+    expander = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.expander_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.expander_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.expander_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.expander_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(getKnowledgeModifierRoot())
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EXPANDER_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/interaction/expander_modifier");
-    fiery = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeModifierRoot())
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EXPANDER_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/interaction/expander_modifier");
+    fiery = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.fiery_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.fiery_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.fiery_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.fiery_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(interaction)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.FIERY_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/interaction/fiery_modifier");
-    rainbow = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(interaction)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.FIERY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/interaction/fiery_modifier");
+    rainbow = Advancement.Builder.advancement()
+            .display(
                     getDefaultIcon(),
-                    new TranslationTextComponent("advancements.essence.knowledge.rainbow_modifier.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.rainbow_modifier.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.rainbow_modifier.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.rainbow_modifier.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, true, false, true
             )
-            .withParent(interaction)
-            .withCriterion("knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.RAINBOW_MODIFIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/interaction/rainbow_modifier");
+            .parent(interaction)
+            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.RAINBOW_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/interaction/rainbow_modifier");
   }
 
   public static void miscAdvancements(RegistrateAdvancementProvider provider) {
-    tiers = Advancement.Builder.builder()
-            .withDisplay(
+    tiers = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.material_tiers.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.material_tiers.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.material_tiers.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.material_tiers.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(getKnowledgeRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/material/material_tiers");
+            .parent(getKnowledgeRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/material/material_tiers");
 
-    basic = Advancement.Builder.builder()
-            .withDisplay(
+    basic = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_INGOT.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.basic.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.basic.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.basic.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.basic.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(tiers)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BASIC_TIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT.get()))
-            .register(provider, "essence:knowledge/material/basic");
+            .parent(tiers)
+            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BASIC_TIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT.get()))
+            .save(provider, "essence:knowledge/material/basic");
 
-    empowered = Advancement.Builder.builder()
-            .withDisplay(
+    empowered = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.empowered.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.empowered.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.empowered.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.empowered.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(basic)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EMPOWERED_TIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get()))
-            .register(provider, "essence:knowledge/material/empowered");
+            .parent(basic)
+            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EMPOWERED_TIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get()))
+            .save(provider, "essence:knowledge/material/empowered");
 
-    supreme = Advancement.Builder.builder()
-            .withDisplay(
+    supreme = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.supreme.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.supreme.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.supreme.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.supreme.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(empowered)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SUPREME_TIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get()))
-            .register(provider, "essence:knowledge/material/supreme");
+            .parent(empowered)
+            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SUPREME_TIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get()))
+            .save(provider, "essence:knowledge/material/supreme");
 
-    divine = Advancement.Builder.builder()
-            .withDisplay(
+    divine = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.divine.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.material.divine.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.divine.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.material.divine.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(supreme)
-            .withCriterion("material_tiers", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.DIVINE_TIER_KNOWLEDGE.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get()))
-            .register(provider, "essence:knowledge/material/divine");
-    toolTypes = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(supreme)
+            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.DIVINE_TIER_KNOWLEDGE.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get()))
+            .save(provider, "essence:knowledge/material/divine");
+    toolTypes = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_AXE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.tool_type.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.tool_type.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.tool_type.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.tool_type.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(getKnowledgeToolRoot())
-            .withCriterion("tool_crafting", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.TOOL_CRAFTING.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/tools/tool_types");
+            .parent(getKnowledgeToolRoot())
+            .addCriterion("tool_crafting", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.TOOL_CRAFTING.get()))
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/tools/tool_types");
 
-    axe = Advancement.Builder.builder()
-            .withDisplay(
+    axe = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_AXE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.axe.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.axe.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.axe.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.axe.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_AXE.get()))
-            .register(provider, "essence:knowledge/tools/essence_axe");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_AXE.get()))
+            .save(provider, "essence:knowledge/tools/essence_axe");
 
-    bow = Advancement.Builder.builder()
-            .withDisplay(
+    bow = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_BOW.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.bow.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.bow.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.bow.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.bow.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_BOW.get()))
-            .register(provider, "essence:knowledge/tools/essence_bow");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_BOW.get()))
+            .save(provider, "essence:knowledge/tools/essence_bow");
 
-    hoe = Advancement.Builder.builder()
-            .withDisplay(
+    hoe = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_HOE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.hoe.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.hoe.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.hoe.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.hoe.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_HOE.get()))
-            .register(provider, "essence:knowledge/tools/essence_hoe");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_HOE.get()))
+            .save(provider, "essence:knowledge/tools/essence_hoe");
 
-    omniTool = Advancement.Builder.builder()
-            .withDisplay(
+    omniTool = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_OMNITOOL.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.omnitool.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.omnitool.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.omnitool.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.omnitool.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_OMNITOOL.get()))
-            .register(provider, "essence:knowledge/tools/essence_omnitool");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_OMNITOOL.get()))
+            .save(provider, "essence:knowledge/tools/essence_omnitool");
 
-    pickaxe = Advancement.Builder.builder()
-            .withDisplay(
+    pickaxe = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_PICKAXE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.pickaxe.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.pickaxe.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.pickaxe.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.pickaxe.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_PICKAXE.get()))
-            .register(provider, "essence:knowledge/tools/essence_pickaxe");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_PICKAXE.get()))
+            .save(provider, "essence:knowledge/tools/essence_pickaxe");
 
-    shear = Advancement.Builder.builder()
-            .withDisplay(
+    shear = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_SHEAR.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.shear.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.shear.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.shear.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.shear.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_SHEAR.get()))
-            .register(provider, "essence:knowledge/tools/essence_shear");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_SHEAR.get()))
+            .save(provider, "essence:knowledge/tools/essence_shear");
 
-    shovel = Advancement.Builder.builder()
-            .withDisplay(
+    shovel = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_SHOVEL.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.shovel.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.shovel.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.shovel.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.shovel.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_SHOVEL.get()))
-            .register(provider, "essence:knowledge/tools/essence_shovel");
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_SHOVEL.get()))
+            .save(provider, "essence:knowledge/tools/essence_shovel");
 
-    sword = Advancement.Builder.builder()
-            .withDisplay(
+    sword = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.ESSENCE_SWORD.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.sword.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.tools.sword.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.sword.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.tools.sword.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(toolTypes)
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.ESSENCE_SWORD.get()))
-            .register(provider, "essence:knowledge/tools/essence_sword");
-    miscKnowledge = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(toolTypes)
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_SWORD.get()))
+            .save(provider, "essence:knowledge/tools/essence_sword");
+    miscKnowledge = Advancement.Builder.advancement()
+            .display(
                     EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.misc.misc_knowledge.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.misc.misc_knowledge.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.misc.misc_knowledge.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.misc.misc_knowledge.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(getKnowledgeRoot())
-            .withCriterion("tome_of_knowledge", InventoryChangeTrigger.Instance.forItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
-            .register(provider, "essence:knowledge/misc/misc_knowledge");
-    arborealKnowledge = Advancement.Builder.builder()
-            .withDisplay(
+            .parent(getKnowledgeRoot())
+            .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
+            .save(provider, "essence:knowledge/misc/misc_knowledge");
+    arborealKnowledge = Advancement.Builder.advancement()
+            .display(
                     EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get(),
-                    new TranslationTextComponent("advancements.essence.knowledge.misc.arboreal_knowledge.title"),
-                    new TranslationTextComponent("advancements.essence.knowledge.misc.arboreal_knowledge.description"),
+                    new TranslatableComponent("advancements.essence.knowledge.misc.arboreal_knowledge.title"),
+                    new TranslatableComponent("advancements.essence.knowledge.misc.arboreal_knowledge.description"),
                     new ResourceLocation("minecraft:textures/gui/advancements/backgrounds/stone.png"),
                     FrameType.CHALLENGE, false, false, true
             )
-            .withParent(miscKnowledge)
-            .withCriterion("arboreal_knowledge", new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARBOREAL_NOTES.get(), EntityPredicate.AndPredicate.ANY_AND))
-            .withCriterion("essence_sapling", InventoryChangeTrigger.Instance.forItems(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()))
-            .register(provider, "essence:knowledge/misc/arboreal_knowledge");
+            .parent(miscKnowledge)
+            .addCriterion("arboreal_knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARBOREAL_NOTES.get()))
+            .addCriterion("essence_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()))
+            .save(provider, "essence:knowledge/misc/arboreal_knowledge");
   }
 
   public static Item getDefaultIcon() {

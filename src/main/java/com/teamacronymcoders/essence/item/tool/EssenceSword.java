@@ -8,27 +8,26 @@ import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.SwordItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class EssenceSword extends SwordItem implements IModifiedTool {
 
@@ -38,7 +37,7 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
   private int additionalModifiers;
 
   public EssenceSword(Properties properties, EssenceToolTiers tier) {
-    super(tier, tier.getAttackDamageSwordMod(), tier.getAttackDamage(), properties.rarity(tier.getRarity()));
+    super(tier, tier.getAttackDamageSwordMod(), tier.getAttackDamageSwordMod(), properties.rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();
@@ -46,13 +45,13 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
   }
 
   @Override
-  public Rarity getRarity(ItemStack p_77613_1_) {
+  public Rarity getRarity(ItemStack stack) {
     return tier.getRarity();
   }
 
   @Override
-  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-    return ActionResultType.PASS;
+  public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
+    return InteractionResult.PASS;
   }
 
   @Override
@@ -71,7 +70,7 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean isFoil(ItemStack stack) {
     return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
   }
 
@@ -86,40 +85,35 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
   }
 
   @Override
-  public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-    return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
-  }
-
-  @Override
-  public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     hitEntityFromModifiers(stack, target, attacker);
-    return super.hitEntity(stack, target, attacker);
+    return super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-    onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
-    return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+  public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
+    return super.mineBlock(stack, level, state, pos, entityLiving);
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-    inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
-    super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+  public void inventoryTick(ItemStack stack, Level level, Entity entityIn, int itemSlot, boolean isSelected) {
+    inventoryTickFromModifiers(stack, level, entityIn, itemSlot, isSelected);
+    super.inventoryTick(stack, level, entityIn, itemSlot, isSelected);
   }
 
   @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-    if (slot == EquipmentSlotType.MAINHAND) {
-      return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+    if (slot == EquipmentSlot.MAINHAND) {
+      return getAttributeModifiersFromModifiers(getDefaultAttributeModifiers(slot), slot, stack);
     }
     return HashMultimap.create();
   }
 
   @Override
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    super.addInformation(stack, worldIn, tooltip, flagIn);
-    addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+    super.appendHoverText(stack, level, tooltip, flagIn);
+    addInformationFromModifiers(stack, level, tooltip, flagIn, tier);
   }
 
   @Override
@@ -165,9 +159,9 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-    if (nbt != null) {
-      return new ItemStackModifierProvider(stack, nbt);
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
+    if (tag != null) {
+      return new ItemStackModifierProvider(stack, tag);
     }
     return new ItemStackModifierProvider(stack);
   }

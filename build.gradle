@@ -1,36 +1,41 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven {url "https://plugins.gradle.org/m2/"}
-        jcenter()
+        maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: "java"
 apply plugin: "idea"
-apply plugin: "com.wynprice.cursemaven"
-apply plugin: "maven"
+apply plugin: "maven-publish"
 
 version = "${minecraft_version}-" + getVersion()
 group = "${group}"
-archivesBaseName = "${archive}"
+
+
+java {
+    archivesBaseName = "${archive}"
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven {
         name = "forge"
-        url = "http://files.minecraftforge.net/maven"
+        url = "https://files.minecraftforge.net/maven"
     }
     maven {
         name = "Titanium"
@@ -50,12 +55,9 @@ repositories {
     }
     maven {
         name = "Registrate"
-        url  = "http://maven.tterrag.com/"
+        url  = "https://maven.tterrag.com/"
     }
 }
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
 
 sourceSets {
     main {
@@ -85,7 +87,7 @@ processResources {
 }
 
 minecraft {
-    mappings channel: "snapshot", version: "${mappings_version}"
+    mappings channel: "parchment", version: "${mappings_version}"
     runs {
         client {
             workingDirectory project.file('run')
@@ -139,25 +141,25 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Titanium
-    compile fg.deobf(project.dependencies.create("com.hrznstudio:titanium:${titanium_version}") {
+    implementation fg.deobf("com.hrznstudio:titanium:${titanium_version}") {
         transitive = false
-    })
+    }
 
     // Registrate
-    def registrate = "com.tterrag.registrate:Registrate:MC1.16.2-${registrate_version}"
+    def registrate = "com.tterrag.registrate:Registrate:MC1.18-${registrate_version}"
     implementation fg.deobf(registrate)
     shade registrate
-
-    //Patchouli
-    compile fg.deobf("vazkii.patchouli:Patchouli:${old_minecraft_version}-${patchouli_version}")
-
-    // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}")
-
-    // Curios
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}")
+//
+//    //Patchouli
+//    compile fg.deobf("vazkii.patchouli:Patchouli:${old_minecraft_version}-${patchouli_version}")
+//
+//    // JEI
+//    compileOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}")
+//
+//    // Curios
+//    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
+//    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}")
 }
 
 task srcJar(type: Jar) {
@@ -210,10 +212,15 @@ artifacts {
     archives registrateJar
 }
 
-uploadArchives {
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
     repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        maven {
+            url "file://" + System.getenv("local_maven")
         }
     }
 }

@@ -2,41 +2,49 @@ package com.teamacronymcoders.essence.client.render.tesr.itemstack;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamacronymcoders.essence.item.wrench.SerializedEntityItem;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @OnlyIn(Dist.CLIENT)
-public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
+public class SerializableMobRenderer extends BlockEntityWithoutLevelRenderer {
 
   public static Cache<UUID, LivingEntity> entityCache = CacheBuilder.newBuilder()
           .maximumSize(2048)
           .expireAfterAccess(10, TimeUnit.SECONDS)
           .build();
 
+  public SerializableMobRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
+    super(pBlockEntityRenderDispatcher, pEntityModelSet);
+  }
+
   @Override
-  public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType transform, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+  public void renderByItem(ItemStack stack, ItemTransforms.TransformType transform, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
     if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem && stack.getTag() != null) {
-      UUID uuid = stack.getTag().getUniqueId("uuid");
+      UUID uuid = stack.getTag().getUUID("uuid");
       LivingEntity entity = entityCache.getIfPresent(uuid);
       if (entity != null) {
-        renderEntityStatic(entity, matrixStack, buffer, combinedLight);
+        renderEntityStatic(entity, poseStack, buffer, combinedLight);
       } else if (!stack.getTag().getString("entity").equals(EntityType.getKey(EntityType.IRON_GOLEM).toString())) {
-        LivingEntity nbtEntity = SerializedEntityItem.getEntityFromNBT(stack.getTag(), Minecraft.getInstance().world);
+        LivingEntity nbtEntity = SerializedEntityItem.getEntityFromNBT(stack.getTag(), Minecraft.getInstance().level);
         if (nbtEntity != null) {
           entityCache.put(uuid, nbtEntity);
         }
@@ -44,20 +52,20 @@ public class SerializableMobRenderer extends ItemStackTileEntityRenderer {
     }
   }
 
-  public <E extends Entity> void renderEntityStatic(E entity, MatrixStack matrix, IRenderTypeBuffer buffer, int light) {
+  public <E extends Entity> void renderEntityStatic(E entity, PoseStack poseStack, MultiBufferSource buffer, int light) {
     Minecraft minecraft = Minecraft.getInstance();
-    EntityRendererManager manager = minecraft.getRenderManager();
-    EntityRenderer<? super E> renderer = manager.getRenderer(entity);
+    EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
+    EntityRenderer<? super E> renderer = dispatcher.getRenderer(entity);
 
-    Vector3d vec3d = renderer.getRenderOffset(entity, minecraft.getRenderPartialTicks());
-    double x = 1.0f + vec3d.getX();
-    double y = 1.0f + vec3d.getY();
-    double z = 1.0f + vec3d.getZ();
+    Vec3 vec3 = renderer.getRenderOffset(entity, minecraft.getDeltaFrameTime());
+    double x = 1.0f + vec3.get(Direction.Axis.X);
+    double y = 1.0f + vec3.get(Direction.Axis.Y);
+    double z = 1.0f + vec3.get(Direction.Axis.Z);
     float yaw = 1.0f;
 
-    matrix.scale(0.35f, 0.35f, 0.35f);
-    matrix.translate(0.4, -0.5, 0.5);
-    manager.renderEntityStatic(entity, x, y, z, yaw, minecraft.getRenderPartialTicks(), matrix, buffer, light);
+    poseStack.scale(0.35f, 0.35f, 0.35f);
+    poseStack.translate(0.4, -0.5, 0.5);
+    dispatcher.render(entity, x, y, z, yaw, minecraft.getDeltaFrameTime(), poseStack, buffer, light);
   }
 
 }

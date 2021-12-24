@@ -8,11 +8,12 @@ import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import java.util.function.Supplier;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.function.Supplier;
 
 public enum EssenceItemTiers implements IEssenceBaseTier {
   ESSENCE("tier.essence.basic", Rarity.COMMON, () -> Pair.of(EssenceItemRegistrate.ESSENCE_NUGGET, EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET), () -> Pair.of(EssenceItemRegistrate.ESSENCE_INGOT, EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL), () -> Pair.of(EssenceBlockRegistrate.ESSENCE_INFUSED_METAL_BLOCK, EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_BLOCK)),
@@ -22,11 +23,11 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
 
   private final String localString;
   private final Rarity rarity;
-  private final Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> nugget;
-  private final Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> ingot;
-  private final Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> block;
+  private final Supplier<Pair<ItemEntry<EssenceNuggetItem>, Tag.Named<Item>>> nugget;
+  private final Supplier<Pair<ItemEntry<EssenceIngotItem>, Tag.Named<Item>>> ingot;
+  private final Supplier<Pair<BlockEntry<EssenceBlock>, Tag.Named<Item>>> block;
 
-  EssenceItemTiers(String localString, Rarity rarity, Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> nugget, Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> ingot, Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> block) {
+  EssenceItemTiers(String localString, Rarity rarity, Supplier<Pair<ItemEntry<EssenceNuggetItem>, Tag.Named<Item>>> nugget, Supplier<Pair<ItemEntry<EssenceIngotItem>, Tag.Named<Item>>> ingot, Supplier<Pair<BlockEntry<EssenceBlock>, Tag.Named<Item>>> block) {
     this.localString = localString;
     this.rarity = rarity;
     this.nugget = nugget;
@@ -48,15 +49,15 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
     return 0;
   }
 
-  public Supplier<Pair<ItemEntry<EssenceNuggetItem>, ITag.INamedTag<Item>>> getNugget() {
+  public Supplier<Pair<ItemEntry<EssenceNuggetItem>, Tag.Named<Item>>> getNugget() {
     return nugget;
   }
 
-  public Supplier<Pair<ItemEntry<EssenceIngotItem>, ITag.INamedTag<Item>>> getIngot() {
+  public Supplier<Pair<ItemEntry<EssenceIngotItem>, Tag.Named<Item>>> getIngot() {
     return ingot;
   }
 
-  public Supplier<Pair<BlockEntry<EssenceBlock>, ITag.INamedTag<Item>>> getBlock() {
+  public Supplier<Pair<BlockEntry<EssenceBlock>, Tag.Named<Item>>> getBlock() {
     return block;
   }
 }

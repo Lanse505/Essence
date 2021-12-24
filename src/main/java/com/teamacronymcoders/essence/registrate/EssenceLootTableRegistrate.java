@@ -4,11 +4,15 @@ import com.teamacronymcoders.essence.Essence;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
-import net.minecraft.item.Items;
-import net.minecraft.loot.*;
-import net.minecraft.loot.functions.LootingEnchantBonus;
-import net.minecraft.loot.functions.SetCount;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class EssenceLootTableRegistrate {
 
@@ -22,38 +26,38 @@ public class EssenceLootTableRegistrate {
   public static void init(Registrate registrate) {
     registrate.addDataGenerator(ProviderType.LOOT, provider -> {
       provider.addLootAction(RegistrateLootTableProvider.LootType.ENTITY, tables -> {
-        tables.registerLootTable(SHEARING_HORSE, LootTable.builder()
-                .addLootPool(LootPool.builder()
-                        .rolls(ConstantRange.of(1))
-                        .addEntry(ItemLootEntry.builder(Items.LEATHER)
-                                .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                                .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+        tables.add(SHEARING_HORSE, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(Items.LEATHER)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                         )
-                        .addEntry(ItemLootEntry.builder(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
-                                .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                                .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                        )
-                )
-        );
-        tables.registerLootTable(SHEARING_ZOMBIE_HORSE, LootTable.builder()
-                .addLootPool(LootPool.builder()
-                        .rolls(ConstantRange.of(1))
-                        .addEntry(ItemLootEntry.builder(Items.ROTTEN_FLESH)
-                                .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                                .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
-                        )
-                        .addEntry(ItemLootEntry.builder(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
-                                .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                                .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+                        .add(LootItem.lootTableItem(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                         )
                 )
         );
-        tables.registerLootTable(SHEARING_ZOMBIE, LootTable.builder()
-                .addLootPool(LootPool.builder()
-                        .rolls(ConstantRange.of(1))
-                        .addEntry(ItemLootEntry.builder(Items.ROTTEN_FLESH)
-                                .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-                                .acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))
+        tables.add(SHEARING_ZOMBIE_HORSE, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                        )
+                        .add(LootItem.lootTableItem(EssenceItemRegistrate.GLUE_BALL_ITEM.get())
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                        )
+                )
+        );
+        tables.add(SHEARING_ZOMBIE, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                         )
                 )
         );

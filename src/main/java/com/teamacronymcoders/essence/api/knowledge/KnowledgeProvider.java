@@ -1,16 +1,17 @@
 package com.teamacronymcoders.essence.api.knowledge;
 
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
 
   private final IKnowledgeHolder knowledgeHolder = new KnowledgeHolder();
   private final LazyOptional<IKnowledgeHolder> optional = LazyOptional.of(() -> knowledgeHolder);
@@ -25,12 +26,12 @@ public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerial
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
+  public CompoundTag serializeNBT() {
     return knowledgeHolder.serializeNBT();
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT nbt) {
+  public void deserializeNBT(CompoundTag nbt) {
     knowledgeHolder.deserializeNBT(nbt);
   }
 }

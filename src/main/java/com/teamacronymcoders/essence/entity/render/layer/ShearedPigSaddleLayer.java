@@ -1,34 +1,36 @@
 package com.teamacronymcoders.essence.entity.render.layer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teamacronymcoders.essence.entity.sheared.ShearedPigEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.model.PigModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.PigModel;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
-public class ShearedPigSaddleLayer extends LayerRenderer<ShearedPigEntity, PigModel<ShearedPigEntity>> {
+public class ShearedPigSaddleLayer extends RenderLayer<ShearedPigEntity, PigModel<ShearedPigEntity>> {
 
   private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/pig/pig_saddle.png");
-  private final PigModel<PigEntity> pigModel = new PigModel<>(0.5F);
+  private final PigModel<ShearedPigEntity> pigModel;
 
-  public ShearedPigSaddleLayer(IEntityRenderer<ShearedPigEntity, PigModel<ShearedPigEntity>> entityRenderer) {
-    super(entityRenderer);
+  public ShearedPigSaddleLayer(RenderLayerParent<ShearedPigEntity, PigModel<ShearedPigEntity>> parent, EntityModelSet modelSet) {
+    super(parent);
+    pigModel = new PigModel<>(modelSet.bakeLayer(ModelLayers.PIG_SADDLE));
   }
 
   @Override
-  public void render(MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int i, ShearedPigEntity shearedPigEntity, float v, float v1, float v2, float v3, float v4, float v5) {
-    if (shearedPigEntity.isHorseSaddled()) {
-      ((PigModel) this.getEntityModel()).copyModelAttributesTo(this.pigModel);
-      this.pigModel.setLivingAnimations(shearedPigEntity, v, v1, v2);
-      this.pigModel.setRotationAngles(shearedPigEntity, v, v1, v3, v4, v5);
-      IVertexBuilder vertexBuilder = iRenderTypeBuffer.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE));
-      this.pigModel.render(matrixStack, vertexBuilder, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+  public void render(PoseStack poseStack, MultiBufferSource source, int i, ShearedPigEntity shearedPigEntity, float v, float v1, float v2, float v3, float v4, float v5) {
+    if (shearedPigEntity.isSaddled()) {
+      this.getParentModel().copyPropertiesTo(this.pigModel);
+      this.pigModel.prepareMobModel(shearedPigEntity, v, v1, v2);
+      this.pigModel.setupAnim(shearedPigEntity, v, v1, v3, v4, v5);
+      VertexConsumer vertexConsumer = source.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+      this.pigModel.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
   }
 }

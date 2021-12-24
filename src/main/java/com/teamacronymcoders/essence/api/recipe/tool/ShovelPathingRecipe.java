@@ -3,20 +3,24 @@ package com.teamacronymcoders.essence.api.recipe.tool;
 import com.hrznstudio.titanium.recipe.serializer.GenericSerializer;
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
 import com.teamacronymcoders.essence.Essence;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public class ShovelPathingRecipe extends SerializableRecipe {
 
@@ -24,10 +28,10 @@ public class ShovelPathingRecipe extends SerializableRecipe {
   public static List<ShovelPathingRecipe> RECIPES = new ArrayList<>();
 
   static {
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "dirt_to_path"), Blocks.DIRT, Blocks.GRASS_PATH.getDefaultState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "coarse_dirt_to_path"), Blocks.COARSE_DIRT, Blocks.GRASS_PATH.getDefaultState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "grass_to_path"), Blocks.GRASS_BLOCK, Blocks.GRASS_PATH.getDefaultState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "podzol_to_path"), Blocks.PODZOL, Blocks.GRASS_PATH.getDefaultState()));
+    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "dirt_to_path"), Blocks.DIRT, Blocks.DIRT_PATH.defaultBlockState()));
+    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "coarse_dirt_to_path"), Blocks.COARSE_DIRT, Blocks.DIRT_PATH.defaultBlockState()));
+    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "grass_to_path"), Blocks.GRASS_BLOCK, Blocks.DIRT_PATH.defaultBlockState()));
+    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "podzol_to_path"), Blocks.PODZOL, Blocks.DIRT_PATH.defaultBlockState()));
   }
 
   public Block from;
@@ -44,22 +48,22 @@ public class ShovelPathingRecipe extends SerializableRecipe {
   }
 
   @Override
-  public boolean matches(IInventory inv, World worldIn) {
+  public boolean matches(Container container, Level level) {
     return false;
   }
 
   @Override
-  public ItemStack getCraftingResult(IInventory inv) {
+  public ItemStack assemble(Container container) {
     return ItemStack.EMPTY;
   }
 
   @Override
-  public boolean canFit(int width, int height) {
+  public boolean canCraftInDimensions(int width, int height) {
     return false;
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 
@@ -69,7 +73,7 @@ public class ShovelPathingRecipe extends SerializableRecipe {
   }
 
   @Override
-  public IRecipeType<?> getType() {
+  public RecipeType<?> getType() {
     return SERIALIZER.getRecipeType();
   }
 
@@ -77,27 +81,27 @@ public class ShovelPathingRecipe extends SerializableRecipe {
     return block == from;
   }
 
-  public ActionResultType resolveRecipe(ItemUseContext context) {
-    World world = context.getWorld();
-    BlockPos blockpos = context.getPos();
-    PlayerEntity player = context.getPlayer();
-    ItemStack stack = context.getItem();
-    if (context.getFace() != Direction.DOWN && world.isAirBlock(blockpos.up())) {
+  public InteractionResult resolveRecipe(UseOnContext context) {
+    Level world = context.getLevel();
+    BlockPos blockpos = context.getClickedPos();
+    Player player = context.getPlayer();
+    ItemStack stack = context.getItemInHand();
+    if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above())) {
       if (to != null) {
-        world.playSound(player, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        if (!world.isRemote()) {
+        world.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+        if (!world.isClientSide()) {
           // If the state is unchanged after firing the forge hook then use the recipe provided state
-          world.setBlockState(blockpos, to, BlockFlags.DEFAULT_AND_RERENDER);
+          world.setBlock(blockpos, to, Block.UPDATE_ALL_IMMEDIATE);
           if (player != null) {
-            stack.damageItem(1, player, (playerIn) -> {
-              player.sendBreakAnimation(context.getHand());
+            stack.hurtAndBreak(1, player, (playerIn) -> {
+              playerIn.broadcastBreakEvent(context.getHand());
             });
           }
-          return ActionResultType.SUCCESS;
+          return InteractionResult.SUCCESS;
         }
       }
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   public Block getFrom() {

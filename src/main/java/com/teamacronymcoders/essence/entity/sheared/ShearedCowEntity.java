@@ -1,26 +1,26 @@
 package com.teamacronymcoders.essence.entity.sheared;
 
 import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
-public class ShearedCowEntity extends CowEntity {
+public class ShearedCowEntity extends Cow {
 
-  public ShearedCowEntity(EntityType<? extends ShearedCowEntity> entityType, World world) {
-    super(entityType, world);
+  public ShearedCowEntity(EntityType<? extends ShearedCowEntity> entityType, Level level) {
+    super(entityType, level);
   }
 
   @Override
-  public IPacket<?> createSpawnPacket() {
+  public Packet<?> getAddEntityPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 
   @Override
-  protected ResourceLocation getLootTable() {
+  protected ResourceLocation getDefaultLootTable() {
     return EssenceEntityRegistrate.SHEARED_COW.getId();
   }
 }

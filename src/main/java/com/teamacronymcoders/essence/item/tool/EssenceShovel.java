@@ -9,30 +9,31 @@ import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants.BlockFlags;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class EssenceShovel extends ShovelItem implements IModifiedTool {
 
@@ -54,58 +55,58 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     return tier.getRarity();
   }
 
-  public ActionResultType onItemBehaviour(ItemUseContext context) {
-    World world = context.getWorld();
-    BlockPos pos = context.getPos();
-    BlockState state = world.getBlockState(context.getPos());
-    if (context.getFace() == Direction.DOWN) {
-      return ActionResultType.PASS;
+  public InteractionResult onItemBehaviour(UseOnContext context) {
+    Level world = context.getLevel();
+    BlockPos pos = context.getClickedPos();
+    BlockState state = world.getBlockState(pos);
+    if (context.getClickedFace() == Direction.DOWN) {
+      return InteractionResult.PASS;
     }
-    if (state.getBlock() instanceof CampfireBlock && state.get(CampfireBlock.LIT)) {
-      PlayerEntity playerentity = context.getPlayer();
-      world.playEvent(null, 1009, pos, 0);
-      BlockState newState = state.with(CampfireBlock.LIT, Boolean.FALSE);
-      if (!world.isRemote) {
-        world.setBlockState(pos, newState, 11);
+    if (state.getBlock() instanceof CampfireBlock && state.getValue(CampfireBlock.LIT)) {
+      Player playerentity = context.getPlayer();
+      world.levelEvent(null, 1009, pos, 0);
+      BlockState newState = state.setValue(CampfireBlock.LIT, Boolean.FALSE);
+      if (!world.isClientSide()) {
+        world.setBlock(pos, newState, 11);
         if (playerentity != null) {
-          context.getItem().damageItem(1, playerentity, (playerIn) -> {
-            playerIn.sendBreakAnimation(context.getHand());
+          context.getItemInHand().hurtAndBreak(1, playerentity, (playerIn) -> {
+            playerIn.broadcastBreakEvent(context.getHand());
           });
         }
       }
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     } else {
       return world.getRecipeManager().getRecipes().stream()
               .filter(iRecipe -> iRecipe.getType() == ShovelPathingRecipe.SERIALIZER.getRecipeType())
               .map(iRecipe -> (ShovelPathingRecipe) iRecipe)
               .filter(recipe -> recipe.matches(state.getBlock()))
-              .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(ActionResultType.PASS);
+              .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(InteractionResult.PASS);
     }
   }
 
   @Override
-  public ActionResultType onItemUse(ItemUseContext context) {
-    World world = context.getWorld();
-    PlayerEntity player = context.getPlayer();
-    BlockPos pos = context.getPos();
+  public InteractionResult useOn(UseOnContext context) {
+    Level world = context.getLevel();
+    Player player = context.getPlayer();
+    BlockPos pos = context.getClickedPos();
     BlockState state = world.getBlockState(pos);
-    ItemStack stack = context.getItem();
-    ActionResultType resultType = ActionResultType.FAIL;
+    ItemStack stack = context.getItemInHand();
+    InteractionResult resultType = InteractionResult.FAIL;
     BlockState behaviourState;
 
     // Check Vanilla Axe Behaviour
-    behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.AXE);
+    behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
     if (behaviourState != null && !behaviourState.equals(state)) {
-      world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
-      resultType = ActionResultType.SUCCESS;
+      world.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+      resultType = InteractionResult.SUCCESS;
     }
-    if (resultType == ActionResultType.SUCCESS) {
+    if (resultType == InteractionResult.SUCCESS) {
       return resultType;
     }
 
     // Check Recipes
     resultType = onItemBehaviour(context);
-    if (resultType == ActionResultType.SUCCESS) {
+    if (resultType == InteractionResult.SUCCESS) {
       return resultType;
     }
 
@@ -114,11 +115,11 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
   }
 
   @Override
-  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
+  public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
     if (isRecursive) {
       return onItemBehaviour(context);
     }
-    return onItemUse(context);
+    return useOn(context);
   }
 
   @Override
@@ -137,7 +138,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean isFoil(ItemStack stack) {
     return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
   }
 
@@ -152,40 +153,35 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
   }
 
   @Override
-  public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-    return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
-  }
-
-  @Override
-  public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     hitEntityFromModifiers(stack, target, attacker);
-    return super.hitEntity(stack, target, attacker);
+    return super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-    onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
-    return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+  public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
+    return super.mineBlock(stack, level, state, pos, entityLiving);
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-    inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
-    super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+  public void inventoryTick(ItemStack stack, Level level, Entity entityIn, int itemSlot, boolean isSelected) {
+    inventoryTickFromModifiers(stack, level, entityIn, itemSlot, isSelected);
+    super.inventoryTick(stack, level, entityIn, itemSlot, isSelected);
   }
 
   @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-    if (slot == EquipmentSlotType.MAINHAND) {
-      return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+    if (slot == EquipmentSlot.MAINHAND) {
+      return getAttributeModifiersFromModifiers(getDefaultAttributeModifiers(slot), slot, stack);
     }
     return HashMultimap.create();
   }
 
   @Override
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    super.addInformation(stack, worldIn, tooltip, flagIn);
-    addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+    super.appendHoverText(stack, level, tooltip, flagIn);
+    addInformationFromModifiers(stack, level, tooltip, flagIn, tier);
   }
 
   @Override
@@ -231,9 +227,9 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-    if (!stack.isEmpty() && nbt != null) {
-      return new ItemStackModifierProvider(stack, nbt);
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
+    if (!stack.isEmpty() && tag != null) {
+      return new ItemStackModifierProvider(stack, tag);
     }
     return new ItemStackModifierProvider(stack);
   }

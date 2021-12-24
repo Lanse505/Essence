@@ -4,24 +4,23 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.misc.IColorProvider;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceColorHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 public class EssenceBrickBlock extends Block implements IColorProvider {
 
@@ -55,14 +54,14 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
 
   @SuppressWarnings("deprecation")
   @Override
-  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult result) {
-    if (worldIn.isRemote) {
-      return ActionResultType.PASS;
+  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult result) {
+    if (level.isClientSide()) {
+      return InteractionResult.PASS;
     }
-    ItemStack stack = player.getHeldItem(handIn);
+    ItemStack stack = player.getItemInHand(handIn);
     List<DyeColor> colors = EssenceColorHelper.tagToDye.keySet().stream()
             .filter(tagToDye -> stack.getItem().getTags().size() > 0)
-            .filter(stack.getItem()::isIn)
+            .filter(stack::is)
             .map(EssenceColorHelper.tagToDye::get)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
@@ -72,18 +71,13 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
             .map(dyeToColorMap::get)
             .map(Supplier::get)
             .map(essenceBrickBlock -> {
-              if (!state.equals(essenceBrickBlock.getDefaultState())) {
-                worldIn.setBlockState(pos, essenceBrickBlock.getDefaultState());
-                worldIn.notifyBlockUpdate(pos, state, essenceBrickBlock.getDefaultState(), Constants.BlockFlags.NOTIFY_NEIGHBORS);
+              if (!state.equals(essenceBrickBlock.defaultBlockState())) {
+                level.setBlock(pos, essenceBrickBlock.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+                level.setBlock(pos, state, Block.UPDATE_ALL_IMMEDIATE);
               }
-              return ActionResultType.SUCCESS;
+              return InteractionResult.SUCCESS;
             })
-            .orElse(ActionResultType.PASS) : ActionResultType.PASS;
-  }
-
-  @Override
-  public MaterialColor getMaterialColor() {
-    return super.getMaterialColor();
+            .orElse(InteractionResult.PASS) : InteractionResult.PASS;
   }
 
   @Override

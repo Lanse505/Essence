@@ -1,16 +1,16 @@
 package com.teamacronymcoders.essence.util;
 
 import com.teamacronymcoders.essence.Essence;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -87,8 +87,8 @@ public class EssenceTags {
   }
 
   public static class EssenceTileEntityTypeTags {
-    public static final IOptionalNamedTag<TileEntityType<?>> IMMOVABLE = forgeTileEntityTag("relocation_not_supported");
-    public static final IOptionalNamedTag<TileEntityType<?>> RELOCATION_NOT_SUPPORTED = forgeTileEntityTag("immovable");
+    public static final IOptionalNamedTag<BlockEntityType<?>> IMMOVABLE = forgeTileEntityTag("relocation_not_supported");
+    public static final IOptionalNamedTag<BlockEntityType<?>> RELOCATION_NOT_SUPPORTED = forgeTileEntityTag("immovable");
   }
 
   public static class EssenceEntityTags {
@@ -131,8 +131,8 @@ public class EssenceTags {
     return EntityTypeTags.createOptional(new ResourceLocation(Essence.MOD_ID, path));
   }
 
-  public static IOptionalNamedTag<TileEntityType<?>> essenceTileEntityTag(String path) {
-    return ForgeTagHandler.createOptionalTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation(Essence.MOD_ID, path));
+  public static IOptionalNamedTag<BlockEntityType<?>> essenceTileEntityTag(String path) {
+    return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation(Essence.MOD_ID, path));
   }
 
   public static IOptionalNamedTag<Block> forgeBlockTag(String path) {
@@ -147,11 +147,11 @@ public class EssenceTags {
     return FluidTags.createOptional(new ResourceLocation("forge", path));
   }
 
-  public static IOptionalNamedTag<TileEntityType<?>> forgeTileEntityTag(String path) {
-    return ForgeTagHandler.createOptionalTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation("forge", path));
+  public static IOptionalNamedTag<BlockEntityType<?>> forgeTileEntityTag(String path) {
+    return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation("forge", path));
   }
 
-  public static IOptionalNamedTag<TileEntityType<?>> forgeTileEntityOptionalTag(String path) {
-    return ForgeTagHandler.createOptionalTag(ForgeRegistries.TILE_ENTITIES, new ResourceLocation("forge", path));
+  public static IOptionalNamedTag<BlockEntityType<?>> forgeTileEntityOptionalTag(String path) {
+    return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation("forge", path));
   }
 }

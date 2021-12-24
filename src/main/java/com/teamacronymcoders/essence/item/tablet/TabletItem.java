@@ -1,12 +1,12 @@
 package com.teamacronymcoders.essence.item.tablet;
 
 import com.teamacronymcoders.essence.Essence;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class TabletItem extends Item {
 
   public TabletItem() {
-    super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0));
+    super(new Item.Properties().tab(Essence.CORE_TAB).stacksTo(1).defaultDurability(0));
   }
 
 

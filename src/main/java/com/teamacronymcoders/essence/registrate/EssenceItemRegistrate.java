@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.registrate;
 
 import com.hrznstudio.titanium.item.BasicItem;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import com.teamacronymcoders.essence.item.PortableCrafterItem;
 import com.teamacronymcoders.essence.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
@@ -20,18 +19,19 @@ import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraftforge.client.model.generators.ModelBuilder;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.Tags;
 
 public class EssenceItemRegistrate {
 
@@ -63,27 +63,27 @@ public class EssenceItemRegistrate {
   public static void init() {}
 
   // CORE
-  public static ItemEntry<BasicItem> ESSENCE_CRYSTAL = Essence.ESSENCE_REGISTRATE.object("essence_crystal").item(BasicItem::new).properties(properties -> properties.group(Essence.CORE_TAB)).lang("Essence-Infused Crystal").model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_crystal"))).tag(EssenceTags.EssenceItemTags.ESSENCE_CRYSTAL).register();
-  public static ItemEntry<BasicItem> ESSENCE_STICK = Essence.ESSENCE_REGISTRATE.object("essence_stick").item(BasicItem::new).properties(properties -> properties.group(Essence.CORE_TAB)).lang("Essence-Wood Sticks").model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_stick"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).register();
+  public static ItemEntry<BasicItem> ESSENCE_CRYSTAL = Essence.ESSENCE_REGISTRATE.object("essence_crystal").item(BasicItem::new).properties(properties -> properties.tab(Essence.CORE_TAB)).lang("Essence-Infused Crystal").model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_crystal"))).tag(EssenceTags.EssenceItemTags.ESSENCE_CRYSTAL).register();
+  public static ItemEntry<BasicItem> ESSENCE_STICK = Essence.ESSENCE_REGISTRATE.object("essence_stick").item(BasicItem::new).properties(properties -> properties.tab(Essence.CORE_TAB)).lang("Essence-Wood Sticks").model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_stick"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).register();
 
   // Tiered Materials
-  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT = Essence.ESSENCE_REGISTRATE.object("essence_ingot").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL).register();
-  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_EMPOWERED = Essence.ESSENCE_REGISTRATE.object("essence_ingot_empowered").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.EMPOWERED_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_EMPOWERED).register();
-  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_SUPREME = Essence.ESSENCE_REGISTRATE.object("essence_ingot_supreme").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.SUPREME_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_SUPREME).register();
-  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_DIVINE = Essence.ESSENCE_REGISTRATE.object("essence_ingot_divine").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.DIVINE_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_DIVINE).register();
-  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET = Essence.ESSENCE_REGISTRATE.object("essence_nugget").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET).register();
-  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_EMPOWERED = Essence.ESSENCE_REGISTRATE.object("essence_nugget_empowered").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.EMPOWERED_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_EMPOWERED).register();
-  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_SUPREME = Essence.ESSENCE_REGISTRATE.object("essence_nugget_supreme").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.SUPREME_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_SUPREME).register();
-  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_DIVINE = Essence.ESSENCE_REGISTRATE.object("essence_nugget_divine").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.DIVINE_ESSENCE)).properties(properties -> properties.group(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_DIVINE).register();
+  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT = Essence.ESSENCE_REGISTRATE.object("essence_ingot").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL).register();
+  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_EMPOWERED = Essence.ESSENCE_REGISTRATE.object("essence_ingot_empowered").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.EMPOWERED_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_EMPOWERED).register();
+  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_SUPREME = Essence.ESSENCE_REGISTRATE.object("essence_ingot_supreme").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.SUPREME_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_SUPREME).register();
+  public static ItemEntry<EssenceIngotItem> ESSENCE_INGOT_DIVINE = Essence.ESSENCE_REGISTRATE.object("essence_ingot_divine").item(properties -> new EssenceIngotItem(properties, EssenceItemTiers.DIVINE_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_ingot"))).lang("Essence Ingot").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_DIVINE).register();
+  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET = Essence.ESSENCE_REGISTRATE.object("essence_nugget").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/item")).texture("layer0", new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET).register();
+  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_EMPOWERED = Essence.ESSENCE_REGISTRATE.object("essence_nugget_empowered").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.EMPOWERED_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_EMPOWERED).register();
+  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_SUPREME = Essence.ESSENCE_REGISTRATE.object("essence_nugget_supreme").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.SUPREME_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_SUPREME).register();
+  public static ItemEntry<EssenceNuggetItem> ESSENCE_NUGGET_DIVINE = Essence.ESSENCE_REGISTRATE.object("essence_nugget_divine").item(properties -> new EssenceNuggetItem(properties, EssenceItemTiers.DIVINE_ESSENCE)).properties(properties -> properties.tab(Essence.CORE_TAB)).model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget"))).lang("Essence Nugget").tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_DIVINE).register();
 
   // Tomes
   public static ItemEntry<TomeOfKnowledgeItem> TOME_OF_KNOWLEDGE = Essence.ESSENCE_REGISTRATE.object("tome_of_knowledge")
-          .item(TomeOfKnowledgeItem::new).properties(properties -> properties.group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0))
+          .item(TomeOfKnowledgeItem::new).properties(properties -> properties.tab(Essence.CORE_TAB).stacksTo(1).defaultDurability(0))
           .lang("Tome of Bound-Knowledge")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_knowledge")))
           .register();
   public static ItemEntry<TomeOfExperienceItem> TOME_OF_EXPERIENCE = Essence.ESSENCE_REGISTRATE.object("tome_of_experience")
-          .item(TomeOfExperienceItem::new).properties(properties -> properties.group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0))
+          .item(TomeOfExperienceItem::new).properties(properties -> properties.tab(Essence.CORE_TAB).stacksTo(1).defaultDurability(0))
           .lang("Tome of Experience")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_experience")))
           .register();
@@ -91,20 +91,20 @@ public class EssenceItemRegistrate {
   // Tools
   // MISC
   public static ItemEntry<PortableCrafterItem> PORTABLE_CRAFTER = Essence.ESSENCE_REGISTRATE.object("portable_crafter")
-          .item(PortableCrafterItem::new).properties(properties -> properties.maxStackSize(1).group(Essence.TOOL_TAB).rarity(Rarity.RARE))
+          .item(PortableCrafterItem::new).properties(properties -> properties.stacksTo(1).tab(Essence.TOOL_TAB).rarity(Rarity.RARE))
           .lang("Crafting Cracker")
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/portable_crafter")))
           .register();
   public static ItemEntry<EssenceWrench> ESSENCE_WRENCH = Essence.ESSENCE_REGISTRATE.object("essence_wrench")
-          .item(EssenceWrench::new).properties(properties -> properties.group(Essence.TOOL_TAB).maxStackSize(1).maxDamage(2048).rarity(Rarity.RARE))
+          .item(EssenceWrench::new).properties(properties -> properties.tab(Essence.TOOL_TAB).stacksTo(1).defaultDurability(2048).rarity(Rarity.RARE))
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/essence_wrench")))
           .lang("Essence-Infused Wrench").register();
   public static ItemEntry<SerializedEntityItem> SERIALIZED_ENTITY = Essence.ESSENCE_REGISTRATE.object("serialized_entity")
-          .item(SerializedEntityItem::new).properties(properties -> properties.setISTER(() -> SerializableMobRenderer::new).maxStackSize(1))
+          .item(SerializedEntityItem::new).properties(properties -> properties.defaultDurability(1))
           .lang("Serialized Entity")
           .model((context, provider) -> provider.getBuilder(context.getId().getPath()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity"))))
           .register();
-  public static ItemEntry<GlueBallItem> GLUE_BALL_ITEM = Essence.ESSENCE_REGISTRATE.object("glue_ball").item(GlueBallItem::new).properties(properties -> properties.group(Essence.CORE_TAB))
+  public static ItemEntry<GlueBallItem> GLUE_BALL_ITEM = Essence.ESSENCE_REGISTRATE.object("glue_ball").item(GlueBallItem::new).properties(properties -> properties.tab(Essence.CORE_TAB))
           .lang("Ball of Glue")
           .model((context, provider) -> provider.handheld(context))
           .register();
@@ -148,7 +148,7 @@ public class EssenceItemRegistrate {
   public static ItemEntry<EssenceBow> ESSENCE_BOW_DIVINE = getTool("essence_bow_", "Essence Bow", EssenceBow.class, EssenceToolTiers.DIVINE_ESSENCE, bowRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_DIVINE), new ResourceLocation(Essence.MOD_ID, "essence_bow_divine")), EssenceTags.EssenceItemTags.ESSENCE_BOW_DIVINE);
 
   @SuppressWarnings("unchecked")
-  public static <T extends Item> ItemEntry<T> getTool(String name, String lang, Class<T> tool, EssenceToolTiers tier, NonNullBiConsumer<DataGenContext<Item, Item>, RegistrateRecipeProvider> recipeConsumer, ITag.INamedTag<Item>... tags) {
+  public static <T extends Item> ItemEntry<T> getTool(String name, String lang, Class<T> tool, EssenceToolTiers tier, NonNullBiConsumer<DataGenContext<Item, Item>, RegistrateRecipeProvider> recipeConsumer, Tag.Named<Item>... tags) {
     String tierType = tier == EssenceToolTiers.ESSENCE ? "" : tier.toString().toLowerCase();
     String entryName = tierType.equals("") ? name.substring(0, name.length() - 1) : name + tierType;
     return (ItemEntry<T>) Essence.ESSENCE_REGISTRATE.object(entryName)
@@ -209,39 +209,39 @@ public class EssenceItemRegistrate {
             })
             .lang(lang).tag(tags)
             .recipe(recipeConsumer)
-            .group(() -> Essence.TOOL_TAB)
+            .tab(() -> Essence.TOOL_TAB)
             .register();
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> axeRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine("ii ").patternLine("is ").patternLine(" s ").key('i', ingot.get()).key('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern("ii ").pattern("is ").pattern(" s ").define('i', ingot.get()).define('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> pickaxeRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine("iii").patternLine(" s ").patternLine(" s ").key('i', ingot.get()).key('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern("iii").pattern(" s ").pattern(" s ").define('i', ingot.get()).define('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> shovelRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine(" i ").patternLine(" s ").patternLine(" s ").key('i', ingot.get()).key('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern(" i ").pattern(" s ").pattern(" s ").define('i', ingot.get()).define('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> swordRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine(" i ").patternLine(" i ").patternLine(" s ").key('i', ingot.get()).key('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern(" i ").pattern(" i ").pattern(" s ").define('i', ingot.get()).define('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> shearRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine(" i").patternLine("i ").key('i', ingot.get()).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern(" i").pattern("i ").define('i', ingot.get()).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> bowRecipe(Supplier<DataIngredient> nugget, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine("stn").patternLine("s t").patternLine("stn").key('t', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).key('s', DataIngredient.tag(Tags.Items.STRING)).key('n', nugget.get()).addCriterion("has_" + provider.safeName(nugget.get()), nugget.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern("stn").pattern("s t").pattern("stn").define('t', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).define('s', DataIngredient.tag(Tags.Items.STRING)).define('n', nugget.get()).unlockedBy("has_" + provider.safeName(nugget.get()), nugget.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> omnitoolRecipe(Supplier<DataIngredient> axe, Supplier<DataIngredient> shovel, Supplier<DataIngredient> pickaxe, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine("asp").patternLine(" t ").patternLine(" t ").key('a', axe.get()).key('s', shovel.get()).key('p', pickaxe.get()).key('t', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(axe.get()), axe.get().getCritereon(provider)).addCriterion("has_" + provider.safeName(shovel.get()), shovel.get().getCritereon(provider)).addCriterion("has_" + provider.safeName(pickaxe.get()), pickaxe.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern("asp").pattern(" t ").pattern(" t ").define('a', axe.get()).define('s', shovel.get()).define('p', pickaxe.get()).define('t', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(axe.get()), axe.get().getCritereon(provider)).unlockedBy("has_" + provider.safeName(shovel.get()), shovel.get().getCritereon(provider)).unlockedBy("has_" + provider.safeName(pickaxe.get()), pickaxe.get().getCritereon(provider)).save(provider, rl);
   }
 
   public static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateRecipeProvider> hoeRecipe(Supplier<DataIngredient> ingot, ResourceLocation rl) {
-    return (context, provider) -> ShapedRecipeBuilder.shapedRecipe(context.get(), 1).patternLine("ii ").patternLine(" s ").patternLine(" s ").key('i', ingot.get()).key('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).addCriterion("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).build(provider, rl);
+    return (context, provider) -> ShapedRecipeBuilder.shaped(context.get(), 1).pattern("ii ").pattern(" s ").pattern(" s ").define('i', ingot.get()).define('s', EssenceTags.EssenceItemTags.ESSENCE_INFUSED_STICK).unlockedBy("has_" + provider.safeName(ingot.get()), ingot.get().getCritereon(provider)).save(provider, rl);
   }
 }

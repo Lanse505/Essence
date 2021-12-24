@@ -9,29 +9,29 @@ import com.teamacronymcoders.essence.api.recipe.infusion.InfusionOperation;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceJsonHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class EssenceSerializableObjectHandler {
 
   // SerializableModifier
-  public static SerializableModifier readSerializableModifier(PacketBuffer buffer) {
-    final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readString(0)));
+  public static SerializableModifier readSerializableModifier(FriendlyByteBuf buffer) {
+    final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
     final int level = buffer.readInt();
-    final CompoundNBT compound = buffer.readCompoundTag();
-    final String operator = buffer.readString(1);
+    final CompoundTag compound = buffer.readNbt();
+    final String operator = buffer.readUtf(1);
     return new SerializableModifier(modifier, level, compound, InfusionOperation.valueOf(operator));
   }
 
-  public static void writeSerializableModifier(PacketBuffer buffer, SerializableModifier serializableModifier) {
-    buffer.writeString(serializableModifier.getModifier().getRegistryName().toString(), 0);
+  public static void writeSerializableModifier(FriendlyByteBuf buffer, SerializableModifier serializableModifier) {
+    buffer.writeUtf(serializableModifier.getModifier().getRegistryName().toString(), 0);
     buffer.writeInt(serializableModifier.getLevel());
-    buffer.writeCompoundTag(serializableModifier.getModifierData());
-    buffer.writeString(serializableModifier.getOperation().getName(), 1);
+    buffer.writeNbt(serializableModifier.getModifierData());
+    buffer.writeUtf(serializableModifier.getOperation().getName(), 1);
   }
 
   public static JsonObject writeSerializableModifier(SerializableModifier serializableModifier) {
@@ -47,9 +47,9 @@ public class EssenceSerializableObjectHandler {
     JsonObject object = element.getAsJsonObject();
     Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
     int level = object.get("level").getAsInt();
-    CompoundNBT compound = null;
+    CompoundTag compound = null;
     try {
-      compound = JsonToNBT.getTagFromJson(object.get("compound").getAsString());
+      compound = TagParser.parseTag(object.get("compound").getAsString());
     } catch (CommandSyntaxException e) {
       e.printStackTrace();
     }
@@ -58,25 +58,25 @@ public class EssenceSerializableObjectHandler {
   }
 
   // SerializableModifier[]
-  public static SerializableModifier[] readSerializableModifierArray(PacketBuffer buffer) {
+  public static SerializableModifier[] readSerializableModifierArray(FriendlyByteBuf buffer) {
     SerializableModifier[] serializableModifiers = new SerializableModifier[buffer.readInt()];
     for (int i = 0; i < serializableModifiers.length; i++) {
-      final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readString(0)));
+      final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
       final int level = buffer.readInt();
-      final CompoundNBT compound = buffer.readCompoundTag();
-      final String operator = buffer.readString(1);
+      final CompoundTag compound = buffer.readNbt();
+      final String operator = buffer.readUtf(1);
       serializableModifiers[i] = new SerializableModifier(modifier, level, compound, InfusionOperation.valueOf(operator));
     }
     return serializableModifiers;
   }
 
-  public static void writeSerializableModifierArray(PacketBuffer buffer, SerializableModifier[] serializableModifiers) {
+  public static void writeSerializableModifierArray(FriendlyByteBuf buffer, SerializableModifier[] serializableModifiers) {
     buffer.writeInt(serializableModifiers.length);
     for (SerializableModifier serializableModifier : serializableModifiers) {
-      buffer.writeString(serializableModifier.getModifier().getRegistryName().toString(), 0);
+      buffer.writeUtf(serializableModifier.getModifier().getRegistryName().toString(), 0);
       buffer.writeInt(serializableModifier.getLevel());
-      buffer.writeCompoundTag(serializableModifier.getModifierData());
-      buffer.writeString(serializableModifier.getOperation().getName(), 1);
+      buffer.writeNbt(serializableModifier.getModifierData());
+      buffer.writeUtf(serializableModifier.getOperation().getName(), 1);
     }
   }
 
@@ -86,7 +86,7 @@ public class EssenceSerializableObjectHandler {
       JsonObject object = new JsonObject();
       object.addProperty("modifier", serializableModifier.getModifier().getRegistryName().toString());
       object.addProperty("level", serializableModifier.getLevel());
-      object.addProperty("compound", serializableModifier.getModifierData() != null ? serializableModifier.modifierData.toString() : new CompoundNBT().toString());
+      object.addProperty("compound", serializableModifier.getModifierData() != null ? serializableModifier.modifierData.toString() : new CompoundTag().toString());
       object.addProperty("operation", serializableModifier.getOperation().getName());
       array.add(object);
     }
@@ -100,9 +100,9 @@ public class EssenceSerializableObjectHandler {
       JsonObject object = array.get(i).getAsJsonObject();
       Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
       int level = object.get("level").getAsInt();
-      CompoundNBT compound = null;
+      CompoundTag compound = null;
       try {
-        compound = JsonToNBT.getTagFromJson(object.get("compound").getAsString());
+        compound = TagParser.parseTag(object.get("compound").getAsString());
       } catch (CommandSyntaxException e) {
         e.printStackTrace();
       }
@@ -112,12 +112,12 @@ public class EssenceSerializableObjectHandler {
     return serializableModifiers;
   }
 
-  public static void writeBlockState(PacketBuffer buffer, BlockState state) {
-    buffer.writeCompoundTag(NBTUtil.writeBlockState(state));
+  public static void writeBlockState(FriendlyByteBuf buffer, BlockState state) {
+    buffer.writeNbt(NbtUtils.writeBlockState(state));
   }
 
-  public static BlockState readBlockState(PacketBuffer buffer) {
-    return NBTUtil.readBlockState(buffer.readCompoundTag());
+  public static BlockState readBlockState(FriendlyByteBuf buffer) {
+    return NbtUtils.readBlockState(buffer.readNbt());
   }
 
   public static JsonElement writeBlockState(BlockState state) {

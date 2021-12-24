@@ -4,11 +4,7 @@ import com.hrznstudio.titanium.module.ModuleController;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
-import com.teamacronymcoders.essence.api.capabilities.NBTCapabilityStorage;
-import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
-import com.teamacronymcoders.essence.api.knowledge.KnowledgeHolder;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
@@ -32,23 +28,19 @@ import com.teamacronymcoders.essence.util.proxy.EssenceSafeSuppliers;
 import com.teamacronymcoders.essence.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.util.tab.EssenceToolTab;
 import com.tterrag.registrate.Registrate;
-import java.util.Random;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.ArgumentSerializer;
-import net.minecraft.command.arguments.ArgumentTypes;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.loot.conditions.LootConditionManager;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -56,11 +48,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Random;
 
 // TODO List:
 // 1. Make Crafting a thing
@@ -103,7 +97,7 @@ public class Essence extends ModuleController {
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     CORE_TAB = new EssenceCoreTab();
     TOOL_TAB = new EssenceToolTab();
-    ESSENCE_REGISTRATE = Registrate.create("essence").itemGroup(() -> CORE_TAB);
+    ESSENCE_REGISTRATE = Registrate.create("essence").creativeModeTab(() -> CORE_TAB);
     EssenceAdvancements.setup();
     EssenceEventHandlers.setup();
 
@@ -146,18 +140,16 @@ public class Essence extends ModuleController {
   }
 
   private void setup(final FMLCommonSetupEvent event) {
-    ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new ArgumentSerializer<>(EssenceHandArgumentType::new));
-    ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new ArgumentSerializer<>(EssenceModifierArgumentType::new));
-    ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new ArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
-    CapabilityManager.INSTANCE.register(IKnowledgeHolder.class, NBTCapabilityStorage.create(CompoundNBT.class), KnowledgeHolder::new);
-    CapabilityManager.INSTANCE.register(ItemStackModifierHolder.class, NBTCapabilityStorage.create(ListNBT.class), ItemStackModifierHolder::new);
-    EssenceConditions.MATCH_MODIFIER = LootConditionManager.register("essence:match_modifier", new MatchModifier.Serializer());
+    ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new EmptyArgumentSerializer<>(EssenceHandArgumentType::new));
+    ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new EmptyArgumentSerializer<>(EssenceModifierArgumentType::new));
+    ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new EmptyArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
+    EssenceConditions.MATCH_MODIFIER = LootItemConditions.register("essence:match_modifier", new MatchModifier.ModifierSerializer());
 
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_CHICKEN.get(), ChickenEntity.func_234187_eI_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_COW.get(), CowEntity.func_234188_eI_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_CREEPER.get(), CreeperEntity.registerAttributes().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), GhastEntity.func_234290_eH_().create());
-    GlobalEntityTypeAttributes.put(EssenceEntityRegistrate.SHEARED_PIG.get(), PigEntity.func_234215_eI_().create());
+    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_CHICKEN.get(), Chicken.createAttributes().build());
+    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_COW.get(), Cow.createAttributes().build());
+    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_CREEPER.get(), Creeper.createAttributes().build());
+    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), Ghast.createAttributes().build());
+    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_PIG.get(), Pig.createAttributes().build());
 
     EssenceDispenseBehaviours.init();
   }
@@ -166,16 +158,16 @@ public class Essence extends ModuleController {
     new EssenceKeyHandler();
 
     // Pull
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.PULL);
 
     // Pulling
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
-    ItemModelsProperties.registerProperty(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
+    ItemProperties.register(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.get(), new ResourceLocation(Essence.MOD_ID, "pulling"), EssenceItemProperties.PULLING);
 
     // Toggled
     // TODO: Implement for Tablet of Muffling

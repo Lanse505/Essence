@@ -1,11 +1,11 @@
 package com.teamacronymcoders.essence.util.keybindings;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings.Type;
+import com.mojang.blaze3d.platform.InputConstants.Type;
+import net.minecraft.client.KeyMapping;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class EssenceKeyHandler extends KeyHandler {
 
-  public static final KeyBinding EXTENDED_INFORMATION = new KeyBinding(
+  public static final KeyMapping EXTENDED_INFORMATION = new KeyMapping(
           KBTranslationKeys.EXTENDED_INFORMATION,
           KeyConflictContext.GUI,
           Type.KEYSYM,
@@ -24,7 +24,7 @@ public class EssenceKeyHandler extends KeyHandler {
           KBTranslationKeys.MODID
   );
 
-  public static final KeyBinding CYCLING = new KeyBinding(
+  public static final KeyMapping CYCLING = new KeyMapping(
           KBTranslationKeys.CYCLING,
           KeyConflictContext.IN_GAME,
           Type.KEYSYM,
@@ -48,10 +48,10 @@ public class EssenceKeyHandler extends KeyHandler {
   }
 
   @Override
-  public void keyDown(KeyBinding kb, boolean isRepeat) {
+  public void keyDown(KeyMapping kb, boolean isRepeat) {
   }
 
   @Override
-  public void keyUp(KeyBinding kb) {
+  public void keyUp(KeyMapping kb) {
   }
 }

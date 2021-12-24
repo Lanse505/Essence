@@ -2,11 +2,12 @@ package com.teamacronymcoders.essence.util.helper;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Tier;
+
 import java.util.Locale;
 import java.util.TreeMap;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.IItemTier;
-import net.minecraft.util.text.TextFormatting;
 
 public class EssenceUtilHelper {
 
@@ -36,14 +37,14 @@ public class EssenceUtilHelper {
     return roman.get(l) + toRoman(number - l);
   }
 
-  public static TextFormatting getTextColor(int current, int max) {
+  public static ChatFormatting getTextColor(int current, int max) {
     int val = current / max;
     if (val <= 0.33) {
-      return TextFormatting.RED;
+      return ChatFormatting.RED;
     } else if (val <= 0.66) {
-      return TextFormatting.YELLOW;
+      return ChatFormatting.YELLOW;
     } else {
-      return TextFormatting.GREEN;
+      return ChatFormatting.GREEN;
     }
   }
 
@@ -73,11 +74,11 @@ public class EssenceUtilHelper {
     return String.valueOf(number);
   }
 
-  private static boolean isEssenceItemTier(IItemTier tier) {
+  private static boolean isEssenceItemTier(Tier tier) {
     return tier instanceof EssenceToolTiers;
   }
 
-  public static EssenceToolTiers getEssenceItemTier(IItemTier tier) {
+  public static EssenceToolTiers getEssenceItemTier(Tier tier) {
     return isEssenceItemTier(tier) ? (EssenceToolTiers) tier : null;
   }
 
@@ -117,7 +118,7 @@ public class EssenceUtilHelper {
   }
 
   public static String getColorFormattedLangString(String input, DyeColor color) {
-    String colorName = color.getString();
+    String colorName = color.getName();
     String name;
     if (colorName.contains("_")) {
       String[] strings = colorName.split("_");

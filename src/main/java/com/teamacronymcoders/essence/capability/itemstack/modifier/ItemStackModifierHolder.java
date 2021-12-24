@@ -6,11 +6,12 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModified;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListNBT;
-import net.minecraftforge.common.util.Constants;
 
 public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
 
@@ -289,8 +290,8 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
   }
 
   @Override
-  public ListNBT serializeNBT() {
-    final ListNBT listNBT = new ListNBT();
+  public ListTag serializeNBT() {
+    final ListTag listNBT = new ListTag();
     for (ModifierInstance instance : getModifierInstances()) {
       listNBT.add(instance.serializeNBT());
     }
@@ -299,7 +300,7 @@ public class ItemStackModifierHolder extends ModifierHolder<ItemStack> {
   }
 
   @Override
-  public void deserializeNBT(ListNBT nbt) {
-    super.deserializeNBT(nbt.size() > 0 ? nbt : stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
+  public void deserializeNBT(ListTag nbt) {
+    super.deserializeNBT(nbt.size() > 0 ? nbt : stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
   }
 }

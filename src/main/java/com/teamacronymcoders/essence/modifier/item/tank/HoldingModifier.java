@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.modifier.item.tank;
 import com.teamacronymcoders.essence.api.modified.IModifiedTank;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class HoldingModifier extends ItemAttributeModifier {
 

@@ -8,22 +8,23 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> implements ArgumentType<T> {
   private final IForgeRegistry<T> registry;
   private final List<String> examples;
   private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
-          new TranslationTextComponent("command.argument.essence.registry.invalid", input));
+          new TranslatableComponent("command.argument.essence.registry.invalid", input));
 
   public EssenceRegistryArgumentType() {
     this.registry = null;
@@ -55,7 +56,7 @@ public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> imple
 
   @Override
   public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-    return ISuggestionProvider.func_212476_a(registry.getKeys().stream(), builder);
+    return SharedSuggestionProvider.suggestResource(registry.getKeys().stream(), builder);
   }
 
   @Override

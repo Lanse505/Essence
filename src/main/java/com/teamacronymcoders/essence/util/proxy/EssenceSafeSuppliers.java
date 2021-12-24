@@ -1,7 +1,8 @@
 package com.teamacronymcoders.essence.util.proxy;
 
-import java.util.function.Supplier;
 import net.minecraftforge.fml.DistExecutor.SafeSupplier;
+
+import java.util.function.Supplier;
 
 public class EssenceSafeSuppliers {
 

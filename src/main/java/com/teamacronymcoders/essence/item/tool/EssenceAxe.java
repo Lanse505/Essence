@@ -9,29 +9,29 @@ import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants.BlockFlags;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class EssenceAxe extends AxeItem implements IModifiedTool {
 
@@ -53,47 +53,39 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
     return tier.getRarity();
   }
 
-  @Override
-  public boolean canHarvestBlock(BlockState state) {
-    if (state.getHarvestTool() == ToolType.AXE) {
-      return getTier().getHarvestLevel() >= state.getHarvestLevel();
-    }
-    return super.canHarvestBlock(state);
-  }
-
-  public ActionResultType onItemBehaviour(ItemUseContext context) {
-    World world = context.getWorld();
-    Block block = world.getBlockState(context.getPos()).getBlock();
-    return world.getRecipeManager().getRecipes().stream()
+  public InteractionResult onItemBehaviour(UseOnContext context) {
+    Level level = context.getLevel();
+    Block block = level.getBlockState(context.getClickedPos()).getBlock();
+    return level.getRecipeManager().getRecipes().stream()
             .filter(iRecipe -> iRecipe.getType() == AxeStrippingRecipe.SERIALIZER.getRecipeType())
             .map(iRecipe -> (AxeStrippingRecipe) iRecipe)
             .filter(recipe -> recipe.matches(block))
-            .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(ActionResultType.PASS);
+            .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(InteractionResult.PASS);
   }
 
   @Override
-  public ActionResultType onItemUse(ItemUseContext context) {
-    World world = context.getWorld();
-    PlayerEntity player = context.getPlayer();
-    BlockPos pos = context.getPos();
-    BlockState state = world.getBlockState(pos);
-    ItemStack stack = context.getItem();
-    ActionResultType resultType = ActionResultType.FAIL;
+  public InteractionResult useOn(UseOnContext context) {
+    Level level = context.getLevel();
+    Player player = context.getPlayer();
+    BlockPos pos = context.getClickedPos();
+    BlockState state = level.getBlockState(pos);
+    ItemStack stack = context.getItemInHand();
+    InteractionResult resultType = InteractionResult.FAIL;
     BlockState behaviourState;
 
     // Check Vanilla Axe Behaviour
-    behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolType.AXE);
+    behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.AXE_DIG);
     if (behaviourState != null && !behaviourState.equals(state)) {
-      world.setBlockState(pos, behaviourState, BlockFlags.DEFAULT_AND_RERENDER);
-      resultType = ActionResultType.SUCCESS;
+      level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+      resultType = InteractionResult.SUCCESS;
     }
-    if (resultType == ActionResultType.SUCCESS) {
+    if (resultType == InteractionResult.SUCCESS) {
       return resultType;
     }
 
     // Check Recipes
     resultType = onItemBehaviour(context);
-    if (resultType == ActionResultType.SUCCESS) {
+    if (resultType == InteractionResult.SUCCESS) {
       return resultType;
     }
 
@@ -102,11 +94,11 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
   }
 
   @Override
-  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
+  public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
     if (isRecursive) {
       return onItemBehaviour(context);
     }
-    return onItemUse(context);
+    return useOn(context);
   }
 
   @Override
@@ -125,7 +117,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean isFoil(ItemStack stack) {
     return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
   }
 
@@ -140,40 +132,35 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
   }
 
   @Override
-  public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-    return super.getHarvestLevel(stack, tool, player, blockState) + getHarvestLevelFromModifiers(super.getHarvestLevel(stack, tool, player, blockState), stack);
-  }
-
-  @Override
-  public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     hitEntityFromModifiers(stack, target, attacker);
-    return super.hitEntity(stack, target, attacker);
+    return super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-    onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
-    return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+  public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
+    return super.mineBlock(stack, level, state, pos, entityLiving);
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+  public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
     inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
     super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
   }
 
   @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-    if (slot == EquipmentSlotType.MAINHAND) {
-      return getAttributeModifiersFromModifiers(getAttributeModifiers(slot), slot, stack);
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+    if (slot == EquipmentSlot.MAINHAND) {
+      return getAttributeModifiersFromModifiers(getDefaultAttributeModifiers(slot), slot, stack);
     }
     return HashMultimap.create();
   }
 
   @Override
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-    super.addInformation(stack, worldIn, tooltip, flagIn);
-    addInformationFromModifiers(stack, worldIn, tooltip, flagIn, tier);
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+    super.appendHoverText(stack, level, tooltip, flagIn);
+    addInformationFromModifiers(stack, level, tooltip, flagIn, tier);
   }
 
   @Override
@@ -219,7 +206,7 @@ public class EssenceAxe extends AxeItem implements IModifiedTool {
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
     if (!stack.isEmpty() && nbt != null) {
       return new ItemStackModifierProvider(stack, nbt);
     }

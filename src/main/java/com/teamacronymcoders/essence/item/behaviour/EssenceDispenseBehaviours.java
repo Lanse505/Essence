@@ -8,94 +8,105 @@ import com.teamacronymcoders.essence.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BeehiveBlock;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import net.minecraft.block.BeehiveBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.BeehiveTileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class EssenceDispenseBehaviours {
-  public static Map<IItemProvider, IDispenseItemBehavior> dispenserBehaviours = new HashMap<>();
+  public static Map<ItemLike, DispenseItemBehavior> dispenserBehaviours = new HashMap<>();
 
   static {
-    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR.get(), new OptionalDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR.get(), new OptionalDispenseItemBehavior() {
       @Override
-      protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        this.setSuccessful(false);
+      protected ItemStack execute(BlockSource source, ItemStack stack) {
+        this.setSuccess(false);
         return shearComb(source, stack) ? stack : shear(source, stack) ? stack : stack;
       }
     });
-    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_EMPOWERED.get(), new OptionalDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_EMPOWERED.get(), new OptionalDispenseItemBehavior() {
       @Override
-      protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        this.setSuccessful(false);
+      protected ItemStack execute(BlockSource source, ItemStack stack) {
+        this.setSuccess(false);
         return shearComb(source, stack) ? stack : shear(source, stack) ? stack : stack;
       }
     });
-    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_SUPREME.get(), new OptionalDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_SUPREME.get(), new OptionalDispenseItemBehavior() {
       @Override
-      protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        this.setSuccessful(false);
+      protected ItemStack execute(BlockSource source, ItemStack stack) {
+        this.setSuccess(false);
         return shearComb(source, stack) ? stack : shear(source, stack) ? stack : stack;
       }
     });
-    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.get(), new OptionalDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.get(), new OptionalDispenseItemBehavior() {
       @Override
-      protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        this.setSuccessful(false);
+      protected ItemStack execute(BlockSource source, ItemStack stack) {
+        this.setSuccess(false);
         return shearComb(source, stack) ? stack : shear(source, stack) ? stack : stack;
       }
     });
-    dispenserBehaviours.put(EssenceItemRegistrate.GLUE_BALL_ITEM.get(), new ProjectileDispenseBehavior() {
+    dispenserBehaviours.put(EssenceItemRegistrate.GLUE_BALL_ITEM.get(), new AbstractProjectileDispenseBehavior() {
       @Override
-      protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-        return stackIn.getItem() instanceof GlueBallItem ? Util.make(new GlueBallEntity(worldIn, position.getX(), position.getY(), position.getZ()), glueBallEntity -> glueBallEntity.setItem(stackIn)) : null;
+      protected Projectile getProjectile(Level level, Position position, ItemStack stackIn) {
+        return stackIn.getItem() instanceof GlueBallItem ? Util.make(new GlueBallEntity(level, position.x(), position.y(), position.z()), glueBallEntity -> glueBallEntity.setItem(stackIn)) : null;
       }
     });
   }
 
   public static void init() {
-    dispenserBehaviours.forEach(DispenserBlock::registerDispenseBehavior);
+    dispenserBehaviours.forEach(DispenserBlock::registerBehavior);
   }
 
-  private static boolean shear(IBlockSource source, ItemStack stack) {
+  private static boolean shear(BlockSource source, ItemStack stack) {
     ModifierInstance instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistrate.EXPANDER_MODIFIER.get());
-    World world = source.getWorld();
-    if (instance != null && !world.isRemote && stack.getItem() instanceof EssenceShear) {
+    Level level = source.getLevel();
+    if (instance != null && !level.isClientSide() && stack.getItem() instanceof EssenceShear) {
       EssenceShear shear = (EssenceShear) stack.getItem();
-      world.getEntitiesInAABBexcluding(null, getAABB(source, instance), e -> e instanceof LivingEntity && !e.isSpectator()).forEach(entity -> {
-        shear.itemInteractionForEntity(stack, null, (LivingEntity) entity, Hand.MAIN_HAND);
+      level.getEntities((Entity) null, getAABB(source, instance), e -> e instanceof LivingEntity && !e.isSpectator()).forEach(entity -> {
+        shear.interactLivingEntity(stack, null, (LivingEntity) entity, InteractionHand.MAIN_HAND);
       });
       return true;
     }
     return false;
   }
 
-  private static boolean shearComb(IBlockSource source, ItemStack stack) {
+  private static boolean shearComb(BlockSource source, ItemStack stack) {
     ModifierInstance instance = EssenceItemstackModifierHelpers.getModifierInstance(stack, EssenceModifierRegistrate.EXPANDER_MODIFIER.get());
-    World world = source.getWorld();
+    Level level = source.getLevel();
     if (instance != null) {
       AtomicBoolean sheared = new AtomicBoolean(false);
-      BlockPos.getAllInBox(getAABB(source, instance)).forEach(pos -> {
-        if (!world.isRemote && stack.getItem() instanceof EssenceShear) {
-          BlockState state = world.getBlockState(pos);
-          if (state.isIn(BlockTags.BEEHIVES)) {
-            int j = state.get(BeehiveBlock.HONEY_LEVEL);
+      BlockPos.betweenClosedStream(getAABB(source, instance)).forEach(pos -> {
+        if (!level.isClientSide() && stack.getItem() instanceof EssenceShear) {
+          BlockState state = level.getBlockState(pos);
+          if (state.is(BlockTags.BEEHIVES)) {
+            int j = state.getValue(BeehiveBlock.HONEY_LEVEL);
             if (j >= 5) {
-              world.playSound(null, pos, SoundEvents.BLOCK_BEEHIVE_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-              BeehiveBlock.dropHoneyComb(world, pos);
-              ((BeehiveBlock) state.getBlock()).takeHoney(world, state, pos, null, BeehiveTileEntity.State.BEE_RELEASED);
+              level.playSound(null, pos, SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
+              BeehiveBlock.dropHoneycomb(level, pos);
+              ((BeehiveBlock) state.getBlock()).releaseBeesAndResetHoneyLevel(level, state, pos, null, BeehiveBlockEntity.BeeReleaseStatus.BEE_RELEASED);
               sheared.set(true);
             }
           }
@@ -106,16 +117,16 @@ public class EssenceDispenseBehaviours {
     return false;
   }
 
-  public static AxisAlignedBB getAABB(IBlockSource source, ModifierInstance instance) {
-    Direction dir = source.getBlockState().get(DispenserBlock.FACING);
-    BlockPos sourcePos = source.getBlockPos();
+  public static AABB getAABB(BlockSource source, ModifierInstance instance) {
+    Direction dir = source.getBlockState().getValue(DispenserBlock.FACING);
+    BlockPos sourcePos = source.getPos();
     int level = instance.getLevel() + 1;
     if (!dir.getAxis().isVertical()) {
-      BlockPos corner1 = sourcePos.offset(dir, 1).offset(dir.rotateY(), level).offset(Direction.UP, -level);
-      BlockPos corner2 = sourcePos.offset(dir, 2 * level + 1).offset(dir.rotateYCCW(), level).offset(Direction.UP, level);
-      return new AxisAlignedBB(corner1, corner2);
+      BlockPos corner1 = sourcePos.relative(dir, 1).relative(dir.getClockWise(), level).relative(Direction.UP, -level);
+      BlockPos corner2 = sourcePos.relative(dir, 2 * level + 1).relative(dir.getCounterClockWise(), level).relative(Direction.UP, level);
+      return new AABB(corner1, corner2);
     }
-    return new AxisAlignedBB(sourcePos, sourcePos);
+    return new AABB(sourcePos, sourcePos);
   }
 
 }

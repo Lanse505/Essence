@@ -1,18 +1,18 @@
 package com.teamacronymcoders.essence.world.generation.tree.essence_tree;
 
-import com.teamacronymcoders.essence.util.registration.EssenceFeatures;
-import java.util.Random;
-import javax.annotation.Nullable;
-import net.minecraft.block.trees.Tree;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import com.teamacronymcoders.essence.world.generation.tree.EssenceTreeFeatures;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
-public class EssenceWorldGenTree extends Tree {
+import javax.annotation.Nullable;
+import java.util.Random;
+
+public class EssenceWorldGenTree extends AbstractTreeGrower {
 
   @Nullable
   @Override
-  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-    return random.nextInt(10) >= 8 ? EssenceFeatures.NORMAL_ESSENCE_TREE_FEATURE : EssenceFeatures.FANCY_ESSENCE_TREE_FEATURE;
+  protected ConfiguredFeature<?, ?> getConfiguredFeature(Random random, boolean b) {
+    return random.nextInt(10) >= 8 ? EssenceTreeFeatures.NORMAL_ESSENCE_TREE_FEATURE : EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE;
   }
 
 }

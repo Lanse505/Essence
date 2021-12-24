@@ -4,20 +4,25 @@ import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.block.tile.ActiveTile;
 import com.hrznstudio.titanium.component.inventory.InventoryComponent;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
-import javax.annotation.Nonnull;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
+import javax.annotation.Nonnull;
+
+public class InfusionPedestalBlockEntity extends ActiveTile<InfusionPedestalBlockEntity> {
 
   @Save
   private Integer ticksExisted = 0;
 
   @Save
-  private final InventoryComponent<InfusionPedestalTile> inventory;
+  private final InventoryComponent<InfusionPedestalBlockEntity> inventory;
 
-  public InfusionPedestalTile() {
-    super(EssenceBlockRegistrate.INFUSION_PEDESTAL.get());
-    addInventory(inventory = new InventoryComponent<InfusionPedestalTile>("inventory", 0, 0, 1)
+  public InfusionPedestalBlockEntity(BlockPos pos, BlockState state) {
+    super(EssenceBlockRegistrate.INFUSION_PEDESTAL.get(), pos, state);
+    addInventory(inventory = new InventoryComponent<InfusionPedestalBlockEntity>("inventory", 0, 0, 1)
             .setComponentHarness(this)
             .setOnSlotChanged((stack, integer) -> markComponentForUpdate(false))
             .setSlotLimit(1)
@@ -25,14 +30,14 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
   }
 
   @Override
-  public void tick() {
-    super.tick();
+  public void serverTick(Level level, BlockPos pos, BlockState state, InfusionPedestalBlockEntity blockEntity) {
+    super.serverTick(level, pos, state, blockEntity);
     ticksExisted++;
   }
 
   @Nonnull
   @Override
-  public InfusionPedestalTile getSelf() {
+  public InfusionPedestalBlockEntity getSelf() {
     return this;
   }
 
@@ -47,4 +52,5 @@ public class InfusionPedestalTile extends ActiveTile<InfusionPedestalTile> {
   public Integer getTicksExisted() {
     return ticksExisted;
   }
+
 }

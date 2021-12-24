@@ -12,16 +12,17 @@ import com.teamacronymcoders.essence.modifier.item.arrow.SoakedModifier;
 import com.teamacronymcoders.essence.modifier.item.cosmetic.EnchantedModifier;
 import com.teamacronymcoders.essence.modifier.item.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.LazyOptional;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.LazyOptional;
 
 @SuppressWarnings("unchecked")
 public class EssenceItemstackModifierHelpers {
@@ -57,13 +58,13 @@ public class EssenceItemstackModifierHelpers {
   public static ModifierInstance getModifierInstance(ItemStack stack, Modifier modifier) {
     final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (holderLazyOptional.isPresent()) {
-      holderLazyOptional.ifPresent(holder -> holder.deserializeNBT(stack.getOrCreateTag().getList(TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND)));
+      holderLazyOptional.ifPresent(holder -> holder.deserializeNBT(stack.getOrCreateTag().getList(TAG_MODIFIERS, Tag.TAG_COMPOUND)));
       return holderLazyOptional.map(holder -> Objects.requireNonNull(holder.getModifierInstances().stream().filter(instance -> instance.getModifier() == modifier).findAny().orElse(null))).orElse(null);
     }
     return null;
   }
 
-  public static void addModifier(ItemStack stack, Modifier modifier, int level, CompoundNBT modifierData) {
+  public static void addModifier(ItemStack stack, Modifier modifier, int level, CompoundTag modifierData) {
     final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (stack.getItem() instanceof IModified && instances.isPresent()) {
       instances.ifPresent(holder -> {
@@ -158,7 +159,7 @@ public class EssenceItemstackModifierHelpers {
       holder.getModifierInstances().stream()
               .filter(instance -> instance.getModifier() == mergeInstance.getModifier())
               .findFirst().ifPresent(instance -> {
-        CompoundNBT tagOnItem = instance.getModifierData();
+        CompoundTag tagOnItem = instance.getModifierData();
         tagOnItem.merge(mergeInstance.getModifierData());
         instance.setModifierData(tagOnItem);
       });
@@ -206,9 +207,9 @@ public class EssenceItemstackModifierHelpers {
    * @return Returns CompoundNBT for Serialization/Deserialization
    * Do note that using this method DOES NOT add or remove from the free modifier amount.
    */
-  public static CompoundNBT getStackNBTForFillGroup(ModifierInstance... instances) {
-    final CompoundNBT nbt = new CompoundNBT();
-    final ListNBT listNBT = new ListNBT();
+  public static CompoundTag getStackNBTForFillGroup(ModifierInstance... instances) {
+    final CompoundTag nbt = new CompoundTag();
+    final ListTag listNBT = new ListTag();
     for (ModifierInstance instance : instances) {
       listNBT.add(instance.serializeNBT());
     }

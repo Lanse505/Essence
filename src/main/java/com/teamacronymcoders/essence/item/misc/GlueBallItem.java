@@ -1,15 +1,16 @@
 package com.teamacronymcoders.essence.item.misc;
 
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.entity.GlueBallEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class GlueBallItem extends Item {
 
@@ -18,21 +19,21 @@ public class GlueBallItem extends Item {
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-    ItemStack stack = player.getHeldItem(hand);
-    world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-    if (!world.isRemote) {
-      GlueBallEntity entity = new GlueBallEntity(world, player);
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+    level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Essence.RANDOM.nextFloat() * 0.4F + 0.8F));
+    if (!level.isClientSide()) {
+      GlueBallEntity entity = new GlueBallEntity(level, player);
       entity.setItem(stack);
-      entity.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-      world.addEntity(entity);
+      entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+      level.addFreshEntity(entity);
     }
 
-    player.addStat(Stats.ITEM_USED.get(this));
-    if (!player.abilities.isCreativeMode) {
+    player.awardStat(Stats.ITEM_USED.get(this));
+    if (!player.getAbilities().instabuild) {
       stack.shrink(1);
     }
 
-    return ActionResult.func_233538_a_(stack, world.isRemote);
+    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
   }
 }

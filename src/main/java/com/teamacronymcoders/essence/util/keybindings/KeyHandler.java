@@ -1,13 +1,14 @@
 package com.teamacronymcoders.essence.util.keybindings;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.settings.KeyModifier;
+import org.lwjgl.glfw.GLFW;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
-import net.minecraftforge.client.settings.KeyModifier;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * This is totally not stolen from Mekanism
@@ -21,7 +22,7 @@ public abstract class KeyHandler {
   /**
    * KeyBinding instances
    */
-  private final KeyBinding[] keyBindings;
+  private final KeyMapping[] keyBindings;
 
   /**
    * Track which keys have been seen as pressed currently
@@ -44,8 +45,8 @@ public abstract class KeyHandler {
     keyDown = new BitSet();
   }
 
-  public static boolean getIsKeyPressed(KeyBinding keyBinding) {
-    if (keyBinding.isKeyDown()) {
+  public static boolean getIsKeyPressed(KeyMapping keyBinding) {
+    if (keyBinding.isDown()) {
       return true;
     }
     if (keyBinding.getKeyConflictContext().isActive() && keyBinding.getKeyModifier().isActive(keyBinding.getKeyConflictContext())) {
@@ -56,15 +57,15 @@ public abstract class KeyHandler {
     return KeyModifier.isKeyCodeModifier(keyBinding.getKey()) && isKeyDown(keyBinding);
   }
 
-  public static boolean isKeyDown(KeyBinding keyBinding) {
-    InputMappings.Input key = keyBinding.getKey();
-    int keyCode = key.getKeyCode();
-    if (keyCode != InputMappings.INPUT_INVALID.getKeyCode()) {
-      long windowHandle = Minecraft.getInstance().getMainWindow().getHandle();
+  public static boolean isKeyDown(KeyMapping keyBinding) {
+    InputConstants.Key key = keyBinding.getKey();
+    int keyCode = key.getValue();
+    if (keyCode != InputConstants.UNKNOWN.getValue()) {
+      long windowHandle = Minecraft.getInstance().getWindow().getWindow();
       try {
-        if (key.getType() == InputMappings.Type.KEYSYM) {
-          return InputMappings.isKeyDown(windowHandle, keyCode);
-        } else if (key.getType() == InputMappings.Type.MOUSE) {
+        if (key.getType() == InputConstants.Type.KEYSYM) {
+          return InputConstants.isKeyDown(windowHandle, keyCode);
+        } else if (key.getType() == InputConstants.Type.MOUSE) {
           return GLFW.glfwGetMouseButton(windowHandle, keyCode) == GLFW.GLFW_PRESS;
         }
       } catch (Exception ignored) {
@@ -75,8 +76,8 @@ public abstract class KeyHandler {
 
   public void keyTick() {
     for (int i = 0; i < keyBindings.length; i++) {
-      KeyBinding keyBinding = keyBindings[i];
-      boolean state = keyBinding.isKeyDown();
+      KeyMapping keyBinding = keyBindings[i];
+      boolean state = keyBinding.isDown();
       boolean lastState = keyDown.get(i);
       if (state != lastState || (state && repeatings.get(i))) {
         if (state) {
@@ -89,13 +90,13 @@ public abstract class KeyHandler {
     }
   }
 
-  public abstract void keyDown(KeyBinding kb, boolean isRepeat);
+  public abstract void keyDown(KeyMapping kb, boolean isRepeat);
 
-  public abstract void keyUp(KeyBinding kb);
+  public abstract void keyUp(KeyMapping kb);
 
   public static class Builder {
 
-    private final List<KeyBinding> bindings;
+    private final List<KeyMapping> bindings;
     private final BitSet repeatFlags = new BitSet();
 
     public Builder(int expectedCapacity) {
@@ -108,7 +109,7 @@ public abstract class KeyHandler {
      * @param k          the KeyBinding to add
      * @param repeatFlag true if keyDown pseudo-events continue to be sent while key is held
      */
-    public Builder addBinding(KeyBinding k, boolean repeatFlag) {
+    public Builder addBinding(KeyMapping k, boolean repeatFlag) {
       repeatFlags.set(bindings.size(), repeatFlag);
       bindings.add(k);
       return this;
@@ -118,8 +119,8 @@ public abstract class KeyHandler {
       return repeatFlags;
     }
 
-    protected KeyBinding[] getBindings() {
-      return bindings.toArray(new KeyBinding[0]);
+    protected KeyMapping[] getBindings() {
+      return bindings.toArray(new KeyMapping[0]);
     }
   }
 }

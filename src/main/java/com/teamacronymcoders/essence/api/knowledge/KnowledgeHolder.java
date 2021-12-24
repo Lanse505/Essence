@@ -1,16 +1,17 @@
 package com.teamacronymcoders.essence.api.knowledge;
 
 import com.teamacronymcoders.essence.api.knowledge.event.KnowledgeEvent;
-import java.util.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<CompoundNBT> {
+import java.util.*;
+
+public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<CompoundTag> {
 
   private static final String PLAYER_UUID = "Player_UUID";
   private static final String PLAYER_KNOWLEDGE = "Player_Knowledge";
@@ -23,9 +24,9 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void addPlayerUUID(PlayerEntity player) {
-    if (!playerToKnowledgeMap.containsKey(player.getUniqueID())) {
-      playerToKnowledgeMap.put(player.getUniqueID(), new ArrayList<>());
+  public void addPlayerUUID(Player player) {
+    if (!playerToKnowledgeMap.containsKey(player.getUUID())) {
+      playerToKnowledgeMap.put(player.getUUID(), new ArrayList<>());
     }
   }
 
@@ -54,11 +55,11 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void addKnowledge(PlayerEntity player, Knowledge... knowledge) {
-    ServerPlayerEntity serverPlayer = null;
-    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
-    if (player instanceof ServerPlayerEntity) {
-      serverPlayer = (ServerPlayerEntity) player;
+  public void addKnowledge(Player player, Knowledge... knowledge) {
+    ServerPlayer serverPlayer = null;
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUUID());
+    if (player instanceof ServerPlayer) {
+      serverPlayer = (ServerPlayer) player;
     }
     for (Knowledge instance : knowledge) {
       boolean notCancelled = false;
@@ -90,8 +91,8 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void removeKnowledge(PlayerEntity player, Knowledge... knowledge) {
-    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUniqueID());
+  public void removeKnowledge(Player player, Knowledge... knowledge) {
+    List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUUID());
     for (Knowledge instance : knowledge) {
       MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
       knowledges.remove(instance);
@@ -103,8 +104,8 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     return playerToKnowledgeMap.get(uuid);
   }
 
-  public List<Knowledge> getKnowledgeAsList(PlayerEntity player) {
-    return playerToKnowledgeMap.get(player.getUniqueID());
+  public List<Knowledge> getKnowledgeAsList(Player player) {
+    return playerToKnowledgeMap.get(player.getUUID());
   }
 
   @Override
@@ -113,8 +114,8 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public Knowledge[] getKnowledgeAsArray(PlayerEntity player) {
-    return (Knowledge[]) playerToKnowledgeMap.get(player.getUniqueID()).toArray();
+  public Knowledge[] getKnowledgeAsArray(Player player) {
+    return (Knowledge[]) playerToKnowledgeMap.get(player.getUUID()).toArray();
   }
 
   @Override
@@ -123,18 +124,18 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void clearKnowledge(PlayerEntity player) {
-    playerToKnowledgeMap.get(player.getUniqueID()).clear();
+  public void clearKnowledge(Player player) {
+    playerToKnowledgeMap.get(player.getUUID()).clear();
   }
 
   @Override
-  public CompoundNBT serializeNBT() {
-    final CompoundNBT nbt = new CompoundNBT();
-    final ListNBT listNBT = new ListNBT();
+  public CompoundTag serializeNBT() {
+    final CompoundTag nbt = new CompoundTag();
+    final ListTag listNBT = new ListTag();
     for (Map.Entry<UUID, List<Knowledge>> entry : playerToKnowledgeMap.entrySet()) {
-      final CompoundNBT entryNBT = new CompoundNBT();
-      final ListNBT knowledge = new ListNBT();
-      entryNBT.putUniqueId(PLAYER_UUID, entry.getKey());
+      final CompoundTag entryNBT = new CompoundTag();
+      final ListTag knowledge = new ListTag();
+      entryNBT.putUUID(PLAYER_UUID, entry.getKey());
       for (Knowledge knowledges : entry.getValue()) {
         listNBT.add(knowledges.serializeNBT());
       }
@@ -146,12 +147,12 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT nbt) {
-    final ListNBT instances = nbt.getList(PLAYER_INSTANCES, Constants.NBT.TAG_COMPOUND);
+  public void deserializeNBT(CompoundTag nbt) {
+    final ListTag instances = nbt.getList(PLAYER_INSTANCES, Tag.TAG_COMPOUND);
     for (int i = 0; i < instances.size(); i++) {
-      final CompoundNBT compoundNBT = instances.getCompound(i);
-      final UUID uuid = compoundNBT.getUniqueId(PLAYER_UUID);
-      final ListNBT knowledges = compoundNBT.getList(PLAYER_KNOWLEDGE, Constants.NBT.TAG_COMPOUND);
+      final CompoundTag compoundNBT = instances.getCompound(i);
+      final UUID uuid = compoundNBT.getUUID(PLAYER_UUID);
+      final ListTag knowledges = compoundNBT.getList(PLAYER_KNOWLEDGE, Tag.TAG_COMPOUND);
       for (int j = 0; j < knowledges.size(); j++) {
         final Knowledge knowledge = new Knowledge();
         knowledge.deserializeNBT(knowledges.getCompound(j));

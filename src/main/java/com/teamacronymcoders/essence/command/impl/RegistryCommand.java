@@ -10,17 +10,18 @@ import com.teamacronymcoders.essence.api.knowledge.Knowledge;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.registrate.EssenceKnowledgeRegistrate;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+
 import java.util.Map;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.text.TranslationTextComponent;
 
-public class RegistryCommand implements Command<CommandSource> {
+public class RegistryCommand implements Command<CommandSourceStack> {
 
-  public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+  public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
     return Commands.literal("registry")
-            .requires(cs -> cs.hasPermissionLevel(4))
+            .requires(cs -> cs.hasPermission(4))
             .then(Commands.literal("dump")
                     .then(Commands.literal("knowledge")
                             .executes(RegistryCommand::dumpKnowledgeRegistry)
@@ -31,27 +32,27 @@ public class RegistryCommand implements Command<CommandSource> {
             );
   }
 
-  public static int dumpKnowledgeRegistry(CommandContext<CommandSource> context) {
-    CommandSource source = context.getSource();
-    source.sendFeedback(new TranslationTextComponent("command.essence.registry.dump.knowledge"), true);
-    for (Map.Entry<RegistryKey<Knowledge>, Knowledge> knowledge : EssenceKnowledgeRegistrate.REGISTRY.get().getEntries()) {
-      Essence.LOGGER.info(new TranslationTextComponent("command.essence.registry.dump.knowledge.type", new TranslationTextComponent(knowledge.getValue().getTranslationString()), knowledge.getKey().toString()).getUnformattedComponentText());
+  public static int dumpKnowledgeRegistry(CommandContext<CommandSourceStack> context) {
+    CommandSourceStack source = context.getSource();
+    source.sendSuccess(new TranslatableComponent("command.essence.registry.dump.knowledge"), true);
+    for (Map.Entry<ResourceKey<Knowledge>, Knowledge> knowledge : EssenceKnowledgeRegistrate.REGISTRY.get().getEntries()) {
+      Essence.LOGGER.info(new TranslatableComponent("command.essence.registry.dump.knowledge.type", new TranslatableComponent(knowledge.getValue().getTranslationString()), knowledge.getKey().toString()).getKey());
     }
     return 1;
   }
 
-  public static int dumpModifierRegistry(CommandContext<CommandSource> context) {
-    CommandSource source = context.getSource();
-    source.sendFeedback(new TranslationTextComponent("command.essence.registry.dump.modifier"), true);
-    for (Map.Entry<RegistryKey<Modifier>, Modifier> knowledge : EssenceModifierRegistrate.REGISTRY.get().getEntries()) {
-      Essence.LOGGER.info(new TranslationTextComponent("command.essence.registry.dump.modifier.type", knowledge.getValue(), knowledge.getKey().toString()).getUnformattedComponentText());
+  public static int dumpModifierRegistry(CommandContext<CommandSourceStack> context) {
+    CommandSourceStack source = context.getSource();
+    source.sendSuccess(new TranslatableComponent("command.essence.registry.dump.modifier"), true);
+    for (Map.Entry<ResourceKey<Modifier>, Modifier> knowledge : EssenceModifierRegistrate.REGISTRY.get().getEntries()) {
+      Essence.LOGGER.info(new TranslatableComponent("command.essence.registry.dump.modifier.type", knowledge.getValue(), knowledge.getKey().toString()).getKey());
     }
     return 1;
   }
 
 
   @Override
-  public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+  public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
     return 1;
   }
 }

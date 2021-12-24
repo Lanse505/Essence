@@ -1,22 +1,23 @@
 package com.teamacronymcoders.essence.serializable.loot;
 
 import com.google.gson.JsonObject;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FieryLootModifier extends LootModifier {
   /**
@@ -24,7 +25,7 @@ public class FieryLootModifier extends LootModifier {
    *
    * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
    */
-  protected FieryLootModifier(ILootCondition[] conditionsIn) {
+  protected FieryLootModifier(LootItemCondition[] conditionsIn) {
     super(conditionsIn);
   }
 
@@ -33,17 +34,15 @@ public class FieryLootModifier extends LootModifier {
       return stack;
     }
 
-    World world = context.getWorld();
-    Entity entity = context.get(LootParameters.THIS_ENTITY);
-    return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), context.getWorld())
+    Level level = context.getLevel();
+    Entity entity = context.getParam(LootContextParams.THIS_ENTITY);
+    return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new Inventory((Player) entity), context.getLevel())
             .map(recipe -> {
-              if (recipe.getRecipeOutput().isEmpty()) {
+              if (recipe.getResultItem().isEmpty()) {
                 return stack;
               }
-              if (entity instanceof PlayerEntity) {
-                ((PlayerEntity) entity).giveExperiencePoints(Math.round(recipe.getExperience()));
-              }
-              return recipe.getRecipeOutput();
+              ((Player) entity).giveExperiencePoints(Math.round(recipe.getExperience()));
+              return recipe.getResultItem();
             })
             .filter(itemStack -> !itemStack.isEmpty())
             .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
@@ -58,7 +57,7 @@ public class FieryLootModifier extends LootModifier {
 
   public static class Serializer extends GlobalLootModifierSerializer<FieryLootModifier> {
     @Override
-    public FieryLootModifier read(ResourceLocation location, JsonObject object, ILootCondition[] ailootcondition) {
+    public FieryLootModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] ailootcondition) {
       return new FieryLootModifier(ailootcondition);
     }
 

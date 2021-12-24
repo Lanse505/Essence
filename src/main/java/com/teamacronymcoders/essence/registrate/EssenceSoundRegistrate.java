@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.registrate;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.effect.EssenceEffect;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 public class EssenceSoundRegistrate {
 

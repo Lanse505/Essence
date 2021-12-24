@@ -1,13 +1,14 @@
 package com.teamacronymcoders.essence.util.proxy;
 
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkEvent;
+
 import java.util.function.Supplier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class EssenceServerProxy extends EssenceCommonProxy {
 
   @Override
-  public PlayerEntity getPlayer(Supplier<Context> context) {
+  public Player getPlayer(Supplier<NetworkEvent.Context> context) {
     return null;
   }
 }

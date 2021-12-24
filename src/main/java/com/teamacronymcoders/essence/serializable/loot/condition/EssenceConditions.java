@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.serializable.loot.condition;
 
-import net.minecraft.loot.LootConditionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class EssenceConditions {
 
-  public static LootConditionType MATCH_MODIFIER;
+  public static LootItemConditionType MATCH_MODIFIER;
 
 
 }

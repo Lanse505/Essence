@@ -1,12 +1,13 @@
 package com.teamacronymcoders.essence.modifier.curio.attribute;
 
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.UUID;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class MaxHealthModifier extends ItemAttributeModifier {
 
@@ -22,9 +23,9 @@ public class MaxHealthModifier extends ItemAttributeModifier {
   }
 
   @Override
-  public ITextComponent getTextComponentName(int level) {
+  public Component getTextComponentName(int level) {
     if (level == -1) {
-      return new TranslationTextComponent("modifier.essence.attribute", new TranslationTextComponent("attribute.essence.max_health"));
+      return new TranslatableComponent("modifier.essence.attribute", new TranslatableComponent("attribute.essence.max_health"));
     }
     return super.getTextComponentName(level);
   }

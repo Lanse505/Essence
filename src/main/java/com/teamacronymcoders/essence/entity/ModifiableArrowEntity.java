@@ -5,69 +5,71 @@ import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreM
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import java.util.Collection;
-import java.util.Set;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SpectralArrowItem;
-import net.minecraft.item.TippedArrowItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpectralArrowItem;
+import net.minecraft.world.item.TippedArrowItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ModifiableArrowEntity extends AbstractArrowEntity {
+import java.util.Collection;
+import java.util.Set;
 
-  private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(ModifiableArrowEntity.class, DataSerializers.VARINT);
+public class ModifiableArrowEntity extends Arrow {
+
+  private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ModifiableArrowEntity.class, EntityDataSerializers.INT);
   private Potion potion = Potions.EMPTY;
-  private final Set<EffectInstance> customPotionEffects = Sets.newHashSet();
+  private final Set<MobEffectInstance> customPotionEffects = Sets.newHashSet();
   private boolean fixedColor;
   private ItemStack bowStack = ItemStack.EMPTY;
 
-  public ModifiableArrowEntity(EntityType<ModifiableArrowEntity> type, World world) {
-    super(type, world);
+  public ModifiableArrowEntity(EntityType<ModifiableArrowEntity> type, Level level) {
+    super(type, level);
   }
 
-  public ModifiableArrowEntity(World worldIn, double x, double y, double z, ItemStack bowStack, ItemStack arrowStack) {
-    super(EssenceEntityRegistrate.ARROW_ENTITY.get(), x, y, z, worldIn);
+  public ModifiableArrowEntity(Level level, double x, double y, double z, ItemStack bowStack, ItemStack arrowStack) {
+    super(level, x, y, z);
     this.bowStack = bowStack.copy();
     this.setArrowEffects(arrowStack);
     if (arrowStack.getItem() instanceof TippedArrowItem || arrowStack.getItem() instanceof SpectralArrowItem) {
-      this.pickupStatus = PickupStatus.DISALLOWED;
+      this.pickup = Pickup.DISALLOWED;
     }
   }
 
-  public ModifiableArrowEntity(World worldIn, LivingEntity shooter, ItemStack bowStack, ItemStack arrowStack) {
-    super(EssenceEntityRegistrate.ARROW_ENTITY.get(), shooter, worldIn);
+  public ModifiableArrowEntity(Level level, LivingEntity shooter, ItemStack bowStack, ItemStack arrowStack) {
+    super(level, shooter);
     this.bowStack = bowStack;
     this.setArrowEffects(arrowStack);
     if (arrowStack.getItem() instanceof TippedArrowItem || arrowStack.getItem() instanceof SpectralArrowItem) {
-      this.pickupStatus = PickupStatus.DISALLOWED;
+      this.pickup = Pickup.DISALLOWED;
     }
   }
 
   public void setArrowEffects(ItemStack stack) {
     if (stack.getItem() instanceof TippedArrowItem) {
-      this.potion = PotionUtils.getPotionFromItem(stack);
-      Collection<EffectInstance> collection = PotionUtils.getFullEffectsFromItem(stack);
+      this.potion = PotionUtils.getPotion(stack);
+      Collection<MobEffectInstance> collection = PotionUtils.getMobEffects(stack);
       if (!collection.isEmpty()) {
         this.customPotionEffects.addAll(collection);
       }
@@ -80,32 +82,32 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
     } else if (stack.getItem() == Items.ARROW) {
       this.potion = Potions.EMPTY;
       this.customPotionEffects.clear();
-      this.dataManager.set(COLOR, -1);
+      this.entityData.set(COLOR, -1);
     }
   }
 
   public static int getCustomColor(ItemStack stack) {
-    CompoundNBT compoundnbt = stack.getTag();
-    return compoundnbt != null && compoundnbt.contains("CustomPotionColor", 99) ? compoundnbt.getInt("CustomPotionColor") : -1;
+    CompoundTag compoundTag = stack.getTag();
+    return compoundTag != null && compoundTag.contains("CustomPotionColor", 99) ? compoundTag.getInt("CustomPotionColor") : -1;
   }
 
   private void refreshColor() {
     this.fixedColor = false;
     if (this.potion == Potions.EMPTY && this.customPotionEffects.isEmpty()) {
-      this.dataManager.set(COLOR, -1);
+      this.entityData.set(COLOR, -1);
     } else {
-      this.dataManager.set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects)));
+      this.entityData.set(COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.customPotionEffects)));
     }
   }
 
-  public void addEffect(EffectInstance effect) {
+  public void addEffect(MobEffectInstance effect) {
     this.customPotionEffects.add(effect);
-    this.getDataManager().set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects)));
+    this.entityData.set(COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.customPotionEffects)));
   }
 
-  protected void registerData() {
-    super.registerData();
-    this.dataManager.register(COLOR, -1);
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.getEntityData().define(COLOR, -1);
   }
 
   /**
@@ -113,19 +115,19 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
    */
   public void tick() {
     super.tick();
-    if (this.world.isRemote) {
+    if (this.level.isClientSide) {
       if (this.inGround) {
-        if (this.timeInGround % 5 == 0) {
+        if (this.inGroundTime % 5 == 0) {
           this.spawnPotionParticles(1);
         }
       } else {
         this.spawnPotionParticles(2);
       }
-    } else if (this.inGround && this.timeInGround != 0 && !this.customPotionEffects.isEmpty() && this.timeInGround >= 600) {
-      this.world.setEntityState(this, (byte) 0);
+    } else if (this.inGround && this.inGroundTime != 0 && !this.customPotionEffects.isEmpty() && this.inGroundTime >= 600) {
+      this.level.broadcastEntityEvent(this, (byte) 0);
       this.potion = Potions.EMPTY;
       this.customPotionEffects.clear();
-      this.dataManager.set(COLOR, -1);
+      this.entityData.set(COLOR, -1);
     }
   }
 
@@ -136,44 +138,46 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
       double d1 = (double) (i >> 8 & 255) / 255.0D;
       double d2 = (double) (i >> 0 & 255) / 255.0D;
       for (int j = 0; j < particleCount; ++j) {
-        this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), d0, d1, d2);
+        this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
       }
 
     }
   }
 
   public int getColor() {
-    return this.dataManager.get(COLOR);
+    return this.entityData.get(COLOR);
   }
 
   private void setFixedColor(int color) {
     this.fixedColor = true;
-    this.dataManager.set(COLOR, color);
+    this.entityData.set(COLOR, color);
   }
 
-  public void writeAdditional(CompoundNBT compound) {
-    super.writeAdditional(compound);
+  @Override
+  public void addAdditionalSaveData(CompoundTag compound) {
+    super.addAdditionalSaveData(compound);
     if (this.potion != Potions.EMPTY && this.potion != null) {
-      compound.putString("Potion", ForgeRegistries.POTION_TYPES.getKey(this.potion).toString());
+      compound.putString("Potion", ForgeRegistries.POTIONS.getKey(this.potion).toString());
     }
     if (this.fixedColor) {
       compound.putInt("Color", this.getColor());
     }
     if (!this.customPotionEffects.isEmpty()) {
-      ListNBT listnbt = new ListNBT();
-      for (EffectInstance effectinstance : this.customPotionEffects) {
-        listnbt.add(effectinstance.write(new CompoundNBT()));
+      ListTag tags = new ListTag();
+      for (MobEffectInstance effectinstance : this.customPotionEffects) {
+        tags.add(effectinstance.save(new CompoundTag()));
       }
-      compound.put("CustomPotionEffects", listnbt);
+      compound.put("CustomPotionEffects", tags);
     }
   }
 
-  public void readAdditional(CompoundNBT compound) {
-    super.readAdditional(compound);
+  @Override
+  public void readAdditionalSaveData(CompoundTag compound) {
+    super.readAdditionalSaveData(compound);
     if (compound.contains("Potion", 8)) {
-      this.potion = PotionUtils.getPotionTypeFromNBT(compound);
+      this.potion = PotionUtils.getPotion(compound);
     }
-    for (EffectInstance effectinstance : PotionUtils.getFullEffectsFromTag(compound)) {
+    for (MobEffectInstance effectinstance : PotionUtils.getAllEffects(compound)) {
       this.addEffect(effectinstance);
     }
     if (compound.contains("Color", 99)) {
@@ -183,27 +187,33 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
     }
   }
 
-  protected void arrowHit(LivingEntity living) {
-    super.arrowHit(living);
-    for (EffectInstance effectinstance : this.potion.getEffects()) {
-      living.addPotionEffect(new EffectInstance(effectinstance.getPotion(), Math.max(effectinstance.getDuration() / 8, 1), effectinstance.getAmplifier(), effectinstance.isAmbient(), effectinstance.doesShowParticles()));
+  @Override
+  protected void onHitEntity(EntityHitResult result) {
+    super.onHitEntity(result);
+    if (!(result.getEntity() instanceof LivingEntity)) return;
+    for (MobEffectInstance effectinstance : this.potion.getEffects()) {
+      LivingEntity living = (LivingEntity) result.getEntity();
+      living.addEffect(new MobEffectInstance(effectinstance.getEffect(), Math.max(effectinstance.getDuration() / 8, 1), effectinstance.getAmplifier(), effectinstance.isAmbient(), effectinstance.isVisible()));
     }
     if (!this.customPotionEffects.isEmpty()) {
-      for (EffectInstance instance : this.customPotionEffects) {
-        living.addPotionEffect(instance);
+      for (MobEffectInstance instance : this.customPotionEffects) {
+        LivingEntity living = (LivingEntity) result.getEntity();
+        living.addEffect(instance);
       }
     }
   }
 
-  protected ItemStack getArrowStack() {
+  @Override
+  protected ItemStack getPickupItem() {
     return new ItemStack(Items.ARROW);
   }
 
   /**
-   * Handler for {@link World#setEntityState}
+   * Handler for {@link Level#broadcastEntityEvent(Entity, byte)}
    */
   @OnlyIn(Dist.CLIENT)
-  public void handleStatusUpdate(byte id) {
+  @Override
+  public void handleEntityEvent(byte id) {
     if (id == 0) {
       int i = this.getColor();
       if (i != -1) {
@@ -211,31 +221,31 @@ public class ModifiableArrowEntity extends AbstractArrowEntity {
         double d1 = (double) (i >> 8 & 255) / 255.0D;
         double d2 = (double) (i >> 0 & 255) / 255.0D;
         for (int j = 0; j < 20; ++j) {
-          this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosXRandom(0.5D), this.getPosYRandom(), this.getPosZRandom(0.5D), d0, d1, d2);
+          this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
         }
       }
     } else {
-      super.handleStatusUpdate(id);
+      super.handleEntityEvent(id);
     }
   }
 
   // func_230299_a_ = onCollide
   // func_234616_v_ = getShooter
   @Override
-  protected void func_230299_a_(BlockRayTraceResult result) {
-    super.func_230299_a_(result);
-    Entity shooter = this.func_234616_v_();
+  protected void onHitBlock(BlockHitResult result) {
+    super.onHitBlock(result);
+    Entity shooter = this.getOwner();
     if (EssenceItemstackModifierHelpers.hasSoakedModifier(bowStack)) {
       bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)).ifPresent(instances -> instances.forEach(instance -> {
         //LOGGER.info("This is a test logger message");
         ItemArrowCoreModifier modifier = (ItemArrowCoreModifier) instance.getModifier();
-        modifier.onCollide(bowStack, this, (PlayerEntity) shooter, result, instance);
+        modifier.onCollide(bowStack, this, (Player) shooter, result, instance);
       }));
     }
   }
 
   @Override
-  public IPacket<?> createSpawnPacket() {
+  public Packet<?> getAddEntityPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

@@ -7,18 +7,19 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.TranslatableComponent;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.util.ResourceLocationException;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
   private final E[] eVal;
   private final Class<E> eClass;
   private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
-          new TranslationTextComponent("command.argument.essence.enum.invalid", input));
+          new TranslatableComponent("command.argument.essence.enum.invalid", input));
 
   public EssenceEnumArgumentType(Class<E> eVal) {
     this.eVal = eVal.getEnumConstants();
@@ -34,7 +35,7 @@ public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<
 
   @Override
   public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-    return ISuggestionProvider.suggest(Arrays.stream(eVal).map(Enum::name), builder);
+    return SharedSuggestionProvider.suggest(Arrays.stream(eVal).map(Enum::name), builder);
   }
 
   public String read(StringReader reader) throws CommandSyntaxException {
@@ -48,7 +49,7 @@ public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<
 
     try {
       return s;
-    } catch (ResourceLocationException var4) {
+    } catch (ResourceLocationException exception) {
       reader.setCursor(i);
       throw exceptionType.create(reader);
     }

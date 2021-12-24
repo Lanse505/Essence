@@ -1,8 +1,11 @@
 package com.teamacronymcoders.essence.block;
 
-import java.util.Random;
-import net.minecraft.block.OreBlock;
-import net.minecraft.util.math.MathHelper;
+import com.teamacronymcoders.essence.Essence;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.OreBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class EssenceCrystalOreBlock extends OreBlock {
 
@@ -11,7 +14,8 @@ public class EssenceCrystalOreBlock extends OreBlock {
   }
 
   @Override
-  protected int getExperience(Random random) {
-    return MathHelper.nextInt(random, 1, 5);
+  public int getExpDrop(BlockState state, LevelReader reader, BlockPos pos, int fortune, int silktouch) {
+    return silktouch <= 0 ? Mth.nextInt(Essence.RANDOM, 1, 5) : 0;
   }
+
 }

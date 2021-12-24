@@ -1,12 +1,13 @@
 package com.teamacronymcoders.essence.capability.tank;
 
 import com.teamacronymcoders.essence.api.modified.IModifiedTank;
-import java.util.function.Predicate;
-import javax.annotation.Nonnull;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+
+import javax.annotation.Nonnull;
+import java.util.function.Predicate;
 
 public class ModifiableTank extends FluidTank implements IFluidHandlerItem {
 

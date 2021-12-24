@@ -2,9 +2,9 @@ package com.teamacronymcoders.essence.api.capabilities;
 
 import com.teamacronymcoders.essence.api.knowledge.IKnowledgeHolder;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class EssenceCapability {
-  @CapabilityInject(IKnowledgeHolder.class)
-  public static Capability<IKnowledgeHolder> KNOWLEDGE;
+  public static Capability<IKnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
 }

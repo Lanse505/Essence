@@ -9,7 +9,7 @@ public class EssenceCoreTab extends AdvancedTitaniumTab {
   }
 
   @Override
-  public boolean hasScrollbar() {
+  public boolean canScroll() {
     return true;
   }
 

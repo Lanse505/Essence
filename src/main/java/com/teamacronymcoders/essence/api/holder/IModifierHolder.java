@@ -1,12 +1,13 @@
 package com.teamacronymcoders.essence.api.holder;
 
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import java.util.List;
-import javax.annotation.Nonnull;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.ListTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IModifierHolder<T> extends INBTSerializable<ListNBT> {
+import javax.annotation.Nonnull;
+import java.util.List;
+
+public interface IModifierHolder<T> extends INBTSerializable<ListTag> {
 
   boolean addModifierInstance(boolean simulate, T object, ModifierInstance... instance);
 

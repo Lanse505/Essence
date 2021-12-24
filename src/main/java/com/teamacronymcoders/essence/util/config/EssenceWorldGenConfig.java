@@ -2,8 +2,9 @@ package com.teamacronymcoders.essence.util.config;
 
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceOreGenConfig;
 import com.teamacronymcoders.essence.util.config.subconfigs.EssenceTreeGenConfig;
-import java.util.Objects;
 import net.minecraftforge.common.ForgeConfigSpec;
+
+import java.util.Objects;
 
 public class EssenceWorldGenConfig {
 

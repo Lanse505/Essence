@@ -1,16 +1,16 @@
 package com.teamacronymcoders.essence.world.generation.tree.essence_tree;
 
-import com.teamacronymcoders.essence.util.registration.EssenceFeatures;
-import java.util.Random;
-import javax.annotation.Nullable;
-import net.minecraft.block.trees.Tree;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import com.teamacronymcoders.essence.world.generation.tree.EssenceTreeFeatures;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
-public class EssenceSaplingTree extends Tree {
-  @Nullable
+import java.util.Random;
+
+public class EssenceSaplingTree extends AbstractTreeGrower {
+
+  @org.jetbrains.annotations.Nullable
   @Override
-  protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-    return random.nextInt(10) >= 8 ? EssenceFeatures.SAPLING_ESSENCE_TREE_FEATURE : EssenceFeatures.FANCY_ESSENCE_TREE_FEATURE;
+  protected ConfiguredFeature<?, ?> getConfiguredFeature(Random random, boolean largeHive) {
+    return random.nextInt(10) >= 8 ? EssenceTreeFeatures.SAPLING_ESSENCE_TREE_FEATURE : EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE;
   }
 }

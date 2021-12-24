@@ -19,40 +19,46 @@ import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
+import net.minecraft.ChatFormatting;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.Property;
-import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
@@ -68,16 +74,16 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   }
 
   private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, Property<T> property) {
-    T prop = state.get(property);
+    T prop = state.getValue(property);
     return property.getName(prop);
   }
 
   @Override
   @ParametersAreNonnullByDefault
   @MethodsReturnNonnullByDefault
-  public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-    if (target.getEntityWorld().isRemote) {
-      return ActionResultType.FAIL;
+  public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+    if (target.getLevel().isClientSide()) {
+      return InteractionResult.FAIL;
     }
     LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     return lazy.isPresent() ? lazy.map(holder -> {
@@ -90,45 +96,45 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         successful = serializeEntity(serialized, target, false);
       }
       if (successful) {
-        player.addItemStackToInventory(serialized);
-        stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(hand));
+        player.addItem(serialized);
+        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(hand));
       }
-      return successful ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-    }).orElse(ActionResultType.FAIL) : ActionResultType.FAIL;
+      return successful ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+    }).orElse(InteractionResult.FAIL) : InteractionResult.FAIL;
   }
 
   @Override
-  public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-    World world = context.getWorld();
-    BlockPos pos = context.getPos();
+  public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+    Level world = context.getLevel();
+    BlockPos pos = context.getClickedPos();
     BlockState state = world.getBlockState(pos);
-    PlayerEntity player = context.getPlayer();
-    TileEntity te = world.getTileEntity(pos);
+    Player player = context.getPlayer();
+    BlockEntity be = world.getBlockEntity(pos);
     BlockSerializationEnum config = EssenceGeneralConfig.getInstance().getSerializeBlock().get();
 
-    if (state.getBlock().isAir(state, world, pos) || !state.getFluidState().equals(Fluids.EMPTY.getDefaultState()) || player != null && !player.abilities.allowEdit && !stack.canPlaceOn(world.getTags(), new CachedBlockInfo(world, pos, false))) {
-      return ActionResultType.PASS;
+    if (state.isAir() || !state.getFluidState().equals(Fluids.EMPTY.defaultFluidState()) || player != null && !player.getAbilities().mayBuild && !stack.hasAdventureModePlaceTagForBlock(world.getTagManager(), new BlockInWorld(world, pos, false))) {
+      return InteractionResult.PASS;
     }
 
     if (player != null) {
-      if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasTileEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.isIn(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.isIn(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.isIn(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (te != null && (!te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !te.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPushReaction().equals(PushReaction.BLOCK))) {
+      if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasBlockEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.is(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.is(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.is(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (be != null && (!be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPistonPushReaction().equals(PushReaction.BLOCK))) {
         ItemStack drop = new ItemStack(state.getBlock());
-        CompoundNBT stateNBT = new CompoundNBT();
+        CompoundTag stateNBT = new CompoundTag();
         state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
         // Serializes the BlockState
-        drop.setTagInfo("BlockStateTag", stateNBT);
+        drop.addTagElement("BlockStateTag", stateNBT);
         // Serializes the TE
-        if (te != null) {
-          drop.setTagInfo("BlockEntityTag", te.serializeNBT());
+        if (be != null) {
+          drop.addTagElement("BlockEntityTag", be.serializeNBT());
         }
         // Adds the Stats
-        player.addStat(EssenceStats.INSTANCE.SERIALIZED);
-        player.addStat(Stats.ITEM_USED.get(this));
+        player.awardStat(EssenceStats.INSTANCE.SERIALIZED);
+        player.awardStat(Stats.ITEM_USED.get(this));
         // Cleans up the World and Drops the Item
-        world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT_AND_RERENDER);
-        world.addEntity(Util.make(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop), ItemEntity::setDefaultPickupDelay));
-        stack.damageItem(1, player, playerEntity -> playerEntity.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-        return ActionResultType.SUCCESS;
+        world.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+        world.addFreshEntity(Util.make(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), drop), ItemEntity::setDefaultPickUpDelay));
+        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        return InteractionResult.SUCCESS;
       }
 
       if (mode == WrenchModeEnum.ROTATE) {
@@ -136,47 +142,47 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
           state.rotate(world, pos, Rotation.CLOCKWISE_180);
         }
         state.rotate(world, pos, Rotation.CLOCKWISE_90);
-        player.addStat(Stats.ITEM_USED.get(this));
-        return ActionResultType.SUCCESS;
+        player.awardStat(Stats.ITEM_USED.get(this));
+        return InteractionResult.SUCCESS;
       }
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   @Override
   @ParametersAreNonnullByDefault
-  public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-    addInformationFromModifiers(stack, world, list, flag, EssenceItemTiers.ESSENCE);
-    list.add(new TranslationTextComponent("essence.wrench.mode.tooltip").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD).appendString(": ").mergeStyle(TextFormatting.WHITE).append(new TranslationTextComponent(mode.getLocaleName())));
-    if (flag == ITooltipFlag.TooltipFlags.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
-      list.add(new TranslationTextComponent("essence.wrench.disclaimer").mergeStyle(TextFormatting.RED, TextFormatting.BOLD));
-      list.add(new TranslationTextComponent("essence.wrench.disclaimer_message"));
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.ESSENCE);
+    list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(mode.getLocaleName())));
+    if (flag == TooltipFlag.Default.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
+      list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+      list.add(new TranslatableComponent("essence.wrench.disclaimer_message"));
     }
   }
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-    if (nbt != null && !nbt.isEmpty()) {
-      return new ItemStackModifierProvider(stack, nbt);
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
+    if (tag != null && !tag.isEmpty()) {
+      return new ItemStackModifierProvider(stack, tag);
     }
     return new ItemStackModifierProvider(stack);
   }
 
   public boolean serializeEntity(ItemStack stack, LivingEntity target, boolean checkBoss) {
-    if (target.getEntityWorld().isRemote) {
+    if (target.getLevel().isClientSide()) {
       return false;
     }
     if (checkBoss) {
-      if (target instanceof PlayerEntity || !target.isNonBoss() || !target.isAlive()) {
+      if (target instanceof Player || !target.canChangeDimensions() || !target.isAlive()) {
         return false;
       }
     } else {
-      if (target instanceof PlayerEntity || !target.isAlive()) {
+      if (target instanceof Player || !target.isAlive()) {
         return false;
       }
     }
-    UUID uuid = target.getUniqueID();
+    UUID uuid = target.getUUID();
     String entityID = EntityType.getKey(target.getType()).toString();
     if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
       if (isEntityBlacklisted(entityID)) {
@@ -189,16 +195,16 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     }
     SerializableMobRenderer.entityCache.put(uuid, target);
     stack.setTag(serializeNBT(target));
-    target.remove();
+    target.remove(Entity.RemovalReason.DISCARDED);
     return true;
   }
 
-  public CompoundNBT serializeNBT(LivingEntity entity) {
-    CompoundNBT nbt = new CompoundNBT();
-    nbt.putUniqueId("uuid", entity.getUniqueID());
+  public CompoundTag serializeNBT(LivingEntity entity) {
+    CompoundTag nbt = new CompoundTag();
+    nbt.putUUID("uuid", entity.getUUID());
     String entityID = EntityType.getKey(entity.getType()).toString();
     nbt.putString("entity", entityID);
-    entity.writeWithoutTypeId(nbt);
+    entity.load(nbt);
     return nbt;
   }
 
@@ -211,25 +217,25 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   }
 
   @Override
-  public void handlePacketData(IWorld world, ItemStack stack, PacketBuffer packetBuffer) {
-    if (!world.isRemote()) {
-      setMode(packetBuffer.readEnumValue(WrenchModeEnum.class));
+  public void handlePacketData(LevelAccessor accessor, ItemStack stack, FriendlyByteBuf packetBuffer) {
+    if (!accessor.isClientSide()) {
+      setMode(packetBuffer.readEnum(WrenchModeEnum.class));
     }
   }
 
   @SuppressWarnings("ConstantConditions")
   public boolean isEntityBlacklisted(String entityID) {
-    return EssenceEntityTags.BLACKLIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
+    return EssenceEntityTags.BLACKLIST.getValues().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
   }
 
   @SuppressWarnings("ConstantConditions")
   public boolean isEntityWhitelisted(String entityID) {
-    return EssenceEntityTags.WHITELIST.getAllElements().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
+    return EssenceEntityTags.WHITELIST.getValues().stream().anyMatch(type -> type.getRegistryName().toString().equals(entityID));
   }
 
   @Override
-  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
-    return ActionResultType.PASS;
+  public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
+    return InteractionResult.PASS;
   }
 
   @Override

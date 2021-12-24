@@ -3,15 +3,16 @@ package com.teamacronymcoders.essence.util.network.message.server;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.network.PacketHandler;
 import com.teamacronymcoders.essence.util.network.base.IItemNetwork;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
+
 import java.util.List;
 import java.util.function.Supplier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
  * Credit for most of this code goes to Mekanism.
@@ -19,30 +20,30 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 public class PacketItemStack {
 
   private List<Object> parameters;
-  private PacketBuffer storedBuffer;
-  private final Hand hand;
+  private FriendlyByteBuf storedBuffer;
+  private final InteractionHand hand;
 
-  public PacketItemStack(Hand hand, List<Object> params) {
+  public PacketItemStack(InteractionHand hand, List<Object> params) {
     this.hand = hand;
     parameters = params;
   }
 
-  private PacketItemStack(Hand hand, PacketBuffer storedBuffer) {
+  private PacketItemStack(InteractionHand hand, FriendlyByteBuf storedBuffer) {
     this.hand = hand;
     this.storedBuffer = storedBuffer;
   }
 
   public static void handle(PacketItemStack message, Supplier<NetworkEvent.Context> context) {
-    PlayerEntity player = PacketHandler.getPlayer(context);
+    Player player = PacketHandler.getPlayer(context);
     if (player == null) {
       return;
     }
     context.get().enqueueWork(() -> {
-      ItemStack stack = player.getHeldItem(message.hand);
+      ItemStack stack = player.getItemInHand(message.hand);
       if (!stack.isEmpty() && stack.getItem() instanceof IItemNetwork) {
         IItemNetwork network = (IItemNetwork) stack.getItem();
         try {
-          network.handlePacketData(player.world, stack, message.storedBuffer);
+          network.handlePacketData(player.level, stack, message.storedBuffer);
         } catch (Exception e) {
           Essence.LOGGER.error("FIXME: Packet handling error", e);
         }
@@ -52,8 +53,8 @@ public class PacketItemStack {
     context.get().setPacketHandled(true);
   }
 
-  public static void encode(PacketItemStack pkt, PacketBuffer buf) {
-    buf.writeEnumValue(pkt.hand);
+  public static void encode(PacketItemStack pkt, FriendlyByteBuf buf) {
+    buf.writeEnum(pkt.hand);
     MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
     if (server != null) {
       PacketHandler.log("Sending ItemStack packet");
@@ -61,8 +62,8 @@ public class PacketItemStack {
     PacketHandler.encode(pkt.parameters.toArray(), buf);
   }
 
-  public static PacketItemStack decode(PacketBuffer buf) {
-    return new PacketItemStack(buf.readEnumValue(Hand.class), new PacketBuffer(buf.copy()));
+  public static PacketItemStack decode(FriendlyByteBuf buf) {
+    return new PacketItemStack(buf.readEnum(InteractionHand.class), new FriendlyByteBuf(buf.copy()));
   }
 
 }

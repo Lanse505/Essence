@@ -14,31 +14,25 @@ import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModi
 import com.teamacronymcoders.essence.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.command.argument.EssenceModifierArgumentType;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import java.util.List;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class ItemStackModifierCommand implements Command<CommandSource> {
+import java.util.List;
 
-  public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+public class ItemStackModifierCommand implements Command<CommandSourceStack> {
+
+  public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
     return Commands.literal("modifierItemStack")
-            .requires(cs -> {
-              try {
-                return cs.hasPermissionLevel(4) && cs.assertIsEntity() instanceof PlayerEntity;
-              } catch (CommandSyntaxException e) {
-                e.printStackTrace();
-                return false;
-              }
-            })
+            .requires(cs -> cs.hasPermission(4) && cs.getEntity() instanceof Player)
             .then(Commands.literal("add")
                     .then(Commands.argument("hand", EssenceHandArgumentType.hand())
                             .then(Commands.argument("modifier", EssenceModifierArgumentType.modifier())
@@ -79,49 +73,49 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
             );
   }
 
-  public static int addModifierToTool(CommandContext<CommandSource> context, Hand hand, Modifier modifier, int level, String nbt) throws CommandSyntaxException {
-    CommandSource source = context.getSource();
-    ServerPlayerEntity playerEntity = source.asPlayer();
-    CompoundNBT compound = nbt.equals("") ? new CompoundNBT() : JsonToNBT.getTagFromJson(nbt);
-    ItemStack stack = playerEntity.getHeldItem(hand);
+  public static int addModifierToTool(CommandContext<CommandSourceStack> context, InteractionHand hand, Modifier modifier, int level, String nbt) throws CommandSyntaxException {
+    CommandSourceStack source = context.getSource();
+    ServerPlayer playerEntity = source.getPlayerOrException();
+    CompoundTag compound = nbt.equals("") ? new CompoundTag() : TagParser.parseTag(nbt);
+    ItemStack stack = playerEntity.getItemInHand(hand);
     LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (!stack.isEmpty() && holder.isPresent()) {
       ModifierInstance instance = new ModifierInstance(() -> modifier, level, compound);
       holder.ifPresent(presentHolder -> {
         presentHolder.addModifierInstance(false, stack, instance);
         stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
-        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-        source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
+        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
       });
       return 1;
     }
     return 0;
   }
 
-  public static int removeModifierFromTool(CommandContext<CommandSource> context, Hand hand, Modifier modifier, int level, String nbt) throws CommandSyntaxException {
-    CommandSource source = context.getSource();
-    ServerPlayerEntity playerEntity = source.asPlayer();
-    ItemStack stack = playerEntity.getHeldItem(hand);
-    CompoundNBT compound = nbt.equals("") ? new CompoundNBT() : JsonToNBT.getTagFromJson(nbt);
+  public static int removeModifierFromTool(CommandContext<CommandSourceStack> context, InteractionHand hand, Modifier modifier, int level, String nbt) throws CommandSyntaxException {
+      CommandSourceStack source = context.getSource();
+    ServerPlayer playerEntity = source.getPlayerOrException();
+    ItemStack stack = playerEntity.getItemInHand(hand);
+    CompoundTag compound = nbt.equals("") ? new CompoundTag() : TagParser.parseTag(nbt);
     LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (holder.isPresent()) {
       ModifierInstance instance = new ModifierInstance(() -> modifier, level, compound);
       holder.ifPresent(presentHolder -> {
         presentHolder.removeModifierInstance(false, stack, instance.getModifier());
         stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
-        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-        source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
+        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
       });
       return 1;
     }
     return 0;
   }
 
-  public static int mergeModifierTags(CommandContext<CommandSource> context, Hand hand, Modifier modifier, String nbt) throws CommandSyntaxException {
-    CommandSource source = context.getSource();
-    ServerPlayerEntity playerEntity = source.asPlayer();
-    ItemStack stack = playerEntity.getHeldItem(hand);
-    CompoundNBT compound = nbt.equals("") ? new CompoundNBT() : JsonToNBT.getTagFromJson(nbt);
+  public static int mergeModifierTags(CommandContext<CommandSourceStack> context, InteractionHand hand, Modifier modifier, String nbt) throws CommandSyntaxException {
+    CommandSourceStack source = context.getSource();
+    ServerPlayer playerEntity = source.getPlayerOrException();
+    ItemStack stack = playerEntity.getItemInHand(hand);
+    CompoundTag compound = nbt.equals("") ? new CompoundTag() : TagParser.parseTag(nbt);
     LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (holder.isPresent()) {
       holder.ifPresent(presentHolder -> {
@@ -130,20 +124,20 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
                 .filter(instance -> instance.getModifier().equals(modifier))
                 .findFirst()
                 .ifPresent(instance -> {
-                  CompoundNBT modifiedCompound = instance.getModifierData();
+                  CompoundTag modifiedCompound = instance.getModifierData();
                   modifiedCompound.merge(compound);
                   instance.setModifierData(modifiedCompound);
                 });
-        source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
+        source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
       });
     }
     return 0;
   }
 
-  public static int alterLevelModifierOnTool(CommandContext<CommandSource> context, Hand hand, Modifier modifier, int alter) throws CommandSyntaxException {
-    CommandSource source = context.getSource();
-    ServerPlayerEntity playerEntity = source.asPlayer();
-    ItemStack stack = playerEntity.getHeldItem(hand);
+  public static int alterLevelModifierOnTool(CommandContext<CommandSourceStack> context, InteractionHand hand, Modifier modifier, int alter) throws CommandSyntaxException {
+    CommandSourceStack source = context.getSource();
+    ServerPlayer playerEntity = source.getPlayerOrException();
+    ItemStack stack = playerEntity.getItemInHand(hand);
     LazyOptional<ItemStackModifierHolder> holder = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     if (holder.isPresent()) {
       holder.ifPresent(presentHolder -> {
@@ -153,16 +147,16 @@ public class ItemStackModifierCommand implements Command<CommandSource> {
           presentHolder.levelDownModifier(false, alter, stack, modifier);
         }
         stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
-        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Constants.NBT.TAG_COMPOUND));
-        source.sendFeedback(new TranslationTextComponent("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
+        presentHolder.deserializeNBT(stack.getOrCreateTag().getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
       });
       return 1;
     }
     return 0;
   }
 
-  @Override
-  public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-    return 1;
-  }
+    @Override
+    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return 1;
+    }
 }

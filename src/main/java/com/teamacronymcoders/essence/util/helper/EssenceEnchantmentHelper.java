@@ -3,15 +3,16 @@ package com.teamacronymcoders.essence.util.helper;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
 import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModifierHolder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.common.util.LazyOptional;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class EssenceEnchantmentHelper {
 
@@ -27,11 +28,11 @@ public class EssenceEnchantmentHelper {
    * @param enchantment The Enchantment to add
    */
   public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance, int multiplier) {
-    CompoundNBT stackNBT = stack.getOrCreateTag();
-    ListNBT enchantments = stack.getEnchantmentTagList();
+    CompoundTag stackNBT = stack.getOrCreateTag();
+    ListTag enchantments = stack.getEnchantmentTags();
     int level = instance.getLevel() * multiplier;
     if (!enchantments.isEmpty()) {
-      Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
+      Optional<CompoundTag> nbtOptional = IntStream.range(0, enchantments.size())
               .mapToObj(enchantments::getCompound)
               .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) <= level).findAny();
       if (nbtOptional.isPresent()) {
@@ -39,13 +40,13 @@ public class EssenceEnchantmentHelper {
           nbtOptional.get().putInt(lvl, level);
         }
       } else {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putString(id, enchantment.getRegistryName().toString());
         nbt.putInt(lvl, level);
         enchantments.add(nbt);
       }
     } else {
-      CompoundNBT nbt = new CompoundNBT();
+      CompoundTag nbt = new CompoundTag();
       nbt.putString(id, enchantment.getRegistryName().toString());
       nbt.putInt(lvl, level);
       enchantments.add(nbt);
@@ -61,11 +62,11 @@ public class EssenceEnchantmentHelper {
    * @param enchantment The Enchantment to add
    */
   public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance) {
-    CompoundNBT stackNBT = stack.getOrCreateTag();
-    ListNBT enchantments = stack.getEnchantmentTagList();
+    CompoundTag stackNBT = stack.getOrCreateTag();
+    ListTag enchantments = stack.getEnchantmentTags();
     int level = instance.getLevel();
     if (!enchantments.isEmpty()) {
-      Optional<CompoundNBT> nbtOptional = IntStream.range(0, enchantments.size())
+      Optional<CompoundTag> nbtOptional = IntStream.range(0, enchantments.size())
               .mapToObj(enchantments::getCompound)
               .filter(tag -> tag.getString(id).equals(enchantment.getRegistryName().toString()) && tag.getInt(lvl) <= level).findAny();
       if (nbtOptional.isPresent()) {
@@ -73,13 +74,13 @@ public class EssenceEnchantmentHelper {
           nbtOptional.get().putInt(lvl, level);
         }
       } else {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putString(id, enchantment.getRegistryName().toString());
         nbt.putInt(lvl, level);
         enchantments.add(nbt);
       }
     } else {
-      CompoundNBT nbt = new CompoundNBT();
+      CompoundTag nbt = new CompoundTag();
       nbt.putString(id, enchantment.getRegistryName().toString());
       nbt.putInt(lvl, level);
       enchantments.add(nbt);
@@ -94,9 +95,9 @@ public class EssenceEnchantmentHelper {
    * @param stack The ItemStack to check for Enchantments on
    */
   public static void checkEnchantmentsForRemoval(ItemStack stack, LazyOptional<ItemStackModifierHolder> holderLazyOptional) {
-    ListNBT enchantments = stack.getEnchantmentTagList();
+    ListTag enchantments = stack.getEnchantmentTags();
     if (!enchantments.isEmpty()) {
-      Map<String, CompoundNBT> enchantmentIDs = new HashMap<>();
+      Map<String, CompoundTag> enchantmentIDs = new HashMap<>();
       IntStream.range(0, enchantments.size()).mapToObj(enchantments::getCompound).forEach(tag -> enchantmentIDs.put(tag.getString("id"), tag));
       holderLazyOptional.ifPresent(holder -> holder.getModifierInstances().stream()
               .filter(instance -> instance.getModifier() instanceof ItemEnchantmentCoreModifier)

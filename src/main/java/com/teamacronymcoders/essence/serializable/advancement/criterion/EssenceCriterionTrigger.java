@@ -2,16 +2,17 @@ package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
+
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Function;
-import javax.annotation.Nullable;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
 
-public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U extends ICriterionInstance> implements ICriterionTrigger<U> {
+public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U extends CriterionTriggerInstance> implements CriterionTrigger<U> {
   private final ResourceLocation id;
   private final Function<PlayerAdvancements, T> createNew;
   private final Map<PlayerAdvancements, T> listeners = Maps.newHashMap();
@@ -27,7 +28,7 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   }
 
   @Override
-  public void addListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
+  public void addPlayerListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
     T listeners = this.listeners.get(playerAdvancements);
     if (listeners == null) {
       listeners = createNew.apply(playerAdvancements);
@@ -37,7 +38,7 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   }
 
   @Override
-  public void removeListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
+  public void removePlayerListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
     T listeners = this.listeners.get(playerAdvancements);
     if (listeners != null) {
       listeners.remove(listener);
@@ -48,12 +49,12 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
   }
 
   @Override
-  public void removeAllListeners(PlayerAdvancements playerAdvancements) {
+  public void removePlayerListeners(PlayerAdvancements playerAdvancements) {
     this.listeners.remove(playerAdvancements);
   }
 
   @Override
-  public U deserialize(JsonObject object, ConditionArrayParser conditions) {
+  public U createInstance(JsonObject json, DeserializationContext context) {
     return null;
   }
 

@@ -2,16 +2,17 @@ package com.teamacronymcoders.essence.api.modifier.core;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public abstract class Modifier extends ForgeRegistryEntry<Modifier> implements IModifier {
 
@@ -57,21 +58,21 @@ public abstract class Modifier extends ForgeRegistryEntry<Modifier> implements I
    * @param level Level of the Modifier
    * @return Returns the formatted TextComponent
    */
-  public ITextComponent getTextComponentName(int level) {
+  public Component getTextComponentName(int level) {
     if (level == -1) {
-      return new TranslationTextComponent(getTranslationName()).mergeStyle(TextFormatting.GRAY);
+      return new TranslatableComponent(getTranslationName()).withStyle(ChatFormatting.GRAY);
     }
     if (level == 1) {
-      return new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName()).mergeStyle(TextFormatting.GRAY));
+      return new TextComponent("  ").append(new TranslatableComponent(getTranslationName()).withStyle(ChatFormatting.GRAY));
     }
-    return new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName()).appendString(" " + EssenceUtilHelper.toRoman(level)).mergeStyle(TextFormatting.GRAY));
+    return new TextComponent("  ").append(new TranslatableComponent(getTranslationName()).append(" " + EssenceUtilHelper.toRoman(level)).withStyle(ChatFormatting.GRAY));
   }
 
   /**
    * @return Gets the ITextComponent that should be rendered in it's Information-Box on the ItemStack.
    */
-  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
-    List<ITextComponent> textComponents = new ArrayList<>();
+  public List<Component> getRenderedText(ModifierInstance instance) {
+    List<Component> textComponents = new ArrayList<>();
     if (instance == null) {
       return textComponents;
     }
@@ -80,7 +81,7 @@ public abstract class Modifier extends ForgeRegistryEntry<Modifier> implements I
   }
 
   @Override
-  public void update(CompoundNBT compoundNBT) {}
+  public void update(CompoundTag compoundNBT) {}
 
   public abstract boolean countsTowardsLimit(int level);
 

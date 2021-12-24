@@ -9,30 +9,30 @@ import com.teamacronymcoders.essence.capability.itemstack.modifier.ItemStackModi
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.util.helper.EssenceShearingHelper;
 import com.teamacronymcoders.essence.util.tier.EssenceToolTiers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.IForgeShearable;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class EssenceShear extends ShearsItem implements IModifiedTool {
 
@@ -45,7 +45,7 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
   private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
   public EssenceShear(Properties properties, EssenceToolTiers tier) {
-    super(properties.maxDamage(tier.getMaxUses()).rarity(tier.getRarity()));
+    super(properties.durability(tier.getUses()).rarity(tier.getRarity()));
     this.tier = tier;
     this.baseModifiers = tier.getFreeModifiers();
     this.freeModifiers = tier.getFreeModifiers();
@@ -75,15 +75,15 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean isFoil(ItemStack stack) {
     return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
   }
 
   @Nullable
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-    if (!stack.isEmpty() && nbt != null) {
-      return new ItemStackModifierProvider(stack, nbt);
+  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
+    if (!stack.isEmpty() && tag != null) {
+      return new ItemStackModifierProvider(stack, tag);
     }
     return new ItemStackModifierProvider(stack);
   }
@@ -99,47 +99,41 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
   }
 
   @Override
-  public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
-    int harvestLevel = super.getHarvestLevel(stack, tool, player, blockState);
-    return harvestLevel + getHarvestLevelFromModifiers(harvestLevel, stack);
-  }
-
-  @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-    if (slot == EquipmentSlotType.MAINHAND) {
+  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+    if (slot == EquipmentSlot.MAINHAND) {
       return getAttributeModifiersFromModifiers(attributeModifiers, slot, stack);
     }
     return HashMultimap.create();
   }
 
   @Override
-  public ActionResultType onItemUse(ItemUseContext context) {
-    Optional<ActionResultType> modifierResult = onItemUseFromModifiers(context);
-    return super.onItemUse(context) == ActionResultType.SUCCESS ? super.onItemUse(context) : modifierResult.orElse(super.onItemUse(context));
+  public InteractionResult useOn(UseOnContext context) {
+    Optional<InteractionResult> modifierResult = onItemUseFromModifiers(context);
+    return super.useOn(context).equals(InteractionResult.SUCCESS) ? super.useOn(context) : modifierResult.orElse(super.useOn(context));
   }
 
   @Override
-  public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     hitEntityFromModifiers(stack, target, attacker);
-    return super.hitEntity(stack, target, attacker);
+    return super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-    onBlockDestroyedFromModifiers(stack, worldIn, state, pos, entityLiving);
-    return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+  public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+    onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
+    return super.mineBlock(stack, level, state, pos, entityLiving);
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-    inventoryTickFromModifiers(stack, worldIn, entityIn, itemSlot, isSelected);
-    super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+  public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    inventoryTickFromModifiers(stack, level, entity, itemSlot, isSelected);
+    super.inventoryTick(stack, level, entity, itemSlot, isSelected);
   }
 
   @Override
-  public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity sheared, Hand hand) {
-    if (sheared.world.isRemote) {
-      return ActionResultType.FAIL;
+  public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity sheared, InteractionHand hand) {
+    if (sheared.level.isClientSide()) {
+      return InteractionResult.FAIL;
     }
     if (sheared instanceof IForgeShearable) {
       return EssenceShearingHelper.handleIShearableEntity(stack, player, sheared, hand);
@@ -148,17 +142,17 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
   }
 
   @Override
-  public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-    super.addInformation(stack, world, list, flag);
-    addInformationFromModifiers(stack, world, list, flag, tier);
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    super.appendHoverText(stack, level, list, flag);
+    addInformationFromModifiers(stack, level, list, flag, tier);
   }
 
   @Override
-  public ActionResultType onItemUseModified(ItemUseContext context, boolean isRecursive) {
+  public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
     if (isRecursive) {
-      return ActionResultType.PASS;
+      return InteractionResult.PASS;
     }
-    return onItemUse(context);
+    return useOn(context);
   }
 
   public int getRainbowVal() {

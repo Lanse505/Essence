@@ -6,24 +6,25 @@ import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractio
 import com.teamacronymcoders.essence.modifier.item.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.util.helper.EssenceBlockHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceWorldHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ForgeHooks;
 
 public class CascadingModifier extends ItemInteractionCoreModifier {
 
@@ -35,48 +36,46 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
-    if (state.getBlock().isIn(this.type.getBlockTag())) {
-      if (miner instanceof PlayerEntity) {
-        PlayerEntity player = (PlayerEntity) miner;
-        if (player instanceof ServerPlayerEntity) {
-          ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-          List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, world, this.type);
+  public boolean onBlockDestroyed(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    if (state.is(this.type.getBlockTag())) {
+      if (miner instanceof Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+          List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, level, this.type);
           for (BlockPos foundPos : found) {
             if (pos.equals(foundPos)) {
               continue;
             }
-            BlockState foundState = world.getBlockState(foundPos);
-            int exp = ForgeHooks.onBlockBreakEvent(world, serverPlayer.interactionManager.getGameType(), serverPlayer, foundPos);
+            BlockState foundState = level.getBlockState(foundPos);
+            int exp = ForgeHooks.onBlockBreakEvent(level, serverPlayer.gameMode.getGameModeForPlayer(), serverPlayer, foundPos);
             if (exp == -1) {
               // If we can't actually break the block continue (this allows mods to stop us from vein mining into protected land)
               continue;
             }
             Block block = foundState.getBlock();
-            TileEntity tile = EssenceWorldHelper.getTileEntity(world, pos);
-            boolean removed = foundState.removedByPlayer(world, foundPos, player, true, world.getFluidState(foundPos));
+            BlockEntity tile = EssenceWorldHelper.getBlockEntity(level, pos);
+            boolean removed = foundState.onDestroyedByPlayer(level, foundPos, player, true, level.getFluidState(foundPos));
             if (removed) {
-              block.onPlayerDestroy(world, foundPos, foundState);
-              block.harvestBlock(world, player, foundPos, foundState, tile, stack);
-              player.addStat(Stats.ITEM_USED.get(stack.getItem()));
+              block.destroy(level, foundPos, foundState);
+              block.playerDestroy(level, player, foundPos, foundState, tile, stack);
+              player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
               if (exp > 0) {
-                if (!world.isRemote) {
-                  block.dropXpOnBlockBreak((ServerWorld) world, foundPos, exp);
+                if (!level.isClientSide()) {
+                  block.popExperience((ServerLevel) level, foundPos, exp);
                 }
               }
             }
           }
         }
       } else {
-        List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, world, this.type);
+        List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, level, this.type);
         for (BlockPos foundPos : found) {
           if (!pos.equals(foundPos)) {
-            EssenceWorldHelper.breakBlock(world, foundPos, true, miner, stack);
+            EssenceWorldHelper.breakBlock(level, foundPos, true, miner, stack);
           }
         }
       }
     }
-    return super.onBlockDestroyed(stack, world, state, pos, miner, instance);
+    return super.onBlockDestroyed(stack, level, state, pos, miner, instance);
   }
 
   @Override
@@ -86,7 +85,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
 
   @Override
   public boolean canApplyOnObject(ItemStack stack) {
-    return stack.getItem().isIn(this.type.getToolTag());
+    return stack.is(this.type.getToolTag());
   }
 
 
@@ -96,17 +95,17 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
   }
 
   @Override
-  public ITextComponent getTextComponentName(int level) {
+  public Component getTextComponentName(int level) {
     if (level == -1) {
-      return new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("essence.cascading.type." + this.type.getName()));
+      return new TranslatableComponent(getTranslationName(), new TranslatableComponent("essence.cascading.type." + this.type.getName()));
     }
     return super.getTextComponentName(level);
   }
 
   @Override
-  public List<ITextComponent> getRenderedText(ModifierInstance instance) {
-    List<ITextComponent> textComponents = new ArrayList<>();
-    textComponents.add(new StringTextComponent("  ").append(new TranslationTextComponent(getTranslationName(), new TranslationTextComponent("essence.cascading.type." + this.type.getName()).mergeStyle(this.type.getFormatting())).mergeStyle(TextFormatting.GRAY)));
+  public List<Component> getRenderedText(ModifierInstance instance) {
+    List<Component> textComponents = new ArrayList<>();
+    textComponents.add(new TextComponent("  ").append(new TranslatableComponent(getTranslationName(), new TranslatableComponent("essence.cascading.type." + this.type.getName()).withStyle(this.type.getFormatting())).withStyle(ChatFormatting.GRAY)));
     return textComponents;
   }
 

@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.util.tier;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 
 public enum EssenceBackpackTiers implements IEssenceBaseTier {
   ESSENCE("tier.essence.basic", Rarity.COMMON, 3, 9, 3, 3),

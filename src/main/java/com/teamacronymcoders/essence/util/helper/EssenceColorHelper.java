@@ -1,15 +1,16 @@
 package com.teamacronymcoders.essence.util.helper;
 
-import java.awt.Color;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public class EssenceColorHelper {
   public static Map<IOptionalNamedTag<Item>, DyeColor> tagToDye = new HashMap<>();
@@ -55,7 +56,7 @@ public class EssenceColorHelper {
   }
 
   public static Color getColor(int rainbowValue) {
-    return colors.get(MathHelper.clamp(rainbowValue, 0, colors.size() - 1));
+    return colors.get(Mth.clamp(rainbowValue, 0, colors.size() - 1));
   }
 
 }

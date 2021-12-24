@@ -1,25 +1,25 @@
 package com.teamacronymcoders.essence.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamacronymcoders.essence.entity.sheared.ShearedGhastEntity;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.model.GhastModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.GhastModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class ShearedGhastRenderer extends MobRenderer<ShearedGhastEntity, GhastModel<ShearedGhastEntity>> {
 
-  public ShearedGhastRenderer(EntityRendererManager manager) {
-    super(manager, new GhastModel<>(), 1.5F);
+  public ShearedGhastRenderer(EntityRendererProvider.Context context) {
+    super(context, new GhastModel<>(context.bakeLayer(EssenceEntityTextures.SHEARED_GHAST_LAYER)), 1.5F);
   }
 
   @Override
-  public ResourceLocation getEntityTexture(ShearedGhastEntity entity) {
-    return entity.isAttacking() ? EssenceEntityTextures.SHEARED_GHAST_SHOOTING : EssenceEntityTextures.SHEARED_GHAST;
+  public ResourceLocation getTextureLocation(ShearedGhastEntity entity) {
+    return entity.isCharging() ? EssenceEntityTextures.SHEARED_GHAST_SHOOTING : EssenceEntityTextures.SHEARED_GHAST;
   }
 
   @Override
-  protected void preRenderCallback(ShearedGhastEntity entity, MatrixStack stack, float v) {
-    stack.scale(4.5F, 4.5F, 4.5F);
+  protected void scale(ShearedGhastEntity entity, PoseStack poseStack, float v) {
+    poseStack.scale(4.5F, 4.5F, 4.5F);
   }
 }

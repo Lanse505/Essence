@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.item.tome;
 
 import com.teamacronymcoders.essence.Essence;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class TomeItem extends Item {
 
@@ -10,7 +10,7 @@ public class TomeItem extends Item {
   }
 
   public TomeItem() {
-    super(new Item.Properties().group(Essence.CORE_TAB).maxStackSize(1).maxDamage(0));
+    super(new Item.Properties().tab(Essence.CORE_TAB).stacksTo(1).defaultDurability(0));
   }
 
 

@@ -11,51 +11,52 @@ import com.teamacronymcoders.essence.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceBowHelper;
 import com.teamacronymcoders.essence.util.helper.EssenceItemstackModifierHelpers;
-import java.util.List;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants.BlockFlags;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class SetupDevWorldCommand implements Command<CommandSource> {
+import java.util.List;
+
+public class SetupDevWorldCommand implements Command<CommandSourceStack> {
   private static final SetupDevWorldCommand CMD = new SetupDevWorldCommand();
 
-  public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+  public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
     return Commands.literal("setupDev")
-            .requires(commandSource -> commandSource.hasPermissionLevel(4))
+            .requires(commandSource -> commandSource.hasPermission(4))
             .executes(CMD);
   }
 
   @Override
-  public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-    CommandSource source = context.getSource();
+  public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    CommandSourceStack source = context.getSource();
     MinecraftServer server = source.getServer();
     GameRules rules = server.getGameRules();
     // Setup all the Game Rules
-    rules.get(GameRules.DO_MOB_SPAWNING).set(false, server);
-    rules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
-    rules.get(GameRules.DO_WEATHER_CYCLE).set(false, server);
+    rules.getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);
+    rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server);
+    rules.getRule(GameRules.RULE_WEATHER_CYCLE).set(false, server);
     // Setup dev chest for Testing
-    ServerPlayerEntity player = source.asPlayer();
-    ServerWorld world = source.getWorld();
-    BlockPos pos = player.getPosition().offset(player.getAdjustedHorizontalFacing());
+    ServerPlayer player = source.getPlayerOrException();
+    ServerLevel world = source.getLevel();
+    BlockPos pos = player.getOnPos().offset(player.getMotionDirection().getNormal());
     BlockState state = world.getBlockState(pos);
-    BlockState newState = Blocks.CHEST.getDefaultState();
-    world.setBlockState(pos, newState, BlockFlags.DEFAULT_AND_RERENDER);
-    ChestTileEntity chest = (ChestTileEntity) world.getTileEntity(pos);
+    BlockState newState = Blocks.CHEST.defaultBlockState();
+    world.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
+    ChestBlockEntity chest = (ChestBlockEntity) world.getBlockEntity(pos);
     List<ItemStack> stacks = getTestStacks();
     if (chest != null) {
       chest.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(iItemHandler -> {
@@ -63,10 +64,10 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
           ItemHandlerHelper.insertItem(iItemHandler, stack, false);
         }
       });
-      chest.markDirty();
+      chest.setChanged();
     }
     // Send a response to the Player
-    source.sendFeedback(new TranslationTextComponent("command.essence.setup_dev"), true);
+    source.sendSuccess(new TranslatableComponent("command.essence.setup_dev"), true);
     // Finally set the time to Noon
     return setTime(source, 6000);
   }
@@ -84,9 +85,9 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
             new ModifierInstance(EssenceModifierRegistrate.STRENGTHENED_POWER_MODIFIER::get, 5, null),
             new ModifierInstance(EssenceModifierRegistrate.KEEN_MODIFIER::get, 5, null),
             new ModifierInstance(EssenceModifierRegistrate.BREWED_MODIFIER::get, 1, EssenceBowHelper.createEffectInstanceNBT(
-                    new EffectInstance(Effects.POISON, 1000, 2, false, false),
-                    new EffectInstance(Effects.WITHER, 1000, 2, false, false),
-                    new EffectInstance(Effects.GLOWING, 1000, 2, false, false)
+                    new MobEffectInstance(MobEffects.POISON, 1000, 2, false, false),
+                    new MobEffectInstance(MobEffects.WITHER, 1000, 2, false, false),
+                    new MobEffectInstance(MobEffects.GLOWING, 1000, 2, false, false)
             ))))
     );
     stacks.add(new ItemStack(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.get(), 1, EssenceItemstackModifierHelpers.getStackNBTForFillGroup(
@@ -138,14 +139,14 @@ public class SetupDevWorldCommand implements Command<CommandSource> {
     return stacks;
   }
 
-  public static int setTime(CommandSource source, int time) {
-    for (ServerWorld serverworld : source.getServer().getWorlds()) {
-      serverworld.setDayTime(time);
+  public static int setTime(CommandSourceStack source, int time) {
+    for (ServerLevel serverLevel : source.getServer().getAllLevels()) {
+      serverLevel.setDayTime(time);
     }
-    return getDayTime(source.getWorld());
+    return getDayTime(source.getLevel());
   }
 
-  private static int getDayTime(ServerWorld worldIn) {
-    return (int) (worldIn.getDayTime() % 24000L);
+  private static int getDayTime(ServerLevel level) {
+    return (int) (level.getDayTime() % 24000L);
   }
 }

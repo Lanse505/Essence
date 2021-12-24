@@ -1,54 +1,55 @@
 package com.teamacronymcoders.essence.block.infusion;
 
-import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
-import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableTile;
+import com.teamacronymcoders.essence.block.infusion.tile.InfusionTableBlockEntity;
 import com.teamacronymcoders.essence.item.tome.TomeOfKnowledgeItem;
 import com.teamacronymcoders.essence.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.item.wrench.WrenchModeEnum;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
-public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
+public class InfusionTableBlock extends BasicTileBlock<InfusionTableBlockEntity> {
 
-  public InfusionTableBlock(Properties properties) {
-    super(properties, InfusionTableTile.class);
+  public InfusionTableBlock(BlockBehaviour.Properties properties) {
+    super("infusion_table", properties, InfusionTableBlockEntity.class);
   }
 
   @Override
-  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
-    if (worldIn.isRemote) {
-      return ActionResultType.SUCCESS;
+  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    if (level.isClientSide()) {
+      return InteractionResult.SUCCESS;
     }
-    InfusionTableTile te = worldIn.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) worldIn.getTileEntity(pos) : null;
+    InfusionTableBlockEntity te = level.getBlockEntity(pos) instanceof InfusionTableBlockEntity ? (InfusionTableBlockEntity) level.getBlockEntity(pos) : null;
     if (te != null) {
-      ItemStack stack = player.getHeldItem(hand);
+      ItemStack stack = player.getItemInHand(hand);
 
       if (!stack.isEmpty() && stack.getItem() instanceof EssenceWrench) {
         EssenceWrench wrench = (EssenceWrench) stack.getItem();
         if (wrench.getMode() == WrenchModeEnum.TRIGGER) {
           te.setShouldBeWorking(true);
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       }
 
       // Handle Player Inventory -> Block Inventory
@@ -57,42 +58,42 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
         te.getTome().setStackInSlot(0, copy);
         stack.shrink(1);
         te.markComponentForUpdate(false);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       } else if (!stack.isEmpty() && te.getInfusable().getStackInSlot(0).isEmpty()) {
         ItemStack copy = stack.copy();
         te.getInfusable().setStackInSlot(0, copy);
         stack.shrink(1);
         te.markComponentForUpdate(false);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       }
 
       // Handle Block Inventory -> Player Inventory
       if (stack.isEmpty() && te.hasTome()) {
         ItemStack copy = te.getTome().getStackInSlot(0);
-        player.addItemStackToInventory(copy);
+        player.addItem(copy);
         te.getTome().setStackInSlot(0, ItemStack.EMPTY);
         te.markComponentForUpdate(false);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       } else if (stack.isEmpty() && !te.getInfusable().getStackInSlot(0).isEmpty()) {
         ItemStack copy = te.getInfusable().getStackInSlot(0).copy();
-        player.addItemStackToInventory(copy);
+        player.addItem(copy);
         te.getInfusable().setStackInSlot(0, ItemStack.EMPTY);
         te.markComponentForUpdate(false);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
       }
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   @Override
-  public IFactory<InfusionTableTile> getTileEntityFactory() {
-    return InfusionTableTile::new;
-  }
+  public BlockEntityType.BlockEntitySupplier<?> getTileEntityFactory() {
+    return InfusionTableBlockEntity::new;
+  };
 
   @Override
-  public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-    super.animateTick(state, world, pos, random);
-    InfusionTableTile te = world.getTileEntity(pos) instanceof InfusionTableTile ? (InfusionTableTile) world.getTileEntity(pos) : null;
+  public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+    super.animateTick(state, level, pos, random);
+    InfusionTableBlockEntity te = level.getBlockEntity(pos) instanceof InfusionTableBlockEntity ? (InfusionTableBlockEntity) level.getBlockEntity(pos) : null;
     if (te != null && te.getWorking()) {
       for (int i = -2; i <= 2; ++i) {
         for (int j = -2; j <= 2; ++j) {
@@ -101,10 +102,10 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
           }
           if (random.nextInt(16) == 0) {
             for (int k = 0; k <= 1; ++k) {
-              if (!world.isAirBlock(pos.add(i / 2, 0, j / 2))) {
+              if (!level.isEmptyBlock(pos.offset(i / 2, 0, j / 2))) {
                 break;
               }
-              world.addParticle(ParticleTypes.ENCHANT, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.0D, (double) pos.getZ() + 0.5D, (double) ((float) i + random.nextFloat()) - 0.5D, (float) k - random.nextFloat() - 1.0F, (double) ((float) j + random.nextFloat()) - 0.5D);
+              level.addParticle(ParticleTypes.ENCHANT, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.0D, (double) pos.getZ() + 0.5D, (double) ((float) i + random.nextFloat()) - 0.5D, (float) k - random.nextFloat() - 1.0F, (double) ((float) j + random.nextFloat()) - 0.5D);
             }
           }
         }
@@ -115,29 +116,29 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableTile> {
   @SuppressWarnings("deprecation")
   @Override
   @ParametersAreNonnullByDefault
-  public BlockRenderType getRenderType(BlockState state) {
-    return BlockRenderType.MODEL;
+  public RenderShape getRenderShape(BlockState state) {
+    return RenderShape.MODEL;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
     return EssenceBlockModels.INFUSION_TABLE[0];
   }
 
   @Nonnull
   @Override
-  public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
     return EssenceBlockModels.INFUSION_TABLE[0];
   }
 
   @Override
-  public List<VoxelShape> getBoundingBoxes(BlockState state, IBlockReader source, BlockPos pos) {
+  public List<VoxelShape> getBoundingBoxes(BlockState state, BlockGetter getter, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_TABLE[0]);
   }
 
   @Override
-  public TileEntityType getTileEntityType() {
+  public BlockEntityType getTileEntityType() {
     return EssenceBlockRegistrate.INFUSION_TABLE_TILE.get();
   }
 }

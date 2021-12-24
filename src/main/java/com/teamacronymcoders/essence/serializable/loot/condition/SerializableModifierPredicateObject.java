@@ -8,28 +8,29 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class SerializableModifierPredicateObject {
   public static final SerializableModifierPredicateObject ANY = new SerializableModifierPredicateObject();
   private final Modifier modifier;
   @Nullable
-  private final MinMaxBounds.IntBound level;
+  private final MinMaxBounds.Ints level;
 
   public SerializableModifierPredicateObject() {
     this.modifier = null;
-    this.level = MinMaxBounds.IntBound.UNBOUNDED;
+    this.level = MinMaxBounds.Ints.ANY;
   }
 
-  public SerializableModifierPredicateObject(Modifier modifier, @Nullable MinMaxBounds.IntBound level) {
+  public SerializableModifierPredicateObject(Modifier modifier, @Nullable MinMaxBounds.Ints level) {
     this.modifier = modifier;
     if (level == null) {
-      this.level = MinMaxBounds.IntBound.UNBOUNDED;
+      this.level = MinMaxBounds.Ints.ANY;
     } else {
       this.level = level;
     }
@@ -49,7 +50,7 @@ public class SerializableModifierPredicateObject {
     if (element != null && !element.isJsonNull()) {
       JsonObject object = element.getAsJsonObject();
       Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
-      return new SerializableModifierPredicateObject(modifier, MinMaxBounds.IntBound.fromJson(object.get("level")));
+      return new SerializableModifierPredicateObject(modifier, MinMaxBounds.Ints.fromJson(object.get("level")));
     }
     return ANY;
   }
@@ -59,14 +60,14 @@ public class SerializableModifierPredicateObject {
   }
 
   @Nullable
-  public MinMaxBounds.IntBound getLevel() {
+  public MinMaxBounds.Ints getLevel() {
     return level;
   }
 
   public boolean test(ItemStack stack) {
     final List<ModifierInstance> instances = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
     final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
-    return !(this.level == null || this.level.isUnbounded()) && this.level.test(level);
+    return !(this.level == null || this.level.isAny()) && this.level.matches(level);
   }
 
   public JsonElement serializer() {
@@ -75,8 +76,8 @@ public class SerializableModifierPredicateObject {
     } else {
       JsonObject object = new JsonObject();
       object.addProperty("modifier", this.modifier.getRegistryName().toString());
-      if (level != null && !level.isUnbounded()) {
-        object.add("level", this.level.serialize());
+      if (level != null && !level.isAny()) {
+        object.add("level", this.level.serializeToJson());
       }
       return object;
     }

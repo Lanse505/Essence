@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.api.modified;
 
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+
 import java.util.List;
 
 public interface IModified {

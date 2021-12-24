@@ -1,10 +1,11 @@
 package com.teamacronymcoders.essence.api.modifier.item.extendable;
 
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+
 import java.util.UUID;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.item.ItemStack;
 
 public abstract class ItemEnchantmentCoreModifier extends ItemInteractionCoreModifier {
 

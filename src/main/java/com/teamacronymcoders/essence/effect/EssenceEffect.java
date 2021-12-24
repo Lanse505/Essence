@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.effect;
 
 import com.teamacronymcoders.essence.Essence;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
 public class EssenceEffect {
 

@@ -1,29 +1,25 @@
 package com.teamacronymcoders.essence.client.render.tesr;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalBlockEntity;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.helper.EssenceRenderHelper;
-import java.util.Random;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTile> {
+public class InfusionPedestalTESR implements BlockEntityRenderer<InfusionPedestalBlockEntity> {
 
-  private static final Random random = new Random();
-
-  public InfusionPedestalTESR(TileEntityRendererDispatcher rendererDispatcher) {
-    super(rendererDispatcher);
-  }
+  public InfusionPedestalTESR(BlockEntityRendererProvider.Context pContext) {}
 
   @Override
-  public void render(InfusionPedestalTile tile, float partial, MatrixStack matrixStack, IRenderTypeBuffer buffer, int overlay, int light) {
-    if (tile.getWorld() != null) {
-      tile.getWorld().getBlockState(tile.getPos());
-      BlockState state = tile.getWorld().getBlockState(tile.getPos());
+  public void render(InfusionPedestalBlockEntity tile, float partial, PoseStack poseStack, MultiBufferSource buffer, int overlay, int light) {
+    if (tile.getLevel() != null) {
+      tile.getLevel().getBlockState(tile.getBlockPos());
+      BlockState state = tile.getLevel().getBlockState(tile.getBlockPos());
       if (state.getBlock() != EssenceBlockRegistrate.INFUSION_PEDESTAL.get()) {
         return;
       }
@@ -31,7 +27,7 @@ public class InfusionPedestalTESR extends TileEntityRenderer<InfusionPedestalTil
       ItemStack stack = tile.getStack();
 
       if (!stack.isEmpty()) {
-        EssenceRenderHelper.renderItemStack(stack, tile.getWorld(), tile.getPos(), tile.getTicksExisted(), 1.0f, partial, matrixStack, buffer);
+        EssenceRenderHelper.renderItemStack(stack, tile.getLevel(), tile.getBlockPos(), tile.getTicksExisted(), 1.0f, partial, poseStack, buffer);
       }
     }
   }

@@ -7,6 +7,7 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
+
 import static com.teamacronymcoders.essence.registrate.EssenceModifierRegistrate.*;
 
 public class EssenceLangRegistrate {

@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.api.misc;
 
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 public interface IColorProvider {
   DyeColor getColor();

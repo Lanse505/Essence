@@ -1,14 +1,13 @@
 package com.teamacronymcoders.essence.entity.render;
 
 import com.teamacronymcoders.essence.entity.GlueBallEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
-public class GlueBallRenderer extends SpriteRenderer<GlueBallEntity> {
+public class GlueBallRenderer extends ThrownItemRenderer<GlueBallEntity> {
 
-  public GlueBallRenderer(EntityRendererManager entityRendererManager) {
-    super(entityRendererManager, Minecraft.getInstance().getItemRenderer(), 0.75f, true);
+  public GlueBallRenderer(EntityRendererProvider.Context context) {
+    super(context, 0.75f, true);
   }
 
 }

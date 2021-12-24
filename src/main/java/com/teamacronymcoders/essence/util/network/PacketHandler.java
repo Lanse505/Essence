@@ -3,24 +3,25 @@ package com.teamacronymcoders.essence.util.network;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.util.network.message.server.PacketItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 /**
  * Credit for most of this code goes to Mekanism.
@@ -45,7 +46,7 @@ public class PacketHandler {
    * @param dataValues - an Object[] of data to encode
    * @param output     - the output stream to write to
    */
-  public static void encode(Object[] dataValues, PacketBuffer output) {
+  public static void encode(Object[] dataValues, FriendlyByteBuf output) {
     for (Object data : dataValues) {
       if (data instanceof Byte) {
         output.writeByte((Byte) data);
@@ -62,21 +63,21 @@ public class PacketHandler {
       } else if (data instanceof Float) {
         output.writeFloat((Float) data);
       } else if (data instanceof String) {
-        output.writeString((String) data);
+        output.writeUtf((String) data);
       } else if (data instanceof UUID) {
-        output.writeUniqueId((UUID) data);
+        output.writeUUID((UUID) data);
       } else if (data instanceof Direction) {
         output.writeInt(((Direction) data).ordinal());
       } else if (data instanceof ItemStack) {
-        output.writeItemStack((ItemStack) data);
+        output.writeItemStack((ItemStack) data, false);
       } else if (data instanceof FluidStack) {
         output.writeFluidStack((FluidStack) data);
-      } else if (data instanceof CompoundNBT) {
-        output.writeCompoundTag((CompoundNBT) data);
+      } else if (data instanceof CompoundTag) {
+        output.writeNbt((CompoundTag) data);
       } else if (data instanceof ResourceLocation) {
         output.writeResourceLocation((ResourceLocation) data);
       } else if (data instanceof Enum) {
-        output.writeEnumValue((Enum<?>) data);
+        output.writeEnum((Enum<?>) data);
       } else if (data instanceof int[]) {
         for (int i : (int[]) data) {
           output.writeInt(i);
@@ -99,7 +100,7 @@ public class PacketHandler {
     }
   }
 
-  public static PlayerEntity getPlayer(Supplier<NetworkEvent.Context> context) {
+  public static Player getPlayer(Supplier<NetworkEvent.Context> context) {
     return Essence.proxy.getPlayer(context);
   }
 
@@ -107,11 +108,11 @@ public class PacketHandler {
     registerMessage(PacketItemStack.class, PacketItemStack::encode, PacketItemStack::decode, PacketItemStack::handle);
   }
 
-  private <MSG> void registerMessage(Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
+  private <MSG> void registerMessage(Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
     registerMessage(index++, type, encoder, decoder, consumer);
   }
 
-  public <MSG> void registerMessage(int id, Class<MSG> type, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
+  public <MSG> void registerMessage(int id, Class<MSG> type, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> consumer) {
     handler.registerMessage(id, type, encoder, decoder, consumer);
   }
 
@@ -121,8 +122,8 @@ public class PacketHandler {
    * @param message - the message to send
    * @param player  - the player to send it to
    */
-  public <MSG> void sendTo(MSG message, ServerPlayerEntity player) {
-    handler.sendTo(message, player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+  public <MSG> void sendTo(MSG message, ServerPlayer player) {
+    handler.sendTo(message, player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
   }
 
   /**

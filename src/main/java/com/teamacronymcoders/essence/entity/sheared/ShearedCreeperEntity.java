@@ -1,26 +1,26 @@
 package com.teamacronymcoders.essence.entity.sheared;
 
 import com.teamacronymcoders.essence.registrate.EssenceEntityRegistrate;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
-public class ShearedCreeperEntity extends CreeperEntity {
+public class ShearedCreeperEntity extends Creeper {
 
-  public ShearedCreeperEntity(EntityType<? extends ShearedCreeperEntity> entityType, World world) {
-    super(entityType, world);
+  public ShearedCreeperEntity(EntityType<? extends ShearedCreeperEntity> entityType, Level level) {
+    super(entityType, level);
   }
 
   @Override
-  public IPacket<?> createSpawnPacket() {
+  public Packet<?> getAddEntityPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 
   @Override
-  protected ResourceLocation getLootTable() {
+  protected ResourceLocation getDefaultLootTable() {
     return EssenceEntityRegistrate.SHEARED_CREEPER.getId();
   }
 }

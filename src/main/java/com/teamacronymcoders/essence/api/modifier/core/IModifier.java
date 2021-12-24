@@ -1,12 +1,12 @@
 package com.teamacronymcoders.essence.api.modifier.core;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IModifier {
 
   boolean canApplyTogether(IModifier modifier);
 
-  void update(CompoundNBT compoundNBT);
+  void update(CompoundTag compoundNBT);
 
   /**
    * This returns a boolean check against both Modifiers not just this Modifier.

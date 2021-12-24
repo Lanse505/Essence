@@ -1,40 +1,41 @@
 package com.teamacronymcoders.essence.block.infusion;
 
-import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.block.BasicTileBlock;
-import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalTile;
+import com.teamacronymcoders.essence.block.infusion.tile.InfusionPedestalBlockEntity;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.util.EssenceBlockModels;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Nonnull;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
-public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> {
+public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalBlockEntity> {
 
-  public InfusionPedestalBlock(Properties properties) {
-    super(properties, InfusionPedestalTile.class);
+  public InfusionPedestalBlock(BlockBehaviour.Properties properties) {
+    super("infusion_pedestal", properties, InfusionPedestalBlockEntity.class);
   }
 
   @Override
-  public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult ray) {
-    if (worldIn.isRemote) {
-      return ActionResultType.SUCCESS;
+  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    if (level.isClientSide()) {
+      return InteractionResult.SUCCESS;
     }
-    InfusionPedestalTile te = worldIn.getTileEntity(pos) instanceof InfusionPedestalTile ? (InfusionPedestalTile) worldIn.getTileEntity(pos) : null;
+    InfusionPedestalBlockEntity te = level.getBlockEntity(pos) instanceof InfusionPedestalBlockEntity ? (InfusionPedestalBlockEntity) level.getBlockEntity(pos) : null;
     if (te != null) {
-      ItemStack stack = player.getHeldItem(hand);
+      ItemStack stack = player.getItemInHand(hand);
       if (!stack.isEmpty()) {
         if (te.getStack().isEmpty()) {
           ItemStack copy = stack.copy();
@@ -44,44 +45,44 @@ public class InfusionPedestalBlock extends BasicTileBlock<InfusionPedestalTile> 
         } else {
           ItemStack copy = te.getStack().copy();
           te.getStack().shrink(1);
-          player.inventory.addItemStackToInventory(copy);
+          player.getInventory().add(copy);
         }
         te.markComponentForUpdate(false);
       } else if (!te.getStack().isEmpty()) {
         ItemStack copy = te.getStack().copy();
         te.getStack().shrink(1);
-        player.inventory.addItemStackToInventory(copy);
+        player.getInventory().add(copy);
         te.markComponentForUpdate(false);
       }
-      return ActionResultType.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
-    return ActionResultType.PASS;
+    return InteractionResult.PASS;
   }
 
   @Override
-  public IFactory<InfusionPedestalTile> getTileEntityFactory() {
-    return InfusionPedestalTile::new;
-  }
+  public BlockEntityType.BlockEntitySupplier<?> getTileEntityFactory() {
+    return InfusionPedestalBlockEntity::new;
+  };
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
     return EssenceBlockModels.INFUSION_PEDESTAL[0];
   }
 
   @Nonnull
   @Override
-  public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext selectionContext) {
+  public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext selectionContext) {
     return EssenceBlockModels.INFUSION_PEDESTAL[0];
   }
 
   @Override
-  public List<VoxelShape> getBoundingBoxes(BlockState state, IBlockReader source, BlockPos pos) {
+  public List<VoxelShape> getBoundingBoxes(BlockState state, BlockGetter getter, BlockPos pos) {
     return Collections.singletonList(EssenceBlockModels.INFUSION_PEDESTAL[0]);
   }
 
   @Override
-  public TileEntityType getTileEntityType() {
-    return EssenceBlockRegistrate.INFUSION_PEDESTAL_TILE.get();
+  public BlockEntityType getTileEntityType() {
+    return EssenceBlockRegistrate.INFUSION_TABLE_TILE.get();
   }
 }
