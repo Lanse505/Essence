@@ -1,7 +1,7 @@
 {
   "from": "minecraft:podzol",
   "to": {
-    "block": "minecraft:grass_path",
+    "block": "minecraft:dirt_path",
     "properties": {}
   },
   "type": "essence:shovel_pathing"

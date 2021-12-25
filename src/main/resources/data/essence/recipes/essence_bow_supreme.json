@@ -7,7 +7,7 @@
   ],
   "key": {
     "t": {
-      "item": "essence:essence_stick"
+      "tag": "essence:infused_stick"
     },
     "s": {
       "tag": "forge:string"

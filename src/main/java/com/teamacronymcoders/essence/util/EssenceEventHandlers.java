@@ -188,7 +188,7 @@ public class EssenceEventHandlers {
   public static void setupClientEventHandlers() {
     // Atlas Texture Handler
     EventManager.mod(TextureStitchEvent.Pre.class)
-            .filter(stitch -> stitch.getAtlas().getSprite(InventoryMenu.BLOCK_ATLAS).equals(InventoryMenu.BLOCK_ATLAS))
+            .filter(stitch -> stitch.getAtlas().getSprite(InventoryMenu.BLOCK_ATLAS) != null )
             .process(stitch -> {
               stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
             }).subscribe();

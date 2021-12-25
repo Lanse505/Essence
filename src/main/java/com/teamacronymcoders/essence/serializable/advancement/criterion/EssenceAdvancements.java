@@ -1,12 +1,12 @@
 package com.teamacronymcoders.essence.serializable.advancement.criterion;
 
-import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeTrigger;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.EssenceKnowledgeTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 
 public class EssenceAdvancements {
-  public static final UnlockKnowledgeTrigger UNLOCK_KNOWLEDGE = new UnlockKnowledgeTrigger();
+  public static final EssenceKnowledgeTrigger KNOWLEDGE_TRIGGER = new EssenceKnowledgeTrigger();
 
   public static void setup() {
-    CriteriaTriggers.register(UNLOCK_KNOWLEDGE);
+    CriteriaTriggers.register(KNOWLEDGE_TRIGGER);
   }
 }

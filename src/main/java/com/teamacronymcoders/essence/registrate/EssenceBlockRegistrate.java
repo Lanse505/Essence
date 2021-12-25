@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.registrate;
 
+import com.hrznstudio.titanium.module.DeferredRegistryHelper;
 import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
@@ -59,6 +60,8 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class EssenceBlockRegistrate {
 
@@ -93,7 +96,7 @@ public class EssenceBlockRegistrate {
           .block(Material.STONE, EssenceCrystalOreBlock::new).properties(properties -> properties.strength(3.0F, 3.0F).sound(SoundType.STONE))
           .lang("Essence-Infused Crystal Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_CRYSTAL_ORE)
           .blockstate((context, provider) -> provider.simpleBlock(context.get()))
-          .loot((registrateBlockLootTables, essenceCrystalOreBlock) -> registrateBlockLootTables.add(essenceCrystalOreBlock, LootTable.lootTable()
+          .loot((blockLootTables, essenceCrystalOreBlock) -> blockLootTables.add(essenceCrystalOreBlock, LootTable.lootTable()
                   .withPool(LootPool.lootPool()
                           .setRolls(ConstantValue.exactly(1))
                           .add(AlternativesEntry.alternatives(
@@ -205,7 +208,8 @@ public class EssenceBlockRegistrate {
           .block(Material.STONE, InfusionTableBlock::new).properties(properties -> properties.sound(SoundType.STONE).strength(3.5F).noCollission().dynamicShape())
           .lang("Infusion Table").loot(BlockLoot::dropSelf).addLayer(() -> RenderType::translucent)
           .blockstate((context, provider) -> provider.models().getExistingFile(new ResourceLocation(Essence.MOD_ID, "essence_infusion_table")))
-          .item((table, properties) -> new BlockItem(table, properties.tab(Essence.CORE_TAB))).model((context, provider) -> provider.blockItem(context)).build().register();
+          .item((table, properties) -> {table.setItem(RegistryObject.of(new ResourceLocation(Essence.MOD_ID, "essence_infusion_table"), ForgeRegistries.ITEMS)); return new BlockItem(table, properties.tab(Essence.CORE_TAB));}).model((context, provider) -> provider.blockItem(context)).build()
+          .register();
   public static BlockEntityEntry<InfusionTableBlockEntity> INFUSION_TABLE_TILE = Essence.ESSENCE_REGISTRATE.<InfusionTableBlockEntity>blockEntity("essence_infusion_table", (type, pos, state) -> new InfusionTableBlockEntity(pos, state))
           .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionTableBlockEntity.class))
           .renderer(() -> InfusionTableTESR::new).validBlock(INFUSION_TABLE)
@@ -215,7 +219,7 @@ public class EssenceBlockRegistrate {
           .block(Material.STONE, InfusionPedestalBlock::new).properties(properties -> properties.strength(3).sound(SoundType.STONE).noCollission())
           .lang("Infusion Pedestal").loot(BlockLoot::dropSelf).addLayer(() -> RenderType::translucent)
           .blockstate((context, provider) -> provider.models().getExistingFile(new ResourceLocation(Essence.MOD_ID, "essence_infusion_pedestal")))
-          .item((pedestal, properties) -> new BlockItem(pedestal, properties.tab(Essence.CORE_TAB))).model((context, provider) -> provider.blockItem(context)).build().register();
+          .item((pedestal, properties) -> {pedestal.setItem(RegistryObject.of(new ResourceLocation(Essence.MOD_ID, "essence_infusion_pedestal"), ForgeRegistries.ITEMS)); return new BlockItem(pedestal, properties.tab(Essence.CORE_TAB));}).model((context, provider) -> provider.blockItem(context)).build().register();
   public static BlockEntityEntry<InfusionPedestalBlockEntity> INFUSION_PEDESTAL_TILE = Essence.ESSENCE_REGISTRATE.<InfusionPedestalBlockEntity>blockEntity("essence_infusion_pedestal", (type, pos, state) -> new InfusionPedestalBlockEntity(pos, state))
           .onRegister(tile -> NBTManager.getInstance().scanTileClassForAnnotations(InfusionPedestalBlockEntity.class))
           .renderer(() -> InfusionPedestalTESR::new)

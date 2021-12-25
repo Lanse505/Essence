@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.serializable.advancement.criterion;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.server.PlayerAdvancements;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class EssenceCriterionListener<T extends CriterionTriggerInstance> {
+public class EssenceCriterionListener<T extends AbstractCriterionTriggerInstance> {
   private final PlayerAdvancements advancements;
   private final Set<CriterionTrigger.Listener<T>> listeners = Sets.newHashSet();
 

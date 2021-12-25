@@ -99,11 +99,11 @@ public class EssenceItemRegistrate {
           .item(EssenceWrench::new).properties(properties -> properties.tab(Essence.TOOL_TAB).stacksTo(1).defaultDurability(2048).rarity(Rarity.RARE))
           .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/essence_wrench")))
           .lang("Essence-Infused Wrench").register();
-  public static ItemEntry<SerializedEntityItem> SERIALIZED_ENTITY = Essence.ESSENCE_REGISTRATE.object("serialized_entity")
-          .item(SerializedEntityItem::new).properties(properties -> properties.defaultDurability(1))
-          .lang("Serialized Entity")
-          .model((context, provider) -> provider.getBuilder(context.getId().getPath()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity"))))
-          .register();
+//  public static ItemEntry<SerializedEntityItem> SERIALIZED_ENTITY = Essence.ESSENCE_REGISTRATE.object("serialized_entity")
+//          .item(SerializedEntityItem::new).properties(properties -> properties.defaultDurability(1))
+//          .lang("Serialized Entity")
+//          .model((context, provider) -> provider.getBuilder(context.getId().getPath()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity"))))
+//          .register();
   public static ItemEntry<GlueBallItem> GLUE_BALL_ITEM = Essence.ESSENCE_REGISTRATE.object("glue_ball").item(GlueBallItem::new).properties(properties -> properties.tab(Essence.CORE_TAB))
           .lang("Ball of Glue")
           .model((context, provider) -> provider.handheld(context))

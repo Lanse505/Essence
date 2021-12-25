@@ -37,7 +37,7 @@ public class KnowledgeEvent extends PlayerEvent {
   public static class addPost extends KnowledgeEvent {
     public addPost(ServerPlayer player, Knowledge knowledge) {
       super(player, knowledge);
-      EssenceAdvancements.UNLOCK_KNOWLEDGE.trigger(player, knowledge);
+      EssenceAdvancements.KNOWLEDGE_TRIGGER.trigger(player, knowledge);
     }
   }
 

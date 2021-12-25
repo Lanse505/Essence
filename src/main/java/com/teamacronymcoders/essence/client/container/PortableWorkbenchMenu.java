@@ -48,14 +48,6 @@ public class PortableWorkbenchMenu extends RecipeBookMenu<CraftingContainer> {
     }
   }
 
-  public <T extends AbstractContainerMenu> PortableWorkbenchMenu(MenuType<T> tContainerType, int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-    this(id, playerInventory);
-  }
-
-  public PortableWorkbenchMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
-    this(id, inventory);
-  }
-
   protected static void slotChangedCraftingGrid(AbstractContainerMenu id, Level level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer) {
     if (!level.isClientSide()) {
       ServerPlayer serverplayerentity = (ServerPlayer) player;

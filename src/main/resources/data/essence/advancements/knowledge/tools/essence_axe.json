@@ -23,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_axe"
+            "items": [
+              "essence:essence_axe"
+            ]
           }
         ]
       }

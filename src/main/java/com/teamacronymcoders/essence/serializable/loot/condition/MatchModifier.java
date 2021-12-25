@@ -19,8 +19,8 @@ public class MatchModifier implements LootItemCondition {
 
   @Override
   public boolean test(LootContext context) {
-    ItemStack stack = context.getParam(LootContextParams.TOOL);
-    return stack != null && this.predicate.test(stack);
+    ItemStack stack = context.hasParam(LootContextParams.TOOL) ? context.getParam(LootContextParams.TOOL) : ItemStack.EMPTY;
+    return this.predicate.test(stack);
   }
 
   @Override

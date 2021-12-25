@@ -23,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_shovel"
+            "items": [
+              "essence:essence_shovel"
+            ]
           }
         ]
       }

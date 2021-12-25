@@ -20,7 +20,9 @@
     "knowledge": {
       "trigger": "essence:knowledge",
       "conditions": {
-        "knowledge_id": "essence:keen"
+        "knowledge": {
+          "knowledge_id": "essence:keen"
+        }
       }
     },
     "tome_of_knowledge": {
@@ -28,7 +30,9 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:essence_ore"
+            "items": [
+              "essence:essence_ore"
+            ]
           }
         ]
       }

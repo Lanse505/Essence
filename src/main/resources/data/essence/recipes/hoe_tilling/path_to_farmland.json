@@ -1,5 +1,5 @@
 {
-  "from": "minecraft:grass_path",
+  "from": "minecraft:dirt_path",
   "to": {
     "block": "minecraft:farmland",
     "properties": {

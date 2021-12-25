@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamacronymcoders.essence.entity.sheared.ShearedGhastEntity;
 import net.minecraft.client.model.GhastModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 public class ShearedGhastRenderer extends MobRenderer<ShearedGhastEntity, GhastModel<ShearedGhastEntity>> {
 
   public ShearedGhastRenderer(EntityRendererProvider.Context context) {
-    super(context, new GhastModel<>(context.bakeLayer(EssenceEntityTextures.SHEARED_GHAST_LAYER)), 1.5F);
+    super(context, new GhastModel<>(context.bakeLayer(ModelLayers.GHAST)), 1.5F);
   }
 
   @Override

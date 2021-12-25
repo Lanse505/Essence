@@ -70,7 +70,7 @@ sourceSets {
 }
 
 def version_properties = [
-        "version"       : version,
+        "version"       : mod_version,
         "mc_version"    : minecraft_version,
         "forge_version" : forge_version,
         "loader_version": loader_version
@@ -79,6 +79,7 @@ def version_properties = [
 
 processResources {
     outputs.upToDateWhen { false }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from(sourceSets.main.resources) {
         include "META-INF/mods.toml"
         expand version_properties

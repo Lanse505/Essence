@@ -41,6 +41,7 @@ import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -50,10 +51,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Random;
 
 // TODO List:
@@ -89,6 +93,10 @@ public class Essence extends ModuleController {
     CompoundSerializableDataHandler.map(BlockState.class, EssenceSerializableObjectHandler::readBlockState, EssenceSerializableObjectHandler::writeBlockState);
 
     // Configs
+
+    Path path = FMLPaths.CONFIGDIR.get();
+    Path.of(path.toString(), "titanium").toFile().mkdir();
+    if (!(Path.of(path.toString(), "essence").toFile().exists())) Path.of(path.toString(), "essence").toFile().mkdir();
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
@@ -123,6 +131,7 @@ public class Essence extends ModuleController {
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
     eventBus.addListener(this::setupCuriosIMC);
+    eventBus.addListener(this::addAttributes);
   }
 
   @Override
@@ -144,14 +153,15 @@ public class Essence extends ModuleController {
     ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new EmptyArgumentSerializer<>(EssenceModifierArgumentType::new));
     ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new EmptyArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
     EssenceConditions.MATCH_MODIFIER = LootItemConditions.register("essence:match_modifier", new MatchModifier.ModifierSerializer());
-
-    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_CHICKEN.get(), Chicken.createAttributes().build());
-    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_COW.get(), Cow.createAttributes().build());
-    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_CREEPER.get(), Creeper.createAttributes().build());
-    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), Ghast.createAttributes().build());
-    DefaultAttributes.SUPPLIERS.put(EssenceEntityRegistrate.SHEARED_PIG.get(), Pig.createAttributes().build());
-
     EssenceDispenseBehaviours.init();
+  }
+
+  private void addAttributes(final EntityAttributeCreationEvent event) {
+    event.put(EssenceEntityRegistrate.SHEARED_CHICKEN.get(), Chicken.createAttributes().build());
+    event.put(EssenceEntityRegistrate.SHEARED_COW.get(), Cow.createAttributes().build());
+    event.put(EssenceEntityRegistrate.SHEARED_CREEPER.get(), Creeper.createAttributes().build());
+    event.put(EssenceEntityRegistrate.SHEARED_GHAST.get(), Ghast.createAttributes().build());
+    event.put(EssenceEntityRegistrate.SHEARED_PIG.get(), Pig.createAttributes().build());
   }
 
   private void clientSetup(final FMLClientSetupEvent event) {
@@ -171,6 +181,6 @@ public class Essence extends ModuleController {
 
     // Toggled
     // TODO: Implement for Tablet of Muffling
-    //ItemModelsProperties.registerProperty(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "toggling"), EssenceItemProperties.TOGGLED);
+    //ItemProperties.register(EssenceObjectHolders.ESSENCE_BOW, new ResourceLocation(Essence.MOD_ID, "toggling"), EssenceItemProperties.TOGGLED);
   }
 }

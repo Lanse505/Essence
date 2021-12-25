@@ -88,18 +88,18 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     return lazy.isPresent() ? lazy.map(holder -> {
       Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
-      ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
-      boolean successful;
-      if (optional.isPresent()) {
-        successful = serializeEntity(serialized, target, true);
-      } else {
-        successful = serializeEntity(serialized, target, false);
-      }
-      if (successful) {
-        player.addItem(serialized);
-        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(hand));
-      }
-      return successful ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+//      ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
+//      boolean successful;
+//      if (optional.isPresent()) {
+//        successful = serializeEntity(serialized, target, true);
+//      } else {
+//        successful = serializeEntity(serialized, target, false);
+//      }
+//      if (successful) {
+//        player.addItem(serialized);
+//        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(hand));
+//      }
+      return true ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }).orElse(InteractionResult.FAIL) : InteractionResult.FAIL;
   }
 

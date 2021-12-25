@@ -20,7 +20,9 @@
     "knowledge": {
       "trigger": "essence:knowledge",
       "conditions": {
-        "knowledge_id": "essence:attack_damage"
+        "knowledge": {
+          "knowledge_id": "essence:attack_damage"
+        }
       }
     },
     "tome_of_knowledge": {
@@ -28,7 +30,9 @@
       "conditions": {
         "items": [
           {
-            "item": "essence:tome_of_knowledge"
+            "items": [
+              "essence:tome_of_knowledge"
+            ]
           }
         ]
       }

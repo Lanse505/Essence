@@ -4,7 +4,10 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 
@@ -12,7 +15,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Function;
 
-public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U extends CriterionTriggerInstance> implements CriterionTrigger<U> {
+public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U extends AbstractCriterionTriggerInstance> extends SimpleCriterionTrigger<U> {
   private final ResourceLocation id;
   private final Function<PlayerAdvancements, T> createNew;
   private final Map<PlayerAdvancements, T> listeners = Maps.newHashMap();
@@ -27,34 +30,10 @@ public class EssenceCriterionTrigger<T extends EssenceCriterionListener<U>, U ex
     return this.id;
   }
 
-  @Override
-  public void addPlayerListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
-    T listeners = this.listeners.get(playerAdvancements);
-    if (listeners == null) {
-      listeners = createNew.apply(playerAdvancements);
-      this.listeners.put(playerAdvancements, listeners);
-    }
-    listeners.add(listener);
-  }
+
 
   @Override
-  public void removePlayerListener(PlayerAdvancements playerAdvancements, Listener<U> listener) {
-    T listeners = this.listeners.get(playerAdvancements);
-    if (listeners != null) {
-      listeners.remove(listener);
-      if (listeners.isEmpty()) {
-        this.listeners.remove(playerAdvancements);
-      }
-    }
-  }
-
-  @Override
-  public void removePlayerListeners(PlayerAdvancements playerAdvancements) {
-    this.listeners.remove(playerAdvancements);
-  }
-
-  @Override
-  public U createInstance(JsonObject json, DeserializationContext context) {
+  protected U createInstance(JsonObject pJson, EntityPredicate.Composite pPlayer, DeserializationContext pContext) {
     return null;
   }
 

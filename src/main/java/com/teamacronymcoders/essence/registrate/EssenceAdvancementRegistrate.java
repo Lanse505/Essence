@@ -1,11 +1,10 @@
 package com.teamacronymcoders.essence.registrate;
 
-import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.UnlockKnowledgeCriterionInstance;
+import com.teamacronymcoders.essence.serializable.advancement.criterion.knowledge.EssenceKnowledgeTrigger;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateAdvancementProvider;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -154,7 +153,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(arrow)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BREWED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.BREWED_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
             .save(provider, "essence:knowledge/arrow/brewed_modifier");
     keen = Advancement.Builder.advancement()
@@ -166,7 +165,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(arrow)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KEEN_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.KEEN_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_ORE.get()))
             .save(provider, "essence:knowledge/arrow/keen_modifier");
     attribute = Advancement.Builder.advancement()
@@ -189,7 +188,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(attribute)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.ARMOR_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/attribute/armor_modifier");
     armorToughness = Advancement.Builder.advancement()
@@ -201,7 +200,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(attribute)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.ARMOR_TOUGHNESS_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/attribute/armor_toughness_modifier");
     attackDamage = Advancement.Builder.advancement()
@@ -213,7 +212,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(attribute)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.ATTACK_DAMAGE_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/attribute/attack_damage_modifier");
     maxHealth = Advancement.Builder.advancement()
@@ -225,7 +224,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(attribute)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MAX_HEALTH_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.MAX_HEALTH_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/attribute/max_health_modifier");
     movementSpeed = Advancement.Builder.advancement()
@@ -237,7 +236,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(attribute)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.MOVEMENT_SPEED_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/attribute/movement_speed_modifier");
     cosmetic = Advancement.Builder.advancement()
@@ -260,7 +259,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(cosmetic)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ENCHANTED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.ENCHANTED_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/cosmetic/enchanted_modifier");
     enchantment = Advancement.Builder.advancement()
@@ -283,7 +282,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EFFICIENCY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.EFFICIENCY_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/efficiency_modifier");
     infinity = Advancement.Builder.advancement()
@@ -295,7 +294,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.INFINITY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.INFINITY_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/infinity_modifier");
     knockback = Advancement.Builder.advancement()
@@ -307,7 +306,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.KNOCKBACK_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.KNOCKBACK_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/knockback_modifier");
     luck = Advancement.Builder.advancement()
@@ -319,7 +318,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.LUCK_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.LUCK_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/luck_modifier");
     mending = Advancement.Builder.advancement()
@@ -331,7 +330,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.MENDING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.MENDING_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/mending_modifier");
     silkTouch = Advancement.Builder.advancement()
@@ -343,7 +342,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SILK_TOUCH_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.SILK_TOUCH_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/silk_touch_modifier");
     strengthened = Advancement.Builder.advancement()
@@ -355,7 +354,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.STRENGTHENED_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.STRENGTHENED_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/strengthened_modifier");
     unbreaking = Advancement.Builder.advancement()
@@ -367,7 +366,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(enchantment)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.UNBREAKING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.UNBREAKING_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/enchantment/unbreaking_modifier");
     interaction = Advancement.Builder.advancement()
@@ -390,7 +389,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(interaction)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.CASCADING_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.CASCADING_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/interaction/cascading_modifier");
     expander = Advancement.Builder.advancement()
@@ -402,7 +401,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(getKnowledgeModifierRoot())
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EXPANDER_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.EXPANDER_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/interaction/expander_modifier");
     fiery = Advancement.Builder.advancement()
@@ -414,7 +413,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(interaction)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.FIERY_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.FIERY_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/interaction/fiery_modifier");
     rainbow = Advancement.Builder.advancement()
@@ -426,7 +425,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, true, false, true
             )
             .parent(interaction)
-            .addCriterion("knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.RAINBOW_MODIFIER_KNOWLEDGE.get()))
+            .addCriterion("knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.RAINBOW_MODIFIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/interaction/rainbow_modifier");
   }
@@ -453,7 +452,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(tiers)
-            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.BASIC_TIER_KNOWLEDGE.get()))
+            .addCriterion("material_tiers", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.BASIC_TIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT.get()))
             .save(provider, "essence:knowledge/material/basic");
 
@@ -466,7 +465,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(basic)
-            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.EMPOWERED_TIER_KNOWLEDGE.get()))
+            .addCriterion("material_tiers", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.EMPOWERED_TIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get()))
             .save(provider, "essence:knowledge/material/empowered");
 
@@ -479,7 +478,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(empowered)
-            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.SUPREME_TIER_KNOWLEDGE.get()))
+            .addCriterion("material_tiers", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.SUPREME_TIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get()))
             .save(provider, "essence:knowledge/material/supreme");
 
@@ -492,7 +491,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(supreme)
-            .addCriterion("material_tiers", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.DIVINE_TIER_KNOWLEDGE.get()))
+            .addCriterion("material_tiers", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.DIVINE_TIER_KNOWLEDGE.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get()))
             .save(provider, "essence:knowledge/material/divine");
     toolTypes = Advancement.Builder.advancement()
@@ -504,7 +503,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(getKnowledgeToolRoot())
-            .addCriterion("tool_crafting", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.TOOL_CRAFTING.get()))
+            .addCriterion("tool_crafting", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.TOOL_CRAFTING.get()))
             .addCriterion("tome_of_knowledge", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceItemRegistrate.TOME_OF_KNOWLEDGE.get()))
             .save(provider, "essence:knowledge/tools/tool_types");
 
@@ -623,7 +622,7 @@ public class EssenceAdvancementRegistrate {
                     FrameType.CHALLENGE, false, false, true
             )
             .parent(miscKnowledge)
-            .addCriterion("arboreal_knowledge", (CriterionTriggerInstance) new UnlockKnowledgeCriterionInstance(EssenceKnowledgeRegistrate.ARBOREAL_NOTES.get()))
+            .addCriterion("arboreal_knowledge", EssenceKnowledgeTrigger.TriggerInstance.knowledge(EssenceKnowledgeRegistrate.ARBOREAL_NOTES.get()))
             .addCriterion("essence_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()))
             .save(provider, "essence:knowledge/misc/arboreal_knowledge");
   }

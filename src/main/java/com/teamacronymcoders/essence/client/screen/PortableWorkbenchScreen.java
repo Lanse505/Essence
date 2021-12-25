@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -64,7 +65,8 @@ public class PortableWorkbenchScreen extends AbstractContainerScreen<PortableWor
   @Override
   protected void renderBg(PoseStack poseStack, float partialTicks, int x, int y) {
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    this.minecraft.getTextureManager().bindForSetup(CRAFTING_TABLE_GUI_TEXTURES);
+    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    RenderSystem._setShaderTexture(0, CRAFTING_TABLE_GUI_TEXTURES);
     int i = this.leftPos;
     int j = (this.height - this.getYSize()) / 2;
     this.blit(poseStack, i, j, 0, 0, this.getXSize(), this.getYSize());

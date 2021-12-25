@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamacronymcoders.essence.entity.render.layer.ShearedCreeperChargedLayer;
 import com.teamacronymcoders.essence.entity.sheared.ShearedCreeperEntity;
 import net.minecraft.client.model.CreeperModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ import net.minecraft.util.Mth;
 public class ShearedCreeperRenderer extends MobRenderer<ShearedCreeperEntity, CreeperModel<ShearedCreeperEntity>> {
 
   public ShearedCreeperRenderer(EntityRendererProvider.Context context) {
-    super(context, new CreeperModel<>(context.bakeLayer(EssenceEntityTextures.SHEARED_CREEPER_LAYER)), 0.5F);
+    super(context, new CreeperModel<>(context.bakeLayer(ModelLayers.CREEPER)), 0.5F);
     this.addLayer(new ShearedCreeperChargedLayer(this, context.getModelSet()));
   }
 
