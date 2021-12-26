@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "essence:essence_axe",
+      "required": false
+    },
+    {
+      "id": "essence:essence_axe_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_axe_supreme_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_axe_divine_essence",
+      "required": false
+    }
+  ]
+}

@@ -8,12 +8,14 @@ import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.ToolActions;
 
 public class EssenceTagRegistrate {
 
@@ -54,6 +56,46 @@ public class EssenceTagRegistrate {
     registrate.addDataGenerator(ProviderType.ITEM_TAGS, provider -> {
       provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.AMMO_HOLDER);
       provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.NONE_TOOL);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.MINEABLE_AXE)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.getId(), Essence.MOD_ID);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.MINEABLE_PICKAXE)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.MINEABLE_SHOVEL)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.MINEABLE_HOE)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
+
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.IRON_TIER)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE.getId(), Essence.MOD_ID);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.DIAMOND_TIER)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_SUPREME.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_EMPOWERED.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_SUPREME.getId(), Essence.MOD_ID);
+      provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.NETHERITE_TIER)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID)
+              .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
     });
 
     // Misc Block Tags

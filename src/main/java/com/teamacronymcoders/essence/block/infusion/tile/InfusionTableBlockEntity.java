@@ -84,10 +84,15 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
   }
 
   @Override
+  public void clientTick(Level level, BlockPos pos, BlockState state, InfusionTableBlockEntity blockEntity) {
+    super.clientTick(level, pos, state, blockEntity);
+    handleBookRender();
+  }
+
+  @Override
   public void serverTick(Level level, BlockPos pos, BlockState state, InfusionTableBlockEntity blockEntity) {
     super.serverTick(level, pos, state, blockEntity);
     ticksExisted++;
-    handleBookRender();
     if (shouldBeWorking || isWorking) {
       if (!recipe.isValid(getPedestalStacks())) {
         NonNullList<ItemStack> stacks = getPedestalStacks();
@@ -175,30 +180,30 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
       pageSoundLastPlayed = player.getLevel().getGameTime();
     }
 
-    while (this.nextPageAngle >= 3.1415927F) {
-      this.nextPageAngle -= 6.2831855F;
+    while (this.nextPageAngle >= Math.PI) {
+      this.nextPageAngle -= (Math.PI * 2);
     }
 
-    while (this.nextPageAngle < -3.1415927F) {
-      this.nextPageAngle += 6.2831855F;
+    while (this.nextPageAngle < -Math.PI) {
+      this.nextPageAngle += (Math.PI * 2);
     }
 
-    while (this.playerTableAngle >= 3.1415927F) {
-      this.playerTableAngle -= 6.2831855F;
+    while (this.playerTableAngle >= Math.PI) {
+      this.playerTableAngle -= (Math.PI * 2);
     }
 
-    while (this.playerTableAngle < -3.1415927F) {
-      this.playerTableAngle += 6.2831855F;
+    while (this.playerTableAngle < -Math.PI) {
+      this.playerTableAngle += (Math.PI * 2);
     }
 
     float angleDelta;
     angleDelta = this.playerTableAngle - this.nextPageAngle;
-    while (angleDelta >= 3.1415927F) {
-      angleDelta -= 6.2831855F;
+    while (angleDelta >= Math.PI) {
+      angleDelta -= (Math.PI * 2);
     }
 
-    while (angleDelta < -3.1415927F) {
-      angleDelta += 6.2831855F;
+    while (angleDelta < -Math.PI) {
+      angleDelta += (Math.PI * 2);
     }
 
     this.nextPageAngle += angleDelta * 0.4F;

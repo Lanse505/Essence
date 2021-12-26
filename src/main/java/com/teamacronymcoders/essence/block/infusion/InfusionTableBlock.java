@@ -44,8 +44,7 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableBlockEntity>
     if (te != null) {
       ItemStack stack = player.getItemInHand(hand);
 
-      if (!stack.isEmpty() && stack.getItem() instanceof EssenceWrench) {
-        EssenceWrench wrench = (EssenceWrench) stack.getItem();
+      if (!stack.isEmpty() && stack.getItem() instanceof EssenceWrench wrench) {
         if (wrench.getMode() == WrenchModeEnum.TRIGGER) {
           te.setShouldBeWorking(true);
         }

@@ -1,0 +1,37 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "essence:essence_axe_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_axe_supreme_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_pickaxe_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_pickaxe_supreme_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_shovel_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_shovel_supreme_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe_supreme_essence",
+      "required": false
+    }
+  ]
+}

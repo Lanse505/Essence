@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "essence:essence_axe",
+      "required": false
+    },
+    {
+      "id": "essence:essence_pickaxe",
+      "required": false
+    },
+    {
+      "id": "essence:essence_shovel",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe",
+      "required": false
+    }
+  ]
+}

@@ -3,8 +3,11 @@ package com.teamacronymcoders.essence.world.generation.tree;
 import com.google.common.collect.ImmutableList;
 import com.teamacronymcoders.essence.registrate.EssenceBlockRegistrate;
 import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.TreePlacements;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -42,7 +45,7 @@ public class EssenceTreeFeatures {
             .ignoreVines()
             .build();
     public static final ConfiguredFeature<TreeConfiguration, ?> NORMAL_ESSENCE_TREE_FEATURE = FeatureUtils.register("essence_tree_normal", Feature.TREE.configured(NORMAL_WORLD_ESSENCE_TREE_CONFIG));
-    public static final PlacedFeature NORMAL_ESSENCE_TREE_FEATURE_PLACED = PlacementUtils.register("essence_tree_normal", NORMAL_ESSENCE_TREE_FEATURE.placed());
+    public static final PlacedFeature NORMAL_ESSENCE_TREE_FEATURE_PLACED = PlacementUtils.register("essence_tree_normal", NORMAL_ESSENCE_TREE_FEATURE.filteredByBlockSurvival(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()));
 
     public static final TreeConfiguration FANCY_WORLD_ESSENCE_TREE_CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
             BlockStateProvider.simple(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.getDefaultState()),
@@ -55,6 +58,6 @@ public class EssenceTreeFeatures {
             .forceDirt()
             .build();
     public static final ConfiguredFeature<TreeConfiguration, ?> FANCY_ESSENCE_TREE_FEATURE = FeatureUtils.register("essence_tree_fancy", Feature.TREE.configured(FANCY_WORLD_ESSENCE_TREE_CONFIG));
-    public static final PlacedFeature FANCY_ESSENCE_TREE_FEATURE_PLACED = PlacementUtils.register("essence_tree_fancy", FANCY_ESSENCE_TREE_FEATURE.placed());
+    public static final PlacedFeature FANCY_ESSENCE_TREE_FEATURE_PLACED = PlacementUtils.register("essence_tree_fancy", FANCY_ESSENCE_TREE_FEATURE.filteredByBlockSurvival(EssenceBlockRegistrate.ESSENCE_WOOD_SAPLING.get()));
 
 }

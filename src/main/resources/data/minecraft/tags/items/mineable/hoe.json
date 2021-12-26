@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "essence:essence_hoe",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe_empowered_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe_supreme_essence",
+      "required": false
+    },
+    {
+      "id": "essence:essence_hoe_divine_essence",
+      "required": false
+    }
+  ]
+}
