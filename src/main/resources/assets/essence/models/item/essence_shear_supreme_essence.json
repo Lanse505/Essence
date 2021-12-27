@@ -1,3 +1,6 @@
 {
-  "parent": "essence:item/essence_shear"
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/supreme_essence_shear"
+  }
 }

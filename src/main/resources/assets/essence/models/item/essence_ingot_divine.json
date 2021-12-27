@@ -1,3 +1,6 @@
 {
-  "parent": "essence:item/essence_ingot"
+  "parent": "essence:item/item",
+  "textures": {
+    "layer0": "essence:item/divine_essence_ingot"
+  }
 }
