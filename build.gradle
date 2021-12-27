@@ -155,8 +155,8 @@ dependencies {
 //    compile fg.deobf("vazkii.patchouli:Patchouli:${old_minecraft_version}-${patchouli_version}")
 //
 //    // JEI
-//    compileOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}:api")
-//    runtimeOnly fg.deobf("mezz.jei:jei-${old_minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 //
 //    // Curios
 //    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
