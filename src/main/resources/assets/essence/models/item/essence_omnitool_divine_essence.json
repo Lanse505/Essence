@@ -1,3 +1,6 @@
 {
-  "parent": "essence:item/essence_omnitool"
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/divine_essence_omnitool"
+  }
 }

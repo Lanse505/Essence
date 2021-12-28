@@ -1,3 +1,6 @@
 {
-  "parent": "essence:block/essence_wood_sapling"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "essence:item/essence_wood_sapling"
+  }
 }

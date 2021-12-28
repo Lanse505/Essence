@@ -1,0 +1,6 @@
+{
+  "parent": "essence:item/essence_bow",
+  "textures": {
+    "layer0": "essence:item/empowered_essence_bow_pulling_1"
+  }
+}
