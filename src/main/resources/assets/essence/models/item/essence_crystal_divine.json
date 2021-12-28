@@ -1,6 +1,6 @@
 {
   "parent": "essence:item/item",
   "textures": {
-    "layer0": "essence:item/essence_crystal_divine"
+    "layer0": "essence:item/divine_essence_crystal"
   }
 }
