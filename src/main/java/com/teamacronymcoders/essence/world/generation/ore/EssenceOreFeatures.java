@@ -17,12 +17,13 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
 
+import static net.minecraft.data.worldgen.features.OreFeatures.DEEPSLATE_ORE_REPLACEABLES;
 import static net.minecraft.data.worldgen.features.OreFeatures.STONE_ORE_REPLACEABLES;
 
 public class EssenceOreFeatures {
     public static final List<OreConfiguration.TargetBlockState> ORE_ESSENCE_TARGET_LIST =
-            Lists.newArrayList(OreConfiguration.target(STONE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_ORE.getDefaultState()));
-    public static final ConfiguredFeature<?, ?> ESSENCE_ORE = FeatureUtils.register("ore_essence", Feature.ORE.configured(new OreConfiguration(ORE_ESSENCE_TARGET_LIST, 8)));
+            Lists.newArrayList(OreConfiguration.target(STONE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_ORE.getDefaultState()), OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_ORE_DEEP_SLATE.getDefaultState()));
+    public static final ConfiguredFeature<?, ?> ESSENCE_ORE = FeatureUtils.register("ore_essence", Feature.ORE.configured(new OreConfiguration(ORE_ESSENCE_TARGET_LIST, 9)));
     public static final ConfiguredFeature<?, ?> ESSENCE_ORE_SMALL = FeatureUtils.register("ore_essence_small", Feature.ORE.configured(new OreConfiguration(ORE_ESSENCE_TARGET_LIST, 4)));
     public static final PlacedFeature ORE_ESSENCE_UPPER = PlacementUtils.register("ore_essence_upper", ESSENCE_ORE.placed(OrePlacements.commonOrePlacement(90, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384)))));
     public static final PlacedFeature ORE_ESSENCE_MIDDLE = PlacementUtils.register("ore_essence_middle", ESSENCE_ORE.placed(OrePlacements.commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56)))));

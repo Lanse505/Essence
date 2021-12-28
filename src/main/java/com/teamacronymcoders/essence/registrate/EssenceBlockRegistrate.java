@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.registrate;
 
-import com.hrznstudio.titanium.module.DeferredRegistryHelper;
 import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
@@ -21,19 +20,14 @@ import com.teamacronymcoders.essence.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.util.EssenceTags;
 import com.teamacronymcoders.essence.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.util.tier.EssenceItemTiers;
-import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -45,7 +39,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -68,10 +61,10 @@ public class EssenceBlockRegistrate {
   public static void init() {}
 
   // Tiered Blocks
-  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_BLOCK = essenceBlock(EssenceItemTiers.ESSENCE);
-  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK = essenceBlock(EssenceItemTiers.EMPOWERED_ESSENCE);
-  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_SUPREME_BLOCK = essenceBlock(EssenceItemTiers.SUPREME_ESSENCE);
-  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_DIVINE_BLOCK = essenceBlock(EssenceItemTiers.DIVINE_ESSENCE);
+  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_BLOCK = essenceBlock(EssenceItemTiers.BASIC);
+  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_EMPOWERED_BLOCK = essenceBlock(EssenceItemTiers.EMPOWERED);
+  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_SUPREME_BLOCK = essenceBlock(EssenceItemTiers.SUPREME);
+  public static BlockEntry<EssenceBlock> ESSENCE_INFUSED_METAL_DIVINE_BLOCK = essenceBlock(EssenceItemTiers.DIVINE);
 
   // Bricks
   public static BlockEntry<EssenceBrickBlock> ESSENCE_BRICKS_WHITE = essenceBrickBlock(DyeColor.WHITE);
@@ -113,12 +106,20 @@ public class EssenceBlockRegistrate {
           .item().tab(() -> Essence.CORE_TAB)
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
+
   public static BlockEntry<OreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
-          .block(Material.STONE, OreBlock::new).properties(properties -> properties.strength(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLoot::dropSelf).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE).loot(BlockLoot::dropSelf)
+          .block(Material.STONE, OreBlock::new).properties(properties -> properties.strength(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLoot::dropSelf).lang("Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE)
           .blockstate((context, provider) -> provider.simpleBlock(context.get()))
           .item().tab(() -> Essence.CORE_TAB)
           .model((context, provider) -> provider.blockItem(context)).build()
           .register();
+
+    public static BlockEntry<OreBlock> ESSENCE_ORE_DEEP_SLATE = Essence.ESSENCE_REGISTRATE.object("essence_ore_deepslate")
+            .block(Material.STONE, OreBlock::new).properties(properties -> properties.strength(3.0F, 3.0F).sound(SoundType.STONE)).loot(BlockLoot::dropSelf).lang("Deepslate Essence-Infused Ore").tag(EssenceTags.EssenceBlockTags.ESSENCE_ORE)
+            .blockstate((context, provider) -> provider.simpleBlock(context.get()))
+            .item().tab(() -> Essence.CORE_TAB)
+            .model((context, provider) -> provider.blockItem(context)).build()
+            .register();
 
   // Wood Blocks
   public static BlockEntry<LeavesBlock> ESSENCE_WOOD_LEAVES = Essence.ESSENCE_REGISTRATE.object("essence_wood_leaves")
@@ -229,7 +230,7 @@ public class EssenceBlockRegistrate {
   // Creation Methods
   public static BlockEntry<EssenceBlock> essenceBlock(EssenceItemTiers tier) {
     String name = "essence_infused_block_";
-    String tierType = tier == EssenceItemTiers.ESSENCE ? "" : tier.toString().toLowerCase();
+    String tierType = tier == EssenceItemTiers.BASIC ? "" : tier.toString().toLowerCase();
     String entryName = tierType.equals("") ? name.substring(0, name.length() - 1) : name + tierType.split("_")[0];
     return Essence.ESSENCE_REGISTRATE.object(entryName)
             .block(Material.METAL, properties -> new EssenceBlock(properties, tier))
@@ -308,6 +309,7 @@ public class EssenceBlockRegistrate {
             }).build()
             .register();
   }
+
 
 
 

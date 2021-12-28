@@ -38,7 +38,7 @@ public class SerializableMobRenderer extends BlockEntityWithoutLevelRenderer {
 
   @Override
   public void renderByItem(ItemStack stack, ItemTransforms.TransformType transform, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
-    if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem && stack.getTag() != null) {
+    if (!stack.isEmpty() && stack.getItem() instanceof SerializedEntityItem && stack.getTag() != null && stack.getTag().contains("uuid")) {
       UUID uuid = stack.getTag().getUUID("uuid");
       LivingEntity entity = entityCache.getIfPresent(uuid);
       if (entity != null) {

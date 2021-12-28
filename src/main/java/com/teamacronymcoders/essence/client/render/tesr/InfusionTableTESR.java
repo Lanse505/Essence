@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 public class InfusionTableTESR implements BlockEntityRenderer<InfusionTableBlockEntity> {
 
   public static final ResourceLocation BOOK_TEXTURE = new ResourceLocation(Essence.MOD_ID, "entity/tome_of_knowledge");
-  public static final Material MATERIAL_TEXTURE_BOOK = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(Essence.MOD_ID, "entity/tome_of_knowledge"));
+  public static final Material MATERIAL_TEXTURE_BOOK = new Material(InventoryMenu.BLOCK_ATLAS, BOOK_TEXTURE);
   private final BookModel model;
 
   public InfusionTableTESR(BlockEntityRendererProvider.Context pContext) {

@@ -88,18 +88,18 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
     return lazy.isPresent() ? lazy.map(holder -> {
       Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
-//      ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
-//      boolean successful;
-//      if (optional.isPresent()) {
-//        successful = serializeEntity(serialized, target, true);
-//      } else {
-//        successful = serializeEntity(serialized, target, false);
-//      }
-//      if (successful) {
-//        player.addItem(serialized);
-//        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(hand));
-//      }
-      return true ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+      ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
+      boolean successful;
+      if (optional.isPresent()) {
+        successful = serializeEntity(serialized, target, true);
+      } else {
+        successful = serializeEntity(serialized, target, false);
+      }
+      if (successful) {
+        player.addItem(serialized);
+        stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(hand));
+      }
+      return successful ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }).orElse(InteractionResult.FAIL) : InteractionResult.FAIL;
   }
 
@@ -152,7 +152,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
   @Override
   @ParametersAreNonnullByDefault
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-    addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.ESSENCE);
+    addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.BASIC);
     list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(mode.getLocaleName())));
     if (flag == TooltipFlag.Default.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
       list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
