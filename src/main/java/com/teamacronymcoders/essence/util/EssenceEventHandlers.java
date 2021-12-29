@@ -32,6 +32,7 @@ import com.teamacronymcoders.essence.util.network.message.server.PacketItemStack
 import com.teamacronymcoders.essence.world.generation.ore.EssenceOreFeatures;
 import com.teamacronymcoders.essence.world.generation.tree.EssenceTreeFeatures;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -188,7 +189,7 @@ public class EssenceEventHandlers {
   public static void setupClientEventHandlers() {
     // Atlas Texture Handler
     EventManager.mod(TextureStitchEvent.Pre.class)
-            .filter(stitch -> stitch.getAtlas().getSprite(InventoryMenu.BLOCK_ATLAS) != null )
+            .filter(stitch -> TextureAtlas.LOCATION_BLOCKS.equals(stitch.getAtlas().location()))
             .process(stitch -> {
               stitch.addSprite(InfusionTableTESR.BOOK_TEXTURE);
             }).subscribe();
