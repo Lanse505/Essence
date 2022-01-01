@@ -20,47 +20,47 @@ import java.util.UUID;
 
 public abstract class ItemInteractionCoreModifier extends ItemAttributeModifier {
 
-  public ItemInteractionCoreModifier() {
-    super(1);
-  }
+    public ItemInteractionCoreModifier() {
+        super(1);
+    }
 
-  public ItemInteractionCoreModifier(int maxLevel) {
-    super(maxLevel);
-  }
+    public ItemInteractionCoreModifier(int maxLevel) {
+        super(maxLevel);
+    }
 
-  public ItemInteractionCoreModifier(int maxLevel, int minLevel) {
-    super(maxLevel, minLevel);
-  }
+    public ItemInteractionCoreModifier(int maxLevel, int minLevel) {
+        super(maxLevel, minLevel);
+    }
 
-  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
-    super(attribute, identifier, uuid, amount, operation);
-  }
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, AttributeModifier.Operation operation) {
+        super(attribute, identifier, uuid, amount, operation);
+    }
 
-  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
-    super(attribute, identifier, uuid, amount, maxLevel, operation);
-  }
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, AttributeModifier.Operation operation) {
+        super(attribute, identifier, uuid, amount, maxLevel, operation);
+    }
 
-  public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
-    super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
-  }
+    public ItemInteractionCoreModifier(Attribute attribute, String identifier, UUID uuid, double amount, int maxLevel, int minLevel, AttributeModifier.Operation operation) {
+        super(attribute, identifier, uuid, amount, maxLevel, minLevel, operation);
+    }
 
-  public InteractionResult onItemUse(UseOnContext context, ModifierInstance instance) {
-    return InteractionResult.PASS;
-  }
+    public InteractionResult onItemUse(UseOnContext context, ModifierInstance instance) {
+        return InteractionResult.PASS;
+    }
 
-  public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance instance) {
-    return false;
-  }
+    public boolean onHitEntity(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance instance) {
+        return false;
+    }
 
-  public boolean onBlockDestroyed(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
-    return false;
-  }
+    public boolean onBlockDestroyed(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+        return false;
+    }
 
-  public void onInventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
-  }
+    public void onInventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+    }
 
-  public List<ItemStack> onShearedAltered(ItemStack stack, @Nullable Player player, LivingEntity sheared, InteractionHand hand, List<ItemStack> stackList, ModifierInstance instance) {
-    return stackList;
-  }
+    public List<ItemStack> onShearedAltered(ItemStack stack, @Nullable Player player, LivingEntity sheared, InteractionHand hand, List<ItemStack> stackList, ModifierInstance instance) {
+        return stackList;
+    }
 
 }

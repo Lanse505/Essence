@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:birch_log",
+  "to": {
+    "block": "minecraft:stripped_birch_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

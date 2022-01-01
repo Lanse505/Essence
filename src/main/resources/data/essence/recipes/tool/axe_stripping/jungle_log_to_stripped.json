@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:jungle_log",
+  "to": {
+    "block": "minecraft:stripped_jungle_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

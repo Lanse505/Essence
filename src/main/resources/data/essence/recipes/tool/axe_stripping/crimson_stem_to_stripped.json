@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:crimson_stem",
+  "to": {
+    "block": "minecraft:stripped_crimson_stem",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

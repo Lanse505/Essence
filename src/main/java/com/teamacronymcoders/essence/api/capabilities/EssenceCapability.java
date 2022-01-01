@@ -6,5 +6,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class EssenceCapability {
-  public static Capability<IKnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<IKnowledgeHolder> KNOWLEDGE = CapabilityManager.get(new CapabilityToken<>() {
+    });
 }

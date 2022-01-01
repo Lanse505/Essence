@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:oak_wood",
+  "to": {
+    "block": "minecraft:stripped_oak_wood",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

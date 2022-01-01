@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:oak_log",
+  "to": {
+    "block": "minecraft:stripped_oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

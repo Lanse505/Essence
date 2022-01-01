@@ -1,0 +1,41 @@
+{
+  "modifiers": [
+    {
+      "modifier": "essence:strengthened_sharpness",
+      "level": 1,
+      "compound": "{}",
+      "operation": "add"
+    }
+  ],
+  "infusable": {
+    "item": "essence:essence_sword"
+  },
+  "inputIngredients": [
+    {
+      "tag": "forge:gems/quartz"
+    },
+    {
+      "tag": "forge:gems/quartz"
+    },
+    {
+      "tag": "forge:gems/quartz"
+    },
+    {
+      "tag": "forge:gems/quartz"
+    },
+    {
+      "tag": "essence:infused_ingot"
+    },
+    {
+      "tag": "essence:infused_ingot"
+    },
+    {
+      "tag": "essence:infused_ingot"
+    },
+    {
+      "tag": "essence:infused_ingot"
+    }
+  ],
+  "duration": 100,
+  "type": "essence:infusion/infusion_modifier"
+}

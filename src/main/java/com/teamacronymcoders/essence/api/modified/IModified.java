@@ -5,16 +5,16 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import java.util.List;
 
 public interface IModified {
-  void addModifierWithoutIncreasingAdditional(int increase);
+    void addModifierWithoutIncreasingAdditional(int increase);
 
-  void increaseFreeModifiers(int increase);
+    void increaseFreeModifiers(int increase);
 
-  boolean decreaseFreeModifiers(int decrease);
+    boolean decreaseFreeModifiers(int decrease);
 
-  int getFreeModifiers();
+    int getFreeModifiers();
 
-  int getMaxModifiers();
+    int getMaxModifiers();
 
-  boolean recheck(List<ModifierInstance> instances);
+    boolean recheck(List<ModifierInstance> instances);
 
 }

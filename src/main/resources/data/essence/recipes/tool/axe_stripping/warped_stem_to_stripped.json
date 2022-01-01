@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:warped_stem",
+  "to": {
+    "block": "minecraft:stripped_warped_stem",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}

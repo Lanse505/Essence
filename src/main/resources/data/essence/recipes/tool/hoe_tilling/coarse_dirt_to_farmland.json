@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:coarse_dirt",
+  "to": {
+    "block": "minecraft:farmland",
+    "properties": {
+      "moisture": "0"
+    }
+  },
+  "type": "essence:tool/hoe_tilling"
+}

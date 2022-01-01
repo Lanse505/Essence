@@ -11,68 +11,68 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class ItemCoreModifier extends Modifier {
 
-  private static final Multimap<Attribute, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
+    private static final Multimap<Attribute, AttributeModifier> EMPTY_ATTRIBUTE_MAP = HashMultimap.create();
 
-  public ItemCoreModifier() {
-    super();
-  }
+    public ItemCoreModifier() {
+        super();
+    }
 
-  public ItemCoreModifier(int maxLevel) {
-    super(maxLevel);
-  }
+    public ItemCoreModifier(int maxLevel) {
+        super(maxLevel);
+    }
 
-  public ItemCoreModifier(int minLevel, int maxLevel) {
-    super(minLevel, maxLevel);
-  }
+    public ItemCoreModifier(int minLevel, int maxLevel) {
+        super(minLevel, maxLevel);
+    }
 
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, ModifierInstance instance) {
-    return EMPTY_ATTRIBUTE_MAP;
-  }
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, LivingEntity wielder, ModifierInstance instance) {
+        return EMPTY_ATTRIBUTE_MAP;
+    }
 
-  public int getModifiedDurability(ItemStack stack, ModifierInstance instance, int base) {
-    return 0;
-  }
+    public int getModifiedDurability(ItemStack stack, ModifierInstance instance, int base) {
+        return 0;
+    }
 
-  public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
-    return 0;
-  }
+    public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
+        return 0;
+    }
 
-  public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance instance, int base) {
-    return 0;
-  }
+    public int getModifiedHarvestLevel(ItemStack stack, ModifierInstance instance, int base) {
+        return 0;
+    }
 
-  @Override
-  public boolean canApplyOnObject() {
-    return false;
-  }
+    @Override
+    public boolean canApplyOnObject() {
+        return false;
+    }
 
-  public boolean canApplyOnObject(ItemStack stack) {
-    return canApplyOnObject();
-  }
+    public boolean canApplyOnObject(ItemStack stack) {
+        return canApplyOnObject();
+    }
 
-  @Override
-  public boolean countsTowardsLimit(int level) {
-    return true;
-  }
+    @Override
+    public boolean countsTowardsLimit(int level) {
+        return true;
+    }
 
-  public boolean countsTowardsLimit(int level, ItemStack stack) {
-    return countsTowardsLimit(level);
-  }
+    public boolean countsTowardsLimit(int level, ItemStack stack) {
+        return countsTowardsLimit(level);
+    }
 
-  @Override
-  public int getModifierCountValue(int level) {
-    return 1;
-  }
+    @Override
+    public int getModifierCountValue(int level) {
+        return 1;
+    }
 
-  public int getModifierCountValue(int level, ItemStack stack) {
-    return getModifierCountValue(level);
-  }
+    public int getModifierCountValue(int level, ItemStack stack) {
+        return getModifierCountValue(level);
+    }
 
-  public int getMinLevel(ItemStack stack) {
-    return getMinLevel();
-  }
+    public int getMinLevel(ItemStack stack) {
+        return getMinLevel();
+    }
 
-  public int getMaxLevel(ItemStack stack) {
-    return getMaxLevel();
-  }
+    public int getMaxLevel(ItemStack stack) {
+        return getMaxLevel();
+    }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "essence:item/decoder_slingshot",
+  "textures": {
+    "layer0": "essence:item/decoder_slingshot_pulling_2"
+  }
+}

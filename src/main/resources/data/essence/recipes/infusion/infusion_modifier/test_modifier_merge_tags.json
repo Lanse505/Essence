@@ -1,0 +1,53 @@
+{
+  "modifiers": [
+    {
+      "modifier": "essence:brewed",
+      "level": 1,
+      "compound": "{Effects:[{Ambient:0b,Amplifier:5b,CurativeItems:[{Count:1b,id:\"minecraft:milk_bucket\"}],Duration:600,Id:12b,ShowIcon:1b,ShowParticles:1b}]}",
+      "operation": "merge_tags"
+    }
+  ],
+  "infusable": {
+    "item": "essence:essence_bow"
+  },
+  "inputIngredients": [
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:fire_resistance\"}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:fire_resistance\"}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:fire_resistance\"}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:fire_resistance\"}"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    }
+  ],
+  "duration": 100,
+  "type": "essence:infusion/infusion_modifier"
+}

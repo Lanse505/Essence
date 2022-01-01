@@ -13,25 +13,25 @@ import javax.annotation.Nullable;
 
 public class KnowledgeProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
 
-  private final IKnowledgeHolder knowledgeHolder = new KnowledgeHolder();
-  private final LazyOptional<IKnowledgeHolder> optional = LazyOptional.of(() -> knowledgeHolder);
+    private final IKnowledgeHolder knowledgeHolder = new KnowledgeHolder();
+    private final LazyOptional<IKnowledgeHolder> optional = LazyOptional.of(() -> knowledgeHolder);
 
-  @Nonnull
-  @Override
-  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-    if (cap == EssenceCapability.KNOWLEDGE) {
-      return optional.cast();
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == EssenceCapability.KNOWLEDGE) {
+            return optional.cast();
+        }
+        return LazyOptional.empty();
     }
-    return LazyOptional.empty();
-  }
 
-  @Override
-  public CompoundTag serializeNBT() {
-    return knowledgeHolder.serializeNBT();
-  }
+    @Override
+    public CompoundTag serializeNBT() {
+        return knowledgeHolder.serializeNBT();
+    }
 
-  @Override
-  public void deserializeNBT(CompoundTag nbt) {
-    knowledgeHolder.deserializeNBT(nbt);
-  }
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        knowledgeHolder.deserializeNBT(nbt);
+    }
 }

@@ -1,0 +1,10 @@
+{
+  "from": {
+    "entityType": "minecraft:horse"
+  },
+  "to": {
+    "entityType": "minecraft:zombie_horse"
+  },
+  "lootTableReference": "essence:entities/shearing/shearing_horse",
+  "type": "essence:tool/essence_shearing"
+}

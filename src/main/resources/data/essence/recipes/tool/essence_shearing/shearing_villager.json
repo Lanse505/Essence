@@ -1,0 +1,10 @@
+{
+  "from": {
+    "entityType": "minecraft:villager"
+  },
+  "to": {
+    "entityType": "minecraft:zombie"
+  },
+  "lootTableReference": "essence:entities/shearing/shearing_villager",
+  "type": "essence:tool/essence_shearing"
+}

@@ -24,91 +24,91 @@ import java.util.List;
 
 public class ShovelPathingRecipe extends SerializableRecipe {
 
-  public static GenericSerializer<ShovelPathingRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "shovel_pathing"), ShovelPathingRecipe.class);
-  public static List<ShovelPathingRecipe> RECIPES = new ArrayList<>();
+    public static GenericSerializer<ShovelPathingRecipe> SERIALIZER = new GenericSerializer<>(new ResourceLocation(Essence.MOD_ID, "tool/shovel_pathing"), ShovelPathingRecipe.class);
+    public static List<ShovelPathingRecipe> RECIPES = new ArrayList<>();
 
-  static {
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "dirt_to_path"), Blocks.DIRT, Blocks.DIRT_PATH.defaultBlockState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "coarse_dirt_to_path"), Blocks.COARSE_DIRT, Blocks.DIRT_PATH.defaultBlockState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "grass_to_path"), Blocks.GRASS_BLOCK, Blocks.DIRT_PATH.defaultBlockState()));
-    RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "podzol_to_path"), Blocks.PODZOL, Blocks.DIRT_PATH.defaultBlockState()));
-  }
-
-  public Block from;
-  public BlockState to;
-
-  public ShovelPathingRecipe(ResourceLocation resourceLocation) {
-    super(resourceLocation);
-  }
-
-  public ShovelPathingRecipe(ResourceLocation resourceLocation, Block from, BlockState to) {
-    super(resourceLocation);
-    this.from = from;
-    this.to = to;
-  }
-
-  @Override
-  public boolean matches(Container container, Level level) {
-    return false;
-  }
-
-  @Override
-  public ItemStack assemble(Container container) {
-    return ItemStack.EMPTY;
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return false;
-  }
-
-  @Override
-  public ItemStack getResultItem() {
-    return ItemStack.EMPTY;
-  }
-
-  @Override
-  public GenericSerializer<? extends SerializableRecipe> getSerializer() {
-    return SERIALIZER;
-  }
-
-  @Override
-  public RecipeType<?> getType() {
-    return SERIALIZER.getRecipeType();
-  }
-
-  public boolean matches(Block block) {
-    return block == from;
-  }
-
-  public InteractionResult resolveRecipe(UseOnContext context) {
-    Level world = context.getLevel();
-    BlockPos blockpos = context.getClickedPos();
-    Player player = context.getPlayer();
-    ItemStack stack = context.getItemInHand();
-    if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above())) {
-      if (to != null) {
-        world.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-        if (!world.isClientSide()) {
-          // If the state is unchanged after firing the forge hook then use the recipe provided state
-          world.setBlock(blockpos, to, Block.UPDATE_ALL_IMMEDIATE);
-          if (player != null) {
-            stack.hurtAndBreak(1, player, (playerIn) -> {
-              playerIn.broadcastBreakEvent(context.getHand());
-            });
-          }
-          return InteractionResult.SUCCESS;
-        }
-      }
+    static {
+        RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "dirt_to_path"), Blocks.DIRT, Blocks.DIRT_PATH.defaultBlockState()));
+        RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "coarse_dirt_to_path"), Blocks.COARSE_DIRT, Blocks.DIRT_PATH.defaultBlockState()));
+        RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "grass_to_path"), Blocks.GRASS_BLOCK, Blocks.DIRT_PATH.defaultBlockState()));
+        RECIPES.add(new ShovelPathingRecipe(new ResourceLocation(Essence.MOD_ID, "podzol_to_path"), Blocks.PODZOL, Blocks.DIRT_PATH.defaultBlockState()));
     }
-    return InteractionResult.PASS;
-  }
 
-  public Block getFrom() {
-    return from;
-  }
+    public Block from;
+    public BlockState to;
 
-  public BlockState getTo() {
-    return to;
-  }
+    public ShovelPathingRecipe(ResourceLocation resourceLocation) {
+        super(resourceLocation);
+    }
+
+    public ShovelPathingRecipe(ResourceLocation resourceLocation, Block from, BlockState to) {
+        super(resourceLocation);
+        this.from = from;
+        this.to = to;
+    }
+
+    @Override
+    public boolean matches(Container container, Level level) {
+        return false;
+    }
+
+    @Override
+    public ItemStack assemble(Container container) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public GenericSerializer<? extends SerializableRecipe> getSerializer() {
+        return SERIALIZER;
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return SERIALIZER.getRecipeType();
+    }
+
+    public boolean matches(Block block) {
+        return block == from;
+    }
+
+    public InteractionResult resolveRecipe(UseOnContext context) {
+        Level world = context.getLevel();
+        BlockPos blockpos = context.getClickedPos();
+        Player player = context.getPlayer();
+        ItemStack stack = context.getItemInHand();
+        if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above())) {
+            if (to != null) {
+                world.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+                if (!world.isClientSide()) {
+                    // If the state is unchanged after firing the forge hook then use the recipe provided state
+                    world.setBlock(blockpos, to, Block.UPDATE_ALL_IMMEDIATE);
+                    if (player != null) {
+                        stack.hurtAndBreak(1, player, (playerIn) -> {
+                            playerIn.broadcastBreakEvent(context.getHand());
+                        });
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    public Block getFrom() {
+        return from;
+    }
+
+    public BlockState getTo() {
+        return to;
+    }
 }

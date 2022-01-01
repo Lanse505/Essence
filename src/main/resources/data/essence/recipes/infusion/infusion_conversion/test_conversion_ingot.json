@@ -1,0 +1,25 @@
+{
+  "output": {
+    "item": "essence:essence_ingot",
+    "count": 1
+  },
+  "duration": 100,
+  "infusable": {
+    "tag": "forge:ingots/iron"
+  },
+  "inputIngredients": [
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    }
+  ],
+  "type": "essence:infusion/infusion_conversion"
+}

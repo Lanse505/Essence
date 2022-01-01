@@ -1,0 +1,10 @@
+{
+  "from": {
+    "entityType": "minecraft:zombie"
+  },
+  "to": {
+    "entityType": "minecraft:skeleton"
+  },
+  "lootTableReference": "essence:entities/shearing/shearing_zombie",
+  "type": "essence:tool/essence_shearing"
+}

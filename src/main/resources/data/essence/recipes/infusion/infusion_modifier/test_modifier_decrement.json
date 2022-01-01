@@ -1,0 +1,41 @@
+{
+  "modifiers": [
+    {
+      "modifier": "essence:strengthened_sharpness",
+      "level": 1,
+      "compound": "{}",
+      "operation": "increment"
+    }
+  ],
+  "infusable": {
+    "item": "essence:essence_sword"
+  },
+  "inputIngredients": [
+    {
+      "tag": "forge:gems/prismarine"
+    },
+    {
+      "tag": "forge:gems/prismarine"
+    },
+    {
+      "tag": "forge:gems/prismarine"
+    },
+    {
+      "tag": "forge:gems/prismarine"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    },
+    {
+      "tag": "essence:infused_ingot_empowered"
+    }
+  ],
+  "duration": 100,
+  "type": "essence:infusion/infusion_modifier"
+}

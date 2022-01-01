@@ -1,6 +1,6 @@
 # TODO:
 
-## Infusion:
+## Infusion [Priority 1]:
     - Recipes:
         - Input -> Output                   [InfusionRecipeConversion]
         - Input -> Input + Added Modifier   [InfusionRecipeModifier]
@@ -11,7 +11,7 @@
         - Finish off and Test Infusion Crafting Sound.
         - Figure out how to best implement the "Page-Turning" sound with the Animation.
 
-## Infusable Machines:
+## Infusable Machines [Priority 3]:
     - Furnace:
         - Smelts Items like a normal furnace.
             - Can be Infused to allow for more operational properties.
@@ -34,7 +34,7 @@
                 - Can be Infused to run off Fluids.
                 - Can be Infused to be more efficient.
                 
-## Tools of Power:
+## Tools of Power: [Priority 2]
     - Essence-Infused Backpack
     - Scepter of Influence:
         - Turns into different usable items depending on how it's Infused
@@ -46,6 +46,6 @@
     - Ring of Influence:
         - Provides differing activatable & passive effects.
 
-## Compat
+## Compat [Priority 2]
     - Curio Compat
         - Talisman of Influence [Necklace, Misc]

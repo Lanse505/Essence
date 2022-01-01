@@ -8,36 +8,36 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SerializableModifier {
-  public Modifier modifier;
-  public int level;
-  public CompoundTag modifierData;
-  public InfusionOperation operation;
+    public Modifier modifier;
+    public int level;
+    public CompoundTag modifierData;
+    public InfusionOperation operation;
 
-  public SerializableModifier(Modifier modifier, int level, CompoundTag modifierData, InfusionOperation operation) {
-    this.modifier = modifier;
-    this.level = level;
-    this.modifierData = modifierData;
-    this.operation = operation;
-  }
+    public SerializableModifier(Modifier modifier, int level, CompoundTag modifierData, InfusionOperation operation) {
+        this.modifier = modifier;
+        this.level = level;
+        this.modifierData = modifierData;
+        this.operation = operation;
+    }
 
-  public static List<SerializableModifier> getSerializableModifiers(SerializableModifier... modifiers) {
-    return new ArrayList<>(Arrays.asList(modifiers));
-  }
+    public static SerializableModifier[] getSerializableModifiers(SerializableModifier... modifiers) {
+        return modifiers;
+    }
 
-  public Modifier getModifier() {
-    return modifier;
-  }
+    public Modifier getModifier() {
+        return modifier;
+    }
 
-  public int getLevel() {
-    return level;
-  }
+    public int getLevel() {
+        return level;
+    }
 
-  public CompoundTag getModifierData() {
-    return modifierData;
-  }
+    public CompoundTag getModifierData() {
+        return modifierData;
+    }
 
-  public InfusionOperation getOperation() {
-    return operation;
-  }
+    public InfusionOperation getOperation() {
+        return operation;
+    }
 
 }

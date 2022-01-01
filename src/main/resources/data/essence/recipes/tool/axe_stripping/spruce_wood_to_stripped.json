@@ -1,0 +1,10 @@
+{
+  "from": "minecraft:spruce_wood",
+  "to": {
+    "block": "minecraft:stripped_spruce_wood",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "type": "essence:tool/axe_stripping"
+}
