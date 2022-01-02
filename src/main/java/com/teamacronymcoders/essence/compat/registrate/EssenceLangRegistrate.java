@@ -185,6 +185,7 @@ public class EssenceLangRegistrate {
         addModifier(provider, SILK_TOUCH_MODIFIER.get(), "Silk Touch");
         addModifier(provider, UNBREAKING_MODIFIER.get(), "Unbreaking");
         addModifier(provider, SOAKED_MODIFIER.get(), "Soaked");
+        addModifier(provider, ENDERIC_MODIFIER.get(), "Enderic");
     }
 
     private static void addMisc(RegistrateLangProvider provider) {

@@ -4,6 +4,7 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import com.teamacronymcoders.essence.common.modifier.curio.attribute.*;
 import com.teamacronymcoders.essence.common.modifier.item.arrow.BrewedModifier;
+import com.teamacronymcoders.essence.common.modifier.item.arrow.EndericModifier;
 import com.teamacronymcoders.essence.common.modifier.item.arrow.KeenModifier;
 import com.teamacronymcoders.essence.common.modifier.item.arrow.SoakedModifier;
 import com.teamacronymcoders.essence.common.modifier.item.cosmetic.EnchantedModifier;
@@ -36,6 +37,7 @@ public class EssenceModifierRegistrate {
     public static final RegistryEntry<BrewedModifier> BREWED_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("brewed", Modifier.class, BrewedModifier::new);
     public static final RegistryEntry<KeenModifier> KEEN_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("keen", Modifier.class, KeenModifier::new);
     public static final RegistryEntry<SoakedModifier> SOAKED_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("soaked", Modifier.class, SoakedModifier::new);
+    public static final RegistryEntry<EndericModifier> ENDERIC_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("enderic", Modifier.class, EndericModifier::new);
 
     public static final RegistryEntry<ArmorModifier> ARMOR_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("armor", Modifier.class, ArmorModifier::new);
     public static final RegistryEntry<ArmorToughnessModifier> ARMOR_TOUGHNESS_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("armor_toughness", Modifier.class, ArmorToughnessModifier::new);

@@ -96,6 +96,14 @@ public class EssenceItemRegistrate {
             .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_experience")))
             .register();
 
+    // Misc
+    public static ItemEntry<Item> FELINIUM_JAMINITE_INGOT = Essence.ESSENCE_REGISTRATE.object("felinium_jaminite_ingot")
+            .item(Item::new).properties(Item.Properties::fireResistant)
+            .lang("Felinium Jaminite Ingot")
+            .model((context, provider) -> provider.withExistingParent(context.getId().getPath(), new ResourceLocation(Essence.MOD_ID, "item/essence_nugget")))
+            .tab(() -> Essence.CORE_TAB)
+            .register();
+
     // Tools
     // MISC
     public static FoodProperties CRAFTING_COOKIE_FOOD = new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().build();
