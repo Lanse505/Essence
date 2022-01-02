@@ -1,14 +1,16 @@
 package com.teamacronymcoders.essence.common.item.wrench;
 
 public enum WrenchModeEnum {
-    SERIALIZE("essence.mode.wrench.serialize"),
-    ROTATE("essence.mode.wrench.rotate"),
-    TRIGGER("essence.mode.wrench.trigger");
+    SERIALIZE("serialize", "essence.mode.wrench.serialize"),
+    ROTATE("rotate", "essence.mode.wrench.rotate"),
+    TRIGGER("trigger", "essence.mode.wrench.trigger");
 
     public static final WrenchModeEnum[] VALUES = new WrenchModeEnum[]{SERIALIZE, ROTATE, TRIGGER};
+    private final String name;
     private final String localeName;
 
-    WrenchModeEnum(String localeName) {
+    WrenchModeEnum(String name, String localeName) {
+        this.name = name;
         this.localeName = localeName;
     }
 
@@ -20,6 +22,20 @@ public enum WrenchModeEnum {
         } else {
             return VALUES[0];
         }
+    }
+
+    public static WrenchModeEnum byName(String input) {
+        WrenchModeEnum mode;
+        switch (input) {
+            default ->  mode = WrenchModeEnum.SERIALIZE;
+            case "rotate" -> mode = WrenchModeEnum.ROTATE;
+            case "trigger" ->  mode = WrenchModeEnum.TRIGGER;
+        }
+        return mode;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getLocaleName() {

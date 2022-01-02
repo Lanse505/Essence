@@ -102,6 +102,7 @@ public class EssenceTagRegistrate {
             provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.CASCADING_VEIN).addTag(Tags.Blocks.ORES.getName(), Essence.MOD_ID);
             provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.CASCADING_LUMBER).addTag(BlockTags.LOGS.getName(), Essence.MOD_ID);
             provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.CASCADING_EXCAVATION).addTag(Tags.Blocks.DIRT.getName(), Essence.MOD_ID).addTag(Tags.Blocks.SAND.getName(), Essence.MOD_ID).addTag(Tags.Blocks.GRAVEL.getName(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.END_STONE_REPLACEABLE).addElement(Blocks.END_STONE.getRegistryName(), Essence.MOD_ID);
             Tag.Builder blacklist = provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST);
             for (Block block : blacklistedBlocks) {
                 ResourceLocation rl = block.getRegistryName();

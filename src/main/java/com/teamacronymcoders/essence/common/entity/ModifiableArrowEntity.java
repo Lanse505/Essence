@@ -234,13 +234,10 @@ public class ModifiableArrowEntity extends Arrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         Entity shooter = this.getOwner();
-        if (EssenceItemstackModifierHelpers.hasSoakedModifier(bowStack)) {
-            bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)).ifPresent(instances -> instances.forEach(instance -> {
-                //LOGGER.info("This is a test logger message");
-                ItemArrowCoreModifier modifier = (ItemArrowCoreModifier) instance.getModifier();
-                modifier.onCollide(bowStack, this, (Player) shooter, result, instance);
-            }));
-        }
+        bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)).ifPresent(instances -> instances.forEach(instance -> {
+            ItemArrowCoreModifier modifier = (ItemArrowCoreModifier) instance.getModifier();
+            modifier.onCollide(bowStack, this, (Player) shooter, result, instance);
+        }));
     }
 
     @Override

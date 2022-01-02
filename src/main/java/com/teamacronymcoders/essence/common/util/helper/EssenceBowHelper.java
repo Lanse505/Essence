@@ -31,7 +31,7 @@ public class EssenceBowHelper {
 
     public static final String TAG_EFFECTS = "Effects";
 
-    public static AbstractArrow getArrowEntity(Level level, ItemStack bow, ItemStack arrow, Player player, float arrowVelocity) {
+    public static ModifiableArrowEntity getArrowEntity(Level level, ItemStack bow, ItemStack arrow, Player player, float arrowVelocity) {
         final List<ModifierInstance> instances = bow.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
 
         // Flag for if the Bow has Modifiers && has Infinity

@@ -7,6 +7,7 @@ import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
@@ -127,12 +128,12 @@ public class EssenceBow extends BowItem implements IModifiedTool {
                 if (!((double) f < 0.1D)) {
                     boolean flag1 = player.getAbilities().instabuild || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
                     if (!level.isClientSide()) {
-                        AbstractArrow abstractarrowentity = EssenceBowHelper.getArrowEntity(level, bow, arrow, player, f);
-                        EssenceBowHelper.modifyArrowEntityWithEnchantments(abstractarrowentity, bow);
+                        ModifiableArrowEntity modifiableArrowEntity = EssenceBowHelper.getArrowEntity(level, bow, arrow, player, f);
+                        EssenceBowHelper.modifyArrowEntityWithEnchantments(modifiableArrowEntity, bow);
                         bow.hurtAndBreak(1, player, (entity) -> {
                             entity.broadcastBreakEvent(player.getUsedItemHand());
                         });
-                        level.addFreshEntity(abstractarrowentity);
+                        level.addFreshEntity(modifiableArrowEntity);
                     }
                     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (Essence.RANDOM.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                     if (!flag1 && !player.getAbilities().instabuild) {

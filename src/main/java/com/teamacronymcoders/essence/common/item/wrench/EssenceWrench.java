@@ -3,14 +3,13 @@ package com.teamacronymcoders.essence.common.item.wrench;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modified.IModifiedTool;
 import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
 import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
 import com.teamacronymcoders.essence.common.item.wrench.config.BlockSerializationEnum;
 import com.teamacronymcoders.essence.common.item.wrench.config.EntitySerializationEnum;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.EfficiencyModifier;
-import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.common.util.EssenceStats;
 import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceBlockTags;
@@ -19,6 +18,7 @@ import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.common.util.tier.EssenceItemTiers;
+import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
@@ -53,6 +53,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -62,14 +63,12 @@ import java.util.UUID;
 
 public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
 
-    private WrenchModeEnum mode;
     private final int baseModifiers = 1;
     private int freeModifiers;
     private final int additionalModifiers = 0;
 
     public EssenceWrench(Properties properties) {
         super(properties);
-        this.mode = WrenchModeEnum.SERIALIZE;
         this.freeModifiers = 1;
     }
 
@@ -81,7 +80,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @Override
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+    public @NotNull InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         if (target.getLevel().isClientSide()) {
             return InteractionResult.FAIL;
         }
@@ -116,8 +115,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
             return InteractionResult.PASS;
         }
 
-        if (player != null) {
-            if (mode == WrenchModeEnum.SERIALIZE && (state.getProperties().size() > 0 || state.hasBlockEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.is(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.is(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.is(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (be != null && (!be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPistonPushReaction().equals(PushReaction.BLOCK))) {
+        if (player != null && stack.getTag() != null) {
+            if (stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName()) && (state.getProperties().size() > 0 || state.hasBlockEntity()) && ((((config == BlockSerializationEnum.BLACKLIST ? !state.is(EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST) : state.is(EssenceBlockTags.FORGE_MOVEABLE_WHITELIST)) && !state.is(EssenceBlockTags.RELOCATION_NOT_SUPPORTED)) || (be != null && (!be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.IMMOVABLE) && !be.getType().isIn(EssenceTags.EssenceTileEntityTypeTags.RELOCATION_NOT_SUPPORTED)))) && !state.getPistonPushReaction().equals(PushReaction.BLOCK))) {
                 ItemStack drop = new ItemStack(state.getBlock());
                 CompoundTag stateNBT = new CompoundTag();
                 state.getProperties().forEach(iProperty -> stateNBT.putString(iProperty.getName(), getStatePropertyValue(state, iProperty)));
@@ -137,7 +136,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
                 return InteractionResult.SUCCESS;
             }
 
-            if (mode == WrenchModeEnum.ROTATE) {
+            if (stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.ROTATE.getName())) {
                 if (EssenceInformationHelper.isSneakKeyDown()) {
                     state.rotate(world, pos, Rotation.CLOCKWISE_180);
                 }
@@ -153,8 +152,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
         addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.BASIC);
-        list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(mode.getLocaleName())));
-        if (flag == TooltipFlag.Default.ADVANCED && mode == WrenchModeEnum.SERIALIZE) {
+        if (stack.getTag() != null && stack.getTag().contains("wrench_mode")) list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
+        if (stack.getTag() != null && flag == TooltipFlag.Default.ADVANCED && stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName())) {
             list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             list.add(new TranslatableComponent("essence.wrench.disclaimer_message"));
         }
@@ -208,18 +207,36 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         return nbt;
     }
 
-    public WrenchModeEnum getMode() {
-        return mode;
+    public WrenchModeEnum getMode(ItemStack stack) {
+        return stack.getTag() != null && stack.getTag().contains("wrench_mode") ? WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")) : WrenchModeEnum.SERIALIZE;
     }
 
-    public void setMode(WrenchModeEnum mode) {
-        this.mode = mode;
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level pLevel, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected) {
+        super.inventoryTick(stack, pLevel, pEntity, pSlotId, pIsSelected);
+        if (pIsSelected) {
+            CompoundTag tag;
+            if (stack.getTag() == null) {
+                tag = stack.getOrCreateTag();
+                tag.putString("wrench_mode", WrenchModeEnum.SERIALIZE.getName());
+            }
+        }
+    }
+
+    public void setMode(ItemStack stack, WrenchModeEnum mode) {
+        CompoundTag tag;
+        if (stack.getTag() != null) {
+            tag = stack.getTag();
+        } else {
+            tag = stack.getOrCreateTag();
+        }
+        tag.putString("wrench_mode", mode.getName());
     }
 
     @Override
     public void handlePacketData(LevelAccessor accessor, ItemStack stack, FriendlyByteBuf packetBuffer) {
         if (!accessor.isClientSide()) {
-            setMode(packetBuffer.readEnum(WrenchModeEnum.class));
+            setMode(stack, packetBuffer.readEnum(WrenchModeEnum.class));
         }
     }
 

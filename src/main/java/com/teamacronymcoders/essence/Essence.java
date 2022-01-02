@@ -7,6 +7,8 @@ import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.common.util.helper.EssenceJsonHelper;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
+import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFeatures;
 import com.teamacronymcoders.essence.server.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.server.command.argument.EssenceKnowledgeArgumentType;
 import com.teamacronymcoders.essence.server.command.argument.EssenceModifierArgumentType;
@@ -156,11 +158,15 @@ public class Essence extends ModuleController {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new EmptyArgumentSerializer<>(EssenceHandArgumentType::new));
-        ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new EmptyArgumentSerializer<>(EssenceModifierArgumentType::new));
-        ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new EmptyArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
-        EssenceConditions.MATCH_MODIFIER = LootItemConditions.register("essence:match_modifier", new MatchModifier.ModifierSerializer());
-        EssenceDispenseBehaviours.init();
+        event.enqueueWork(() -> {
+            ArgumentTypes.register("essence_hand", EssenceEnumArgumentType.class, new EmptyArgumentSerializer<>(EssenceHandArgumentType::new));
+            ArgumentTypes.register("essence_modifier", EssenceModifierArgumentType.class, new EmptyArgumentSerializer<>(EssenceModifierArgumentType::new));
+            ArgumentTypes.register("essence_knowledge", EssenceKnowledgeArgumentType.class, new EmptyArgumentSerializer<>(EssenceKnowledgeArgumentType::new));
+            EssenceConditions.MATCH_MODIFIER = LootItemConditions.register("essence:match_modifier", new MatchModifier.ModifierSerializer());
+            EssenceDispenseBehaviours.init();
+            EssenceOreGenRegistration.registerWorldGen();
+            new EssenceTreeFeatures();
+        });
     }
 
     private void addAttributes(final EntityAttributeCreationEvent event) {

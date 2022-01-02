@@ -13,6 +13,8 @@ import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssencePlacedFeatures;
 import com.teamacronymcoders.essence.server.command.EssenceCommands;
 import com.teamacronymcoders.essence.common.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.common.item.tome.experience.TomeOfExperienceItem;
@@ -30,7 +32,6 @@ import com.teamacronymcoders.essence.common.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.network.message.server.PacketItemStack;
-import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreFeatures;
 import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFeatures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -167,22 +168,33 @@ public class EssenceEventHandlers {
                     EssenceTreeGenConfig treeGenConfig = EssenceWorldGenConfig.getTreeGenConfig();
                     List<Supplier<PlacedFeature>> oregen = biome.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
                     List<Supplier<PlacedFeature>> vegetation = biome.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
-                    if (oreGenConfig.getEssenceOre().getShouldGenerate().get()) {
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_SMALL);
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_MIDDLE);
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_UPPER);
-                    }
-                    if (oreGenConfig.getEssenceCrystalOre().getShouldGenerate().get()) {
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_CRYSTAL_SMALL);
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_CRYSTAL_MIDDLE);
-                        oregen.add(() -> EssenceOreFeatures.ORE_ESSENCE_CRYSTAL_UPPER);
-                    }
-                    if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) {
-                        vegetation.add(() -> EssenceTreeFeatures.NORMAL_ESSENCE_TREE_FEATURE_PLACED);
-                    }
-                    if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) {
-                        vegetation.add(() -> EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE_PLACED);
-                    }
+                    EssencePlacedFeatures placed = EssenceOreGenRegistration.placed;
+
+                    if (oreGenConfig.getEssenceOreUpper().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_UPPER);
+                    if (oreGenConfig.getEssenceOreMiddle().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_MIDDLE);
+                    if (oreGenConfig.getEssenceOreSmall().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_SMALL);
+
+                    if (oreGenConfig.getEssenceCrystalOreUpper().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_UPPER);
+                    if (oreGenConfig.getEssenceCrystalOreMiddle().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_MIDDLE);
+                    if (oreGenConfig.getEssenceCrystalOreSmall().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_SMALL);
+
+                    if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) vegetation.add(() -> EssenceTreeFeatures.NORMAL_ESSENCE_TREE_FEATURE_PLACED);
+                    if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) vegetation.add(() -> EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE_PLACED);
+
+                }).subscribe();
+
+        EventManager.forge(BiomeLoadingEvent.class)
+                .filter(biome -> {
+                    Set<ResourceKey<Biome>> biomes = BiomeDictionary.getBiomes(Type.END);
+                    return !(biome.getName().toString().equals("the_end")) && biomes.stream().anyMatch(key -> key.getRegistryName().compareTo(biome.getName()) > 0);
+                })
+                .process(biome -> {
+                    EssenceOreGenConfig oreGenConfig = EssenceWorldGenConfig.getOreGenConfig();
+                    List<Supplier<PlacedFeature>> oregen = biome.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
+                    EssencePlacedFeatures placed = EssenceOreGenRegistration.placed;
+                    if (oreGenConfig.getLargeAncientEnderite().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_LARGE);
+                    if (oreGenConfig.getSmallAncientEnderite().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_SMALL);
+
                 }).subscribe();
     }
 
@@ -224,9 +236,9 @@ public class EssenceEventHandlers {
                             double scrolling = scroll.getScrollDelta();
                             if (scrolling != 0) {
                                 EssenceWrench wrench = (EssenceWrench) stack.getItem();
-                                WrenchModeEnum mode = wrench.getMode();
+                                WrenchModeEnum mode = wrench.getMode(stack);
                                 WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
-                                wrench.setMode(newMode);
+                                wrench.setMode(stack, newMode);
                                 minecraft.player.displayClientMessage(new TranslatableComponent("wrench.essence.mode.tooltip").append(": ").append(new TranslatableComponent(newMode.getLocaleName())), true);
                                 Essence.handler.sendToServer(new PacketItemStack(InteractionHand.MAIN_HAND, Collections.singletonList(newMode)));
                                 scroll.setCanceled(true);

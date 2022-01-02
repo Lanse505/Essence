@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "essence:essence_bricks_white"
+      "essence:essence_bricks"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "essence:essence_bricks_white"
+        "recipe": "essence:essence_bricks"
       }
     }
   },
