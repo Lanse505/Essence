@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "nnn",
+    "nnn",
+    "nnn"
+  ],
+  "key": {
+    "n": {
+      "tag": "essence:infused_nugget_empowered"
+    }
+  },
+  "result": {
+    "item": "essence:empowered_essence_ingot"
+  }
+}

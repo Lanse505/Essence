@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_ore"
+    "essence:essence_ore",
+    "essence:essence_ore_deepslate"
   ]
 }

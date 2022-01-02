@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "essence:block/essence_infused_crystal_block"
+    }
+  }
+}

@@ -14,17 +14,17 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
             0, Rarity.COMMON, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT.get());
     }),
-    EMPOWERED_ESSENCE("tier.essence.empowered", 4, 3, 1561, 2332, 8.0F,
+    EMPOWERED("tier.essence.empowered", 4, 3, 1561, 2332, 8.0F,
             3.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.UNCOMMON, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get());
     }),
-    SUPREME_ESSENCE("tier.essence.supreme", 5, 4, 2031, 3047, 9.0F,
+    SUPREME("tier.essence.supreme", 5, 4, 2031, 3047, 9.0F,
             4.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.RARE, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get());
     }),
-    DIVINE_ESSENCE("tier.essence.divine", 6, 6, 4062, 6093, 10.0F,
+    DIVINE("tier.essence.divine", 6, 6, 4062, 6093, 10.0F,
             6.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.EPIC, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get());

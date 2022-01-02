@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:essence_infused_crystal_block_crystal_to_block"
+    ]
+  },
+  "criteria": {
+    "has_infused_crystal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:infused_crystal"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:essence_infused_crystal_block_crystal_to_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_infused_crystal",
+      "has_the_recipe"
+    ]
+  ]
+}

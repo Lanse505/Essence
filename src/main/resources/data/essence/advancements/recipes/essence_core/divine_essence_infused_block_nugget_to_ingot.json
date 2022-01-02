@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:divine_essence_infused_block_nugget_to_ingot"
+    ]
+  },
+  "criteria": {
+    "has_infused_nugget_divine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:infused_nugget_divine"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:divine_essence_infused_block_nugget_to_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_infused_nugget_divine",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -2,8 +2,12 @@
   "replace": false,
   "values": [
     "essence:essence_infused_block",
-    "essence:essence_infused_block_empowered",
-    "essence:essence_infused_block_supreme",
-    "essence:essence_infused_block_divine"
+    "essence:empowered_essence_infused_block",
+    "essence:supreme_essence_infused_block",
+    "essence:divine_essence_infused_block",
+    "essence:essence_infused_crystal_block",
+    "essence:empowered_essence_infused_crystal_block",
+    "essence:supreme_essence_infused_crystal_block",
+    "essence:divine_essence_infused_crystal_block"
   ]
 }

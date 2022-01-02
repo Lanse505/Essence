@@ -1,6 +1,0 @@
-{
-  "parent": "essence:item/item",
-  "textures": {
-    "layer0": "essence:item/empowered_essence_ingot"
-  }
-}

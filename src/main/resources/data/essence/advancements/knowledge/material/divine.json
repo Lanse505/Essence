@@ -2,7 +2,7 @@
   "parent": "essence:knowledge/material/supreme",
   "display": {
     "icon": {
-      "item": "essence:essence_ingot_divine"
+      "item": "essence:divine_essence_ingot"
     },
     "title": {
       "translate": "advancements.essence.knowledge.material.divine.title"
@@ -31,7 +31,7 @@
         "items": [
           {
             "items": [
-              "essence:essence_ingot_divine"
+              "essence:divine_essence_ingot"
             ]
           }
         ]

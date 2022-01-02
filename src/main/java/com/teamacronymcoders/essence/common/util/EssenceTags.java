@@ -22,19 +22,26 @@ public class EssenceTags {
 
         public static final IOptionalNamedTag<Item> ESSENCE_WOOD_LOG = essenceItemTag("essence_logs");
         public static final IOptionalNamedTag<Item> ESSENCE_WOOD_PLANKS = essenceItemTag("essence_planks");
-        public static final IOptionalNamedTag<Item> ESSENCE_CRYSTAL = essenceItemTag("infused_crystal");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_NUGGET = essenceItemTag("infused_nugget");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL = essenceItemTag("infused_ingot");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_BLOCK = essenceItemTag("infused_block");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL = essenceItemTag("infused_crystal");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_BLOCK = essenceItemTag("infused_crystal_block");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_NUGGET_EMPOWERED = essenceItemTag("infused_nugget_empowered");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_EMPOWERED = essenceItemTag("infused_ingot_empowered");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_BLOCK_EMPOWERED = essenceItemTag("infused_block_empowered");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_EMPOWERED = essenceItemTag("infused_crystal_empowered");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_EMPOWERED_BLOCK = essenceItemTag("infused_crystal_block_empowered");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_NUGGET_SUPREME = essenceItemTag("infused_nugget_supreme");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_SUPREME = essenceItemTag("infused_ingot_supreme");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_BLOCK_SUPREME = essenceItemTag("infused_block_supreme");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_SUPREME = essenceItemTag("infused_crystal_supreme");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_SUPREME_BLOCK = essenceItemTag("infused_crystal_block_supreme");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_NUGGET_DIVINE = essenceItemTag("infused_nugget_divine");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_DIVINE = essenceItemTag("infused_ingot_divine");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_METAL_BLOCK_DIVINE = essenceItemTag("infused_block_divine");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_DIVINE = essenceItemTag("infused_crystal_divine");
+        public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_CRYSTAL_DIVINE_BLOCK = essenceItemTag("infused_crystal_block_divine");
         public static final IOptionalNamedTag<Item> ESSENCE_INFUSED_STICK = essenceItemTag("infused_stick");
         public static final IOptionalNamedTag<Item> ESSENCE_BRICKS = essenceItemTag("essence_bricks");
 

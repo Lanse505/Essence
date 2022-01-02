@@ -27,7 +27,7 @@ public class EssenceOreFeatures {
     public static final PlacedFeature ORE_ESSENCE_SMALL = PlacementUtils.register("ore_essence_small", ESSENCE_ORE_SMALL.placed(OrePlacements.commonOrePlacement(10, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72)))));
 
     public static final List<OreConfiguration.TargetBlockState> ORE_ESSENCE_CRYSTAL_TARGET_LIST =
-            Lists.newArrayList(OreConfiguration.target(STONE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_CRYSTAL_ORE.getDefaultState()));
+            Lists.newArrayList(OreConfiguration.target(STONE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_CRYSTAL_ORE.getDefaultState()), OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, EssenceBlockRegistrate.ESSENCE_CRYSTAL_ORE_DEEP_SLATE.getDefaultState()));
     public static final ConfiguredFeature<?, ?> ESSENCE_CRYSTAL_ORE = FeatureUtils.register("ore_essence_crystal", Feature.ORE.configured(new OreConfiguration(ORE_ESSENCE_CRYSTAL_TARGET_LIST, 8)));
     public static final ConfiguredFeature<?, ?> ESSENCE_CRYSTAL_ORE_SMALL = FeatureUtils.register("ore_essence_crystal_small", Feature.ORE.configured(new OreConfiguration(ORE_ESSENCE_CRYSTAL_TARGET_LIST, 4)));
     public static final PlacedFeature ORE_ESSENCE_CRYSTAL_UPPER = PlacementUtils.register("ore_essence_crystal_upper", ESSENCE_CRYSTAL_ORE.placed(OrePlacements.commonOrePlacement(90, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384)))));

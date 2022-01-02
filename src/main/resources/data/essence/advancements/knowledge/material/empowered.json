@@ -2,7 +2,7 @@
   "parent": "essence:knowledge/material/basic",
   "display": {
     "icon": {
-      "item": "essence:essence_ingot_empowered"
+      "item": "essence:empowered_essence_ingot"
     },
     "title": {
       "translate": "advancements.essence.knowledge.material.empowered.title"
@@ -31,7 +31,7 @@
         "items": [
           {
             "items": [
-              "essence:essence_ingot_empowered"
+              "essence:empowered_essence_ingot"
             ]
           }
         ]

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "iii",
+    "iii"
+  ],
+  "key": {
+    "i": {
+      "tag": "essence:infused_ingot_empowered"
+    }
+  },
+  "result": {
+    "item": "essence:empowered_essence_infused_block"
+  }
+}

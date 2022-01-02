@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "essence:block/divine_essence_infused_block"
+    }
+  }
+}

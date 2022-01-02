@@ -1,5 +1,5 @@
 {
-  "parent": "essence:item/item",
+  "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "essence:item/essence_stick"
   }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "essence:divine_essence_infused_block_block_to_ingots"
+    ]
+  },
+  "criteria": {
+    "has_infused_block_divine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "essence:infused_block_divine"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "essence:divine_essence_infused_block_block_to_ingots"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_infused_block_divine",
+      "has_the_recipe"
+    ]
+  ]
+}

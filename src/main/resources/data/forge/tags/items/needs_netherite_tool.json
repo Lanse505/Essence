@@ -2,19 +2,19 @@
   "replace": false,
   "values": [
     {
-      "id": "essence:essence_axe_divine_essence",
+      "id": "essence:divine_essence_axe",
       "required": false
     },
     {
-      "id": "essence:essence_pickaxe_divine_essence",
+      "id": "essence:divine_essence_pickaxe",
       "required": false
     },
     {
-      "id": "essence:essence_shovel_divine_essence",
+      "id": "essence:divine_essence_shovel",
       "required": false
     },
     {
-      "id": "essence:essence_hoe_divine_essence",
+      "id": "essence:divine_essence_hoe",
       "required": false
     }
   ]

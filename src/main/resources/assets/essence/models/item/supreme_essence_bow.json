@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "essence:item/supreme_essence_bow"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "essence:pulling": 1.0
+      },
+      "model": "essence:item/supreme_essence_bow_pulling_0"
+    },
+    {
+      "predicate": {
+        "essence:pulling": 1.0,
+        "essence:pull": 0.65
+      },
+      "model": "essence:item/supreme_essence_bow_pulling_1"
+    },
+    {
+      "predicate": {
+        "essence:pulling": 1.0,
+        "essence:pull": 0.9
+      },
+      "model": "essence:item/supreme_essence_bow_pulling_2"
+    }
+  ]
+}

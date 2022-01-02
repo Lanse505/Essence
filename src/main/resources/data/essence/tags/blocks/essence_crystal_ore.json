@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_crystal_ore"
+    "essence:essence_crystal_ore",
+    "essence:essence_crystal_ore_deepslate"
   ]
 }

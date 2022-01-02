@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "essence:block/ancient_enderite_side",
+    "end": "essence:block/ancient_enderite_top"
+  }
+}

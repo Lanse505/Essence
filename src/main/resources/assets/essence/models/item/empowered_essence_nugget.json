@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "essence:item/empowered_essence_nugget"
+  }
+}

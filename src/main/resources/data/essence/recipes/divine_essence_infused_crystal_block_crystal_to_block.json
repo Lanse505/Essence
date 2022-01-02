@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "tag": "essence:infused_crystal_divine"
+    }
+  },
+  "result": {
+    "item": "essence:divine_essence_infused_crystal_block"
+  }
+}

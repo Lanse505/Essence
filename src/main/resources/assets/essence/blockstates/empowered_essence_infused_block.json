@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "essence:block/empowered_essence_infused_block"
+    }
+  }
+}

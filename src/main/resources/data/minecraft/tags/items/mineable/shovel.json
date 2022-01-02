@@ -6,15 +6,15 @@
       "required": false
     },
     {
-      "id": "essence:essence_shovel_empowered_essence",
+      "id": "essence:empowered_essence_shovel",
       "required": false
     },
     {
-      "id": "essence:essence_shovel_supreme_essence",
+      "id": "essence:supreme_essence_shovel",
       "required": false
     },
     {
-      "id": "essence:essence_shovel_divine_essence",
+      "id": "essence:divine_essence_shovel",
       "required": false
     }
   ]

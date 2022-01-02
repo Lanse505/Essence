@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "essence:block/essence_infused_crystal_block"
+  }
+}

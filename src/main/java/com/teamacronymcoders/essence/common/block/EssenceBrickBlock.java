@@ -65,7 +65,7 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
                 .map(EssenceColorHelper.tagToDye::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return colors != null && colors.size() > 0 ? colors.stream()
+        return colors.size() > 0 ? colors.stream()
                 .skip(Essence.RANDOM.nextInt(colors.size()))
                 .findFirst()
                 .map(dyeToColorMap::get)
@@ -73,7 +73,6 @@ public class EssenceBrickBlock extends Block implements IColorProvider {
                 .map(essenceBrickBlock -> {
                     if (!state.equals(essenceBrickBlock.defaultBlockState())) {
                         level.setBlock(pos, essenceBrickBlock.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
-                        level.setBlock(pos, state, Block.UPDATE_ALL_IMMEDIATE);
                     }
                     return InteractionResult.SUCCESS;
                 })

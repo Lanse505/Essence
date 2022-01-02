@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "essence:infused_crystal_block_empowered"
+    }
+  ],
+  "result": {
+    "item": "essence:empowered_essence_crystal",
+    "count": 9
+  }
+}

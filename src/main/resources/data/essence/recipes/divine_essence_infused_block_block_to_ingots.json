@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "essence:infused_block_divine"
+    }
+  ],
+  "result": {
+    "item": "essence:divine_essence_ingot",
+    "count": 9
+  }
+}
