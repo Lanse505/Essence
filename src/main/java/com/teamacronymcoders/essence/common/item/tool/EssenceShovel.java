@@ -234,4 +234,8 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_bow"
+    "essence:essence_bow",
+    {
+      "id": "essence:empowered_essence_bow",
+      "required": false
+    },
+    {
+      "id": "essence:supreme_essence_bow",
+      "required": false
+    },
+    {
+      "id": "essence:divine_essence_bow",
+      "required": false
+    }
   ]
 }

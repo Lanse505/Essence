@@ -166,4 +166,8 @@ public class EssenceSword extends SwordItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

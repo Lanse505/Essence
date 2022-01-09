@@ -6,6 +6,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public enum EssenceToolTiers implements Tier, IEssenceBaseTier {

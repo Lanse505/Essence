@@ -8,7 +8,9 @@
     }
   ],
   "infusable": {
-    "item": "essence:essence_sword"
+    "type": "essence:tier",
+    "tag": "essence:essence_sword",
+    "tier": "ESSENCE"
   },
   "inputIngredients": [
     {

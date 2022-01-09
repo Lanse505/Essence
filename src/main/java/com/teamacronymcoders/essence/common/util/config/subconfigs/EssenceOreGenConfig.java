@@ -18,7 +18,7 @@ public class EssenceOreGenConfig {
     public EssenceOreGenConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Ores");
         essenceOreUpper = new EssenceOreConfig(builder, "Essence Ore [Upper]", true, 9, 90, 80, 384);
-        essenceOreMiddle = new EssenceOreConfig(builder, "Essence Ore [Middle]", true, 9,10, -24, 56);
+        essenceOreMiddle = new EssenceOreConfig(builder, "Essence Ore [Middle]", true, 9, 10, -24, 56);
         essenceOreSmall = new EssenceOreConfig(builder, "Essence Ore [Small]", true, 4, 10, -64, 72);
         essenceCrystalOreUpper = new EssenceOreConfig(builder, "Essence Crystal Ore [Upper]", true, 8, 90, 80, 384);
         essenceCrystalOreMiddle = new EssenceOreConfig(builder, "Essence Crystal Ore [Middle]", true, 8, 10, -24, 56);

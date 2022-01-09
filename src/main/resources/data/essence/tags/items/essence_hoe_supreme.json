@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "essence:supreme_essence_hoe"
+    "essence:supreme_essence_hoe",
+    {
+      "id": "essence:divine_essence_hoe",
+      "required": false
+    }
   ]
 }

@@ -254,4 +254,8 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

@@ -11,20 +11,13 @@ import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.EssenceShearingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
-import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
-import com.teamacronymcoders.essence.common.world.generation.ore.EssencePlacedFeatures;
-import com.teamacronymcoders.essence.server.command.EssenceCommands;
+import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.common.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.common.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.common.item.tool.EssenceShear;
 import com.teamacronymcoders.essence.common.item.wrench.EssenceWrench;
 import com.teamacronymcoders.essence.common.item.wrench.WrenchModeEnum;
-import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
-import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;
-import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.data.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.common.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.common.util.config.subconfigs.EssenceOreGenConfig;
 import com.teamacronymcoders.essence.common.util.config.subconfigs.EssenceTreeGenConfig;
@@ -32,7 +25,14 @@ import com.teamacronymcoders.essence.common.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.network.message.server.PacketItemStack;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssencePlacedFeatures;
 import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFeatures;
+import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
+import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;
+import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
+import com.teamacronymcoders.essence.data.loot.FieryLootModifier;
+import com.teamacronymcoders.essence.server.command.EssenceCommands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -170,16 +170,24 @@ public class EssenceEventHandlers {
                     List<Supplier<PlacedFeature>> vegetation = biome.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
                     EssencePlacedFeatures placed = EssenceOreGenRegistration.placed;
 
-                    if (oreGenConfig.getEssenceOreUpper().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_UPPER);
-                    if (oreGenConfig.getEssenceOreMiddle().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_MIDDLE);
-                    if (oreGenConfig.getEssenceOreSmall().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_SMALL);
+                    if (oreGenConfig.getEssenceOreUpper().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_UPPER);
+                    if (oreGenConfig.getEssenceOreMiddle().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_MIDDLE);
+                    if (oreGenConfig.getEssenceOreSmall().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_SMALL);
 
-                    if (oreGenConfig.getEssenceCrystalOreUpper().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_UPPER);
-                    if (oreGenConfig.getEssenceCrystalOreMiddle().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_MIDDLE);
-                    if (oreGenConfig.getEssenceCrystalOreSmall().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_SMALL);
+                    if (oreGenConfig.getEssenceCrystalOreUpper().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_UPPER);
+                    if (oreGenConfig.getEssenceCrystalOreMiddle().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_MIDDLE);
+                    if (oreGenConfig.getEssenceCrystalOreSmall().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ESSENCE_CRYSTAL_SMALL);
 
-                    if (treeGenConfig.getNormalVariant().getShouldGenerate().get()) vegetation.add(() -> EssenceTreeFeatures.NORMAL_ESSENCE_TREE_FEATURE_PLACED);
-                    if (treeGenConfig.getFancyVariant().getShouldGenerate().get()) vegetation.add(() -> EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE_PLACED);
+                    if (treeGenConfig.getNormalVariant().getShouldGenerate().get())
+                        vegetation.add(() -> EssenceTreeFeatures.NORMAL_ESSENCE_TREE_FEATURE_PLACED);
+                    if (treeGenConfig.getFancyVariant().getShouldGenerate().get())
+                        vegetation.add(() -> EssenceTreeFeatures.FANCY_ESSENCE_TREE_FEATURE_PLACED);
 
                 }).subscribe();
 
@@ -192,8 +200,10 @@ public class EssenceEventHandlers {
                     EssenceOreGenConfig oreGenConfig = EssenceWorldGenConfig.getOreGenConfig();
                     List<Supplier<PlacedFeature>> oregen = biome.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
                     EssencePlacedFeatures placed = EssenceOreGenRegistration.placed;
-                    if (oreGenConfig.getLargeAncientEnderite().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_LARGE);
-                    if (oreGenConfig.getSmallAncientEnderite().getShouldGenerate().get()) oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_SMALL);
+                    if (oreGenConfig.getLargeAncientEnderite().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_LARGE);
+                    if (oreGenConfig.getSmallAncientEnderite().getShouldGenerate().get())
+                        oregen.add(() -> placed.ORE_ANCIENT_DEBRIS_SMALL);
 
                 }).subscribe();
     }

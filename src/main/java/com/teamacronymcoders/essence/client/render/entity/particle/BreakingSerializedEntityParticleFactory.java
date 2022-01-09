@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-public class BreakingSerializedEntityParticleFactory <BasicParticleOptions extends ParticleOptions> extends BreakingItemParticle {
+public class BreakingSerializedEntityParticleFactory<BasicParticleOptions extends ParticleOptions> extends BreakingItemParticle {
 
     protected BreakingSerializedEntityParticleFactory(ClientLevel pLevel, double pX, double pY, double pZ, ItemStack pStack) {
         super(pLevel, pX, pY, pZ, pStack);

@@ -5,6 +5,7 @@ import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifier
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ModifierInstance implements INBTSerializable<CompoundTag> {
@@ -32,11 +33,7 @@ public class ModifierInstance implements INBTSerializable<CompoundTag> {
         compoundNBT.putString(TAG_MODIFIER, modifier.get().getRegistryName().toString());
         final CompoundTag info = new CompoundTag();
         info.putInt(TAG_LEVEL, level);
-        if (modifierData == null) {
-            info.put(TAG_COMPOUND, new CompoundTag());
-        } else {
-            info.put(TAG_COMPOUND, modifierData);
-        }
+        info.put(TAG_COMPOUND, Objects.requireNonNullElseGet(modifierData, CompoundTag::new));
         compoundNBT.put(TAG_INFO, info);
         return compoundNBT;
     }

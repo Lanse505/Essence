@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "essence:supreme_essence_pickaxe"
+    "essence:supreme_essence_pickaxe",
+    {
+      "id": "essence:divine_essence_pickaxe",
+      "required": false
+    }
   ]
 }

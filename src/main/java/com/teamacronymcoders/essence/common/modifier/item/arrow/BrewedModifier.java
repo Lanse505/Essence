@@ -3,9 +3,9 @@ package com.teamacronymcoders.essence.common.modifier.item.arrow;
 import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.core.IModifier;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
-import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -92,4 +92,15 @@ public class BrewedModifier extends ItemArrowCoreModifier {
         return textComponents;
     }
 
+    @Override
+    public void mergeTags(CompoundTag original, CompoundTag mergeTag) {
+        if (original.contains("Effects") && mergeTag.contains("Effects")) {
+            ListTag originalEffects = original.getList("Effects", Tag.TAG_COMPOUND);
+            ListTag toMergeEffects = mergeTag.getList("Effects", Tag.TAG_COMPOUND);
+            for (int i = 0; i < toMergeEffects.size(); i++) {
+                CompoundTag effectTag = toMergeEffects.getCompound(i);
+                originalEffects.add(effectTag);
+            }
+        }
+    }
 }

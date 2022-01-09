@@ -69,10 +69,6 @@ public class EssenceItemstackModifierHelpers {
             instances.ifPresent(holder -> {
                 if (modifier != null && holder.addModifierInstance(true, stack, new ModifierInstance(() -> modifier, level, modifierData))) {
                     holder.addModifierInstance(false, stack, new ModifierInstance(() -> modifier, level, modifierData));
-                    if (modifier instanceof ItemCoreModifier itemCoreModifier) {
-                        IModified modified = (IModified) stack.getItem();
-                        modified.decreaseFreeModifiers(itemCoreModifier.getModifierCountValue(level));
-                    }
                     stack.getOrCreateTag().put(TAG_MODIFIERS, holder.serializeNBT());
                 }
             });
@@ -119,19 +115,19 @@ public class EssenceItemstackModifierHelpers {
     public static void removeModifiers(ItemStack stack, Modifier... modifiersToRemove) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
+            Modifier foundModifier = null;
             for (ModifierInstance instance : holder.getModifierInstances()) {
-                boolean hasModifier = false;
                 for (Modifier modifier : modifiersToRemove) {
                     if (instance.getModifier() == modifier) {
-                        hasModifier = true;
+                        foundModifier = instance.getModifier();
                         break;
                     }
                 }
-                if (hasModifier) {
-                    if (holder.removeModifierInstance(true, stack, instance.getModifier())) {
-                        holder.removeModifierInstance(false, stack, instance.getModifier());
-                        stack.getOrCreateTag().put(TAG_MODIFIERS, holder.serializeNBT());
-                    }
+            }
+            if (foundModifier != null) {
+                if (holder.removeModifierInstance(true, stack, foundModifier)) {
+                    holder.removeModifierInstance(false, stack, foundModifier);
+                    stack.getOrCreateTag().put(TAG_MODIFIERS, holder.serializeNBT());
                 }
             }
         });
@@ -186,7 +182,7 @@ public class EssenceItemstackModifierHelpers {
             for (ModifierInstance modifierInstance : holder.getModifierInstances()) {
                 if (modifierInstance.getModifier() == mergeInstance.getModifier()) {
                     CompoundTag tagOnItem = modifierInstance.getModifierData();
-                    tagOnItem.merge(mergeInstance.getModifierData());
+                    modifierInstance.getModifier().mergeTags(tagOnItem, mergeInstance.getModifierData());
                     modifierInstance.setModifierData(tagOnItem);
                     break;
                 }

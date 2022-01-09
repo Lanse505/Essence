@@ -19,7 +19,7 @@ public class EndericModifier extends ItemArrowCoreModifier {
 
     @Override
     public void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
-        for(int i = 0; i < 32; ++i) {
+        for (int i = 0; i < 32; ++i) {
             abstractArrowEntity.getLevel().addParticle(ParticleTypes.PORTAL, abstractArrowEntity.getX(), abstractArrowEntity.getY() + Essence.RANDOM.nextDouble() * 2.0D, abstractArrowEntity.getZ(), Essence.RANDOM.nextGaussian(), 0.0D, Essence.RANDOM.nextGaussian());
         }
 
@@ -47,7 +47,7 @@ public class EndericModifier extends ItemArrowCoreModifier {
                         owner.hurt(DamageSource.FALL, 1);
                     }
                 }
-            } else if (owner != null){
+            } else if (owner != null) {
                 owner.teleportTo(abstractArrowEntity.getX(), abstractArrowEntity.getY(), abstractArrowEntity.getZ());
                 owner.resetFallDistance();
             }
@@ -56,5 +56,6 @@ public class EndericModifier extends ItemArrowCoreModifier {
     }
 
     @Override
-    public void alterArrowEntity(ModifiableArrowEntity abstractArrowEntity, Player shooter, float velocity, ModifierInstance instance) {}
+    public void alterArrowEntity(ModifiableArrowEntity abstractArrowEntity, Player shooter, float velocity, ModifierInstance instance) {
+    }
 }

@@ -57,14 +57,16 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableBlockEntity>
             // Handle Player Inventory -> Block Inventory
             if (!stack.isEmpty() && stack.getItem() instanceof TomeOfKnowledgeItem && !te.hasTome()) {
                 ItemStack copy = stack.copy();
-                te.getTome().setStackInSlot(0, copy);
                 stack.shrink(1);
+                copy.setCount(1);
+                te.getTome().setStackInSlot(0, copy);
                 te.markComponentForUpdate(false);
                 return InteractionResult.SUCCESS;
             } else if (!stack.isEmpty() && te.getInfusable().getStackInSlot(0).isEmpty()) {
                 ItemStack copy = stack.copy();
-                te.getInfusable().setStackInSlot(0, copy);
                 stack.shrink(1);
+                copy.setCount(1);
+                te.getInfusable().setStackInSlot(0, copy);
                 te.markComponentForUpdate(false);
                 return InteractionResult.SUCCESS;
             }
@@ -152,6 +154,6 @@ public class InfusionTableBlock extends BasicTileBlock<InfusionTableBlockEntity>
 
     @Nullable
     protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> typeA, BlockEntityType<E> typeB, BlockEntityTicker<? super E> ticker) {
-        return typeB == typeA ? (BlockEntityTicker<A>)ticker : null;
+        return typeB == typeA ? (BlockEntityTicker<A>) ticker : null;
     }
 }

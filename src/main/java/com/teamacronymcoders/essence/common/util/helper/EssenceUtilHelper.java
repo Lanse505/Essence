@@ -3,6 +3,7 @@ package com.teamacronymcoders.essence.common.util.helper;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Tier;
 
@@ -11,23 +12,22 @@ import java.util.TreeMap;
 
 public class EssenceUtilHelper {
 
-    private final static TreeMap<Integer, String> roman = new TreeMap<>();
-
-    static {
-        roman.put(1000, "M");
-        roman.put(900, "CM");
-        roman.put(500, "D");
-        roman.put(400, "CD");
-        roman.put(100, "C");
-        roman.put(90, "XC");
-        roman.put(50, "L");
-        roman.put(40, "XL");
-        roman.put(10, "X");
-        roman.put(9, "IX");
-        roman.put(5, "V");
-        roman.put(4, "IV");
-        roman.put(1, "I");
-    }
+    private final static TreeMap<Integer, String> roman = Util.make(new TreeMap<>(), (map) -> {
+        map.put(1000, "M");
+        map.put(900, "CM");
+        map.put(500, "D");
+        map.put(400, "CD");
+        map.put(100, "C");
+        map.put(90, "XC");
+        map.put(50, "L");
+        map.put(40, "XL");
+        map.put(10, "X");
+        map.put(9, "IX");
+        map.put(5, "V");
+        map.put(4, "IV");
+        map.put(1, "I");
+        map.put(0, "");
+    });
 
     public static String toRoman(int number) {
         int l = roman.floorKey(number);

@@ -1,6 +1,7 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -8,10 +9,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class ExtendableInfusionRecipe extends SerializableRecipe {
 
@@ -54,12 +51,11 @@ public abstract class ExtendableInfusionRecipe extends SerializableRecipe {
         if (!(this.infusable.test(infusable))) return false;
         NonNullList<ItemStack> copy = NonNullList.of(ItemStack.EMPTY, pedestalContents.toArray(new ItemStack[]{}));
         int approved = 0;
-        for (int i = 0; i < inputIngredients.length; i++) {
-            Ingredient testable = inputIngredients[i];
-            int foundIndex = -1;
+        int foundIndex = -1;
+        for (Ingredient testable : inputIngredients) {
             for (ItemStack stack : copy) {
                 if (testable.test(stack)) {
-                    foundIndex = i;
+                    foundIndex = copy.indexOf(stack);
                     approved++;
                     break;
                 }

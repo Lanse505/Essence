@@ -3,6 +3,8 @@ package com.teamacronymcoders.essence.compat.registrate;
 import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
+import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.common.block.EssenceBlock;
 import com.teamacronymcoders.essence.common.block.EssenceBrickBlock;
 import com.teamacronymcoders.essence.common.block.EssenceCrystalOreBlock;
@@ -13,21 +15,17 @@ import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlo
 import com.teamacronymcoders.essence.common.block.wood.EssencePlankBlock;
 import com.teamacronymcoders.essence.common.block.wood.EssenceSaplingBlock;
 import com.teamacronymcoders.essence.common.block.wood.EssenceSlabBlock;
-import com.teamacronymcoders.essence.client.render.tesr.InfusionPedestalTESR;
-import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.common.item.essence.EssenceCrystalItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceNuggetItem;
 import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.common.util.tier.EssenceItemTiers;
-import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -57,7 +55,6 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -121,17 +118,7 @@ public class EssenceBlockRegistrate {
             .model((context, provider) -> provider.blockItem(context)).build()
             .register();
 
-    public static BlockEntry<Block> CrystalBlock = Essence.ESSENCE_REGISTRATE.object("raw_essence_block")
-            .block(Material.STONE, Block::new)
-            .initialProperties(Material.STONE, MaterialColor.COLOR_CYAN)
-            .properties(properties -> properties.requiresCorrectToolForDrops().strength(5.0F, 6.0F))
-            .blockstate((context, provider) -> provider.simpleBlock(context.get()))
-            .loot(BlockLoot::dropSelf)
-            .lang("Raw Essence Block")
-            .item()
-            .tab(() -> Essence.CORE_TAB)
-            .model((context, provider) -> provider.blockItem(context)).build()
-            .register();
+
 
     public static BlockEntry<OreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
             .block(Material.STONE, OreBlock::new)
@@ -174,6 +161,10 @@ public class EssenceBlockRegistrate {
             .blockstate((context, provider) -> provider.models().cubeColumn("ancient_enderite", new ResourceLocation(Essence.MOD_ID, "block/ancient_enderite_side"), new ResourceLocation(Essence.MOD_ID, "block/ancient_enderite_top")))
             .loot(BlockLoot::dropSelf)
             .lang("Ancient Enderite")
+            .recipe((context, provider) -> {
+                provider.smelting(DataIngredient.items(context.get()), EssenceItemRegistrate.ENDERITE_SCRAP, 2.0F);
+                provider.blasting(DataIngredient.items(context.get()), EssenceItemRegistrate.ENDERITE_SCRAP, 2.0F);
+            })
             .item()
             .tab(() -> Essence.CORE_TAB)
             .model((context, provider) -> provider.blockItem(context)).build()
@@ -354,7 +345,7 @@ public class EssenceBlockRegistrate {
                 .properties(properties -> properties.sound(SoundType.METAL).speedFactor(1.25f))
                 .loot(BlockLoot::dropSelf)
                 .lang("Essence-Infused Crystal Block")
-                .blockstate((context, provider) -> provider.simpleBlock(context.get(), provider.models().cubeAll(context.getId().getPath(), tier != EssenceItemTiers.BASIC ? new ResourceLocation(Essence.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + tierType +"_essence_infused_crystal_block") : new ResourceLocation(Essence.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + "essence_infused_crystal_block"))))
+                .blockstate((context, provider) -> provider.simpleBlock(context.get(), provider.models().cubeAll(context.getId().getPath(), tier != EssenceItemTiers.BASIC ? new ResourceLocation(Essence.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + tierType + "_essence_infused_crystal_block") : new ResourceLocation(Essence.MOD_ID, ModelProvider.BLOCK_FOLDER + "/" + "essence_infused_crystal_block"))))
                 .recipe((context, provider) -> {
                     EssenceCrystalItem crystal = tier.getCrystal().get().getKey().get();
                     EssenceBlock crystalBlock = tier.getCrystalBlock().get().getKey().get();
@@ -420,7 +411,7 @@ public class EssenceBlockRegistrate {
     }
 
     public static NonNullBiConsumer<RegistrateBlockLootTables, OreBlock> getOreLootTable() {
-        return  (blockLootTables, essenceOreBlock) -> blockLootTables.add(essenceOreBlock, LootTable.lootTable()
+        return (blockLootTables, essenceOreBlock) -> blockLootTables.add(essenceOreBlock, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .setBonusRolls(ConstantValue.exactly(0))
@@ -438,7 +429,7 @@ public class EssenceBlockRegistrate {
     }
 
     public static NonNullBiConsumer<RegistrateBlockLootTables, EssenceCrystalOreBlock> getCrystalLootTable() {
-       return  (blockLootTables, essenceCrystalOreBlock) -> blockLootTables.add(essenceCrystalOreBlock, LootTable.lootTable()
+        return (blockLootTables, essenceCrystalOreBlock) -> blockLootTables.add(essenceCrystalOreBlock, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(AlternativesEntry.alternatives(

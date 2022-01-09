@@ -189,4 +189,8 @@ public class EssenceHoe extends HoeItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

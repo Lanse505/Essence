@@ -18,6 +18,7 @@ import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.common.util.tier.EssenceItemTiers;
+import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -152,7 +153,8 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
         addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.BASIC);
-        if (stack.getTag() != null && stack.getTag().contains("wrench_mode")) list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
+        if (stack.getTag() != null && stack.getTag().contains("wrench_mode"))
+            list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
         if (stack.getTag() != null && flag == TooltipFlag.Default.ADVANCED && stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName())) {
             list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             list.add(new TranslatableComponent("essence.wrench.disclaimer_message"));
@@ -291,5 +293,10 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
             }
         }
         return cmc <= baseModifiers + additionalModifiers;
+    }
+
+    @Override
+    public EssenceToolTiers getTier() {
+        return EssenceToolTiers.ESSENCE;
     }
 }

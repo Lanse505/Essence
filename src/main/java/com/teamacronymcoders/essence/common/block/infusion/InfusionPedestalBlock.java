@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.common.block.infusion;
 
 import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionPedestalBlockEntity;
-import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.common.util.EssenceBlockModels;
+import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

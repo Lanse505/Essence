@@ -27,7 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -53,7 +52,7 @@ public class EssenceBow extends BowItem implements IModifiedTool {
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public EssenceBow(Properties properties, EssenceToolTiers tier) {
-        super(properties.rarity(tier.getRarity()));
+        super(properties.durability(tier.getUses()).rarity(tier.getRarity()));
         this.tier = tier;
         this.baseModifiers = tier.getFreeModifiers();
         this.freeModifiers = tier.getFreeModifiers();
@@ -287,4 +286,8 @@ public class EssenceBow extends BowItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

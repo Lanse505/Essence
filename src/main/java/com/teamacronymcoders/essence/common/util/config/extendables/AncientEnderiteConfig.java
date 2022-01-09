@@ -18,8 +18,10 @@ public class AncientEnderiteConfig {
         this.shouldGenerate = builder.comment("Determines if " + prefix + " Ancient Enderite should generate").define("shouldGenerate", shouldGenerate);
         this.size = builder.comment("Determines the size of the" + prefix + " Ancient Enderite deposits in the End").defineInRange("size", size, 1, 100);
         this.discardChanceOnAirExposure = builder.comment("Determines the chance for the ore-generation to discard the ore if it's adjacent to air").defineInRange("discardChanceOnAirExposure", discardChance, 0.0, 1.0);
-        if (prefix.equals("Large")) this.chanceInX = builder.comment("Determines the 1 in X chance to spawn the rarer large vein variant").defineInRange("chanceInX", 10, 1, 10000);
-        if (prefix.equals("Small")) this.spawnTries = builder.comment("Determines the amount of tries it will try and spawn the default vein").defineInRange("spawnTries", 5, 1, 1000);
+        if (prefix.equals("Large"))
+            this.chanceInX = builder.comment("Determines the 1 in X chance to spawn the rarer large vein variant").defineInRange("chanceInX", 10, 1, 10000);
+        if (prefix.equals("Small"))
+            this.spawnTries = builder.comment("Determines the amount of tries it will try and spawn the default vein").defineInRange("spawnTries", 5, 1, 1000);
         builder.pop();
     }
 

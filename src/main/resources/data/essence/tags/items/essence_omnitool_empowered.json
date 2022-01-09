@@ -1,6 +1,14 @@
 {
   "replace": false,
   "values": [
-    "essence:empowered_essence_omnitool"
+    "essence:empowered_essence_omnitool",
+    {
+      "id": "essence:supreme_essence_omnitool",
+      "required": false
+    },
+    {
+      "id": "essence:divine_essence_omnitool",
+      "required": false
+    }
   ]
 }

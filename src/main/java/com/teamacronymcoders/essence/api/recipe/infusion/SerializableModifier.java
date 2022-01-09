@@ -3,10 +3,6 @@ package com.teamacronymcoders.essence.api.recipe.infusion;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class SerializableModifier {
     public Modifier modifier;
     public int level;

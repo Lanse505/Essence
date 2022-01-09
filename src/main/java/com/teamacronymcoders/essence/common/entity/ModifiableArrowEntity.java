@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.common.entity;
 import com.google.common.collect.Sets;
 import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
 import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

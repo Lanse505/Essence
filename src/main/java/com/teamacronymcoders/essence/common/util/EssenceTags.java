@@ -92,6 +92,8 @@ public class EssenceTags {
         public static final IOptionalNamedTag<Item> IRON_TIER = minecraftItemTag("needs_iron_tool");
         public static final IOptionalNamedTag<Item> DIAMOND_TIER = minecraftItemTag("needs_diamond_tool");
         public static final IOptionalNamedTag<Item> NETHERITE_TIER = forgeItemTag("needs_netherite_tool");
+
+        public static final IOptionalNamedTag<Item> ENDERITE_SCRAP = essenceItemTag("enderite_scrap");
     }
 
     public static class EssenceBlockTags {

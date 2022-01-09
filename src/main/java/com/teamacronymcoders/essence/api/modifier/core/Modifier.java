@@ -102,4 +102,6 @@ public abstract class Modifier extends ForgeRegistryEntry<Modifier> implements I
         return Math.max(Math.min(level, this.getMaxLevel()), this.getMinLevel());
     }
 
+    public void mergeTags(CompoundTag original, CompoundTag mergeTag) {}
+
 }

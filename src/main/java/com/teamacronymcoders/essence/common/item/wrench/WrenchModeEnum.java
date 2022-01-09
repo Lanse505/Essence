@@ -25,13 +25,11 @@ public enum WrenchModeEnum {
     }
 
     public static WrenchModeEnum byName(String input) {
-        WrenchModeEnum mode;
-        switch (input) {
-            default ->  mode = WrenchModeEnum.SERIALIZE;
-            case "rotate" -> mode = WrenchModeEnum.ROTATE;
-            case "trigger" ->  mode = WrenchModeEnum.TRIGGER;
-        }
-        return mode;
+        return switch (input) {
+            case "rotate" -> WrenchModeEnum.ROTATE;
+            case "trigger" -> WrenchModeEnum.TRIGGER;
+            default -> WrenchModeEnum.SERIALIZE;
+        };
     }
 
     public String getName() {

@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "essence:supreme_essence_omnitool"
+    "essence:supreme_essence_omnitool",
+    {
+      "id": "essence:divine_essence_omnitool",
+      "required": false
+    }
   ]
 }

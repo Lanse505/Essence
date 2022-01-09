@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_shovel"
+    "essence:essence_shovel",
+    {
+      "id": "essence:empowered_essence_shovel",
+      "required": false
+    },
+    {
+      "id": "essence:supreme_essence_shovel",
+      "required": false
+    },
+    {
+      "id": "essence:divine_essence_shovel",
+      "required": false
+    }
   ]
 }

@@ -94,6 +94,78 @@ public class EssenceTagRegistrate {
                     .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID)
                     .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID)
                     .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_AXE)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_BOW)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_HOE)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_OMNITOOL)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_PICKAXE)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHEAR)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHOVEL)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SWORD)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_EMPOWERED.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_AXE_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_BOW_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_HOE_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_OMNITOOL_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_PICKAXE_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHEAR_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHOVEL_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SWORD_EMPOWERED)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_SUPREME.getId(), Essence.MOD_ID)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_AXE_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_AXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_BOW_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_BOW_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_HOE_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_HOE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_OMNITOOL_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_OMNITOOL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_PICKAXE_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_PICKAXE_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHEAR_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHEAR_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SHOVEL_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SHOVEL_DIVINE.getId(), Essence.MOD_ID);
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceItemTags.ESSENCE_SWORD_SUPREME)
+                    .addOptionalElement(EssenceItemRegistrate.ESSENCE_SWORD_DIVINE.getId(), Essence.MOD_ID);
         });
 
         // Misc Block Tags

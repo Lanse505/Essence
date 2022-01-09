@@ -1,36 +1,35 @@
 package com.teamacronymcoders.essence;
 
 import com.hrznstudio.titanium.module.ModuleController;
-import com.hrznstudio.titanium.nbthandler.NBTManager;
 import com.hrznstudio.titanium.network.CompoundSerializableDataHandler;
 import com.hrznstudio.titanium.recipe.serializer.JSONSerializableDataHandler;
 import com.hrznstudio.titanium.tab.AdvancedTitaniumTab;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.common.util.helper.EssenceJsonHelper;
-import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
-import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFeatures;
-import com.teamacronymcoders.essence.server.command.argument.EssenceHandArgumentType;
-import com.teamacronymcoders.essence.server.command.argument.EssenceKnowledgeArgumentType;
-import com.teamacronymcoders.essence.server.command.argument.EssenceModifierArgumentType;
-import com.teamacronymcoders.essence.server.command.argument.extendable.EssenceEnumArgumentType;
+import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.common.item.behaviour.EssenceDispenseBehaviours;
-import com.teamacronymcoders.essence.compat.registrate.*;
-import com.teamacronymcoders.essence.compat.registrate.datagen.EssenceRecipeProvider;
-import com.teamacronymcoders.essence.data.advancement.criterion.EssenceAdvancements;
-import com.teamacronymcoders.essence.data.loot.condition.EssenceConditions;
-import com.teamacronymcoders.essence.data.loot.condition.MatchModifier;
 import com.teamacronymcoders.essence.common.util.EssenceEventHandlers;
 import com.teamacronymcoders.essence.common.util.EssenceItemProperties;
 import com.teamacronymcoders.essence.common.util.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.common.util.config.EssenceModifierConfig;
 import com.teamacronymcoders.essence.common.util.config.EssenceWorldGenConfig;
-import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.common.util.network.PacketHandler;
 import com.teamacronymcoders.essence.common.util.proxy.EssenceCommonProxy;
 import com.teamacronymcoders.essence.common.util.proxy.EssenceSafeSuppliers;
 import com.teamacronymcoders.essence.common.util.tab.EssenceCoreTab;
 import com.teamacronymcoders.essence.common.util.tab.EssenceToolTab;
+import com.teamacronymcoders.essence.common.world.generation.ore.EssenceOreGenRegistration;
+import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFeatures;
+import com.teamacronymcoders.essence.compat.registrate.*;
+import com.teamacronymcoders.essence.compat.registrate.datagen.EssenceRecipeProvider;
+import com.teamacronymcoders.essence.data.advancement.criterion.EssenceAdvancements;
+import com.teamacronymcoders.essence.data.ingredient.TierIngredient;
+import com.teamacronymcoders.essence.data.loot.condition.EssenceConditions;
+import com.teamacronymcoders.essence.data.loot.condition.MatchModifier;
+import com.teamacronymcoders.essence.server.command.argument.EssenceHandArgumentType;
+import com.teamacronymcoders.essence.server.command.argument.EssenceKnowledgeArgumentType;
+import com.teamacronymcoders.essence.server.command.argument.EssenceModifierArgumentType;
+import com.teamacronymcoders.essence.server.command.argument.extendable.EssenceEnumArgumentType;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.commands.synchronization.ArgumentTypes;
@@ -45,6 +44,7 @@ import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -140,6 +140,8 @@ public class Essence extends ModuleController {
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::setupCuriosIMC);
         eventBus.addListener(this::addAttributes);
+
+        CraftingHelper.register(new ResourceLocation(MOD_ID, "tier"), TierIngredient.Serializer.INSTANCE);
     }
 
     @Override

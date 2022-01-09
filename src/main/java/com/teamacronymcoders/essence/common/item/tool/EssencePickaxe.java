@@ -169,4 +169,8 @@ public class EssencePickaxe extends PickaxeItem implements IModifiedTool {
         return new ItemStackModifierProvider(stack);
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

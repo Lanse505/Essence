@@ -2,8 +2,8 @@ package com.teamacronymcoders.essence.server.command.argument;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.teamacronymcoders.essence.api.modifier.core.Modifier;
-import com.teamacronymcoders.essence.server.command.argument.extendable.EssenceRegistryArgumentType;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
+import com.teamacronymcoders.essence.server.command.argument.extendable.EssenceRegistryArgumentType;
 
 public class EssenceModifierArgumentType extends EssenceRegistryArgumentType<Modifier> {
 

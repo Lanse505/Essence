@@ -1,6 +1,14 @@
 {
   "replace": false,
   "values": [
-    "essence:empowered_essence_shear"
+    "essence:empowered_essence_shear",
+    {
+      "id": "essence:supreme_essence_shear",
+      "required": false
+    },
+    {
+      "id": "essence:divine_essence_shear",
+      "required": false
+    }
   ]
 }

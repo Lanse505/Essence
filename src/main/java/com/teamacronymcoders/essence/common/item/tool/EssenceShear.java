@@ -26,7 +26,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IForgeShearable;
@@ -208,4 +207,8 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
         return cmc <= baseModifiers + additionalModifiers;
     }
 
+    @Override
+    public EssenceToolTiers getTier() {
+        return tier;
+    }
 }

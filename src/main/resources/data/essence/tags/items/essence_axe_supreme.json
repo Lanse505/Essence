@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "essence:supreme_essence_axe"
+    "essence:supreme_essence_axe",
+    {
+      "id": "essence:divine_essence_axe",
+      "required": false
+    }
   ]
 }

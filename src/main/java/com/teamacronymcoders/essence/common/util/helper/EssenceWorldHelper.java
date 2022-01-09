@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.util.helper;
 
-import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
 import com.teamacronymcoders.essence.client.sound.InfusionBookSound;
 import com.teamacronymcoders.essence.client.sound.InfusionSound;
+import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;

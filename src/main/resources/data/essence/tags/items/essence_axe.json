@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "essence:essence_axe"
+    "essence:essence_axe",
+    {
+      "id": "essence:empowered_essence_axe",
+      "required": false
+    },
+    {
+      "id": "essence:supreme_essence_axe",
+      "required": false
+    },
+    {
+      "id": "essence:divine_essence_axe",
+      "required": false
+    }
   ]
 }

@@ -127,4 +127,6 @@ public interface IModifiedTool extends IModified {
         }
     }
 
+    EssenceToolTiers getTier();
+
 }

@@ -4,16 +4,14 @@ import com.teamacronymcoders.essence.common.block.EssenceBlock;
 import com.teamacronymcoders.essence.common.item.essence.EssenceCrystalItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceNuggetItem;
+import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
-import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.tags.Tag;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.block.Block;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.function.Supplier;
