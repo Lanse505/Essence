@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.modifier.item.enchantment;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceSword;
 import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.ChatFormatting;
@@ -15,14 +15,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class LuckModifier extends ItemEnchantmentCoreModifier {
+public class LuckModifier extends ItemInteractionModifier {
 
     public LuckModifier() {
-        super(5);
+        super(1, 5);
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
         EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
     }
 
@@ -32,7 +32,7 @@ public class LuckModifier extends ItemEnchantmentCoreModifier {
     }
 
     @Override
-    public boolean canApplyTogether(IModifier modifier) {
+    public boolean canApplyTogether(ItemStack stack, IModifier<ItemStack> modifier) {
         return !(modifier instanceof SilkTouchModifier);
     }
 

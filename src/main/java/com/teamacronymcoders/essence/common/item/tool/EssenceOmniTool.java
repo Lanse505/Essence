@@ -2,17 +2,18 @@ package com.teamacronymcoders.essence.common.item.tool;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,30 +31,25 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
+public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
 
     private final EssenceToolTiers tier;
-    private final int baseModifiers;
-    private int freeModifiers;
-    private int additionalModifiers;
 
     //TODO: Figure out what to do about EFFECTIVE_ON
     public EssenceOmniTool(Properties properties, EssenceToolTiers tier) {
-        super(tier.getAttackDamageBonus(), tier.getSpeed(), tier, null, properties.rarity(tier.getRarity()));
+        super(tier.getAttackDamageBonus(), tier.getSpeed(), tier, EssenceTags.EssenceBlockTags.OMNITOOL_BLOCKS, properties.rarity(tier.getRarity()));
         this.tier = tier;
-        this.baseModifiers = tier.getFreeModifiers();
-        this.freeModifiers = tier.getFreeModifiers();
-        this.additionalModifiers = 0;
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public Rarity getRarity(ItemStack stack) {
+    public @NotNull Rarity getRarity(ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -77,7 +73,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
 
     @Override
     @ParametersAreNonnullByDefault
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
@@ -108,7 +104,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
 
         // Check Vanilla Shovel Behaviour
         behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
-        if (!behaviourState.equals(state)) {
+        if (behaviourState != null && behaviourState.equals(state)) {
             level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
             resultType = InteractionResult.SUCCESS;
         }
@@ -123,7 +119,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
         }
 
         // Fallback on Modifier Behaviour
-        return onItemUseFromModifiers(context).orElse(resultType);
+        return useOnFromModifier(context).orElse(resultType);
     }
 
     @Override
@@ -159,26 +155,26 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+        return super.getMaxDamage(stack) + getMaxDurabilityFromModifiers(stack, tier);
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(stack, state, super.getDestroySpeed(stack, state));
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        hitEntityFromModifiers(stack, target, attacker);
+        hurtEnemyFromModifiers(stack, target, attacker);
         return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
     @ParametersAreNonnullByDefault
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
+        mineBlockFromModifiers(stack, level, state, pos, entityLiving);
         return super.mineBlock(stack, level, state, pos, entityLiving);
     }
 
@@ -201,48 +197,8 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        addInformationFromModifiers(stack, level, tooltip, flagIn, tier);
-    }
-
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-        freeModifiers += increase;
-    }
-
-    @Override
-    public void increaseFreeModifiers(int increase) {
-        freeModifiers += increase;
-        additionalModifiers += increase;
-    }
-
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
-    }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(List<ModifierInstance> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
+        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 
     @Nullable
@@ -255,7 +211,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedTool {
     }
 
     @Override
-    public EssenceToolTiers getTier() {
+    public @NotNull EssenceToolTiers getTier() {
         return tier;
     }
 }

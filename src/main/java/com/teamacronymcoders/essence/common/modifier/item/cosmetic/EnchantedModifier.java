@@ -1,13 +1,14 @@
 package com.teamacronymcoders.essence.common.modifier.item.cosmetic;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemCosmeticCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class EnchantedModifier extends ItemCosmeticCoreModifier {
+public class EnchantedModifier extends ItemCoreModifier {
 
     public EnchantedModifier() {
         super();
@@ -19,4 +20,8 @@ public class EnchantedModifier extends ItemCosmeticCoreModifier {
         return super.getRenderedText(instance);
     }
 
+    @Override
+    public boolean countsTowardsLimit(ItemStack target, int level) {
+        return false;
+    }
 }

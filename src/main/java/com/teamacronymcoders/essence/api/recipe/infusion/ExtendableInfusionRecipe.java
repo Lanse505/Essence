@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
 import com.hrznstudio.titanium.recipe.serializer.SerializableRecipe;
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;

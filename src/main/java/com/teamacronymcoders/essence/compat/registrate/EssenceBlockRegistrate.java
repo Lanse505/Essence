@@ -119,7 +119,6 @@ public class EssenceBlockRegistrate {
             .register();
 
 
-
     public static BlockEntry<OreBlock> ESSENCE_ORE = Essence.ESSENCE_REGISTRATE.object("essence_ore")
             .block(Material.STONE, OreBlock::new)
             .properties(properties -> properties.strength(3.0F, 3.0F).sound(SoundType.STONE))

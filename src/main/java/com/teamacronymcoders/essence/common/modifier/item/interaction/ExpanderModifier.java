@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.common.modifier.item.interaction;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceBow;
 import com.teamacronymcoders.essence.common.item.tool.EssenceSword;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.cascading.CascadingModifier;
@@ -29,14 +29,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ExpanderModifier extends ItemInteractionCoreModifier {
+public class ExpanderModifier extends ItemInteractionModifier {
 
     public ExpanderModifier() {
         super(2);
     }
 
     @Override
-    public InteractionResult onItemUse(UseOnContext context, ModifierInstance instance) {
+    public InteractionResult useOn(UseOnContext context, ModifierInstance instance) {
         ItemStack stack = context.getItemInHand();
         if (context.getPlayer() != null) {
             Player player = context.getPlayer();
@@ -51,17 +51,17 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
             BlockPos.betweenClosedStream(start, end)
                     .filter(position -> !position.equals(pos))
                     .forEach(position -> {
-                        if (stack.getItem() instanceof IModifiedTool modifiedTool) {
+                        if (stack.getItem() instanceof IModifiedItem modifiedTool) {
                             modifiedTool.useOnModified(new UseOnContext(player, hand, new BlockHitResult(new Vec3(position.getX(), position.getY(), position.getZ()), context.getClickedFace(), position, false)), true);
                         }
                     });
             return InteractionResult.SUCCESS;
         }
-        return super.onItemUse(context, instance);
+        return super.useOn(context, instance);
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
         Direction dir = level.clip(new ClipContext(miner.getDeltaMovement(), new Vec3(pos.getX(), pos.getY(), pos.getZ()), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, miner)).getDirection();
         Vec3i vector3i = Direction.get(Direction.AxisDirection.NEGATIVE, dir.getAxis()).getNormal();
         BlockPos offset = new BlockPos(new Vec3(vector3i.getX(), vector3i.getY(), vector3i.getZ()).add(1.0, 1.0, 1.0).scale(instance.getLevel()));
@@ -98,17 +98,17 @@ public class ExpanderModifier extends ItemInteractionCoreModifier {
     }
 
     @Override
-    public float getModifiedEfficiency(ItemStack stack, ModifierInstance instance, float base) {
-        return (float) -(base * 0.275) * instance.getLevel();
+    public float getDestroySpeed(ItemStack stack, BlockState state, float original, ModifierInstance instance) {
+        return (float) -(original * 0.275) * instance.getLevel();
     }
 
     @Override
-    public int getModifierCountValue(int level, ItemStack stack) {
+    public int getModifierCountValue(ItemStack stack, int level) {
         return level;
     }
 
     @Override
-    public boolean canApplyTogether(IModifier modifier) {
+    public boolean canApplyTogether(ItemStack stack, IModifier<ItemStack> modifier) {
         return !(modifier instanceof CascadingModifier);
     }
 

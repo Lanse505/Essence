@@ -1,9 +1,9 @@
 package com.teamacronymcoders.essence.common.util.helper;
 
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -32,7 +32,7 @@ public class EssenceBowHelper {
     public static final String TAG_EFFECTS = "Effects";
 
     public static ModifiableArrowEntity getArrowEntity(Level level, ItemStack bow, ItemStack arrow, Player player, float arrowVelocity) {
-        final List<ModifierInstance> instances = bow.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+        final List<ModifierInstance> instances = bow.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
 
         // Flag for if the Bow has Modifiers && has Infinity
         boolean baseCodeCheck = player.getAbilities().instabuild || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
@@ -40,8 +40,8 @@ public class EssenceBowHelper {
 
         // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
         instances.stream()
-                .filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)
-                .forEach(instance -> ((ItemArrowCoreModifier) instance.getModifier()).alterArrowEntity(modifiableArrowEntity, player, arrowVelocity, instance));
+                .filter(instance -> instance.getModifier() instanceof ItemArrowModifier)
+                .forEach(instance -> ((ItemArrowModifier) instance.getModifier()).alterArrowEntity(modifiableArrowEntity, player, arrowVelocity, instance));
 
         // func_234612_a_ = setDirectionAndMovement
         modifiableArrowEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0f, arrowVelocity * 3f, 1f);

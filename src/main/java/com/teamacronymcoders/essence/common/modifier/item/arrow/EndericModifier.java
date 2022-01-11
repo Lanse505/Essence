@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.modifier.item.arrow;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class EndericModifier extends ItemArrowCoreModifier {
+public class EndericModifier extends ItemArrowModifier {
 
     @Override
     public void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {

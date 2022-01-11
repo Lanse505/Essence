@@ -25,8 +25,8 @@ public class KnowledgeEvent extends PlayerEvent {
      *
      */
     @Cancelable
-    public static class addPre extends KnowledgeEvent {
-        public addPre(Player player, Knowledge knowledge) {
+    public static class AddPre extends KnowledgeEvent {
+        public AddPre(Player player, Knowledge knowledge) {
             super(player, knowledge);
         }
     }
@@ -34,8 +34,8 @@ public class KnowledgeEvent extends PlayerEvent {
     /**
      *
      */
-    public static class addPost extends KnowledgeEvent {
-        public addPost(ServerPlayer player, Knowledge knowledge) {
+    public static class AddPost extends KnowledgeEvent {
+        public AddPost(ServerPlayer player, Knowledge knowledge) {
             super(player, knowledge);
             EssenceAdvancements.KNOWLEDGE_TRIGGER.trigger(player, knowledge);
         }
@@ -45,8 +45,8 @@ public class KnowledgeEvent extends PlayerEvent {
     /**
      *
      */
-    public static class remove extends KnowledgeEvent {
-        public remove(Player player, Knowledge knowledge) {
+    public static class Remove extends KnowledgeEvent {
+        public Remove(Player player, Knowledge knowledge) {
             super(player, knowledge);
         }
     }

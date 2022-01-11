@@ -4,7 +4,8 @@ import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.knowledge.KnowledgeProvider;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeConversion;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
@@ -12,7 +13,6 @@ import com.teamacronymcoders.essence.api.recipe.tool.EssenceShearingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.common.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.common.item.tome.experience.TomeOfExperienceItem;
 import com.teamacronymcoders.essence.common.item.tool.EssenceShear;
@@ -104,7 +104,7 @@ public class EssenceEventHandlers {
     private static void setupModifierCapabilities() {
         EventManager.forgeGeneric(AttachCapabilitiesEvent.class, ItemStack.class)
                 .process(attach -> {
-                    if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedTool) {
+                    if (((AttachCapabilitiesEvent) attach).getObject() instanceof IModifiedItem) {
                         ((AttachCapabilitiesEvent) attach).addCapability(new ResourceLocation(MOD_ID, "item_modifier_holder"), new ItemStackModifierProvider((ItemStack) ((AttachCapabilitiesEvent) attach).getObject()));
                     }
                 }).subscribe();

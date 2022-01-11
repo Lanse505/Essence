@@ -7,5 +7,5 @@ public interface IEssenceBaseTier {
 
     Rarity getRarity();
 
-    int getFreeModifiers();
+    int getBasePoints();
 }

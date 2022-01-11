@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.modifier.item.interaction;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceShear;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
@@ -15,10 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RainbowModifier extends ItemInteractionCoreModifier {
+public class RainbowModifier extends ItemInteractionModifier {
 
     @Override
-    public List<ItemStack> onShearedAltered(ItemStack stack, Player player, LivingEntity sheared, InteractionHand hand, List<ItemStack> stackList, ModifierInstance instance) {
+    public List<ItemStack> onSheared(ItemStack stack, Player player, LivingEntity sheared, InteractionHand hand, List<ItemStack> stackList, ModifierInstance instance) {
         if (sheared instanceof Sheep) {
             List<ItemStack> modifiedList = new ArrayList<>();
             for (ItemStack s : stackList) {

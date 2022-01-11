@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.compat.registrate;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -38,7 +38,7 @@ public class EssenceLangRegistrate {
         provider.add(display.getDescription().getString(), description);
     }
 
-    public static void addModifier(RegistrateLangProvider provider, Modifier modifier, String translation) {
+    public static void addModifier(RegistrateLangProvider provider, IModifier modifier, String translation) {
         provider.add(modifier.getTranslationName(), translation);
     }
 

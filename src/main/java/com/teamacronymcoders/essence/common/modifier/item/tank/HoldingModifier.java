@@ -1,11 +1,11 @@
 package com.teamacronymcoders.essence.common.modifier.item.tank;
 
-import com.teamacronymcoders.essence.api.modified.IModifiedTank;
-import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.world.item.ItemStack;
 
-public class HoldingModifier extends ItemAttributeModifier {
+public class HoldingModifier extends ItemCoreModifier {
 
     public HoldingModifier() {
         super(3);
@@ -27,11 +27,11 @@ public class HoldingModifier extends ItemAttributeModifier {
 
     @Override
     public boolean canApplyOnObject(ItemStack object) {
-        return object.getItem() instanceof IModifiedTank;
+        return object.getItem() instanceof IModifiedItem;
     }
 
     @Override
-    public boolean canApplyTogether(IModifier modifier) {
+    public boolean canApplyTogether(ItemStack stack, IModifier<ItemStack> modifier) {
         return !(modifier instanceof HoldingModifier);
     }
 }

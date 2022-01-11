@@ -63,13 +63,13 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
         }
         for (Knowledge instance : knowledge) {
             boolean notCancelled = false;
-            if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPre(player, instance)) && !knowledges.contains(instance)) {
+            if (!MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.AddPre(player, instance)) && !knowledges.contains(instance)) {
                 knowledges.add(instance);
                 notCancelled = true;
             }
             if (notCancelled) {
                 if (serverPlayer != null) {
-                    MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.addPost(serverPlayer, instance));
+                    MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.AddPost(serverPlayer, instance));
                 }
             }
         }
@@ -94,7 +94,7 @@ public class KnowledgeHolder implements IKnowledgeHolder, INBTSerializable<Compo
     public void removeKnowledge(Player player, Knowledge... knowledge) {
         List<Knowledge> knowledges = playerToKnowledgeMap.get(player.getUUID());
         for (Knowledge instance : knowledge) {
-            MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.remove(player, instance));
+            MinecraftForge.EVENT_BUS.post(new KnowledgeEvent.Remove(player, instance));
             knowledges.remove(instance);
         }
     }

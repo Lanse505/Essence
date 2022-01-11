@@ -1,7 +1,7 @@
 package com.teamacronymcoders.essence.common.modifier.item.enchantment;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceAxe;
 import com.teamacronymcoders.essence.common.item.tool.EssenceOmniTool;
 import com.teamacronymcoders.essence.common.item.tool.EssencePickaxe;
@@ -14,14 +14,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-public class EfficiencyModifier extends ItemEnchantmentCoreModifier {
+public class EfficiencyModifier extends ItemInteractionModifier {
 
     public EfficiencyModifier() {
-        super(5);
+        super(1, 5);
     }
 
     @Override
-    public void onInventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
         EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
     }
 

@@ -188,6 +188,10 @@ public class EssenceTagRegistrate {
                 ResourceLocation rl = block.getRegistryName();
                 if (rl != null) whitelist.addElement(rl, Essence.MOD_ID);
             }
+            provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.OMNITOOL_BLOCKS)
+                    .addTag(BlockTags.MINEABLE_WITH_AXE.getName(), Essence.MOD_ID)
+                    .addTag(BlockTags.MINEABLE_WITH_PICKAXE.getName(), Essence.MOD_ID)
+                    .addTag(BlockTags.MINEABLE_WITH_SHOVEL.getName(), Essence.MOD_ID);
         });
 
         // Misc Entity Tags

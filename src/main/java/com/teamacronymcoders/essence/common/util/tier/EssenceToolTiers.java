@@ -6,7 +6,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.util.Lazy;
 
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
@@ -74,7 +73,7 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
     }
 
     @Override
-    public int getFreeModifiers() {
+    public int getBasePoints() {
         return freeModifiers;
     }
 
@@ -127,6 +126,7 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
     public Rarity getRarity() {
         return rarity;
     }
+
 
     @Override
     public int getUses() {

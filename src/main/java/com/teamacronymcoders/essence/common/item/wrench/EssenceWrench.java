@@ -1,12 +1,11 @@
 package com.teamacronymcoders.essence.common.item.wrench;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.client.render.tesr.itemstack.SerializableMobRenderer;
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierHolder;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.common.item.wrench.config.BlockSerializationEnum;
 import com.teamacronymcoders.essence.common.item.wrench.config.EntitySerializationEnum;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.EfficiencyModifier;
@@ -17,7 +16,6 @@ import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
-import com.teamacronymcoders.essence.common.util.tier.EssenceItemTiers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import net.minecraft.ChatFormatting;
@@ -62,15 +60,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
-
-    private final int baseModifiers = 1;
-    private int freeModifiers;
-    private final int additionalModifiers = 0;
+public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
 
     public EssenceWrench(Properties properties) {
         super(properties);
-        this.freeModifiers = 1;
     }
 
     private static <T extends Comparable<T>> String getStatePropertyValue(BlockState state, Property<T> property) {
@@ -85,7 +78,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
         if (target.getLevel().isClientSide()) {
             return InteractionResult.FAIL;
         }
-        LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
+        LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
         return lazy.isPresent() ? lazy.map(holder -> {
             Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
             ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
@@ -152,7 +145,7 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @Override
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-        addInformationFromModifiers(stack, level, list, flag, EssenceItemTiers.BASIC);
+        addInformationFromModifiers(stack, level, list, flag);
         if (stack.getTag() != null && stack.getTag().contains("wrench_mode"))
             list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
         if (stack.getTag() != null && flag == TooltipFlag.Default.ADVANCED && stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName())) {
@@ -255,44 +248,6 @@ public class EssenceWrench extends Item implements IModifiedTool, IItemNetwork {
     @Override
     public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-    }
-
-    @Override
-    public void increaseFreeModifiers(int increase) {
-    }
-
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
-    }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(List<ModifierInstance> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
     }
 
     @Override

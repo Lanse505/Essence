@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.compat.registrate;
 
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;

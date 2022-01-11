@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +47,7 @@ public class TierIngredient extends Ingredient {
     public boolean test(@Nullable ItemStack input) {
         if (input == null) return false;
         boolean tagTest = super.test(input);
-        boolean tierTest = input.getItem() instanceof IModifiedTool && isValid(this.tier, ((IModifiedTool) input.getItem()).getTier());
+        boolean tierTest = input.getItem() instanceof IModifiedItem && isValid(this.tier, ((IModifiedItem) input.getItem()).getTier());
         if (tagOptional.isPresent()) {
             CompoundTag ingredientTag = tagOptional.get();
             CompoundTag inputTag = input.getShareTag();
@@ -93,8 +93,7 @@ public class TierIngredient extends Ingredient {
         return new TierIngredient(tag, tier, optionalNBT);
     }
 
-    public static class Serializer implements IIngredientSerializer<TierIngredient>
-    {
+    public static class Serializer implements IIngredientSerializer<TierIngredient> {
         public static final TierIngredient.Serializer INSTANCE = new TierIngredient.Serializer();
 
         @Override

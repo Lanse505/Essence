@@ -2,17 +2,17 @@ package com.teamacronymcoders.essence.common.item.tool;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.api.recipe.tool.EssenceShearingRecipe;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.helper.EssenceShearingHelper;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -30,17 +30,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class EssenceShear extends ShearsItem implements IModifiedTool {
+public class EssenceShear extends ShearsItem implements IModifiedItem {
 
-    private final int baseModifiers;
     private final EssenceToolTiers tier;
-    private int freeModifiers;
-    private int additionalModifiers;
     private int rainbowVal = 0;
 
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
@@ -48,20 +46,16 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     public EssenceShear(Properties properties, EssenceToolTiers tier) {
         super(properties.durability(tier.getUses()).rarity(tier.getRarity()));
         this.tier = tier;
-        this.baseModifiers = tier.getFreeModifiers();
-        this.freeModifiers = tier.getFreeModifiers();
-        this.additionalModifiers = 0;
-
         this.attributeModifiers = HashMultimap.create();
     }
 
     @Override
-    public Rarity getRarity(ItemStack stack) {
+    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
         return tier.getRarity();
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return false;
     }
 
@@ -71,12 +65,12 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
-    public boolean isRepairable(ItemStack stack) {
+    public boolean isRepairable(@NotNull ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
     }
 
@@ -91,12 +85,12 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+        return super.getMaxDamage(stack) + getMaxDurabilityFromModifiers(stack, tier);
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(stack, state, super.getDestroySpeed(stack, state));
     }
 
     @Override
@@ -108,31 +102,31 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        Optional<InteractionResult> modifierResult = onItemUseFromModifiers(context);
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+        Optional<InteractionResult> modifierResult = useOnFromModifier(context);
         return super.useOn(context).equals(InteractionResult.SUCCESS) ? super.useOn(context) : modifierResult.orElse(super.useOn(context));
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        hitEntityFromModifiers(stack, target, attacker);
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
+        hurtEnemyFromModifiers(stack, target, attacker);
         return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
-        return super.mineBlock(stack, level, state, pos, entityLiving);
+    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity miner) {
+        mineBlockFromModifiers(stack, level, state, pos, miner);
+        return super.mineBlock(stack, level, state, pos, miner);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int itemSlot, boolean isSelected) {
         inventoryTickFromModifiers(stack, level, entity, itemSlot, isSelected);
         super.inventoryTick(stack, level, entity, itemSlot, isSelected);
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity sheared, InteractionHand hand) {
+    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, LivingEntity sheared, @NotNull InteractionHand hand) {
         if (sheared.level.isClientSide()) {
             return InteractionResult.FAIL;
         }
@@ -145,9 +139,10 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, list, flag);
-        addInformationFromModifiers(stack, level, list, flag, tier);
+        list.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        addInformationFromModifiers(stack, level, list, flag);
     }
 
     @Override
@@ -164,47 +159,6 @@ public class EssenceShear extends ShearsItem implements IModifiedTool {
 
     public void setRainbowVal(int rainbowVal) {
         this.rainbowVal = rainbowVal;
-    }
-
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-        freeModifiers += increase;
-    }
-
-    @Override
-    public void increaseFreeModifiers(int increase) {
-        freeModifiers += increase;
-        additionalModifiers += increase;
-    }
-
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
-    }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(List<ModifierInstance> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
     }
 
     @Override

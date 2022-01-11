@@ -4,7 +4,7 @@
       "modifier": "essence:strengthened_sharpness",
       "level": 1,
       "compound": "{}",
-      "operation": "increment"
+      "operation": "decrement"
     }
   ],
   "infusable": {

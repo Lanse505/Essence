@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.common.util.helper.recipe;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.world.item.ItemStack;

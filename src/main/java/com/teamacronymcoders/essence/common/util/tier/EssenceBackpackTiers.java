@@ -38,7 +38,7 @@ public enum EssenceBackpackTiers implements IEssenceBaseTier {
     }
 
     @Override
-    public int getFreeModifiers() {
+    public int getBasePoints() {
         return freeModifiers;
     }
 

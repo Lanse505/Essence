@@ -7,7 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.knowledge.Knowledge;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.compat.registrate.EssenceKnowledgeRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.commands.CommandSourceStack;
@@ -44,7 +44,7 @@ public class RegistryCommand implements Command<CommandSourceStack> {
     public static int dumpModifierRegistry(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         source.sendSuccess(new TranslatableComponent("command.essence.registry.dump.modifier"), true);
-        for (Map.Entry<ResourceKey<Modifier>, Modifier> knowledge : EssenceModifierRegistrate.REGISTRY.get().getEntries()) {
+        for (Map.Entry<ResourceKey<IModifier<?>>, IModifier<?>> knowledge : EssenceModifierRegistrate.REGISTRY.get().getEntries()) {
             Essence.LOGGER.info(new TranslatableComponent("command.essence.registry.dump.modifier.type", knowledge.getValue(), knowledge.getKey().toString()).getKey());
         }
         return 1;

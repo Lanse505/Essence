@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.common.util.helper;
 
 import com.teamacronymcoders.essence.Essence;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.holder.IModifierHolder;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -32,12 +32,12 @@ public class EssenceShearingHelper {
                 List<ItemStack> dropList = sheared instanceof Sheep ? handleShearingSheep((Sheep) sheared, stack, sheared.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack)) : target.onSheared(player, stack, sheared.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
 
                 // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
-                List<? extends ModifierInstance> unchecked = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+                List<? extends ModifierInstance> unchecked = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
 
                 // Loops over and Gathers the final modified list
                 for (ModifierInstance instance : unchecked) {
-                    if (instance.getModifier() instanceof ItemInteractionCoreModifier interactionCoreModifier) {
-                        dropList = interactionCoreModifier.onShearedAltered(stack, player, sheared, hand, dropList, instance);
+                    if (instance.getModifier() instanceof ItemInteractionModifier interactionCoreModifier) {
+                        dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
                     }
                 }
 

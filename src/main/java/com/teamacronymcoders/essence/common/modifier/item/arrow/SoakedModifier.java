@@ -1,10 +1,11 @@
 package com.teamacronymcoders.essence.common.modifier.item.arrow;
 
 import com.google.common.collect.Lists;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,7 +17,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import java.util.List;
 import java.util.Optional;
 
-public class SoakedModifier extends ItemArrowCoreModifier {
+public class SoakedModifier extends ItemArrowModifier {
 
     public SoakedModifier() {
         super(2);
@@ -25,7 +26,7 @@ public class SoakedModifier extends ItemArrowCoreModifier {
     @Override
     public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
         int level = instance.getLevel();
-        Optional<ItemStackModifierHolder> holder = bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).resolve();
+        Optional<ItemStackModifierHolder> holder = bowStack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).resolve();
         Optional<List<MobEffectInstance>> instances = holder.flatMap(itemStackModifierHolder -> itemStackModifierHolder.getModifierInstances().stream().filter(savedInstance -> savedInstance.getModifier() instanceof BrewedModifier).map(correctInstance -> EssenceBowHelper.getEffectInstancesFromNBT(correctInstance.getModifierData())).reduce((effectInstances, effectInstances2) -> {
             effectInstances.addAll(effectInstances2);
             return effectInstances;
@@ -43,8 +44,15 @@ public class SoakedModifier extends ItemArrowCoreModifier {
     }
 
     @Override
+    public boolean isCompatibleWith(ItemStack target, IModifier<?> modifier) {
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = target.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof BrewedModifier)).orElse(false);
+
+    }
+
+    @Override
     public boolean canApplyOnObject(ItemStack stack) {
-        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER);
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
         return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof BrewedModifier)).orElse(false);
     }
 }

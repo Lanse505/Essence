@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.modifier.item.arrow;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import static com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper.TAG_EFFECTS;
 
-public class BrewedModifier extends ItemArrowCoreModifier {
+public class BrewedModifier extends ItemArrowModifier {
 
     private final List<MobEffectInstance> effects = new ArrayList<>();
 
@@ -43,6 +43,11 @@ public class BrewedModifier extends ItemArrowCoreModifier {
     }
 
     @Override
+    public boolean isCompatibleWith(ItemStack target, IModifier<?> modifier) {
+        return !(modifier instanceof BrewedModifier);
+    }
+
+    @Override
     public void update(CompoundTag compoundNBT) {
         List<MobEffectInstance> instances = new ArrayList<>();
         final ListTag listNBT = compoundNBT.getList(TAG_EFFECTS, Tag.TAG_COMPOUND);
@@ -54,11 +59,6 @@ public class BrewedModifier extends ItemArrowCoreModifier {
             effects.clear();
             effects.addAll(instances);
         }
-    }
-
-    @Override
-    public boolean canApplyTogether(IModifier modifier) {
-        return !(modifier instanceof BrewedModifier);
     }
 
     @Override
@@ -93,9 +93,9 @@ public class BrewedModifier extends ItemArrowCoreModifier {
     }
 
     @Override
-    public void mergeTags(CompoundTag original, CompoundTag mergeTag) {
-        if (original.contains("Effects") && mergeTag.contains("Effects")) {
-            ListTag originalEffects = original.getList("Effects", Tag.TAG_COMPOUND);
+    public void mergeData(ItemStack target, CompoundTag originalTag, CompoundTag mergeTag) {
+        if (originalTag.contains("Effects") && mergeTag.contains("Effects")) {
+            ListTag originalEffects = originalTag.getList("Effects", Tag.TAG_COMPOUND);
             ListTag toMergeEffects = mergeTag.getList("Effects", Tag.TAG_COMPOUND);
             for (int i = 0; i < toMergeEffects.size(); i++) {
                 CompoundTag effectTag = toMergeEffects.getCompound(i);
@@ -103,4 +103,5 @@ public class BrewedModifier extends ItemArrowCoreModifier {
             }
         }
     }
+
 }

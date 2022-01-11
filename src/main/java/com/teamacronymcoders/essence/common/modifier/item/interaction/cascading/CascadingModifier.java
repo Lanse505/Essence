@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.modifier.item.interaction.cascading;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.core.IModifier;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemInteractionCoreModifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.ExpanderModifier;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBlockHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceWorldHelper;
@@ -26,7 +26,7 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CascadingModifier extends ItemInteractionCoreModifier {
+public class CascadingModifier extends ItemInteractionModifier {
 
     private final CascadingType type;
 
@@ -36,7 +36,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
         if (state.is(this.type.getBlockTag())) {
             if (miner instanceof Player player) {
                 if (player instanceof ServerPlayer serverPlayer) {
@@ -75,7 +75,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
                 }
             }
         }
-        return super.onBlockDestroyed(stack, level, state, pos, miner, instance);
+        return super.mineBlock(stack, level, state, pos, miner, instance);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CascadingModifier extends ItemInteractionCoreModifier {
 
 
     @Override
-    public boolean canApplyTogether(IModifier modifier) {
+    public boolean canApplyTogether(ItemStack stack, IModifier<ItemStack> modifier) {
         return !(modifier instanceof CascadingModifier) && !(modifier instanceof ExpanderModifier);
     }
 

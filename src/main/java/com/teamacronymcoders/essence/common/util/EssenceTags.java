@@ -107,6 +107,8 @@ public class EssenceTags {
         public static final IOptionalNamedTag<Block> ESSENCE_BRICKS = essenceBlockTag("essence_bricks");
 
         public static final IOptionalNamedTag<Block> END_STONE_REPLACEABLE = essenceBlockTag("end_stone_ore_replaceable");
+
+        public static final IOptionalNamedTag<Block> OMNITOOL_BLOCKS = essenceBlockTag("omnitool_tags");
     }
 
     public static class EssenceTileEntityTypeTags {

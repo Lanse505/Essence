@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.common.modifier.curio.attribute;
 
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.UUID;
 
-public class AttackDamageModifier extends ItemAttributeModifier {
+public class AttackDamageModifier extends ItemCoreModifier {
 
     public static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("dc3a5e97-4bbb-4b0f-9698-43fe2babb628");
 

@@ -1,15 +1,15 @@
 package com.teamacronymcoders.essence.api.recipe.infusion;
 
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
 import net.minecraft.nbt.CompoundTag;
 
 public class SerializableModifier {
-    public Modifier modifier;
+    public IModifier modifier;
     public int level;
     public CompoundTag modifierData;
     public InfusionOperation operation;
 
-    public SerializableModifier(Modifier modifier, int level, CompoundTag modifierData, InfusionOperation operation) {
+    public SerializableModifier(IModifier modifier, int level, CompoundTag modifierData, InfusionOperation operation) {
         this.modifier = modifier;
         this.level = level;
         this.modifierData = modifierData;
@@ -20,7 +20,7 @@ public class SerializableModifier {
         return modifiers;
     }
 
-    public Modifier getModifier() {
+    public IModifier getModifier() {
         return modifier;
     }
 

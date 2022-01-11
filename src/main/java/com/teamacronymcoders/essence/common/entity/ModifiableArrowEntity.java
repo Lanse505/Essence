@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.entity;
 
 import com.google.common.collect.Sets;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemArrowCoreModifier;
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
+import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -233,8 +233,8 @@ public class ModifiableArrowEntity extends Arrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         Entity shooter = this.getOwner();
-        bowStack.getCapability(EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowCoreModifier)).ifPresent(instances -> instances.forEach(instance -> {
-            ItemArrowCoreModifier modifier = (ItemArrowCoreModifier) instance.getModifier();
+        bowStack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
+            ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier();
             modifier.onCollide(bowStack, this, (Player) shooter, result, instance);
         }));
     }

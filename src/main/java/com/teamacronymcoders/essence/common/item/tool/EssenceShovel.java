@@ -2,17 +2,17 @@ package com.teamacronymcoders.essence.common.item.tool;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTool;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,27 +31,22 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EssenceShovel extends ShovelItem implements IModifiedTool {
+public class EssenceShovel extends ShovelItem implements IModifiedItem {
 
     private final EssenceToolTiers tier;
-    private final int baseModifiers;
-    private int freeModifiers;
-    private int additionalModifiers;
 
     public EssenceShovel(Properties properties, EssenceToolTiers tier) {
         super(tier, tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), properties.rarity(tier.getRarity()));
         this.tier = tier;
-        this.baseModifiers = tier.getFreeModifiers();
-        this.freeModifiers = tier.getFreeModifiers();
-        this.additionalModifiers = 0;
     }
 
     @Override
-    public Rarity getRarity(ItemStack stack) {
+    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
         return tier.getRarity();
     }
 
@@ -69,9 +64,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
             if (!world.isClientSide()) {
                 world.setBlock(pos, newState, 11);
                 if (playerentity != null) {
-                    context.getItemInHand().hurtAndBreak(1, playerentity, (playerIn) -> {
-                        playerIn.broadcastBreakEvent(context.getHand());
-                    });
+                    context.getItemInHand().hurtAndBreak(1, playerentity, (playerIn) -> playerIn.broadcastBreakEvent(context.getHand()));
                 }
             }
             return InteractionResult.SUCCESS;
@@ -85,7 +78,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
@@ -111,7 +104,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
         }
 
         // Fallback on Modifier Behaviour
-        return onItemUseFromModifiers(context).orElse(resultType);
+        return useOnFromModifier(context).orElse(resultType);
     }
 
     @Override
@@ -123,7 +116,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return false;
     }
 
@@ -133,39 +126,39 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public boolean isRepairable(ItemStack stack) {
+    public boolean isRepairable(@NotNull ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return super.getMaxDamage(stack) + getMaxDamageFromModifiers(stack, tier);
+        return super.getMaxDamage(stack) + getMaxDurabilityFromModifiers(stack, tier);
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(super.getDestroySpeed(stack, state), stack);
+    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
+        return super.getDestroySpeed(stack, state) + getDestroySpeedFromModifiers(stack, state, super.getDestroySpeed(stack, state));
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        hitEntityFromModifiers(stack, target, attacker);
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
+        hurtEnemyFromModifiers(stack, target, attacker);
         return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        onBlockDestroyedFromModifiers(stack, level, state, pos, entityLiving);
-        return super.mineBlock(stack, level, state, pos, entityLiving);
+    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity miner) {
+        mineBlockFromModifiers(stack, level, state, pos, miner);
+        return super.mineBlock(stack, level, state, pos, miner);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
         inventoryTickFromModifiers(stack, level, entityIn, itemSlot, isSelected);
         super.inventoryTick(stack, level, entityIn, itemSlot, isSelected);
     }
@@ -179,50 +172,10 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        addInformationFromModifiers(stack, level, tooltip, flagIn, tier);
-    }
-
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-        freeModifiers += increase;
-    }
-
-    @Override
-    public void increaseFreeModifiers(int increase) {
-        freeModifiers += increase;
-        additionalModifiers += increase;
-    }
-
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
-    }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(List<ModifierInstance> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
+        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 
     @Nullable
@@ -235,7 +188,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedTool {
     }
 
     @Override
-    public EssenceToolTiers getTier() {
+    public @NotNull EssenceToolTiers getTier() {
         return tier;
     }
 }

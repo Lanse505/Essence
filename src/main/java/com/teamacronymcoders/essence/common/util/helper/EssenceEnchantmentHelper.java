@@ -1,8 +1,8 @@
 package com.teamacronymcoders.essence.common.util.helper;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemEnchantmentCoreModifier;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
@@ -100,9 +100,9 @@ public class EssenceEnchantmentHelper {
             Map<String, CompoundTag> enchantmentIDs = new HashMap<>();
             IntStream.range(0, enchantments.size()).mapToObj(enchantments::getCompound).forEach(tag -> enchantmentIDs.put(tag.getString("id"), tag));
             holderLazyOptional.ifPresent(holder -> holder.getModifierInstances().stream()
-                    .filter(instance -> instance.getModifier() instanceof ItemEnchantmentCoreModifier)
+                    .filter(instance -> instance.getModifier() instanceof ItemCoreModifier)
                     .forEach(instance -> {
-                        Enchantment enchantment = ((ItemEnchantmentCoreModifier) instance.getModifier()).getLinkedEnchantment(stack);
+                        Enchantment enchantment = ((ItemCoreModifier) instance.getModifier()).getLinkedEnchantment(stack);
                         if (enchantment != null) {
                             enchantmentIDs.remove(enchantment.getRegistryName().toString());
                         }

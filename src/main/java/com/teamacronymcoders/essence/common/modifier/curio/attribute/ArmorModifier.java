@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.common.modifier.curio.attribute;
 
-import com.teamacronymcoders.essence.api.modifier.item.extendable.ItemAttributeModifier;
+import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.UUID;
 
-public class ArmorModifier extends ItemAttributeModifier {
+public class ArmorModifier extends ItemCoreModifier {
 
     public static final UUID ARMOR_UUID = UUID.fromString("fbe6f3d9-80bc-4160-b54c-5020b5a914bc");
 

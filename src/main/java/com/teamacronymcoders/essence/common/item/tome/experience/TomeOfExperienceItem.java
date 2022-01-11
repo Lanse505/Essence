@@ -1,12 +1,11 @@
 package com.teamacronymcoders.essence.common.item.tome.experience;
 
-import com.teamacronymcoders.essence.api.holder.ModifierInstance;
-import com.teamacronymcoders.essence.api.modified.IModifiedTank;
-import com.teamacronymcoders.essence.api.modifier.item.ItemCoreModifier;
+import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.common.item.tome.TomeItem;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
+import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -39,26 +38,18 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IItemNetwork {
+public class TomeOfExperienceItem extends TomeItem implements IModifiedItem, IItemNetwork {
 
     private ExperienceModeEnum mode;
-    private final int baseModifiers;
-    private int freeModifiers;
-    private int additionalModifiers;
 
     public TomeOfExperienceItem(Item.Properties properties) {
         mode = ExperienceModeEnum.FILL;
-        this.baseModifiers = 3;
-        this.freeModifiers = 3;
-        this.additionalModifiers = 0;
     }
-
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
         if (!EssenceInformationHelper.isSneakKeyDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.essence.modifier.free", new TextComponent(String.valueOf(freeModifiers)).withStyle(EssenceUtilHelper.getTextColor(freeModifiers, (baseModifiers + additionalModifiers)))).withStyle(ChatFormatting.GRAY));
             tooltip.add(EssenceInformationHelper.shiftForDetails.withStyle(ChatFormatting.GREEN));
             return;
         }
@@ -152,47 +143,6 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
         return mode;
     }
 
-    @Override
-    public void addModifierWithoutIncreasingAdditional(int increase) {
-        freeModifiers += increase;
-    }
-
-    @Override
-    public void increaseFreeModifiers(int increase) {
-        freeModifiers += increase;
-        additionalModifiers += increase;
-    }
-
-    @Override
-    public boolean decreaseFreeModifiers(int decrease) {
-        if (freeModifiers - decrease < 0) {
-            return false;
-        }
-        freeModifiers = freeModifiers - decrease;
-        return true;
-    }
-
-    @Override
-    public int getFreeModifiers() {
-        return freeModifiers;
-    }
-
-    @Override
-    public int getMaxModifiers() {
-        return baseModifiers + additionalModifiers;
-    }
-
-    @Override
-    public boolean recheck(List<ModifierInstance> modifierInstances) {
-        int cmc = 0;
-        for (ModifierInstance instance : modifierInstances) {
-            if (instance.getModifier() instanceof ItemCoreModifier) {
-                cmc += instance.getModifier().getModifierCountValue(instance.getLevel());
-            }
-        }
-        return cmc <= baseModifiers + additionalModifiers;
-    }
-
     public void setMode(ExperienceModeEnum mode) {
         this.mode = mode;
     }
@@ -202,5 +152,15 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedTank, IIt
         if (!accessor.isClientSide()) {
             setMode(dataStream.readEnum(ExperienceModeEnum.class));
         }
+    }
+
+    @Override
+    public EssenceToolTiers getTier() {
+        return getTier();
+    }
+
+    @Override
+    public InteractionResult useOnModified(UseOnContext context, boolean isRecursive) {
+        return InteractionResult.FAIL;
     }
 }

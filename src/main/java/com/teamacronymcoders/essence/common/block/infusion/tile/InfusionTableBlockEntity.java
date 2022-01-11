@@ -102,7 +102,8 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
 
     public static void runLogicTickCycle(InfusionTableBlockEntity be) {
         NonNullList<ItemStack> stacks = be.getPedestalStacks();
-        if (be.shouldBeWorking && !be.isWorking && be.recipe == null) be.getInfusionRecipe(be.getInfusable().getStackInSlot(0), stacks);
+        if (be.shouldBeWorking && !be.isWorking && be.recipe == null)
+            be.getInfusionRecipe(be.getInfusable().getStackInSlot(0), stacks);
         be.markComponentForUpdate(false);
         if (be.recipe != null && (be.shouldBeWorking || be.isWorking)) {
             ExtendableInfusionRecipe recipe = (ExtendableInfusionRecipe) be.getLevel().getRecipeManager().byKey(new ResourceLocation(be.recipe)).get();
@@ -174,7 +175,8 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
         }
 
         float f2;
-        for (f2 = blockEntity.tRot - blockEntity.rot; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {}
+        for (f2 = blockEntity.tRot - blockEntity.rot; f2 >= (float) Math.PI; f2 -= ((float) Math.PI * 2F)) {
+        }
 
         while (f2 < -(float) Math.PI) {
             f2 += ((float) Math.PI * 2F);
@@ -200,7 +202,7 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
                     Vec3 pedestalVec = new Vec3(pedestalPosition.getX(), pedestalPosition.getY(), pedestalPosition.getZ());
                     Vec3 subtractedVec = targetVec.subtract(pedestalVec);
                     float delta = blockEntity.workDuration > 0 && blockEntity.totalWorkDuration > 0 ? Mth.clamp((blockEntity.workDuration / blockEntity.totalWorkDuration), 0, 1) : 0;
-                    Vec3 lerpedVec = subtractedVec.lerp(new Vec3(0,0,0), delta);
+                    Vec3 lerpedVec = subtractedVec.lerp(new Vec3(0, 0, 0), delta);
                     level.addParticle(
                             new ItemParticleOption(ParticleTypes.ITEM, pedestal.getStack()),
                             pedestalPosition.getX() + 0.5, pedestalPosition.getY() + 1.25, pedestalPosition.getZ() + 0.5,

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.teamacronymcoders.essence.api.modifier.core.Modifier;
+import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionOperation;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
 import com.teamacronymcoders.essence.common.util.helper.EssenceJsonHelper;
@@ -23,7 +23,7 @@ public class EssenceSerializableObjectHandler {
 
     // SerializableModifier
     public static SerializableModifier readSerializableModifier(FriendlyByteBuf buffer) {
-        final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
+        final IModifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
         final int level = buffer.readInt();
         final CompoundTag compound = buffer.readNbt();
         final String operator = buffer.readUtf(1);
@@ -48,7 +48,7 @@ public class EssenceSerializableObjectHandler {
 
     public static SerializableModifier readSerializableModifier(JsonElement element) {
         JsonObject object = element.getAsJsonObject();
-        Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
+        IModifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
         int level = object.get("level").getAsInt();
         CompoundTag compound = null;
         try {
@@ -64,7 +64,7 @@ public class EssenceSerializableObjectHandler {
     public static SerializableModifier[] readSerializableModifierArray(FriendlyByteBuf buffer) {
         SerializableModifier[] serializableModifiers = new SerializableModifier[buffer.readInt()];
         for (int i = 0; i < serializableModifiers.length; i++) {
-            final Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
+            final IModifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(buffer.readUtf(0)));
             final int level = buffer.readInt();
             final CompoundTag compound = buffer.readNbt();
             final String operator = buffer.readUtf(1);
@@ -101,7 +101,7 @@ public class EssenceSerializableObjectHandler {
         SerializableModifier[] serializableModifiers = new SerializableModifier[array.size()];
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            Modifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
+            IModifier modifier = EssenceModifierRegistrate.REGISTRY.get().getValue(new ResourceLocation(object.get("modifier").getAsString()));
             int level = object.get("level").getAsInt();
             CompoundTag compound = null;
             try {

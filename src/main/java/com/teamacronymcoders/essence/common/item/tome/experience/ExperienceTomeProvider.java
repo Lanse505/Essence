@@ -1,12 +1,11 @@
 package com.teamacronymcoders.essence.common.item.tome.experience;
 
-import com.teamacronymcoders.essence.common.capability.EssenceCoreCapability;
-import com.teamacronymcoders.essence.common.capability.itemstack.modifier.ItemStackModifierHolder;
-import com.teamacronymcoders.essence.common.capability.tank.ModifiableTank;
+import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
+import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
+import com.teamacronymcoders.essence.api.modified.rewrite.tank.ModifiableTank;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
@@ -39,7 +38,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
         nbt.put(MODIFIABLE_TANK, tank.writeToNBT(new CompoundTag()));
         nbt.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, modifierHolder.serializeNBT());
         tank.readFromNBT(nbt.getCompound(MODIFIABLE_TANK));
-        modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        modifierHolder.deserializeNBT(nbt.getCompound(EssenceItemstackModifierHelpers.HOLDER));
         this.stack.setTag(nbt);
     }
 
@@ -49,7 +48,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
         modifierHolder = new ItemStackModifierHolder(stack);
 
         CompoundTag nbt = stack.getOrCreateTag();
-        modifierHolder.deserializeNBT(inputNBT.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        modifierHolder.deserializeNBT(inputNBT.getCompound(EssenceItemstackModifierHelpers.HOLDER));
         nbt.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, modifierHolder.serializeNBT());
         tank.readFromNBT(inputNBT.getCompound(MODIFIABLE_TANK));
         nbt.put(MODIFIABLE_TANK, tank.writeToNBT(new CompoundTag()));
@@ -63,7 +62,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
             return optional_tank.cast();
         }
-        if (cap == EssenceCoreCapability.ITEMSTACK_MODIFIER_HOLDER) {
+        if (cap == EssenceCapability.ITEMSTACK_MODIFIER_HOLDER) {
             return optional_holder.cast();
         }
         return LazyOptional.empty();
@@ -80,6 +79,6 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         tank.readFromNBT(nbt.getCompound(MODIFIABLE_TANK));
-        modifierHolder.deserializeNBT(nbt.getList(EssenceItemstackModifierHelpers.TAG_MODIFIERS, Tag.TAG_COMPOUND));
+        modifierHolder.deserializeNBT(nbt.getCompound(EssenceItemstackModifierHelpers.HOLDER));
     }
 }
