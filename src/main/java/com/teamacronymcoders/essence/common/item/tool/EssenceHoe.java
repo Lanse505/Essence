@@ -38,7 +38,7 @@ public class EssenceHoe extends HoeItem implements IModifiedItem {
     private final EssenceToolTiers tier;
 
     public EssenceHoe(Properties properties, EssenceToolTiers tier) {
-        super(tier, 0, tier.getAttackSpeedHoeMod(), properties.rarity(tier.getRarity()));
+        super(tier, 0, tier.getSpeedHoeMod(), properties.rarity(tier.getRarity()));
         this.tier = tier;
     }
 

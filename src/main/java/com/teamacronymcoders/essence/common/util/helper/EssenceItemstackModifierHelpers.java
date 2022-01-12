@@ -323,7 +323,7 @@ public class EssenceItemstackModifierHelpers {
      */
     public static boolean hasRainbowModifier(ItemStack stack) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof RainbowModifier)).orElse(false);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier().get() instanceof RainbowModifier)).orElse(false);
     }
 
     /**
@@ -334,7 +334,7 @@ public class EssenceItemstackModifierHelpers {
      */
     public static boolean hasEnchantedModifier(ItemStack stack) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof EnchantedModifier)).orElse(false);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier().get() instanceof EnchantedModifier)).orElse(false);
     }
 
     /**
@@ -345,21 +345,7 @@ public class EssenceItemstackModifierHelpers {
      */
     public static boolean hasSoakedModifier(ItemStack stack) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof SoakedModifier)).orElse(false);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier().get() instanceof SoakedModifier)).orElse(false);
     }
 
-    /**
-     * @param instances Modifier Instances
-     * @return Returns CompoundNBT for Serialization/Deserialization
-     * Do note that using this method DOES NOT add or remove from the free modifier amount.
-     */
-    public static CompoundTag getStackNBTForFillGroup(ModifierInstance... instances) {
-        final CompoundTag primaryTag = new CompoundTag();
-        final ListTag listNBT = new ListTag();
-        for (ModifierInstance instance : instances) {
-            listNBT.add(instance.serializeNBT());
-        }
-        primaryTag.put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, listNBT);
-        return primaryTag;
-    }
 }

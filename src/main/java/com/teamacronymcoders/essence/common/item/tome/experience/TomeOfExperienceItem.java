@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.common.item.tome.experience;
 
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
-import com.teamacronymcoders.essence.common.item.tome.TomeItem;
 import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
@@ -38,11 +37,12 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class TomeOfExperienceItem extends TomeItem implements IModifiedItem, IItemNetwork {
+public class TomeOfExperienceItem extends Item implements IModifiedItem, IItemNetwork {
 
     private ExperienceModeEnum mode;
 
     public TomeOfExperienceItem(Item.Properties properties) {
+        super(properties);
         mode = ExperienceModeEnum.FILL;
     }
 
@@ -60,8 +60,8 @@ public class TomeOfExperienceItem extends TomeItem implements IModifiedItem, IIt
             int capacityAmount = handler.getTankCapacity(0);
             tooltip.add(new TranslatableComponent("tome.essence.mode.tooltip").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(" ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(mode.getLocaleString()))));
             tooltip.add(new TranslatableComponent("tooltip.essence.tome_of_experience.holding").withStyle(ChatFormatting.LIGHT_PURPLE));
-            tooltip.add(new TranslatableComponent("tooltip.essence.tome_of_experience.levels").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount)) + "/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(Math.floor(EssenceUtilHelper.getLevelForExperience(capacityAmount))))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, Math.round(EssenceUtilHelper.getLevelForExperience(capacityAmount))))));
-            tooltip.add(new TranslatableComponent("tooltip.essence.tome_of_experience.amount").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount)).append("/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, capacityAmount))));
+            tooltip.add(new TextComponent("  ").append(new TranslatableComponent("tooltip.essence.tome_of_experience.levels").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount)) + "/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(Math.floor(EssenceUtilHelper.getLevelForExperience(capacityAmount))))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, Math.round(EssenceUtilHelper.getLevelForExperience(capacityAmount)))))));
+            tooltip.add(new TextComponent("  ").append(new TranslatableComponent("tooltip.essence.tome_of_experience.amount").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount)).append("/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, capacityAmount)))));
         });
 
         addInformationFromModifiers(stack, level, tooltip, flagIn);

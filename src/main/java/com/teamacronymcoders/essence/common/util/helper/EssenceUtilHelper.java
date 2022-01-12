@@ -26,7 +26,6 @@ public class EssenceUtilHelper {
         map.put(5, "V");
         map.put(4, "IV");
         map.put(1, "I");
-        map.put(0, "");
     });
 
     public static String toRoman(int number) {
@@ -72,14 +71,6 @@ public class EssenceUtilHelper {
         }
 
         return String.valueOf(number);
-    }
-
-    private static boolean isEssenceItemTier(Tier tier) {
-        return tier instanceof EssenceToolTiers;
-    }
-
-    public static EssenceToolTiers getEssenceItemTier(Tier tier) {
-        return isEssenceItemTier(tier) ? (EssenceToolTiers) tier : null;
     }
 
     public static int getLevelForExperience(int experience) {
@@ -131,7 +122,7 @@ public class EssenceUtilHelper {
                     firstString = false;
                 }
             }
-            name = builder.toString() + " " + input;
+            name = builder + " " + input;
             return name;
         }
         name = colorName.substring(0, 1).toUpperCase(Locale.ROOT) + colorName.substring(1) + " " + input;

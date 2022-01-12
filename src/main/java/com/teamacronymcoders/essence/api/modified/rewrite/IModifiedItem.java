@@ -80,7 +80,7 @@ public interface IModifiedItem {
             for (ModifierInstance instance : holder.getModifierInstances()) {
                 if (instance.getModifier().get() instanceof ItemInteractionModifier) {
                     InteractionResult actionResultType = ((ItemInteractionModifier) instance.getModifier().get()).useOn(context, instance);
-                    if (Objects.equals(actionResultType, InteractionResult.PASS)) {
+                    if (actionResultType == InteractionResult.SUCCESS) {
                         return Optional.of(actionResultType);
                     }
                 }
@@ -138,9 +138,9 @@ public interface IModifiedItem {
     @SuppressWarnings("unchecked")
     default void addInformationFromModifiers(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
         if (stack.hasTag() && stack.getTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && !stack.getTag().getCompound(EssenceItemstackModifierHelpers.TAG_MODIFIERS).isEmpty()) {
-            list.add(new TranslatableComponent("tooltip.essence.modifier").withStyle(ChatFormatting.GOLD));
             Map<String, List<Component>> sorting_map = new HashMap<>();
             stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> {
+                if (!holder.getModifierInstances().isEmpty()) list.add(new TranslatableComponent("tooltip.essence.modifier").withStyle(ChatFormatting.GOLD));
                 for (ModifierInstance instance : holder.getModifierInstances()) {
                     sorting_map.put(instance.getModifier().get().getRenderedText(instance).get(0).toString(), instance.getModifier().get().getRenderedText(instance));
                 }

@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import net.minecraft.ChatFormatting;
@@ -27,6 +26,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
     private final EssenceToolTiers tier;
 
     public EssenceAxe(Properties properties, EssenceToolTiers tier) {
-        super(tier, tier.getAttackDamageAxeMod(), tier.getAttackSpeedAxeMod(), properties.rarity(tier.getRarity()));
+        super(tier, tier.getAttackDamageAxeMod(), tier.getSpeedAxeMod(), properties.rarity(tier.getRarity()));
         this.tier = tier;
     }
 
@@ -50,12 +50,25 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
 
     public InteractionResult onItemBehaviour(UseOnContext context) {
         Level level = context.getLevel();
-        Block block = level.getBlockState(context.getClickedPos()).getBlock();
-        return level.getRecipeManager().getRecipes().stream()
-                .filter(iRecipe -> iRecipe.getType() == AxeStrippingRecipe.SERIALIZER.getRecipeType())
-                .map(iRecipe -> (AxeStrippingRecipe) iRecipe)
-                .filter(recipe -> recipe.matches(block))
-                .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(InteractionResult.PASS);
+        Player player = context.getPlayer();
+        BlockPos pos = context.getClickedPos();
+        ItemStack stack = context.getItemInHand();
+        BlockState state = level.getBlockState(context.getClickedPos());
+        InteractionResult resultType = InteractionResult.FAIL;
+        BlockState behaviourState;
+
+        for (ToolAction action : ToolActions.DEFAULT_AXE_ACTIONS) {
+            behaviourState = state.getToolModifiedState(level, pos, player, stack, action);
+            if (behaviourState != null && !behaviourState.equals(state)) {
+                level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+                resultType = InteractionResult.SUCCESS;
+            }
+            if (resultType == InteractionResult.SUCCESS) {
+                return resultType;
+            }
+        }
+
+        return InteractionResult.FAIL;
     }
 
     @Override
@@ -65,27 +78,26 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
         ItemStack stack = context.getItemInHand();
-        InteractionResult resultType = InteractionResult.FAIL;
+        InteractionResult resultType = useOnFromModifier(context).orElse(InteractionResult.FAIL);
+        if (resultType == InteractionResult.SUCCESS) return resultType;
         BlockState behaviourState;
 
         // Check Vanilla Axe Behaviour
-        behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.AXE_DIG);
-        if (behaviourState != null && !behaviourState.equals(state)) {
-            level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
-            resultType = InteractionResult.SUCCESS;
-        }
-        if (resultType == InteractionResult.SUCCESS) {
-            return resultType;
-        }
-
-        // Check Recipes
-        resultType = onItemBehaviour(context);
-        if (resultType == InteractionResult.SUCCESS) {
-            return resultType;
+        if (resultType == InteractionResult.FAIL) {
+            for (ToolAction action : ToolActions.DEFAULT_AXE_ACTIONS) {
+                behaviourState = state.getToolModifiedState(level, pos, player, stack, action);
+                if (behaviourState != null && !behaviourState.equals(state)) {
+                    level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+                    resultType = InteractionResult.SUCCESS;
+                }
+                if (resultType == InteractionResult.SUCCESS) {
+                    return resultType;
+                }
+            }
         }
 
         // Fallback on Modifier Behaviour
-        return useOnFromModifier(context).orElse(resultType);
+        return resultType;
     }
 
     @Override
@@ -171,5 +183,10 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
     @Override
     public @NotNull EssenceToolTiers getTier() {
         return tier;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction);
     }
 }

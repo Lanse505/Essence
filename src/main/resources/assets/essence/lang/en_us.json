@@ -150,6 +150,7 @@
   "command.essence.registry.dump.modifier": "Now dumping contents of Registry 'Modifier' to Logs",
   "command.essence.registry.dump.modifier.type": "Modifier with ID of: [%s]",
   "command.essence.setup_dev": "Dev-World Successfully Setup!",
+  "constants.essence": "Essence",
   "container.essence.portable.crafter": "Crafting Cracker",
   "curios.identifier.backpack": "Backpack",
   "entity.essence.glue_ball": "Glue Ball",
@@ -167,6 +168,8 @@
   "essence.cascading.type.lumber": "Lumber",
   "essence.cascading.type.none": "???",
   "essence.cascading.type.vein": "Vein",
+  "essence.keybind.cycling": "Cycle Modes",
+  "essence.keybind.extended_information": "Extended Information",
   "essence.mode.wrench.rotate": "Rotate",
   "essence.mode.wrench.serialize": "Stasis",
   "essence.mode.wrench.trigger": "Trigger",
@@ -302,7 +305,7 @@
   "tooltip.essence.modifier": "Modifiers:",
   "tooltip.essence.modifier.free": "Free Modifiers: %s",
   "tooltip.essence.tome_of_experience.amount": "Stored Experience: ",
-  "tooltip.essence.tome_of_experience.holding": "Currently Holding",
-  "tooltip.essence.tome_of_experience.levels": "Levels Held %s/%s",
+  "tooltip.essence.tome_of_experience.holding": "Currently Holding:",
+  "tooltip.essence.tome_of_experience.levels": "Levels Held: ",
   "tooltip.essence.tool.tier": "Material Tier: "
 }

@@ -9,22 +9,22 @@ import net.minecraftforge.common.util.Lazy;
 import java.util.function.Supplier;
 
 public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
-    ESSENCE("tier.essence.basic", 3, 2, 256, 384, 6.0F,
+    ESSENCE("tier.essence.basic", 3, 2, 250, 375, 6.0F,
             2.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.COMMON, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT.get());
     }),
-    EMPOWERED("tier.essence.empowered", 4, 3, 1561, 2332, 8.0F,
+    EMPOWERED("tier.essence.empowered", 4, 3, 1561, 2334, 8.0F,
             3.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.UNCOMMON, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_EMPOWERED.get());
     }),
-    SUPREME("tier.essence.supreme", 5, 4, 2031, 3047, 9.0F,
+    SUPREME("tier.essence.supreme", 5, 4, 2334, 3501, 9.0F,
             4.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.RARE, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_SUPREME.get());
     }),
-    DIVINE("tier.essence.divine", 6, 6, 4062, 6093, 10.0F,
+    DIVINE("tier.essence.divine", 6, 6, 5251, 7877, 10.0F,
             6.0F, 6.0F, 1, 1.5F, 3, -3.1F, -1.0F, -2.8F, -3.0F, -2.4F,
             0, Rarity.EPIC, () -> {
         return Ingredient.of(EssenceItemRegistrate.ESSENCE_INGOT_DIVINE.get());
@@ -50,13 +50,13 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
     private final Rarity rarity;
     private final Lazy<Ingredient> repairMaterial;
 
-    EssenceToolTiers(String localName, int freeModifiers, int harvestLevel, int maxUses, int maxUsesBow, float efficiency, float attackDamageGeneral, float attackDamageAxeMod, int attackDamagePickaxeMod, float attackDamageShovelMod, int attackDamageSwordMod, float attackSpeedAxeMod, float attackSpeedHoeMod, float attackSpeedPickaxeMod, float attackSpeedShovelMod, float attackSpeedSwordMod, int enchantability, Rarity rarity, Supplier<Ingredient> repairMaterial) {
+    EssenceToolTiers(String localName, int freeModifiers, int level, int maxUses, int maxUsesBow, float speed, float attackDamageGeneral, float attackDamageAxeMod, int attackDamagePickaxeMod, float attackDamageShovelMod, int attackDamageSwordMod, float attackSpeedAxeMod, float attackSpeedHoeMod, float attackSpeedPickaxeMod, float attackSpeedShovelMod, float attackSpeedSwordMod, int enchantability, Rarity rarity, Supplier<Ingredient> repairMaterial) {
         this.localName = localName;
         this.freeModifiers = freeModifiers;
-        this.level = harvestLevel;
+        this.level = level;
         this.maxUses = maxUses;
         this.maxUsesBow = maxUsesBow;
-        this.speed = efficiency;
+        this.speed = speed;
         this.attackDamageGeneral = attackDamageGeneral;
         this.attackDamageAxeMod = attackDamageAxeMod;
         this.attackDamagePickaxeMod = attackDamagePickaxeMod;
@@ -97,19 +97,19 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
         return attackDamageSwordMod;
     }
 
-    public float getAttackSpeedAxeMod() {
+    public float getSpeedAxeMod() {
         return attackSpeedAxeMod;
     }
 
-    public float getAttackSpeedHoeMod() {
+    public float getSpeedHoeMod() {
         return attackSpeedHoeMod;
     }
 
-    public float getAttackSpeedPickaxeMod() {
+    public float getSpeedPickaxeMod() {
         return attackSpeedPickaxeMod;
     }
 
-    public float getAttackSpeedShovelMod() {
+    public float getSpeedShovelMod() {
         return attackSpeedShovelMod;
     }
 

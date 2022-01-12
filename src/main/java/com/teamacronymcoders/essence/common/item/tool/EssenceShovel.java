@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import net.minecraft.ChatFormatting;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +41,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
     private final EssenceToolTiers tier;
 
     public EssenceShovel(Properties properties, EssenceToolTiers tier) {
-        super(tier, tier.getAttackDamageShovelMod(), tier.getAttackSpeedShovelMod(), properties.rarity(tier.getRarity()));
+        super(tier, tier.getAttackDamageShovelMod(), tier.getSpeedShovelMod(), properties.rarity(tier.getRarity()));
         this.tier = tier;
     }
 
@@ -54,7 +54,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = world.getBlockState(pos);
-        if (context.getClickedFace() == Direction.DOWN) {
+        if (context.getClickedFace() != Direction.UP) {
             return InteractionResult.PASS;
         }
         if (state.getBlock() instanceof CampfireBlock && state.getValue(CampfireBlock.LIT)) {
@@ -69,11 +69,22 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
             }
             return InteractionResult.SUCCESS;
         } else {
-            return world.getRecipeManager().getRecipes().stream()
-                    .filter(iRecipe -> iRecipe.getType() == ShovelPathingRecipe.SERIALIZER.getRecipeType())
-                    .map(iRecipe -> (ShovelPathingRecipe) iRecipe)
-                    .filter(recipe -> recipe.matches(state.getBlock()))
-                    .findFirst().map(recipe -> recipe.resolveRecipe(context)).orElse(InteractionResult.PASS);
+            Level level = context.getLevel();
+            Player player = context.getPlayer();
+            ItemStack stack = context.getItemInHand();
+            InteractionResult resultType = InteractionResult.FAIL;
+            BlockState behaviourState;
+
+            behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
+            if (behaviourState != null && !behaviourState.equals(state)) {
+                level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+                resultType = InteractionResult.SUCCESS;
+            }
+            if (resultType == InteractionResult.SUCCESS) {
+                return resultType;
+            }
+
+            return InteractionResult.FAIL;
         }
     }
 
@@ -84,27 +95,24 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
         BlockPos pos = context.getClickedPos();
         BlockState state = world.getBlockState(pos);
         ItemStack stack = context.getItemInHand();
-        InteractionResult resultType = InteractionResult.FAIL;
+        InteractionResult resultType = useOnFromModifier(context).orElse(InteractionResult.FAIL);
+        if (resultType == InteractionResult.SUCCESS) return resultType;
         BlockState behaviourState;
 
         // Check Vanilla Axe Behaviour
-        behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
-        if (behaviourState != null && !behaviourState.equals(state)) {
-            world.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
-            resultType = InteractionResult.SUCCESS;
-        }
-        if (resultType == InteractionResult.SUCCESS) {
-            return resultType;
-        }
-
-        // Check Recipes
-        resultType = onItemBehaviour(context);
-        if (resultType == InteractionResult.SUCCESS) {
-            return resultType;
+        if (resultType == InteractionResult.FAIL) {
+            behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
+            if (behaviourState != null && !behaviourState.equals(state)) {
+                world.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
+                resultType = InteractionResult.SUCCESS;
+            }
+            if (resultType == InteractionResult.SUCCESS) {
+                return resultType;
+            }
         }
 
         // Fallback on Modifier Behaviour
-        return useOnFromModifier(context).orElse(resultType);
+        return resultType;
     }
 
     @Override
@@ -185,6 +193,11 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
             return new ItemStackModifierProvider(stack, tag);
         }
         return new ItemStackModifierProvider(stack);
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
     }
 
     @Override

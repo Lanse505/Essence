@@ -48,13 +48,12 @@ public class ExpanderModifier extends ItemInteractionModifier {
             BlockPos offset = new BlockPos(vec3.add(1.0, 1.0, 1.0).scale(instance.getLevel()));
             BlockPos start = pos.offset(offset);
             BlockPos end = pos.subtract(offset);
-            BlockPos.betweenClosedStream(start, end)
-                    .filter(position -> !position.equals(pos))
-                    .forEach(position -> {
-                        if (stack.getItem() instanceof IModifiedItem modifiedTool) {
-                            modifiedTool.useOnModified(new UseOnContext(player, hand, new BlockHitResult(new Vec3(position.getX(), position.getY(), position.getZ()), context.getClickedFace(), position, false)), true);
-                        }
-                    });
+            if (stack.getItem() instanceof IModifiedItem modifiedTool) {
+                modifiedTool.useOnModified(new UseOnContext(player, hand, new BlockHitResult(new Vec3(pos.getX(), pos.getY(), pos.getZ()), context.getClickedFace(), pos, false)), true);
+                BlockPos.betweenClosedStream(start, end)
+                        .filter(position -> !position.equals(pos))
+                        .forEach(position -> modifiedTool.useOnModified(new UseOnContext(player, hand, new BlockHitResult(new Vec3(position.getX(), position.getY(), position.getZ()), context.getClickedFace(), position, false)), true));
+            }
             return InteractionResult.SUCCESS;
         }
         return super.useOn(context, instance);

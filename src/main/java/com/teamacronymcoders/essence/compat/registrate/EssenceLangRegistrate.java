@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.compat.registrate;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.IModifier;
+import com.teamacronymcoders.essence.client.util.keybindings.KBTranslationKeys;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
@@ -208,6 +209,9 @@ public class EssenceLangRegistrate {
         provider.add("tier.essence.divine", "Divine");
         provider.add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
         provider.add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
+        provider.add(KBTranslationKeys.MODID, "Essence");
+        provider.add(KBTranslationKeys.CYCLING, "Cycle Modes");
+        provider.add(KBTranslationKeys.EXTENDED_INFORMATION, "Extended Information");
     }
 
     private static void addTooltip(RegistrateLangProvider provider) {
@@ -215,8 +219,9 @@ public class EssenceLangRegistrate {
         provider.add("tooltip.essence.modifier.free", "Free Modifiers: %s");
         provider.add("tooltip.essence.tool.tier", "Material Tier: ");
         provider.add("tooltip.essence.generic.shiftForInformation", "Hold %s For More Info");
-        provider.add("tooltip.essence.tome_of_experience.holding", "Currently Holding");
-        provider.add("tooltip.essence.tome_of_experience.levels", "Levels Held %s/%s");
+        provider.add("tooltip.essence.tome_of_experience.holding", "Currently Holding:");
+        provider.add("tooltip.essence.tome_of_experience.levels", "Levels Held: ");
         provider.add("tooltip.essence.tome_of_experience.amount", "Stored Experience: ");
+        provider.add("wrench.essence.mode.tooltip", "Mode: ");
     }
 }

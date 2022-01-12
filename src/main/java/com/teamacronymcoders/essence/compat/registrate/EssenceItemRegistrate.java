@@ -188,7 +188,7 @@ public class EssenceItemRegistrate {
             .register();
 
     public static ItemEntry<TomeOfExperienceItem> TOME_OF_EXPERIENCE = Essence.ESSENCE_REGISTRATE.object("tome_of_experience")
-            .item(TomeOfExperienceItem::new).properties(properties -> properties.stacksTo(1))
+            .item(TomeOfExperienceItem::new).properties(properties -> properties.stacksTo(1).rarity(Rarity.UNCOMMON))
             .lang("Tome of Experience")
             .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/tome_of_experience")))
             .tab(() -> Essence.CORE_TAB)

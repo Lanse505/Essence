@@ -31,7 +31,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
 
     public ExperienceTomeProvider(ItemStack stack, Fluid fluid) {
         this.stack = stack;
-        tank = new ModifiableTank(10252, stack, fluidStack -> fluidStack.getFluid().isSame(fluid));
+        tank = new ModifiableTank(16000, stack, fluidStack -> fluidStack.getFluid().isSame(fluid));
         modifierHolder = new ItemStackModifierHolder(stack);
 
         CompoundTag nbt = stack.getOrCreateTag();
@@ -44,7 +44,7 @@ public class ExperienceTomeProvider implements ICapabilityProvider, ICapabilityS
 
     public ExperienceTomeProvider(ItemStack stack, Fluid fluid, CompoundTag inputNBT) {
         this.stack = stack;
-        tank = new ModifiableTank(10252, stack, fluidStack -> fluidStack.getFluid().isSame(fluid));
+        tank = new ModifiableTank(16000, stack, fluidStack -> fluidStack.getFluid().isSame(fluid));
         modifierHolder = new ItemStackModifierHolder(stack);
 
         CompoundTag nbt = stack.getOrCreateTag();
