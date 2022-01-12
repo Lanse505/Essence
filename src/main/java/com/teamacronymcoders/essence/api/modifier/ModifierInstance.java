@@ -32,7 +32,7 @@ public class ModifierInstance implements INBTSerializable<CompoundTag> {
 
     public ModifierInstance(Supplier<IModifier> modifier, int level, CompoundTag modifierData) {
         this.modifier = modifier;
-        this.level = 1;
+        this.level = level;
         this.modifierData = modifierData;
     }
 

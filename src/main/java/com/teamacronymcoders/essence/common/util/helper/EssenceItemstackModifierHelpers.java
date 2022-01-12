@@ -96,7 +96,17 @@ public class EssenceItemstackModifierHelpers {
         if (stack.getItem() instanceof IModifiedItem && instances.isPresent()) {
             instances.ifPresent(holder -> {
                 holder.addModifierInstance(false, stack, new ModifierInstance(() -> modifier, level, modifierData));
-                holder.serializeNBT();
+                stack.getTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, holder.serializeNBT());
+            });
+        }
+    }
+
+    public static void addModifier(ItemStack stack, ModifierInstance instance) {
+        final LazyOptional<ItemStackModifierHolder> instances = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
+        if (stack.getItem() instanceof IModifiedItem && instances.isPresent()) {
+            instances.ifPresent(holder -> {
+                holder.addModifierInstance(false, stack, instance);
+                stack.getTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, holder.serializeNBT());
             });
         }
     }
@@ -132,6 +142,43 @@ public class EssenceItemstackModifierHelpers {
                     for (IModifier<ItemStack> modifier : modifiers) {
                         if (instances.contains(new ModifierInstance(() -> modifier, 1, null))) {
                             addModifier(stack, modifier, 1, null);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * This adds the specified Modifiers to the Tool.
+     *
+     * @param stack     The ItemStack holding the Modifiers.
+     * @param modifiers The Modifier to remove.
+     */
+    @SuppressWarnings("unchecked")
+    public static void addModifiers(ItemStack stack, ModifierInstance... modifiers) {
+        final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
+        if (stack.getItem() instanceof IModifiedItem && holderLazyOptional.isPresent()) {
+            holderLazyOptional.ifPresent(holder -> {
+                List<ModifierInstance> instances = new ArrayList<>(holder.getModifierInstances());
+                boolean compatible = true;
+                for (ModifierInstance instance : instances) {
+                    boolean incompatible = false;
+                    for (ModifierInstance modifier : modifiers) {
+                            if (!instance.getModifier().get().isCompatibleWith(stack, modifier.getModifier().get())) {
+                            incompatible = true;
+                            break;
+                        }
+                    }
+                    if (incompatible) {
+                        compatible = false;
+                        break;
+                    }
+                }
+                if (compatible) {
+                    for (ModifierInstance modifier : modifiers) {
+                        if (!instances.contains(modifier)) {
+                            addModifier(stack, modifier);
                         }
                     }
                 }
@@ -238,10 +285,9 @@ public class EssenceItemstackModifierHelpers {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
         holderLazyOptional.ifPresent(holder -> {
             for (ModifierInstance modifierInstance : holder.getModifierInstances()) {
-                if (modifierInstance.getModifier() == mergeInstance.getModifier()) {
+                if (modifierInstance.getModifier().get().equals(mergeInstance.getModifier().get())) {
                     CompoundTag tagOnItem = modifierInstance.getModifierData();
                     modifierInstance.getModifier().get().mergeData(stack, tagOnItem, mergeInstance.getModifierData());
-                    modifierInstance.setModifierData(tagOnItem);
                     break;
                 }
             }
