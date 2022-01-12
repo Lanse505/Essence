@@ -5,8 +5,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.api.recipe.tool.AxeStrippingRecipe;
-import com.teamacronymcoders.essence.api.recipe.tool.ShovelPathingRecipe;
 import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
@@ -37,11 +35,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
