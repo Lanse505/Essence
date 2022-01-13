@@ -63,28 +63,4 @@ public class EssenceConfiguredFeatures {
                                 oreGenConfig.getSmallAncientEnderite().getDiscardChanceOnAirExposure().get().floatValue())
                 ));
     }
-
-    public ConfiguredFeature<?, ?> getEssenceOre() {
-        return ESSENCE_ORE;
-    }
-
-    public ConfiguredFeature<?, ?> getEssenceOreSmall() {
-        return ESSENCE_ORE_SMALL;
-    }
-
-    public ConfiguredFeature<?, ?> getEssenceCrystalOre() {
-        return ESSENCE_CRYSTAL_ORE;
-    }
-
-    public ConfiguredFeature<?, ?> getEssenceCrystalOreSmall() {
-        return ESSENCE_CRYSTAL_ORE_SMALL;
-    }
-
-    public ConfiguredFeature<?, ?> getAncientEnderiteLarge() {
-        return ANCIENT_ENDERITE_LARGE;
-    }
-
-    public ConfiguredFeature<?, ?> getAncientEnderiteSmall() {
-        return ANCIENT_ENDERITE_SMALL;
-    }
 }

@@ -61,10 +61,9 @@ public class EssenceEnchantmentHelper {
      * @param stack       The ItemStack to Enchant
      * @param enchantment The Enchantment to add
      */
-    public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, ModifierInstance instance) {
+    public static void createOrUpdateEnchantment(ItemStack stack, Enchantment enchantment, int level) {
         CompoundTag stackNBT = stack.getOrCreateTag();
         ListTag enchantments = stack.getEnchantmentTags();
-        int level = instance.getLevel();
         if (!enchantments.isEmpty()) {
             Optional<CompoundTag> nbtOptional = IntStream.range(0, enchantments.size())
                     .mapToObj(enchantments::getCompound)

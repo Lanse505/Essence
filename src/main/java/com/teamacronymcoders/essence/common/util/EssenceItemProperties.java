@@ -18,7 +18,4 @@ public class EssenceItemProperties {
         return (stack, world, living, seed) -> living != null && living.isUsingItem() && living.getUseItem().getItem() instanceof EssenceBow && living.getUseItem() == stack ? 1.0F : 0.0F;
     }
 
-    public static ItemPropertyFunction getToggled() {
-        return (stack, world, living, seed) -> stack.hasTag() && stack.getTag() != null && stack.getTag().contains("enabled") && stack.getTag().getBoolean("enabled") ? 1f : 0f;
-    }
 }

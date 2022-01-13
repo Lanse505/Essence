@@ -36,8 +36,4 @@ public class EssenceStats {
         return statIdentifier;
     }
 
-    public List<ResourceLocation> getStatIdentifiers() {
-        return ImmutableList.copyOf(this.stats);
-    }
-
 }

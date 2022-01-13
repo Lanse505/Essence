@@ -65,32 +65,6 @@ public class EssenceWorldHelper {
         return level.getBlockEntity(pos);
     }
 
-    public static Set<ResourceKey<Biome>> getBiomes(BiomeDictionary.Type type, BiomeDictionary.Type... filterTypes) {
-        Set<ResourceKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
-        if (filterTypes.length == 0) {
-            return biomes;
-        }
-        Set<ResourceKey<Biome>> filtering = new HashSet<>(biomes);
-        for (BiomeDictionary.Type fType : filterTypes) {
-            Set<ResourceKey<Biome>> filterBiomes = BiomeDictionary.getBiomes(fType);
-            filtering.retainAll(filterBiomes);
-        }
-        return filtering;
-    }
-
-    public static Set<ResourceKey<Biome>> getBiomes(BiomeDictionary.Type type, List<BiomeDictionary.Type> filterTypes) {
-        Set<ResourceKey<Biome>> biomes = BiomeDictionary.getBiomes(type);
-        if (filterTypes.size() == 0) {
-            return biomes;
-        }
-        Set<ResourceKey<Biome>> filtering = new HashSet<>(biomes);
-        for (BiomeDictionary.Type fType : filterTypes) {
-            Set<ResourceKey<Biome>> filterBiomes = BiomeDictionary.getBiomes(fType);
-            filtering.retainAll(filterBiomes);
-        }
-        return filtering;
-    }
-
     @OnlyIn(Dist.CLIENT)
     public static void playInfusionSound(@Nonnull InfusionTableBlockEntity tableTile, boolean distanceDelay) {
         double sqdt = Minecraft.getInstance().gameRenderer.getMainCamera()

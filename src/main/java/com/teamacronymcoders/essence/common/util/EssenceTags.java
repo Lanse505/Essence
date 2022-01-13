@@ -86,9 +86,6 @@ public class EssenceTags {
         public static final IOptionalNamedTag<Item> MINEABLE_SHOVEL = minecraftItemTag("mineable/shovel");
         public static final IOptionalNamedTag<Item> MINEABLE_HOE = minecraftItemTag("mineable/hoe");
 
-        public static final IOptionalNamedTag<Item> WOOD_TIER = forgeItemTag("needs_wood_tool");
-        public static final IOptionalNamedTag<Item> GOLD_TIER = forgeItemTag("needs_gold_tool");
-        public static final IOptionalNamedTag<Item> STONE_TIER = minecraftItemTag("needs_stone_tool");
         public static final IOptionalNamedTag<Item> IRON_TIER = minecraftItemTag("needs_iron_tool");
         public static final IOptionalNamedTag<Item> DIAMOND_TIER = minecraftItemTag("needs_diamond_tool");
         public static final IOptionalNamedTag<Item> NETHERITE_TIER = forgeItemTag("needs_netherite_tool");
@@ -156,10 +153,6 @@ public class EssenceTags {
         return EntityTypeTags.createOptional(new ResourceLocation(Essence.MOD_ID, path));
     }
 
-    public static IOptionalNamedTag<BlockEntityType<?>> essenceTileEntityTag(String path) {
-        return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation(Essence.MOD_ID, path));
-    }
-
     public static IOptionalNamedTag<Item> forgeItemTag(String path) {
         return ItemTags.createOptional(new ResourceLocation("forge", path));
     }
@@ -172,19 +165,11 @@ public class EssenceTags {
         return BlockTags.createOptional(new ResourceLocation("forge", path));
     }
 
-    public static IOptionalNamedTag<Block> forgeBlockOptionalTag(String path) {
-        return BlockTags.createOptional(new ResourceLocation("forge", path));
-    }
-
     public static IOptionalNamedTag<Fluid> forgeFluidTag(String path) {
         return FluidTags.createOptional(new ResourceLocation("forge", path));
     }
 
     public static IOptionalNamedTag<BlockEntityType<?>> forgeTileEntityTag(String path) {
-        return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation("forge", path));
-    }
-
-    public static IOptionalNamedTag<BlockEntityType<?>> forgeTileEntityOptionalTag(String path) {
         return ForgeTagHandler.createOptionalTag(ForgeRegistries.BLOCK_ENTITIES, new ResourceLocation("forge", path));
     }
 }

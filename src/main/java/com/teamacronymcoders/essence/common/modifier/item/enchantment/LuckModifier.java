@@ -23,7 +23,7 @@ public class LuckModifier extends ItemInteractionModifier {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
-        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance);
+        EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, getLinkedEnchantment(stack), instance.getLevel());
     }
 
     @Override

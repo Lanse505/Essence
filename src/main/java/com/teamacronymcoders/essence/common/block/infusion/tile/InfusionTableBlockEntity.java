@@ -43,6 +43,8 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
     @Save
     private Boolean shouldBeWorking = false;
     @Save
+    private Integer shouldBeWorkingTicks = 0;
+    @Save
     private Boolean isWorking = false;
     @Save
     private Integer workDuration = 0;
@@ -104,6 +106,11 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
         NonNullList<ItemStack> stacks = be.getPedestalStacks();
         if (be.shouldBeWorking && !be.isWorking && be.recipe == null)
             be.getInfusionRecipe(be.getInfusable().getStackInSlot(0), stacks);
+        if (be.shouldBeWorking && be.recipe == null) be.shouldBeWorkingTicks++;
+        if (be.shouldBeWorkingTicks >= 40) {
+            be.shouldBeWorking = false;
+            be.shouldBeWorkingTicks = 0;
+        }
         be.markComponentForUpdate(false);
         if (be.recipe != null && (be.shouldBeWorking || be.isWorking)) {
             ExtendableInfusionRecipe recipe = (ExtendableInfusionRecipe) be.getLevel().getRecipeManager().byKey(new ResourceLocation(be.recipe)).get();

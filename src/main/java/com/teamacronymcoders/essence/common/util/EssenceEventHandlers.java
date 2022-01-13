@@ -9,6 +9,7 @@ import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackMod
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeConversion;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
 import com.teamacronymcoders.essence.api.recipe.tool.EssenceShearingRecipe;
+import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
 import com.teamacronymcoders.essence.common.item.tome.experience.ExperienceModeEnum;
 import com.teamacronymcoders.essence.common.item.tome.experience.TomeOfExperienceItem;
@@ -28,6 +29,7 @@ import com.teamacronymcoders.essence.common.world.generation.tree.EssenceTreeFea
 import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
+import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.data.loot.FieryLootModifier;
 import com.teamacronymcoders.essence.server.command.EssenceCommands;
 import net.minecraft.client.Minecraft;
@@ -84,7 +86,8 @@ public class EssenceEventHandlers {
                     ((RegistryEvent.Register) register).getRegistry().registerAll(
                             InfusionRecipeConversion.SERIALIZER,
                             InfusionRecipeModifier.SERIALIZER,
-                            EssenceShearingRecipe.SERIALIZER
+                            EssenceShearingRecipe.SERIALIZER,
+                            HoeTillingRecipe.SERIALIZER
                     );
                 }).subscribe();
         EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
@@ -215,7 +218,7 @@ public class EssenceEventHandlers {
         EventManager.forge(RenderTooltipEvent.Color.class)
                 .process(color -> {
                     boolean isShear = color.getItemStack().getItem() instanceof EssenceShear;
-                    boolean hasRainbow = EssenceItemstackModifierHelpers.hasRainbowModifier(color.getItemStack());
+                    boolean hasRainbow = EssenceItemstackModifierHelpers.hasModifier(EssenceModifierRegistrate.RAINBOW_MODIFIER.get(), color.getItemStack());
                     if (isShear && hasRainbow) {
                         EssenceShear shear = (EssenceShear) color.getItemStack().getItem();
                         int rainbowVal = shear.getRainbowVal();

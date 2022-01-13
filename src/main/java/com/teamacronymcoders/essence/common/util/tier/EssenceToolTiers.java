@@ -72,11 +72,6 @@ public enum EssenceToolTiers implements Tier, IEssenceBaseTier {
         this.repairMaterial = Lazy.of(repairMaterial);
     }
 
-    @Override
-    public int getBasePoints() {
-        return freeModifiers;
-    }
-
     public int getMaxUsesBow() {
         return maxUsesBow;
     }

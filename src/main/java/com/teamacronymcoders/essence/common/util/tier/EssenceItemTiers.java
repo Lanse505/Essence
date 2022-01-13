@@ -75,11 +75,6 @@ public enum EssenceItemTiers implements IEssenceBaseTier {
         return rarity;
     }
 
-    @Override
-    public int getBasePoints() {
-        return this.basePoints;
-    }
-
     public Supplier<Pair<ItemEntry<EssenceNuggetItem>, Tag.Named<Item>>> getNugget() {
         return nugget;
     }

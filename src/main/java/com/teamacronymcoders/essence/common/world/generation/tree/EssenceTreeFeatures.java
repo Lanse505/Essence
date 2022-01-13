@@ -29,7 +29,6 @@ public class EssenceTreeFeatures {
             .ignoreVines()
             .build();
     public static final ConfiguredFeature<TreeConfiguration, ?> SAPLING_ESSENCE_TREE_FEATURE = FeatureUtils.register("essence_tree_sapling", Feature.TREE.configured(SAPLING_ESSENCE_TREE_CONFIG));
-    public static final PlacedFeature SAPLING_ESSENCE_TREE_FEATURE_PLACED = PlacementUtils.register("essence_tree_sapling", SAPLING_ESSENCE_TREE_FEATURE.placed());
 
     public static final TreeConfiguration NORMAL_WORLD_ESSENCE_TREE_CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
             BlockStateProvider.simple(EssenceBlockRegistrate.ESSENCE_WOOD_LOG.getDefaultState()),

@@ -8,6 +8,7 @@ import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackMod
 import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
+import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -169,7 +170,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
     @Override
     @ParametersAreNonnullByDefault
     public boolean isFoil(ItemStack stack) {
-        return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
+        return EssenceItemstackModifierHelpers.hasModifier(EssenceModifierRegistrate.ENCHANTED_MODIFIER.get(), stack);
     }
 
     @Override

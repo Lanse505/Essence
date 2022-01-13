@@ -117,16 +117,6 @@ public class PacketHandler {
     }
 
     /**
-     * Send this message to the specified player.
-     *
-     * @param message - the message to send
-     * @param player  - the player to send it to
-     */
-    public <MSG> void sendTo(MSG message, ServerPlayer player) {
-        handler.sendTo(message, player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
-    }
-
-    /**
      * Send this message to the server.
      *
      * @param message - the message to send

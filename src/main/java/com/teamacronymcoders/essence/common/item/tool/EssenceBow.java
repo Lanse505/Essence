@@ -10,6 +10,7 @@ import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
 import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
+import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -49,7 +50,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 
     public EssenceBow(Properties properties, EssenceToolTiers tier) {
-        super(properties.durability(tier.getUses()).rarity(tier.getRarity()));
+        super(properties.durability(tier.getMaxUsesBow()).rarity(tier.getRarity()));
         this.tier = tier;
         this.attributeModifiers = HashMultimap.create();
     }
@@ -178,7 +179,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
-        return EssenceItemstackModifierHelpers.hasEnchantedModifier(stack);
+        return EssenceItemstackModifierHelpers.hasModifier(EssenceModifierRegistrate.ENCHANTED_MODIFIER.get(), stack);
     }
 
     @Override

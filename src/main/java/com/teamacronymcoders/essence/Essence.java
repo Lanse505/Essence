@@ -135,7 +135,7 @@ public class Essence extends ModuleController {
         EssenceLangRegistrate.init(ESSENCE_REGISTRATE);
 
         // Misc Setup
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
+
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::setupCuriosIMC);
@@ -181,6 +181,7 @@ public class Essence extends ModuleController {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         new EssenceKeyHandler();
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> EssenceEventHandlers::setupClientEventHandlers);
 
         // Pull
         ItemProperties.register(EssenceItemRegistrate.DECODER_SLINGSHOT.get(), new ResourceLocation(Essence.MOD_ID, "pull"), EssenceItemProperties.getPull());

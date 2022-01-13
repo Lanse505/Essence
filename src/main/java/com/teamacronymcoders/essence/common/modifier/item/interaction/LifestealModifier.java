@@ -14,11 +14,6 @@ public class LifestealModifier extends ItemInteractionModifier {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity player, ModifierInstance instance) {
-        return super.hurtEnemy(stack, entity, player, instance);
-    }
-
-    @Override
     public boolean canApplyOnObject(ItemStack stack) {
         return stack.getItem() instanceof EssenceSword;
     }

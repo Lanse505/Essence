@@ -28,13 +28,6 @@ public class EssenceJsonHelper {
     /**
      * Credit for the following Methods goes to Darkhax and his library mod Bookshelf <3
      */
-    public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(JsonObject json, String memberName, IForgeRegistry<T> registry) {
-        if (json.has(memberName)) {
-            return getRegistryEntry(json.get(memberName), memberName, registry);
-        } else {
-            throw new JsonSyntaxException("Missing required value " + memberName);
-        }
-    }
 
     public static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(JsonElement json, String memberName, IForgeRegistry<T> registry) {
         if (json == null) {
@@ -60,10 +53,6 @@ public class EssenceJsonHelper {
 
     public static Block getBlock(JsonObject json, String memberName) {
         return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.BLOCKS);
-    }
-
-    public static Potion getPotion(JsonObject json, String memberName) {
-        return getRegistryEntry(json.get(memberName), memberName, ForgeRegistries.POTIONS);
     }
 
     public static MobEffect getMobEffect(JsonObject json, String memberName) {
@@ -126,51 +115,6 @@ public class EssenceJsonHelper {
             }
         }
         return state;
-    }
-
-    public static JsonElement serializeEffectInstance(MobEffectInstance instance) {
-        final JsonObject object = new JsonObject();
-        object.addProperty("effect", instance.getEffect().getRegistryName().toString());
-        object.addProperty("duration", instance.getDuration());
-        final JsonObject propertiesElement = new JsonObject();
-        if (instance.getAmplifier() > 0) {
-            propertiesElement.addProperty("amplifier", instance.getAmplifier());
-            propertiesElement.addProperty("ambient", instance.isAmbient());
-            propertiesElement.addProperty("showParticles", instance.isVisible());
-            propertiesElement.addProperty("showIcon", instance.showIcon());
-        }
-        object.add("properties", propertiesElement);
-        return object;
-    }
-
-    public static MobEffectInstance deserializeEffectInstance(JsonObject json) {
-        // Read the effect from the forge registry.
-        final MobEffect effect = getMobEffect(json, "effect");
-        final int duration = json.get("duration").getAsInt();
-        if (json.has("properties")) {
-            final JsonElement propertiesElement = json.get("properties");
-            if (propertiesElement.isJsonObject()) {
-                final JsonObject properties = propertiesElement.getAsJsonObject();
-                if (properties.has("amplifier")) {
-                    final int amplifier = properties.getAsJsonObject("amplifier").getAsInt();
-                    if (properties.has("ambient")) {
-                        final boolean ambient = properties.getAsJsonObject("ambient").getAsBoolean();
-                        if (properties.has("showParticles")) {
-                            final boolean showParticles = properties.getAsJsonObject("showParticles").getAsBoolean();
-                            if (properties.has("showIcon")) {
-                                final boolean showIcon = properties.getAsJsonObject("showIcon").getAsBoolean();
-                                return new MobEffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon);
-                            }
-                            return new MobEffectInstance(effect, duration, amplifier, ambient, showParticles);
-                        } else {
-                            throw new JsonSyntaxException("EffectInstance requires both Value for 'ambient' and Value for 'showParticles'");
-                        }
-                    }
-                    return new MobEffectInstance(effect, duration, amplifier);
-                }
-            }
-        }
-        return new MobEffectInstance(effect, duration);
     }
 
     public static JsonElement serializeEntityType(EntityType<?> type) {

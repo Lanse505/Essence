@@ -1,8 +1,0 @@
-{
-  "from": "minecraft:podzol",
-  "to": {
-    "block": "minecraft:dirt_path",
-    "properties": {}
-  },
-  "type": "essence:tool/shovel_pathing"
-}
