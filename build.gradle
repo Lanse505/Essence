@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 
@@ -20,6 +21,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "maven-publish"
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${minecraft_version}-" + getVersion()
 group = "${group}"
@@ -92,6 +94,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=' + project.archive + '.mixins.json'
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -102,6 +105,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=' + project.archive + '.mixins.json'
             properties 'mixin.env.disableRefMap': 'true'
             mods {
                 essence {
@@ -161,6 +165,14 @@ dependencies {
 //    // Curios
 //    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
 //    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}")
+
+    // Apply Mixin AP
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, "${project.archive}.refmap.json"
+    config 'mixins.essence.json'
 }
 
 task srcJar(type: Jar) {
@@ -192,6 +204,7 @@ jar {
                 "Implementation-Vendor"   : "${team}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "ModSide": "BOTH",
+                'MixinConfigs': "${project.archive}.mixins.json"
         ],)
     }
 }

@@ -5,8 +5,9 @@ import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.fml.common.Mod;
 
-public abstract class ItemArrowModifier extends ItemCoreModifier {
+public abstract class ItemArrowModifier extends ItemInteractionModifier {
 
     public ItemArrowModifier() {
         this(0, 1);
@@ -29,7 +30,7 @@ public abstract class ItemArrowModifier extends ItemCoreModifier {
      * @param result              The BlockHitResult of the entity on collision.
      * @param instance            The instance of the modifier.
      */
-    public abstract void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance);
+    public void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {};
 
     /**
      * Used to modify "alterArrowEntity" method behaviour.
@@ -39,5 +40,13 @@ public abstract class ItemArrowModifier extends ItemCoreModifier {
      * @param velocity            The current velocity of the arrow entity when shot.
      * @param instance            The instance of the modifier.
      */
-    public abstract void alterArrowEntity(ModifiableArrowEntity abstractArrowEntity, Player shooter, float velocity, ModifierInstance instance);
+    public void alterArrowEntity(ModifiableArrowEntity abstractArrowEntity, Player shooter, float velocity, ModifierInstance instance) {};
+
+    /**
+     * Used to do final changes to the arrow before it gets added to the world.
+     *
+     * @param shooter The shooting Player
+     * @param arrow The ModifiableArrowEntity being shot
+     */
+    public void alterFinalEntity(Player shooter, ModifiableArrowEntity arrow) {}
 }

@@ -84,7 +84,7 @@ public class SerializedEntityEntity extends ThrowableItemProjectile {
                     Entity entityToPlace = SerializedEntityItem.getEntityFromNBT(ref.getTag(), level);
                     if (entityToPlace != null) {
                         ref.shrink(1);
-                        entityToPlace.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+                        entityToPlace.absMoveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
                         level.addFreshEntity(entityToPlace);
                     }
                 }
@@ -95,7 +95,7 @@ public class SerializedEntityEntity extends ThrowableItemProjectile {
                     Entity entityToPlace = SerializedEntityItem.getEntityFromNBT(ref.getTag(), level);
                     if (entityToPlace != null) {
                         ref.shrink(1);
-                        entityToPlace.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+                        entityToPlace.absMoveTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0, 0);
                         level.addFreshEntity(entityToPlace);
                     }
                 }

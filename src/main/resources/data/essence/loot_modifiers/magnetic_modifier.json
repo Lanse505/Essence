@@ -1,0 +1,19 @@
+{
+  "type": "essence:magnetic_modifier",
+  "conditions": [
+    {
+      "condition": "essence:match_modifier",
+      "predicate": {
+        "modifiers": [
+          {
+            "modifier": "essence:magnetic",
+            "level": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "function": "essence:magnetic_modifier"
+}

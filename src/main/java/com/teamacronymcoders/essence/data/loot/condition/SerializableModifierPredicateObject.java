@@ -66,7 +66,7 @@ public class SerializableModifierPredicateObject {
 
     public boolean test(ItemStack stack) {
         final List<ModifierInstance> instances = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
-        final int level = instances.stream().filter(instance -> instance.getModifier() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
+        final int level = instances.stream().filter(instance -> instance.getModifier().get() == this.modifier).findFirst().map(ModifierInstance::getLevel).orElse(0);
         return !(this.level == null || this.level.isAny()) && this.level.matches(level);
     }
 

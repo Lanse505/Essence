@@ -40,7 +40,7 @@ public class EssenceItemstackModifierHelpers {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
         if (holderLazyOptional.isPresent()) {
             holderLazyOptional.ifPresent(holder -> holder.deserializeNBT(stack.getOrCreateTag().getCompound(HOLDER)));
-            return holderLazyOptional.map(holder -> Objects.requireNonNull(holder.getModifierInstances().stream().filter(instance -> instance.getModifier() == modifier).findAny().orElse(null))).orElse(null);
+            return holderLazyOptional.map(holder -> Objects.requireNonNull(holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() == modifier).findAny().orElse(null))).orElse(null);
         }
         return null;
     }

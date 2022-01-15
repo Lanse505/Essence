@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.data.loot;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,17 +37,20 @@ public class FieryLootModifier extends LootModifier {
 
         Level level = context.getLevel();
         Entity entity = context.getParam(LootContextParams.THIS_ENTITY);
-        return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new Inventory((Player) entity), context.getLevel())
-                .map(recipe -> {
-                    if (recipe.getResultItem().isEmpty()) {
-                        return stack;
-                    }
-                    ((Player) entity).giveExperiencePoints(Math.round(recipe.getExperience()));
-                    return recipe.getResultItem();
-                })
-                .filter(itemStack -> !itemStack.isEmpty())
-                .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
-                .orElse(stack);
+        if (entity instanceof Player player) {
+            return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
+                    .map(recipe -> {
+                        if (recipe.getResultItem().isEmpty()) {
+                            return stack;
+                        }
+                        player.giveExperiencePoints(Math.round(recipe.getExperience()));
+                        return recipe.getResultItem();
+                    })
+                    .filter(itemStack -> !itemStack.isEmpty())
+                    .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
+                    .orElse(stack);
+        }
+        return stack;
     }
 
     @Nonnull

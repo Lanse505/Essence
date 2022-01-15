@@ -27,7 +27,7 @@ public class SoakedModifier extends ItemArrowModifier {
     public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
         int level = instance.getLevel();
         Optional<ItemStackModifierHolder> holder = bowStack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).resolve();
-        Optional<List<MobEffectInstance>> instances = holder.flatMap(itemStackModifierHolder -> itemStackModifierHolder.getModifierInstances().stream().filter(savedInstance -> savedInstance.getModifier() instanceof BrewedModifier).map(correctInstance -> EssenceBowHelper.getEffectInstancesFromNBT(correctInstance.getModifierData())).reduce((effectInstances, effectInstances2) -> {
+        Optional<List<MobEffectInstance>> instances = holder.flatMap(itemStackModifierHolder -> itemStackModifierHolder.getModifierInstances().stream().filter(savedInstance -> savedInstance.getModifier().get() instanceof BrewedModifier).map(correctInstance -> EssenceBowHelper.getEffectInstancesFromNBT(correctInstance.getModifierData())).reduce((effectInstances, effectInstances2) -> {
             effectInstances.addAll(effectInstances2);
             return effectInstances;
         }));
@@ -46,13 +46,13 @@ public class SoakedModifier extends ItemArrowModifier {
     @Override
     public boolean isCompatibleWith(ItemStack target, IModifier<?> modifier) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = target.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof BrewedModifier)).orElse(false);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier().get() instanceof BrewedModifier)).orElse(false);
 
     }
 
     @Override
     public boolean canApplyOnObject(ItemStack stack) {
         final LazyOptional<ItemStackModifierHolder> holderLazyOptional = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
-        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier() instanceof BrewedModifier)).orElse(false);
+        return holderLazyOptional.map(holder -> holder.getModifierInstances().stream().anyMatch(instance -> instance.getModifier().get() instanceof BrewedModifier)).orElse(false);
     }
 }

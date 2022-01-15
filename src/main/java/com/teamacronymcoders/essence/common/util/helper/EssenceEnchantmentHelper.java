@@ -101,7 +101,7 @@ public class EssenceEnchantmentHelper {
             holderLazyOptional.ifPresent(holder -> holder.getModifierInstances().stream()
                     .filter(instance -> instance.getModifier() instanceof ItemCoreModifier)
                     .forEach(instance -> {
-                        Enchantment enchantment = ((ItemCoreModifier) instance.getModifier()).getLinkedEnchantment(stack);
+                        Enchantment enchantment = ((ItemCoreModifier) instance.getModifier().get()).getLinkedEnchantment(stack);
                         if (enchantment != null) {
                             enchantmentIDs.remove(enchantment.getRegistryName().toString());
                         }

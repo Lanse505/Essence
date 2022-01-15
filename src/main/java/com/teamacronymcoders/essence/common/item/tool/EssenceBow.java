@@ -126,6 +126,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
                         EssenceBowHelper.modifyArrowEntityWithEnchantments(modifiableArrowEntity, bow);
                         bow.hurtAndBreak(1, player, (entity) -> entity.broadcastBreakEvent(player.getUsedItemHand()));
                         level.addFreshEntity(modifiableArrowEntity);
+                        EssenceBowHelper.alterFinalEntity(player, modifiableArrowEntity, bow);
                     }
                     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (Essence.RANDOM.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                     if (!flag1 && !player.getAbilities().instabuild) {

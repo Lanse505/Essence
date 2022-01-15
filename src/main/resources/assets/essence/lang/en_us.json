@@ -283,6 +283,7 @@
   "modifier.essence.keen": "Keen",
   "modifier.essence.knockback": "Knockback",
   "modifier.essence.luck": "Luck",
+  "modifier.essence.magnetic": "Magnetism",
   "modifier.essence.rainbow": "Rainbow",
   "modifier.essence.silk_touch": "Silk Touch",
   "modifier.essence.soaked": "Soaked",
@@ -307,5 +308,6 @@
   "tooltip.essence.tome_of_experience.amount": "Stored Experience: ",
   "tooltip.essence.tome_of_experience.holding": "Currently Holding:",
   "tooltip.essence.tome_of_experience.levels": "Levels Held: ",
-  "tooltip.essence.tool.tier": "Material Tier: "
+  "tooltip.essence.tool.tier": "Material Tier: ",
+  "wrench.essence.mode.tooltip": "Mode: "
 }

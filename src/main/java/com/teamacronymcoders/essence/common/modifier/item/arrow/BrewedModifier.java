@@ -32,10 +32,6 @@ public class BrewedModifier extends ItemArrowModifier {
     }
 
     @Override
-    public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
-    }
-
-    @Override
     public void alterArrowEntity(ModifiableArrowEntity modifiableArrowEntity, Player shooter, float velocity, ModifierInstance instance) {
         for (MobEffectInstance effect : effects) {
             modifiableArrowEntity.addEffect(effect);

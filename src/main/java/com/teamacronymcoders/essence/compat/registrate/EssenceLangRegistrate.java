@@ -179,6 +179,7 @@ public class EssenceLangRegistrate {
         addModifier(provider, ENCHANTED_MODIFIER.get(), "Enchanted");
         addModifier(provider, EXPANDER_MODIFIER.get(), "Expander");
         addModifier(provider, FIERY_MODIFIER.get(), "Fiery");
+        addModifier(provider, MAGNETIC_MODIFIER.get(), "Magnetism");
         addModifier(provider, KEEN_MODIFIER.get(), "Keen");
         addModifier(provider, KNOCKBACK_MODIFIER.get(), "Knockback");
         addModifier(provider, LUCK_MODIFIER.get(), "Luck");

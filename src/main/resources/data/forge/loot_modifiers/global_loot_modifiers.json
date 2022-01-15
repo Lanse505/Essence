@@ -1,6 +1,7 @@
 {
   "replace": false,
   "entries": [
-    "essence:fiery_modifier"
+    "essence:fiery_modifier",
+    "essence:magnetic_modifier"
   ]
 }

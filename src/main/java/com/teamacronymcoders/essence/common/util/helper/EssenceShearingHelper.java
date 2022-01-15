@@ -36,7 +36,7 @@ public class EssenceShearingHelper {
 
                 // Loops over and Gathers the final modified list
                 for (ModifierInstance instance : unchecked) {
-                    if (instance.getModifier() instanceof ItemInteractionModifier interactionCoreModifier) {
+                    if (instance.getModifier().get() instanceof ItemInteractionModifier interactionCoreModifier) {
                         dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
                     }
                 }

@@ -40,6 +40,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -189,7 +191,7 @@ public class EssenceBlockRegistrate {
             .blockstate((context, provider) -> provider.axisBlock(context.get()))
             .item()
             .tab(() -> Essence.CORE_TAB)
-            .tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG)
+            .tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG, ItemTags.LOGS_THAT_BURN)
             .model((context, provider) -> provider.blockItem(context))
             .build()
             .register();
@@ -203,7 +205,7 @@ public class EssenceBlockRegistrate {
             .blockstate((context, provider) -> provider.axisBlock(context.get()))
             .item()
             .tab(() -> Essence.CORE_TAB)
-            .tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG)
+            .tag(EssenceTags.EssenceItemTags.ESSENCE_WOOD_LOG, ItemTags.LOGS_THAT_BURN)
             .model((context, provider) -> provider.blockItem(context))
             .build()
             .register();

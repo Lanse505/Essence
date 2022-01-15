@@ -100,7 +100,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
         if (holder.isPresent()) {
             ModifierInstance instance = new ModifierInstance(() -> modifier, level, compound);
             holder.ifPresent(presentHolder -> {
-                presentHolder.removeModifierInstance(false, stack, (IModifier<ItemStack>) instance.getModifier());
+                presentHolder.removeModifierInstance(false, stack, (IModifier<ItemStack>) instance.getModifier().get());
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
                 source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
@@ -120,7 +120,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
             holder.ifPresent(presentHolder -> {
                 List<ModifierInstance> instances = presentHolder.getModifierInstances();
                 instances.stream()
-                        .filter(instance -> instance.getModifier().equals(modifier))
+                        .filter(instance -> instance.getModifier().get().equals(modifier))
                         .findFirst()
                         .ifPresent(instance -> {
                             CompoundTag modifiedCompound = instance.getModifierData();

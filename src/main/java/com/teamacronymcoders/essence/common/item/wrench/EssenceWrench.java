@@ -80,7 +80,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
         }
         LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
         return lazy.isPresent() ? lazy.map(holder -> {
-            Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier() instanceof EfficiencyModifier).findAny();
+            Optional<ModifierInstance> optional = holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof EfficiencyModifier).findAny();
             ItemStack serialized = new ItemStack(EssenceItemRegistrate.SERIALIZED_ENTITY.get());
             boolean successful;
             if (optional.isPresent()) {

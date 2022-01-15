@@ -31,6 +31,7 @@ import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import com.teamacronymcoders.essence.data.loot.FieryLootModifier;
+import com.teamacronymcoders.essence.data.loot.MagneticLootModifier;
 import com.teamacronymcoders.essence.server.command.EssenceCommands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -93,7 +94,8 @@ public class EssenceEventHandlers {
         EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
                 .process(register -> {
                     ((RegistryEvent.Register) register).getRegistry().registerAll(
-                            new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "fiery_modifier"))
+                            new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "fiery_modifier")),
+                            new MagneticLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "magnetic_modifier"))
                     );
                 }).subscribe();
     }

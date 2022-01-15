@@ -12,6 +12,7 @@ import com.teamacronymcoders.essence.common.modifier.item.enchantment.*;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.strengthened.StrengthenedModifier;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.strengthened.StrengthenedType;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.ExpanderModifier;
+import com.teamacronymcoders.essence.common.modifier.item.interaction.MagneticModifier;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.RainbowModifier;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.cascading.CascadingType;
@@ -62,6 +63,7 @@ public class EssenceModifierRegistrate {
 
     public static final RegistryEntry<ExpanderModifier> EXPANDER_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("expander", IModifier.class, ExpanderModifier::new);
     public static final RegistryEntry<FieryModifier> FIERY_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("fiery", IModifier.class, FieryModifier::new);
+    public static final RegistryEntry<MagneticModifier> MAGNETIC_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("magnetic", IModifier.class, MagneticModifier::new);
     public static final RegistryEntry<RainbowModifier> RAINBOW_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("rainbow", IModifier.class, RainbowModifier::new);
 
     public static final RegistryEntry<CascadingModifier> CASCADING_NONE_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("cascading_none", IModifier.class, () -> new CascadingModifier(CascadingType.NONE));

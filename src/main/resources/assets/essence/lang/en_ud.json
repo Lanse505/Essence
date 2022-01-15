@@ -283,6 +283,7 @@
   "modifier.essence.keen": "u\u01DD\u01DD\u029E",
   "modifier.essence.knockback": "\u029E\u0254\u0250q\u029E\u0254ou\u029E",
   "modifier.essence.luck": "\u029E\u0254n\uA780",
+  "modifier.essence.magnetic": "\u026Fs\u0131\u0287\u01DDub\u0250W",
   "modifier.essence.rainbow": "\u028Doqu\u0131\u0250\u1D1A",
   "modifier.essence.silk_touch": "\u0265\u0254no\u27D8 \u029E\u05DF\u0131S",
   "modifier.essence.soaked": "p\u01DD\u029E\u0250oS",
@@ -305,7 +306,8 @@
   "tooltip.essence.modifier": ":s\u0279\u01DD\u0131\u025F\u0131poW",
   "tooltip.essence.modifier.free": "%s :s\u0279\u01DD\u0131\u025F\u0131poW \u01DD\u01DD\u0279\u2132",
   "tooltip.essence.tome_of_experience.amount": " :\u01DD\u0254u\u01DD\u0131\u0279\u01DDdx\u018E p\u01DD\u0279o\u0287S",
-  "tooltip.essence.tome_of_experience.holding": "bu\u0131p\u05DFoH \u028E\u05DF\u0287u\u01DD\u0279\u0279n\u0186",
-  "tooltip.essence.tome_of_experience.levels": "%s/%s p\u05DF\u01DDH s\u05DF\u01DD\u028C\u01DD\uA780",
-  "tooltip.essence.tool.tier": " :\u0279\u01DD\u0131\u27D8 \u05DF\u0250\u0131\u0279\u01DD\u0287\u0250W"
+  "tooltip.essence.tome_of_experience.holding": ":bu\u0131p\u05DFoH \u028E\u05DF\u0287u\u01DD\u0279\u0279n\u0186",
+  "tooltip.essence.tome_of_experience.levels": " :p\u05DF\u01DDH s\u05DF\u01DD\u028C\u01DD\uA780",
+  "tooltip.essence.tool.tier": " :\u0279\u01DD\u0131\u27D8 \u05DF\u0250\u0131\u0279\u01DD\u0287\u0250W",
+  "wrench.essence.mode.tooltip": " :\u01DDpoW"
 }

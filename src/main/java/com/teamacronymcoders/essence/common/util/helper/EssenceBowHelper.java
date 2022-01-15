@@ -40,8 +40,8 @@ public class EssenceBowHelper {
 
         // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
         instances.stream()
-                .filter(instance -> instance.getModifier() instanceof ItemArrowModifier)
-                .forEach(instance -> ((ItemArrowModifier) instance.getModifier()).alterArrowEntity(modifiableArrowEntity, player, arrowVelocity, instance));
+                .filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)
+                .forEach(instance -> ((ItemArrowModifier) instance.getModifier().get()).alterArrowEntity(modifiableArrowEntity, player, arrowVelocity, instance));
 
         // func_234612_a_ = setDirectionAndMovement
         modifiableArrowEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0f, arrowVelocity * 3f, 1f);
@@ -65,6 +65,18 @@ public class EssenceBowHelper {
         int l = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, bow);
         if (l > 0) {
             arrowEntity.setSecondsOnFire(100 * l);
+        }
+    }
+
+    public static void alterFinalEntity(Player shooter, ModifiableArrowEntity arrow, ItemStack bow) {
+        final List<ModifierInstance> instances = bow.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER)
+                .map(IModifierHolder::getModifierInstances)
+                .orElse(new ArrayList<>());
+
+        for (ModifierInstance instance : instances) {
+            if (instance.getModifier().get() instanceof ItemArrowModifier modifier) {
+                modifier.alterFinalEntity(shooter, arrow);
+            }
         }
     }
 
