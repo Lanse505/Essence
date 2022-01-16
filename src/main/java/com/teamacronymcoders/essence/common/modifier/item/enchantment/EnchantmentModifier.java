@@ -20,15 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class EnchantmentModifier extends ItemInteractionModifier {
   private static final String ENCHANTMENTS = "Enchantments";
-
   private static final Map<Enchantment, BiFunction<ItemStack, Integer, Integer>> LEVEL_MULTIPLIER_MAP = new HashMap<>();
-
   private boolean updatedEnchantments = false;
-  private final List<Enchantment> enchantments = new ArrayList<>();
 
   public EnchantmentModifier() {
     super();
@@ -37,25 +33,6 @@ public class EnchantmentModifier extends ItemInteractionModifier {
   @Override
   public boolean isCompatibleWith(ItemStack target, IModifier<?> modifier) {
     return !(modifier instanceof EnchantmentModifier);
-  }
-
-  @Override
-  public void update(CompoundTag data) {
-    if (enchantments.size() > 3) return;
-    List<Enchantment> nbtEnchantments = new ArrayList<>();
-    final ListTag listTag = data.getList(ENCHANTMENTS, Tag.TAG_STRING);
-    for (int i = 0; i < listTag.size(); i++) {
-      final String id = listTag.getString(i);
-      if (ForgeRegistries.ENCHANTMENTS.containsKey(new ResourceLocation(id))) {
-        Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
-        nbtEnchantments.add(enchantment);
-      }
-    }
-    if (!enchantments.containsAll(nbtEnchantments)) {
-      enchantments.clear();
-      enchantments.addAll(nbtEnchantments);
-    }
-    updatedEnchantments = false;
   }
 
   @Override
@@ -81,7 +58,16 @@ public class EnchantmentModifier extends ItemInteractionModifier {
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int inventorySlot, boolean isCurrentItem, ModifierInstance instance) {
     if (!updatedEnchantments) {
-      for (Enchantment enchantment : enchantments) {
+      List<Enchantment> nbtEnchantments = new ArrayList<>();
+      final ListTag listTag = instance.getModifierData().getList(ENCHANTMENTS, Tag.TAG_STRING);
+      for (int i = 0; i < listTag.size(); i++) {
+        final String id = listTag.getString(i);
+        if (ForgeRegistries.ENCHANTMENTS.containsKey(new ResourceLocation(id))) {
+          Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id));
+          nbtEnchantments.add(enchantment);
+        }
+      }
+      for (Enchantment enchantment : nbtEnchantments) {
         EssenceEnchantmentHelper.createOrUpdateEnchantment(stack, enchantment, getLevelForEnchantment(stack, enchantment, instance.getLevel()));
       }
       updatedEnchantments = true;

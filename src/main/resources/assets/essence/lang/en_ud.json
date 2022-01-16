@@ -173,13 +173,14 @@
   "essence.mode.wrench.rotate": "\u01DD\u0287\u0250\u0287o\u1D1A",
   "essence.mode.wrench.serialize": "s\u0131s\u0250\u0287S",
   "essence.mode.wrench.trigger": "\u0279\u01DDbb\u0131\u0279\u27D8",
+  "essence.modifier.explosive.charge": "%s :\u01DDb\u0279\u0250\u0265\u0186",
   "essence.strengthened.type.arthropod": "spodo\u0279\u0265\u0287\u0279\u2C6F",
   "essence.strengthened.type.power": "p\u01DDbu\u0250\u1D1A",
   "essence.strengthened.type.sharpness": "\u01DD\u01DD\u05DF\u01DDW",
   "essence.strengthened.type.smite": "\u028E\u05DFoH",
   "essence.wrench.disclaimer": " :\u01DD\u0287ou \u01DDs\u0250\u01DD\u05DF\u0500",
   "essence.wrench.disclaimer_message": "\u02D9s\u0131s\u0250\u0287s o\u0287u\u0131 \u0287nd \u01DDq \u028E\u0250\u026F s\u0287\u0254\u01DDds\u0250 s,\u029E\u0254o\u05DFq \u0250 \u025Fo s\u0287\u0279\u0250d \u05DF\u05DF\u0250 \u0287oN \u02D9\u05DFo\u0279\u0287uo\u0254 \u0279no \u025Fo \u0287no suo\u0131\u0287\u0250n\u0287\u0131s o\u0287 \u01DDnp \u028E\u05DF\u01DD\u0287\u0250un\u0287\u0279o\u025Fun 's\u0131s\u0250\u0287S o\u0287u\u0131 \u029E\u0254o\u05DFq \u0250 \u0287\u01DDs \u028E\u05DF\u05DFn\u025F \u0287d\u026F\u01DD\u0287\u0287\u0250 \u028E\u0279\u01DD\u028C\u01DD s\u01DD\u029E\u0250\u026F \u0265\u0254u\u01DD\u0279M \u01DD\u0265\u27D8",
-  "essence.wrench.mode.tooltip": "\u01DDpoW \u0265\u0254u\u01DD\u0279M",
+  "essence.wrench.mode.tooltip": ":\u01DDpoW \u0265\u0254u\u01DD\u0279M",
   "fluid.essence.essence": "\u01DD\u0254u\u01DDss\u018E",
   "item.essence.crafting_cookie": "\u01DD\u0131\u029Eoo\u0186 bu\u0131\u0287\u025F\u0250\u0279\u0186",
   "item.essence.decoder_slingshot": "\u0287o\u0265sbu\u0131\u05DFS \u0279\u01DDpo\u0254\u01DD\u15E1",
@@ -279,6 +280,7 @@
   "modifier.essence.enchanted": "p\u01DD\u0287u\u0250\u0265\u0254u\u018E",
   "modifier.essence.enderic": "\u0254\u0131\u0279\u01DDpu\u018E",
   "modifier.essence.expander": "\u0279\u01DDpu\u0250dx\u018E",
+  "modifier.essence.explosive": "\u01DD\u028C\u0131so\u05DFdx\u018E",
   "modifier.essence.fiery": "\u028E\u0279\u01DD\u0131\u2132",
   "modifier.essence.keen": "u\u01DD\u01DD\u029E",
   "modifier.essence.knockback": "\u029E\u0254\u0250q\u029E\u0254ou\u029E",
@@ -309,5 +311,5 @@
   "tooltip.essence.tome_of_experience.holding": ":bu\u0131p\u05DFoH \u028E\u05DF\u0287u\u01DD\u0279\u0279n\u0186",
   "tooltip.essence.tome_of_experience.levels": " :p\u05DF\u01DDH s\u05DF\u01DD\u028C\u01DD\uA780",
   "tooltip.essence.tool.tier": " :\u0279\u01DD\u0131\u27D8 \u05DF\u0250\u0131\u0279\u01DD\u0287\u0250W",
-  "wrench.essence.mode.tooltip": " :\u01DDpoW"
+  "tooltip.tome.essence.mode.tooltip": ":\u01DDpoW"
 }

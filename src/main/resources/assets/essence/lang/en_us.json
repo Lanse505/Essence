@@ -173,13 +173,14 @@
   "essence.mode.wrench.rotate": "Rotate",
   "essence.mode.wrench.serialize": "Stasis",
   "essence.mode.wrench.trigger": "Trigger",
+  "essence.modifier.explosive.charge": "Charge: %s",
   "essence.strengthened.type.arthropod": "Arthropods",
   "essence.strengthened.type.power": "Ranged",
   "essence.strengthened.type.sharpness": "Melee",
   "essence.strengthened.type.smite": "Holy",
   "essence.wrench.disclaimer": "Please note: ",
   "essence.wrench.disclaimer_message": "The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.",
-  "essence.wrench.mode.tooltip": "Wrench Mode",
+  "essence.wrench.mode.tooltip": "Wrench Mode:",
   "fluid.essence.essence": "Essence",
   "item.essence.crafting_cookie": "Crafting Cookie",
   "item.essence.decoder_slingshot": "Decoder Slingshot",
@@ -279,6 +280,7 @@
   "modifier.essence.enchanted": "Enchanted",
   "modifier.essence.enderic": "Enderic",
   "modifier.essence.expander": "Expander",
+  "modifier.essence.explosive": "Explosive",
   "modifier.essence.fiery": "Fiery",
   "modifier.essence.keen": "Keen",
   "modifier.essence.knockback": "Knockback",
@@ -309,5 +311,5 @@
   "tooltip.essence.tome_of_experience.holding": "Currently Holding:",
   "tooltip.essence.tome_of_experience.levels": "Levels Held: ",
   "tooltip.essence.tool.tier": "Material Tier: ",
-  "wrench.essence.mode.tooltip": "Mode: "
+  "tooltip.tome.essence.mode.tooltip": "Mode:"
 }

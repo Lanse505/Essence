@@ -147,7 +147,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
         addInformationFromModifiers(stack, level, list, flag);
         if (stack.getTag() != null && stack.getTag().contains("wrench_mode"))
-            list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).append(": ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
+            list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
         if (stack.getTag() != null && flag == TooltipFlag.Default.ADVANCED && stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName())) {
             list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             list.add(new TranslatableComponent("essence.wrench.disclaimer_message"));

@@ -25,15 +25,19 @@ import static com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper.
 
 public class BrewedModifier extends ItemArrowModifier {
 
-    private final List<MobEffectInstance> effects = new ArrayList<>();
-
     public BrewedModifier() {
         super();
     }
 
     @Override
     public void alterArrowEntity(ModifiableArrowEntity modifiableArrowEntity, Player shooter, float velocity, ModifierInstance instance) {
-        for (MobEffectInstance effect : effects) {
+        final List<MobEffectInstance> instances = new ArrayList<>();
+        final ListTag listNBT = instance.getModifierData().getList(TAG_EFFECTS, Tag.TAG_COMPOUND);
+        for (int i = 0; i < listNBT.size(); i++) {
+            final CompoundTag nbt = listNBT.getCompound(i);
+            instances.add(MobEffectInstance.load(nbt));
+        }
+        for (MobEffectInstance effect : instances) {
             modifiableArrowEntity.addEffect(effect);
         }
     }
@@ -41,20 +45,6 @@ public class BrewedModifier extends ItemArrowModifier {
     @Override
     public boolean isCompatibleWith(ItemStack target, IModifier<?> modifier) {
         return !(modifier instanceof BrewedModifier);
-    }
-
-    @Override
-    public void update(CompoundTag compoundNBT) {
-        List<MobEffectInstance> instances = new ArrayList<>();
-        final ListTag listNBT = compoundNBT.getList(TAG_EFFECTS, Tag.TAG_COMPOUND);
-        for (int i = 0; i < listNBT.size(); i++) {
-            final CompoundTag nbt = listNBT.getCompound(i);
-            instances.add(MobEffectInstance.load(nbt));
-        }
-        if (!effects.containsAll(instances)) {
-            effects.clear();
-            effects.addAll(instances);
-        }
     }
 
     @Override
@@ -68,13 +58,19 @@ public class BrewedModifier extends ItemArrowModifier {
     @Override
     public List<Component> getRenderedText(ModifierInstance instance) {
         List<Component> textComponents = new ArrayList<>();
+        final List<MobEffectInstance> instances = new ArrayList<>();
+        final ListTag listNBT = instance.getModifierData().getList(TAG_EFFECTS, Tag.TAG_COMPOUND);
+        for (int i = 0; i < listNBT.size(); i++) {
+            final CompoundTag nbt = listNBT.getCompound(i);
+            instances.add(MobEffectInstance.load(nbt));
+        }
         if (!EssenceKeyHandler.EXTENDED_INFORMATION.isDown()) {
             textComponents.add(new TextComponent("  ").append(new TranslatableComponent(getTranslationName(), new TranslatableComponent(EssenceKeyHandler.EXTENDED_INFORMATION.getKey().getName())).withStyle(ChatFormatting.GREEN)));
             return textComponents;
         }
         textComponents.add(new TextComponent("    ").append(new TranslatableComponent(getTranslationName() + ".cleaned").withStyle(ChatFormatting.GREEN)));
         textComponents.add(new TextComponent("      ").append(new TranslatableComponent("essence.brewed.contents").withStyle(ChatFormatting.GOLD)));
-        for (MobEffectInstance effect : effects) {
+        for (MobEffectInstance effect : instances) {
             if (effect.getEffect().isBeneficial()) {
                 textComponents.add(new TextComponent("        ").append(new TranslatableComponent(effect.getEffect().getDescriptionId())).withStyle(ChatFormatting.BLUE));
                 textComponents.add(new TextComponent("          ").append(new TranslatableComponent("essence.brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).withStyle(ChatFormatting.BLUE)));

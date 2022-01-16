@@ -1,4 +1,4 @@
-package com.teamacronymcoders.essence.common.util.config.extendables;
+package com.teamacronymcoders.essence.common.util.config.impl;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

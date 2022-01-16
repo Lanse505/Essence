@@ -18,7 +18,6 @@ public class EssenceLangRegistrate {
             addAdvancements(provider);
             addCommands(provider);
             addKnowledge(provider);
-            addItemMisc(provider);
             addMisc(provider);
             addModifiers(provider);
             addModifierMisc(provider);
@@ -105,19 +104,6 @@ public class EssenceLangRegistrate {
         provider.add("essence.strengthened.type.power", "Ranged");
     }
 
-    private static void addItemMisc(RegistrateLangProvider provider) {
-        provider.add("essence.wrench.disclaimer", "Please note: ");
-        provider.add("essence.wrench.disclaimer_message", "The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.");
-        provider.add("essence.wrench.mode.tooltip", "Wrench Mode");
-        provider.add("essence.mode.wrench.serialize", "Stasis");
-        provider.add("essence.mode.wrench.rotate", "Rotate");
-        provider.add("essence.mode.wrench.trigger", "Trigger");
-        provider.add("tome.essence.mode.tooltip", "Mode:");
-        provider.add("tome.essence.experience.mode.fill", "Fill");
-        provider.add("tome.essence.experience.mode.drain", "Drain");
-        provider.add("tome.essence.experience.mode.absorb", "Absorb");
-    }
-
     private static void addCommands(RegistrateLangProvider provider) {
         provider.add("command.essence.generic.dump.knowledge", "Knowledge [%s]");
         provider.add("command.essence.generic.dump.modifier", "Modifier [%s]");
@@ -188,6 +174,9 @@ public class EssenceLangRegistrate {
         addModifier(provider, UNBREAKING_MODIFIER.get(), "Unbreaking");
         addModifier(provider, SOAKED_MODIFIER.get(), "Soaked");
         addModifier(provider, ENDERIC_MODIFIER.get(), "Enderic");
+
+        addModifier(provider, EXPLOSIVE.get(), "Explosive");
+        provider.add("essence.modifier.explosive.charge", "Charge: %s");
     }
 
     private static void addMisc(RegistrateLangProvider provider) {
@@ -216,13 +205,23 @@ public class EssenceLangRegistrate {
     }
 
     private static void addTooltip(RegistrateLangProvider provider) {
+        provider.add("essence.wrench.disclaimer", "Please note: ");
+        provider.add("essence.wrench.disclaimer_message", "The Wrench makes every attempt fully set a block into Stasis, unfortunately due to situations out of our control. Not all parts of a block's aspects may be put into stasis.");
+        provider.add("essence.wrench.mode.tooltip", "Wrench Mode:");
+        provider.add("essence.mode.wrench.serialize", "Stasis");
+        provider.add("essence.mode.wrench.rotate", "Rotate");
+        provider.add("essence.mode.wrench.trigger", "Trigger");
         provider.add("tooltip.essence.modifier", "Modifiers:");
         provider.add("tooltip.essence.modifier.free", "Free Modifiers: %s");
         provider.add("tooltip.essence.tool.tier", "Material Tier: ");
+        provider.add("tooltip.tome.essence.mode.tooltip", "Mode:");
+        provider.add("tome.essence.experience.mode.fill", "Fill");
+        provider.add("tome.essence.experience.mode.drain", "Drain");
+        provider.add("tome.essence.experience.mode.absorb", "Absorb");
+        provider.add("tome.essence.mode.tooltip", "Mode:");
         provider.add("tooltip.essence.generic.shiftForInformation", "Hold %s For More Info");
         provider.add("tooltip.essence.tome_of_experience.holding", "Currently Holding:");
         provider.add("tooltip.essence.tome_of_experience.levels", "Levels Held: ");
         provider.add("tooltip.essence.tome_of_experience.amount", "Stored Experience: ");
-        provider.add("wrench.essence.mode.tooltip", "Mode: ");
     }
 }

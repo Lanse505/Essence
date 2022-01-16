@@ -11,7 +11,7 @@ import com.teamacronymcoders.essence.common.util.EssenceEventHandlers;
 import com.teamacronymcoders.essence.common.util.EssenceItemProperties;
 import com.teamacronymcoders.essence.common.util.EssenceSerializableObjectHandler;
 import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.common.util.config.EssenceModifierConfig;
+import com.teamacronymcoders.essence.common.util.config.EssenceModifierMasterConfig;
 import com.teamacronymcoders.essence.common.util.config.EssenceWorldGenConfig;
 import com.teamacronymcoders.essence.common.util.network.PacketHandler;
 import com.teamacronymcoders.essence.common.util.proxy.EssenceCommonProxy;
@@ -107,7 +107,7 @@ public class Essence extends ModuleController {
             Path.of(path.toString(), "essence").toFile().mkdir();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceGeneralConfig.initialize(), "essence/general.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceWorldGenConfig.initialize(), "essence/worldgen.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierConfig.initialize(), "essence/modifiers.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EssenceModifierMasterConfig.initialize(), "essence/modifiers.toml");
 
         // Registrates
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

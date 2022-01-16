@@ -11,6 +11,7 @@ public class EssenceCascadingConfig {
         builder.push(type);
         this.blockLimit = builder.comment("Block Limit for Cascading[" + type + "]").defineInRange("blockLimit", blockLimit, 0, Integer.MAX_VALUE);
         this.searchLimit = builder.comment("Search Limit for Cascading[" + type + "]").defineInRange("searchLimit", searchLimit, 0, Integer.MAX_VALUE);
+        builder.pop();
     }
 
     public ForgeConfigSpec.IntValue getBlockLimit() {

@@ -11,9 +11,7 @@ import com.teamacronymcoders.essence.common.modifier.item.cosmetic.EnchantedModi
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.*;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.strengthened.StrengthenedModifier;
 import com.teamacronymcoders.essence.common.modifier.item.enchantment.strengthened.StrengthenedType;
-import com.teamacronymcoders.essence.common.modifier.item.interaction.ExpanderModifier;
-import com.teamacronymcoders.essence.common.modifier.item.interaction.MagneticModifier;
-import com.teamacronymcoders.essence.common.modifier.item.interaction.RainbowModifier;
+import com.teamacronymcoders.essence.common.modifier.item.interaction.*;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.cascading.CascadingModifier;
 import com.teamacronymcoders.essence.common.modifier.item.interaction.cascading.CascadingType;
 import com.teamacronymcoders.essence.common.modifier.item.tank.HoldingModifier;
@@ -70,6 +68,9 @@ public class EssenceModifierRegistrate {
     public static final RegistryEntry<CascadingModifier> CASCADING_LUMBER_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("cascading_lumber", IModifier.class, () -> new CascadingModifier(CascadingType.LUMBER));
     public static final RegistryEntry<CascadingModifier> CASCADING_VEIN_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("cascading_vein", IModifier.class, () -> new CascadingModifier(CascadingType.VEIN));
     public static final RegistryEntry<CascadingModifier> CASCADING_EXCAVATION_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("cascading_excavation", IModifier.class, () -> new CascadingModifier(CascadingType.EXCAVATION));
+
+    public static final RegistryEntry<LifestealModifier> LIFESTEAL = Essence.ESSENCE_REGISTRATE.simple("lifesteal", IModifier.class, LifestealModifier::new);
+    public static final RegistryEntry<ExplosiveModifier> EXPLOSIVE = Essence.ESSENCE_REGISTRATE.simple("explosive", IModifier.class, ExplosiveModifier::new);
 
     public static final RegistryEntry<HoldingModifier> HOLDING_MODIFIER = Essence.ESSENCE_REGISTRATE.simple("holding_tank", IModifier.class, HoldingModifier::new);
 

@@ -8,6 +8,7 @@ import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeConversion;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionRecipeModifier;
+import com.teamacronymcoders.essence.api.recipe.infusion.special.ExplosiveChargeRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.EssenceShearingRecipe;
 import com.teamacronymcoders.essence.api.recipe.tool.HoeTillingRecipe;
 import com.teamacronymcoders.essence.client.render.tesr.InfusionTableTESR;
@@ -88,7 +89,8 @@ public class EssenceEventHandlers {
                             InfusionRecipeConversion.SERIALIZER,
                             InfusionRecipeModifier.SERIALIZER,
                             EssenceShearingRecipe.SERIALIZER,
-                            HoeTillingRecipe.SERIALIZER
+                            HoeTillingRecipe.SERIALIZER,
+                            ExplosiveChargeRecipe.SERIALIZER.setRegistryName(new ResourceLocation(MOD_ID, "explosive_charge"))
                     );
                 }).subscribe();
         EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
@@ -248,7 +250,7 @@ public class EssenceEventHandlers {
                                 WrenchModeEnum mode = wrench.getMode(stack);
                                 WrenchModeEnum newMode = WrenchModeEnum.cycleMode(mode.ordinal());
                                 wrench.setMode(stack, newMode);
-                                minecraft.player.displayClientMessage(new TranslatableComponent("wrench.essence.mode.tooltip").append(": ").append(new TranslatableComponent(newMode.getLocaleName())), true);
+                                minecraft.player.displayClientMessage(new TranslatableComponent("essence.wrench.mode.tooltip").append(new TranslatableComponent(newMode.getLocaleName())), true);
                                 Essence.handler.sendToServer(new PacketItemStack(InteractionHand.MAIN_HAND, Collections.singletonList(newMode)));
                                 scroll.setCanceled(true);
                             }
@@ -269,7 +271,7 @@ public class EssenceEventHandlers {
                                 ExperienceModeEnum mode = tome.getMode();
                                 ExperienceModeEnum newMode = ExperienceModeEnum.cycleMode(mode.ordinal());
                                 tome.setMode(newMode);
-                                minecraft.player.displayClientMessage(new TranslatableComponent("tome.essence.mode.tooltip").append(": ").append(new TranslatableComponent(newMode.getLocaleString())), true);
+                                minecraft.player.displayClientMessage(new TranslatableComponent("tome.essence.mode.tooltip").append(" ").append(new TranslatableComponent(newMode.getLocaleString())), true);
                                 Essence.handler.sendToServer(new PacketItemStack(InteractionHand.MAIN_HAND, Collections.singletonList(newMode)));
                                 scroll.setCanceled(true);
                             }

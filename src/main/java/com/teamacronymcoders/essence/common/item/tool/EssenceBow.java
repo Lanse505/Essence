@@ -121,7 +121,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
                 float f = getPowerForTime(i);
                 if (!((double) f < 0.1D)) {
                     boolean flag1 = player.getAbilities().instabuild || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
-                    if (!level.isClientSide()) {
+                    if(!player.getLevel().isClientSide){
                         ModifiableArrowEntity modifiableArrowEntity = EssenceBowHelper.getArrowEntity(level, bow, arrow, player, f);
                         EssenceBowHelper.modifyArrowEntityWithEnchantments(modifiableArrowEntity, bow);
                         bow.hurtAndBreak(1, player, (entity) -> entity.broadcastBreakEvent(player.getUsedItemHand()));

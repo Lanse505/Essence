@@ -18,7 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class EndericModifier extends ItemArrowModifier {
 
     @Override
-    public void onCollide(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
+    public void onHitBlock(ItemStack bowStack, ModifiableArrowEntity abstractArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
         for (int i = 0; i < 32; ++i) {
             abstractArrowEntity.getLevel().addParticle(ParticleTypes.PORTAL, abstractArrowEntity.getX(), abstractArrowEntity.getY() + Essence.RANDOM.nextDouble() * 2.0D, abstractArrowEntity.getZ(), Essence.RANDOM.nextGaussian(), 0.0D, Essence.RANDOM.nextGaussian());
         }

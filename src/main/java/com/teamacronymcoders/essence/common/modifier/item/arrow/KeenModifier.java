@@ -15,7 +15,7 @@ public class KeenModifier extends ItemArrowModifier {
     }
 
     @Override
-    public void onCollide(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
+    public void onHitBlock(ItemStack bowStack, ModifiableArrowEntity modifiableArrowEntity, Player shooter, BlockHitResult result, ModifierInstance instance) {
     }
 
     @Override

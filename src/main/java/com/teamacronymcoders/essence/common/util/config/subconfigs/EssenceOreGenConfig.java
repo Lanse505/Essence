@@ -1,6 +1,6 @@
 package com.teamacronymcoders.essence.common.util.config.subconfigs;
 
-import com.teamacronymcoders.essence.common.util.config.extendables.AncientEnderiteConfig;
+import com.teamacronymcoders.essence.common.util.config.impl.AncientEnderiteConfig;
 import com.teamacronymcoders.essence.common.util.config.extendables.EssenceOreConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 

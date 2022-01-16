@@ -1,11 +1,15 @@
 package com.teamacronymcoders.essence.common.entity;
 
 import com.google.common.collect.Sets;
+import com.hrznstudio.titanium.nbthandler.data.ItemStackNBTHandler;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
+import com.teamacronymcoders.essence.compat.registrate.EssenceEntityRegistrate;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,21 +39,21 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Collection;
 import java.util.Set;
 
-public class ModifiableArrowEntity extends Arrow {
+public class ModifiableArrowEntity extends AbstractArrow {
 
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ModifiableArrowEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ItemStack> BOWSTACK = SynchedEntityData.defineId(ModifiableArrowEntity.class, EntityDataSerializers.ITEM_STACK);
     private Potion potion = Potions.EMPTY;
     private final Set<MobEffectInstance> customPotionEffects = Sets.newHashSet();
     private boolean fixedColor;
-    private ItemStack bowStack = ItemStack.EMPTY;
 
     public ModifiableArrowEntity(EntityType<ModifiableArrowEntity> type, Level level) {
         super(type, level);
     }
 
     public ModifiableArrowEntity(Level level, double x, double y, double z, ItemStack bowStack, ItemStack arrowStack) {
-        super(level, x, y, z);
-        this.bowStack = bowStack.copy();
+        super(EssenceEntityRegistrate.ARROW_ENTITY.get(), x, y, z, level);
+        this.entityData.set(BOWSTACK, bowStack);
         this.setArrowEffects(arrowStack);
         if (arrowStack.getItem() instanceof TippedArrowItem || arrowStack.getItem() instanceof SpectralArrowItem) {
             this.pickup = Pickup.DISALLOWED;
@@ -56,13 +61,14 @@ public class ModifiableArrowEntity extends Arrow {
     }
 
     public ModifiableArrowEntity(Level level, LivingEntity shooter, ItemStack bowStack, ItemStack arrowStack) {
-        super(level, shooter);
-        this.bowStack = bowStack;
+        super(EssenceEntityRegistrate.ARROW_ENTITY.get(), shooter, level);
+        this.entityData.set(BOWSTACK, bowStack);
         this.setArrowEffects(arrowStack);
         if (arrowStack.getItem() instanceof TippedArrowItem || arrowStack.getItem() instanceof SpectralArrowItem) {
             this.pickup = Pickup.DISALLOWED;
         }
     }
+
 
     public void setArrowEffects(ItemStack stack) {
         if (stack.getItem() instanceof TippedArrowItem) {
@@ -106,6 +112,7 @@ public class ModifiableArrowEntity extends Arrow {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(COLOR, -1);
+        this.getEntityData().define(BOWSTACK, ItemStack.EMPTY);
     }
 
     /**
@@ -167,6 +174,11 @@ public class ModifiableArrowEntity extends Arrow {
             }
             compound.put("CustomPotionEffects", tags);
         }
+
+        if (!this.entityData.get(BOWSTACK).isEmpty()) {
+            compound.put("BowStack", this.entityData.get(BOWSTACK).save(new CompoundTag()));
+        }
+
     }
 
     @Override
@@ -183,16 +195,30 @@ public class ModifiableArrowEntity extends Arrow {
         } else {
             this.refreshColor();
         }
+        if (compound.contains("BowStack")) {
+            this.entityData.set(BOWSTACK, ItemStack.of(compound.getCompound("BowStack")));
+        }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         if (!(result.getEntity() instanceof LivingEntity)) return;
+        Entity shooter = this.getOwner();
+
+        if (shooter instanceof Player player) {
+            ItemStack stack = this.getEntityData().get(BOWSTACK);
+            stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
+                ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier().get();
+                modifier.onHitEntity(stack, this, player, result, instance);
+            }));
+        }
+
         for (MobEffectInstance effectinstance : this.potion.getEffects()) {
             LivingEntity living = (LivingEntity) result.getEntity();
             living.addEffect(new MobEffectInstance(effectinstance.getEffect(), Math.max(effectinstance.getDuration() / 8, 1), effectinstance.getAmplifier(), effectinstance.isAmbient(), effectinstance.isVisible()));
         }
+
         if (!this.customPotionEffects.isEmpty()) {
             for (MobEffectInstance instance : this.customPotionEffects) {
                 LivingEntity living = (LivingEntity) result.getEntity();
@@ -227,20 +253,22 @@ public class ModifiableArrowEntity extends Arrow {
         }
     }
 
-    // func_230299_a_ = onCollide
-    // func_234616_v_ = getShooter
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         Entity shooter = this.getOwner();
-        bowStack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
-            ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier().get();
-            modifier.onCollide(bowStack, this, (Player) shooter, result, instance);
-        }));
+        if (shooter instanceof Player player) {
+            ItemStack stack = this.getEntityData().get(BOWSTACK);
+            shooter.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
+                ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier().get();
+                modifier.onHitBlock(stack, this, player, result, instance);
+            }));
+        }
     }
 
     @Override
     public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
+
 }

@@ -110,21 +110,6 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
     }
 
     @Override
-    public boolean isEnchantable(@NotNull ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean isRepairable(@NotNull ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         return EssenceItemstackModifierHelpers.hasModifier(EssenceModifierRegistrate.ENCHANTED_MODIFIER.get(), stack);
     }
@@ -189,5 +174,20 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
         return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction);
+    }
+
+    @Override
+    public boolean isEnchantable(@NotNull ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isRepairable(@NotNull ItemStack stack) {
+        return false;
     }
 }

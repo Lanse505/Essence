@@ -37,7 +37,6 @@ public class EssenceBowHelper {
         // Flag for if the Bow has Modifiers && has Infinity
         boolean baseCodeCheck = player.getAbilities().instabuild || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
         ModifiableArrowEntity modifiableArrowEntity = new ModifiableArrowEntity(level, player, bow, arrow);
-
         // Iterates through all modifiers, filtering out all ArrowCoreModifier instances and then calling alterArrowEntity for them.
         instances.stream()
                 .filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)
