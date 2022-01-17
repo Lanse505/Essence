@@ -1,15 +1,13 @@
 package com.teamacronymcoders.essence.common.entity;
 
 import com.google.common.collect.Sets;
-import com.hrznstudio.titanium.nbthandler.data.ItemStackNBTHandler;
-import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.compat.registrate.EssenceEntityRegistrate;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,7 +18,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpectralArrowItem;
@@ -33,13 +30,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 import java.util.Set;
 
-public class ModifiableArrowEntity extends AbstractArrow {
+public class ModifiableArrowEntity extends AbstractArrow implements IEntityAdditionalSpawnData {
 
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ModifiableArrowEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> BOWSTACK = SynchedEntityData.defineId(ModifiableArrowEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -259,7 +257,7 @@ public class ModifiableArrowEntity extends AbstractArrow {
         Entity shooter = this.getOwner();
         if (shooter instanceof Player player) {
             ItemStack stack = this.getEntityData().get(BOWSTACK);
-            shooter.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
+            stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
                 ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier().get();
                 modifier.onHitBlock(stack, this, player, result, instance);
             }));
@@ -271,4 +269,13 @@ public class ModifiableArrowEntity extends AbstractArrow {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeInt(getOwner() != null ? getOwner().getId() : 0);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.setOwner(this.getLevel().getEntity(additionalData.readInt()));
+    }
 }

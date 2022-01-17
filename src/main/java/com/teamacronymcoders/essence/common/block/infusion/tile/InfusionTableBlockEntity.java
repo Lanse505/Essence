@@ -202,6 +202,9 @@ public class InfusionTableBlockEntity extends ActiveTile<InfusionTableBlockEntit
         if (blockEntity.isWorking) {
             if (blockEntity.particleTick >= 3) {
                 for (InfusionPedestalBlockEntity pedestal : blockEntity.getPedestals()) {
+                    if(pedestal.getStack().isEmpty()){
+                        continue;
+                    }
                     ClientLevel level = (ClientLevel) blockEntity.getLevel();
                     BlockPos targetPosition = blockEntity.getBlockPos().above(2);
                     BlockPos pedestalPosition = pedestal.getBlockPos();
