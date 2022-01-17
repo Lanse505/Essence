@@ -259,7 +259,7 @@ public class ModifiableArrowEntity extends AbstractArrow {
         Entity shooter = this.getOwner();
         if (shooter instanceof Player player) {
             ItemStack stack = this.getEntityData().get(BOWSTACK);
-            shooter.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
+            stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).map(holder -> holder.getModifierInstances().stream().filter(instance -> instance.getModifier().get() instanceof ItemArrowModifier)).ifPresent(instances -> instances.forEach(instance -> {
                 ItemArrowModifier modifier = (ItemArrowModifier) instance.getModifier().get();
                 modifier.onHitBlock(stack, this, player, result, instance);
             }));
