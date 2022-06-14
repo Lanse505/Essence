@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.common.item.tome.experience;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.api.modified.rewrite.tank.ModifiableTank;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

@@ -8,7 +8,6 @@ import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackMod
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceItemTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.ChatFormatting;

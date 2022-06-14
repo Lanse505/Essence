@@ -78,7 +78,7 @@ public class CascadingModifier extends ItemInteractionModifier {
 
     @Override
     public String getTranslationName() {
-        return "modifier.essence.cascading";
+        return "com.teamacronymcoders.essenceapi.modifier.essence.cascading";
     }
 
     @Override

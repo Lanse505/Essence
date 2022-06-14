@@ -53,7 +53,7 @@ public abstract class KeyHandler {
             //Manually check in case keyBinding#pressed just never got a chance to be updated
             return isKeyDown(keyBinding);
         }
-        //If we failed, due to us being a key modifier as our key, check the old way
+        //If we failed, due to us being a key com.teamacronymcoders.essenceapi.modifier as our key, check the old way
         return KeyModifier.isKeyCodeModifier(keyBinding.getKey()) && isKeyDown(keyBinding);
     }
 

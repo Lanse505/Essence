@@ -90,7 +90,7 @@ public class HoeTillingRecipe extends SerializableRecipe {
             if (to != null) {
                 level.playSound(playerentity, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!level.isClientSide) {
-                    // If the state is unchanged after firing the forge hook then use the recipe provided state
+                    // If the state is unchanged after firing the forge hook then use the com.teamacronymcoders.essenceapi.recipe provided state
                     level.setBlock(blockpos, to, Block.UPDATE_ALL_IMMEDIATE);
                     if (playerentity != null) {
                         stack.hurtAndBreak(1, playerentity, (playerIn) -> {

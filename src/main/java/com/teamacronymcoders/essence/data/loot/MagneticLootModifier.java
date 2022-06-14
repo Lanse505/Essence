@@ -18,7 +18,7 @@ public class MagneticLootModifier extends LootModifier {
   /**
    * Constructs a LootModifier.
    *
-   * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
+   * @param conditionsIn the ILootConditions that need to be matched before the loot is com.teamacronymcoders.essenceapi.modified.
    */
   protected MagneticLootModifier(LootItemCondition[] conditionsIn) {
     super(conditionsIn);

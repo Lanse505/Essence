@@ -57,8 +57,8 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.Random;
@@ -73,7 +73,7 @@ public class Essence extends ModuleController {
     public static final String MOD_ID = "essence";
     public static final String versionNumber = "1.0.0-alpha";
     public static final Random RANDOM = new Random();
-    public static final Logger LOGGER = LogManager.getLogger("Essence");
+    public static final Logger LOGGER = LoggerFactory.getLogger("Essence");
     public static AdvancedTitaniumTab CORE_TAB;
     public static AdvancedTitaniumTab TOOL_TAB;
 

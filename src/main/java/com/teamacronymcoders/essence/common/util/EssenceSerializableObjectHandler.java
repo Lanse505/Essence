@@ -7,7 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.recipe.infusion.InfusionOperation;
 import com.teamacronymcoders.essence.api.recipe.infusion.SerializableModifier;
-import com.teamacronymcoders.essence.common.util.helper.EssenceJsonHelper;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;

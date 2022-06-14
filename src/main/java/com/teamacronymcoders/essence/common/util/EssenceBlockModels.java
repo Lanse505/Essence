@@ -1,6 +1,5 @@
 package com.teamacronymcoders.essence.common.util;
 
-import com.teamacronymcoders.essence.common.util.helper.EssenceVoxelHelper;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import static net.minecraft.world.level.block.Block.box;

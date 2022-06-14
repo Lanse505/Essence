@@ -3,7 +3,6 @@ package com.teamacronymcoders.essence.common.modifier.item.enchantment;
 import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
-import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;

@@ -95,7 +95,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.addKnowledge(playerEntity, knowledge);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.add", Component.translatable(knowledge.getTranslationString()), playerEntity.getName()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.add", Component.translatable(knowledge.getTranslationString()), playerEntity.getName()), true);
         });
         return 1;
     }
@@ -106,7 +106,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.addKnowledge(uuid, knowledge);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.add", Component.translatable(knowledge.getTranslationString()), uuid.toString()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.add", Component.translatable(knowledge.getTranslationString()), uuid.toString()), true);
         });
         return 1;
     }
@@ -116,7 +116,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.removeKnowledge(playerEntity, knowledge);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.remove", Component.translatable(knowledge.getTranslationString()), playerEntity.getName()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.remove", Component.translatable(knowledge.getTranslationString()), playerEntity.getName()), true);
         });
         return 1;
     }
@@ -127,7 +127,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.removeKnowledge(uuid, knowledge);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.remove", Component.translatable(knowledge.getTranslationString()), uuid.toString()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.remove", Component.translatable(knowledge.getTranslationString()), uuid.toString()), true);
         });
         return 1;
     }
@@ -137,7 +137,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.clearKnowledge(UUID.fromString(playerEntity.getStringUUID()));
-            source.sendSuccess(Component.translatable("command.essence.knowledge.clear", playerEntity.getName()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.clear", playerEntity.getName()), true);
         });
         return 1;
     }
@@ -148,7 +148,7 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             holder.clearKnowledge(uuid);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.clear", uuid.toString()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.clear", uuid.toString()), true);
         });
         return 1;
     }
@@ -158,9 +158,9 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             List<Knowledge> knowledges = holder.getKnowledgeAsList(UUID.fromString(player.getStringUUID()));
-            source.sendSuccess(Component.translatable("command.essence.knowledge.dump", player.getName()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump", player.getName()), true);
             knowledges.forEach(knowledge -> {
-                source.sendSuccess(Component.translatable("command.essence.generic.dump.knowledge", Component.translatable(knowledge.getTranslationString())), true);
+                source.sendSuccess(Component.translatable("command.essence.generic.dump.com.teamacronymcoders.essenceapi.knowledge", Component.translatable(knowledge.getTranslationString())), true);
             });
         });
         return 1;
@@ -172,9 +172,9 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         Level level = source.getLevel();
         level.getCapability(EssenceCapability.KNOWLEDGE).ifPresent(holder -> {
             List<Knowledge> knowledges = holder.getKnowledgeAsList(uuid);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.dump", uuid.toString()), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump", uuid.toString()), true);
             knowledges.forEach(knowledge -> {
-                source.sendSuccess(Component.translatable("command.essence.generic.dump.knowledge", Component.translatable(knowledge.getTranslationString())), true);
+                source.sendSuccess(Component.translatable("command.essence.generic.dump.com.teamacronymcoders.essenceapi.knowledge", Component.translatable(knowledge.getTranslationString())), true);
             });
         });
         return 1;
@@ -184,10 +184,10 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         CommandSourceStack source = context.getSource();
         Level world = source.getLevel();
         List<Knowledge> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(UUID.fromString(player.getStringUUID()))).orElse(new ArrayList<>());
-        source.sendSuccess(Component.translatable("command.essence.knowledge.dump", player.getName()), true);
+        source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump", player.getName()), true);
         for (int i = 0; i < amountToDump; i++) {
             Knowledge knowledge = knowledges.get(i);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.dump.type"), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump.type"), true);
             source.sendSuccess(Component.translatable(knowledge.getTranslationString()), true);
         }
         return 1;
@@ -198,10 +198,10 @@ public class KnowledgeCommand implements Command<CommandSourceStack> {
         UUID uuid = UUID.fromString(playerUUID);
         Level world = source.getLevel();
         List<Knowledge> knowledges = world.getCapability(EssenceCapability.KNOWLEDGE).map(holder -> holder.getKnowledgeAsList(uuid)).orElse(new ArrayList<>());
-        source.sendSuccess(Component.translatable("command.essence.knowledge.dump", uuid.toString()), true);
+        source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump", uuid.toString()), true);
         for (int i = 0; i < amountToDump; i++) {
             Knowledge knowledge = knowledges.get(i);
-            source.sendSuccess(Component.translatable("command.essence.knowledge.dump.type"), true);
+            source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump.type"), true);
             source.sendSuccess(Component.translatable(knowledge.getTranslationString()), true);
         }
         return 1;

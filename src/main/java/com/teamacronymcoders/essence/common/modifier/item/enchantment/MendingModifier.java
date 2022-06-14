@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.common.modifier.item.enchantment;
 
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
-import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;

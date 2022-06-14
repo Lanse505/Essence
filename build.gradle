@@ -63,12 +63,21 @@ repositories {
 }
 
 sourceSets {
+    api {}
     main {
+        compileClasspath += api.compileClasspath
+        runtimeClasspath += api.runtimeClasspath
         resources {
             include '**/**'
             srcDirs += "$rootDir/src/generated/resources"
             exclude '.cache'
         }
+    }
+    datagen {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.output
+        runtimeClasspath += main.output
     }
 }
 
@@ -177,6 +186,11 @@ mixin {
     config 'essence.mixins.json'
 }
 
+task apiJar(type: Jar) {
+    from sourceSets.api.allSource
+    classifier = "api"
+}
+
 task srcJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = "sources"
@@ -223,6 +237,7 @@ build.dependsOn reobfRegistrateJar
 
 artifacts {
     archives javadocJar
+    archives apiJar
     archives srcJar
     archives shadowJar
     archives registrateJar
@@ -267,6 +282,6 @@ static String getBuildNumber() {
 
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xmaxerrs" << "10000"
+        options.compilerArgs << "-Xmaxerrs" << "100000"
     }
 }

@@ -11,7 +11,6 @@ import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierHolder;
 import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.server.command.argument.EssenceHandArgumentType;
 import com.teamacronymcoders.essence.server.command.argument.EssenceModifierArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -84,7 +83,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 presentHolder.addModifierInstance(false, stack, instance);
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
+                source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
             });
             return 1;
         }
@@ -103,7 +102,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 presentHolder.removeModifierInstance(false, stack, (IModifier<ItemStack>) instance.getModifier().get());
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
+                source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
             });
             return 1;
         }
@@ -127,7 +126,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                             modifiedCompound.merge(compound);
                             instance.setModifierData(modifiedCompound);
                         });
-                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
+                source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
             });
         }
         return 0;
@@ -147,7 +146,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 }
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
+                source.sendSuccess(Component.translatable("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
             });
             return 1;
         }

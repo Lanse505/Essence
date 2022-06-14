@@ -5,7 +5,6 @@ import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.common.entity.GlueBallEntity;
 import com.teamacronymcoders.essence.common.item.misc.GlueBallItem;
 import com.teamacronymcoders.essence.common.item.tool.EssenceShear;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.Util;

@@ -9,7 +9,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.commands.CommandSourceStack;

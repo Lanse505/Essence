@@ -4,7 +4,6 @@ import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceSword;
-import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

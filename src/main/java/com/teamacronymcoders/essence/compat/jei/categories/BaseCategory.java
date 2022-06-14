@@ -4,7 +4,7 @@ package com.teamacronymcoders.essence.compat.jei.categories;
 //import mezz.jei.api.gui.drawable.IDrawable;
 //import mezz.jei.api.helpers.IGuiHelper;
 //import mezz.jei.api.ingredients.IIngredients;
-//import mezz.jei.api.recipe.category.IRecipeCategory;
+//import mezz.jei.api.com.teamacronymcoders.essenceapi.recipe.category.IRecipeCategory;
 //import net.minecraft.network.chat.Component;
 //import net.minecraft.network.chat.TextComponent;
 //import net.minecraft.resources.ResourceLocation;
@@ -51,10 +51,10 @@ package com.teamacronymcoders.essence.compat.jei.categories;
 //    }
 //
 //    @Override
-//    public void setIngredients(T recipe, IIngredients ingredients) {
+//    public void setIngredients(T com.teamacronymcoders.essenceapi.recipe, IIngredients ingredients) {
 //    }
 //
 //    @Override
-//    public void setRecipe(IRecipeLayout recipeLayout, T recipe, IIngredients ingredients) {
+//    public void setRecipe(IRecipeLayout recipeLayout, T com.teamacronymcoders.essenceapi.recipe, IIngredients ingredients) {
 //    }
 //}

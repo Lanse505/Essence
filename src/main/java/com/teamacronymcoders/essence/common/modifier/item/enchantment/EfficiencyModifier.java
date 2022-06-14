@@ -6,7 +6,6 @@ import com.teamacronymcoders.essence.common.item.tool.EssenceAxe;
 import com.teamacronymcoders.essence.common.item.tool.EssenceOmniTool;
 import com.teamacronymcoders.essence.common.item.tool.EssencePickaxe;
 import com.teamacronymcoders.essence.common.item.tool.EssenceShovel;
-import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

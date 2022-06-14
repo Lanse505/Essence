@@ -24,7 +24,7 @@ public class ArmorToughnessModifier extends ItemCoreModifier {
     @Override
     public Component getTextComponentName(int level) {
         if (level == -1) {
-            return Component.translatable("modifier.essence.attribute", Component.translatable("attribute.essence.armor_toughness"));
+            return Component.translatable("com.teamacronymcoders.essenceapi.modifier.essence.attribute", Component.translatable("attribute.essence.armor_toughness"));
         }
         return super.getTextComponentName(level);
     }

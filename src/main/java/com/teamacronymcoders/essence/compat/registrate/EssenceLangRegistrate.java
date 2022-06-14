@@ -28,9 +28,9 @@ public class EssenceLangRegistrate {
     /**
      * Helper function to add advancements to the lang generator
      *
-     * @param advancement The advancement for localizations to be added
-     * @param title       The title of the advancement
-     * @param description The description of the advancement
+     * @param advancement The com.teamacronymcoders.essenceapi.advancement for localizations to be added
+     * @param title       The title of the com.teamacronymcoders.essenceapi.advancement
+     * @param description The description of the com.teamacronymcoders.essenceapi.advancement
      */
     private static void addAdvancement(RegistrateLangProvider provider, Advancement advancement, String title, String description) {
         final DisplayInfo display = advancement.getDisplay();
@@ -72,7 +72,7 @@ public class EssenceLangRegistrate {
         addAdvancement(provider, EssenceAdvancementRegistrate.getExpander(), "Expander", "Well That's Quite the Reach!");
         addAdvancement(provider, EssenceAdvancementRegistrate.getFiery(), "Fiery", "Muy Caliente");
         addAdvancement(provider, EssenceAdvancementRegistrate.getRainbow(), "Rainbow", "Catch the rainbow, Taste the rainbow");
-        addAdvancement(provider, EssenceAdvancementRegistrate.getMiscKnowledge(), "Miscellaneous Knowledge", "Assorted knowledge of the world");
+        addAdvancement(provider, EssenceAdvancementRegistrate.getMiscKnowledge(), "Miscellaneous Knowledge", "Assorted com.teamacronymcoders.essenceapi.knowledge of the world");
         addAdvancement(provider, EssenceAdvancementRegistrate.getArborealKnowledge(), "Arboreal Knowledge", "Knowledge of The Essence of Trees");
         addAdvancement(provider, EssenceAdvancementRegistrate.getTiers(), "Material-Tiers", "Materials and Their Properties");
         addAdvancement(provider, EssenceAdvancementRegistrate.getBasic(), "Basic-Tier", "Basic-Quality Materials");
@@ -105,60 +105,60 @@ public class EssenceLangRegistrate {
     }
 
     private static void addCommands(RegistrateLangProvider provider) {
-        provider.add("command.essence.generic.dump.knowledge", "Knowledge [%s]");
-        provider.add("command.essence.generic.dump.modifier", "Modifier [%s]");
-        provider.add("command.essence.knowledge.add", "Added Knowledge: [%s] to Player/UUID [%s]");
-        provider.add("command.essence.knowledge.remove", "Removed Knowledge: [%s] to Player/UUID [%s]");
-        provider.add("command.essence.knowledge.clear", "Cleared All Knowledge from Player/UUID [%s]");
-        provider.add("command.essence.knowledge.dump", "Dumped Knowledge for Player/UUID [%s]");
-        provider.add("command.essence.modifier.itemstack.add", "Added Modifier: %s to Tool in Hand: %s");
-        provider.add("command.essence.modifier.itemstack.remove", "Removed Modifier: %s from Tool in Hand: %s");
-        provider.add("command.essence.modifier.itemstack.merge", "Merged Modifier Tag into Modifier: %s");
-        provider.add("command.essence.modifier.itemstack.level_up", "Leveled-Up Modifier: %s");
-        provider.add("command.essence.modifier.itemstack.level_down", "Leveled-Down Modifier: %s");
-        provider.add("command.essence.registry.dump.knowledge", "Now dumping contents of Registry 'Knowledge' to Logs");
-        provider.add("command.essence.registry.dump.modifier", "Now dumping contents of Registry 'Modifier' to Logs");
-        provider.add("command.essence.registry.dump.knowledge.type", "Knowledge with ID of: [%s]");
-        provider.add("command.essence.registry.dump.modifier.type", "Modifier with ID of: [%s]");
+        provider.add("command.essence.generic.dump.com.teamacronymcoders.essenceapi.knowledge", "Knowledge [%s]");
+        provider.add("command.essence.generic.dump.com.teamacronymcoders.essenceapi.modifier", "Modifier [%s]");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.knowledge.add", "Added Knowledge: [%s] to Player/UUID [%s]");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.knowledge.remove", "Removed Knowledge: [%s] to Player/UUID [%s]");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.knowledge.clear", "Cleared All Knowledge from Player/UUID [%s]");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.knowledge.dump", "Dumped Knowledge for Player/UUID [%s]");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.add", "Added Modifier: %s to Tool in Hand: %s");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.remove", "Removed Modifier: %s from Tool in Hand: %s");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.merge", "Merged Modifier Tag into Modifier: %s");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.level_up", "Leveled-Up Modifier: %s");
+        provider.add("command.essence.com.teamacronymcoders.essenceapi.modifier.itemstack.level_down", "Leveled-Down Modifier: %s");
+        provider.add("command.essence.registry.dump.com.teamacronymcoders.essenceapi.knowledge", "Now dumping contents of Registry 'Knowledge' to Logs");
+        provider.add("command.essence.registry.dump.com.teamacronymcoders.essenceapi.modifier", "Now dumping contents of Registry 'Modifier' to Logs");
+        provider.add("command.essence.registry.dump.com.teamacronymcoders.essenceapi.knowledge.type", "Knowledge with ID of: [%s]");
+        provider.add("command.essence.registry.dump.com.teamacronymcoders.essenceapi.modifier.type", "Modifier with ID of: [%s]");
         provider.add("command.essence.setup_dev", "Dev-World Successfully Setup!");
     }
 
     private static void addKnowledge(RegistrateLangProvider provider) {
-        provider.add("knowledge.essence.brewed", "Brewed");
-        provider.add("knowledge.essence.keen", "Keen");
-        provider.add("knowledge.essence.enchanted", "Enchanted");
-        provider.add("knowledge.essence.armor", "Armor");
-        provider.add("knowledge.essence.armor_toughness", "Armor-Toughness");
-        provider.add("knowledge.essence.attack_damage", "Attack-Damage");
-        provider.add("knowledge.essence.max_health", "Max-Health");
-        provider.add("knowledge.essence.movement_speed", "Movement-Speed");
-        provider.add("knowledge.essence.infinity", "Infinity");
-        provider.add("knowledge.essence.knockback", "Knockback");
-        provider.add("knowledge.essence.luck", "Luck");
-        provider.add("knowledge.essence.silk_touch", "Silk Touch");
-        provider.add("knowledge.essence.unbreaking", "Unbreaking");
-        provider.add("knowledge.essence.mending", "Mending");
-        provider.add("knowledge.essence.strengthened", "Strengthened");
-        provider.add("knowledge.essence.expander", "Expander");
-        provider.add("knowledge.essence.fiery_modifier", "Fiery");
-        provider.add("knowledge.essence.rainbow", "Rainbow");
-        provider.add("knowledge.essence.cascading", "Cascading");
-        provider.add("knowledge.essence.tool_crafting", "Tool-Crafting");
-        provider.add("knowledge.essence.arboreal_notes", "Arboreal Notes");
-        provider.add("knowledge.essence.basic_tier", "Basic-Tier");
-        provider.add("knowledge.essence.empowered_tier", "Empowered-Tier");
-        provider.add("knowledge.essence.supreme_tier", "Supreme-Tier");
-        provider.add("knowledge.essence.divine_tier", "Divine-Tier");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.brewed", "Brewed");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.keen", "Keen");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.enchanted", "Enchanted");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.armor", "Armor");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.armor_toughness", "Armor-Toughness");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.attack_damage", "Attack-Damage");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.max_health", "Max-Health");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.movement_speed", "Movement-Speed");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.infinity", "Infinity");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.knockback", "Knockback");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.luck", "Luck");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.silk_touch", "Silk Touch");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.unbreaking", "Unbreaking");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.mending", "Mending");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.strengthened", "Strengthened");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.expander", "Expander");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.fiery_modifier", "Fiery");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.rainbow", "Rainbow");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.cascading", "Cascading");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.tool_crafting", "Tool-Crafting");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.arboreal_notes", "Arboreal Notes");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.basic_tier", "Basic-Tier");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.empowered_tier", "Empowered-Tier");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.supreme_tier", "Supreme-Tier");
+        provider.add("com.teamacronymcoders.essenceapi.knowledge.essence.divine_tier", "Divine-Tier");
     }
 
     private static void addModifiers(RegistrateLangProvider provider) {
         //Irregulars
-        provider.add("modifier.essence.attribute", "Attribute [%s]");
-        provider.add("modifier.essence.brewed", "Brewed [Hold %s for Info]");
-        provider.add("modifier.essence.brewed.cleaned", "Brewed");
-        provider.add("modifier.essence.cascading", "Cascading [%s]");
-        provider.add("modifier.essence.strengthened", "Strengthened %s [%s]");
-        provider.add("modifier.essence.strengthened.cleaned", "Strengthened [%s]");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.attribute", "Attribute [%s]");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.brewed", "Brewed [Hold %s for Info]");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.brewed.cleaned", "Brewed");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.cascading", "Cascading [%s]");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.strengthened", "Strengthened %s [%s]");
+        provider.add("com.teamacronymcoders.essenceapi.modifier.essence.strengthened.cleaned", "Strengthened [%s]");
 
         //Regulars
         addModifier(provider, EFFICIENCY_MODIFIER.get(), "Efficiency");
@@ -176,7 +176,7 @@ public class EssenceLangRegistrate {
         addModifier(provider, ENDERIC_MODIFIER.get(), "Enderic");
 
         addModifier(provider, EXPLOSIVE.get(), "Explosive");
-        provider.add("essence.modifier.explosive.charge", "Charge: %s");
+        provider.add("essence.com.teamacronymcoders.essenceapi.modifier.explosive.charge", "Charge: %s");
     }
 
     private static void addMisc(RegistrateLangProvider provider) {
@@ -197,8 +197,8 @@ public class EssenceLangRegistrate {
         provider.add("tier.essence.empowered", "Empowered");
         provider.add("tier.essence.supreme", "Supreme");
         provider.add("tier.essence.divine", "Divine");
-        provider.add("patchouli.book.essence.knowledge.tome.name", "Tome of Knowledge");
-        provider.add("patchouli.book.essence.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
+        provider.add("patchouli.book.essence.com.teamacronymcoders.essenceapi.knowledge.tome.name", "Tome of Knowledge");
+        provider.add("patchouli.book.essence.com.teamacronymcoders.essenceapi.knowledge.tome.landingtext", "Welcome to the Libria-Essentium as documented by former Explorer 'C.S. Ironbeak'");
         provider.add(KBTranslationKeys.MODID, "Essence");
         provider.add(KBTranslationKeys.CYCLING, "Cycle Modes");
         provider.add(KBTranslationKeys.EXTENDED_INFORMATION, "Extended Information");
@@ -211,8 +211,8 @@ public class EssenceLangRegistrate {
         provider.add("essence.mode.wrench.serialize", "Stasis");
         provider.add("essence.mode.wrench.rotate", "Rotate");
         provider.add("essence.mode.wrench.trigger", "Trigger");
-        provider.add("tooltip.essence.modifier", "Modifiers:");
-        provider.add("tooltip.essence.modifier.free", "Free Modifiers: %s");
+        provider.add("tooltip.essence.com.teamacronymcoders.essenceapi.modifier", "Modifiers:");
+        provider.add("tooltip.essence.com.teamacronymcoders.essenceapi.modifier.free", "Free Modifiers: %s");
         provider.add("tooltip.essence.tool.tier", "Material Tier: ");
         provider.add("tooltip.tome.essence.mode.tooltip", "Mode:");
         provider.add("tome.essence.experience.mode.fill", "Fill");

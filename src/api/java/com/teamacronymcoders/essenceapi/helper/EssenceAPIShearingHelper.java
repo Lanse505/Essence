@@ -1,0 +1,74 @@
+package com.teamacronymcoders.essenceapi.helper;
+
+import com.teamacronymcoders.essenceapi.EssenceAPI;
+import com.teamacronymcoders.essenceapi.EssenceCapabilities;
+import com.teamacronymcoders.essenceapi.holder.IModifierHolder;
+import com.teamacronymcoders.essenceapi.modifier.ModifierInstance;
+import com.teamacronymcoders.essenceapi.modifier.item.ItemInteractionModifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.IForgeShearable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class EssenceAPIShearingHelper {
+
+    public static InteractionResult handleIShearableEntity(ItemStack stack, Player player, LivingEntity sheared, InteractionHand hand) {
+        if (sheared instanceof IForgeShearable target) {
+            BlockPos pos = new BlockPos(sheared.getX(), sheared.getY(), sheared.getZ());
+            if (target.isShearable(stack, sheared.level, pos)) {
+                List<ItemStack> dropList = sheared instanceof Sheep ? handleShearingSheep((Sheep) sheared, stack, sheared.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack)) : target.onSheared(player, stack, sheared.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
+
+                // Gathers a list of Entries with InteractionCoreModifiers that also return a different value than the default
+                List<? extends ModifierInstance> unchecked = stack.getCapability(EssenceCapabilities.ITEMSTACK_MODIFIER_HOLDER).map(IModifierHolder::getModifierInstances).orElse(new ArrayList<>());
+
+                // Loops over and Gathers the final com.teamacronymcoders.essenceapi.modified list
+                for (ModifierInstance instance : unchecked) {
+                    if (instance.getModifier().get() instanceof ItemInteractionModifier interactionCoreModifier) {
+                        dropList = interactionCoreModifier.onSheared(stack, player, sheared, hand, dropList, instance);
+                    }
+                }
+
+                // Handle dropping the final list of ItemStacks
+                dropList.forEach(s -> {
+                    ItemEntity entity = player.drop(s, false);
+                    if (entity != null) {
+                        entity.setDeltaMovement(entity.getDeltaMovement().add(
+                                (EssenceAPI.RANDOM.nextFloat() - EssenceAPI.RANDOM.nextFloat()) * 0.1F,
+                                EssenceAPI.RANDOM.nextFloat() * 0.05F,
+                                (EssenceAPI.RANDOM.nextFloat() - EssenceAPI.RANDOM.nextFloat()) * 0.1F));
+                    }
+                });
+
+                // Damage the ItemStack
+                stack.hurtAndBreak(1, sheared, entity -> entity.broadcastBreakEvent(hand));
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.FAIL;
+    }
+
+    private static List<ItemStack> handleShearingSheep(Sheep sheep, ItemStack item, Level level, BlockPos pos, int fortune) {
+        List<ItemStack> ret = new ArrayList<>();
+        if (!sheep.level.isClientSide()) {
+            sheep.setSheared(true);
+            int i = EssenceAPIUtilHelper.nextIntInclusive(1 + fortune, 4 + fortune);
+            for (int j = 0; j < i; ++j) {
+                ret.add(new ItemStack(Sheep.ITEM_BY_DYE.get(sheep.getColor())));
+            }
+        }
+        sheep.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
+        return ret;
+    }
+}

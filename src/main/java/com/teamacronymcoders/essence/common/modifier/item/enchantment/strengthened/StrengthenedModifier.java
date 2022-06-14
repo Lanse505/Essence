@@ -3,8 +3,6 @@ package com.teamacronymcoders.essence.common.modifier.item.enchantment.strengthe
 import com.teamacronymcoders.essence.api.modifier.IModifier;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
-import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper;
-import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +39,7 @@ public class StrengthenedModifier extends ItemInteractionModifier {
 
     @Override
     public String getTranslationName() {
-        return "modifier.essence.strengthened";
+        return "com.teamacronymcoders.essenceapi.modifier.essence.strengthened";
     }
 
     @Override

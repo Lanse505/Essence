@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
 import com.teamacronymcoders.essence.api.modified.rewrite.itemstack.ItemStackModifierProvider;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.ChatFormatting;

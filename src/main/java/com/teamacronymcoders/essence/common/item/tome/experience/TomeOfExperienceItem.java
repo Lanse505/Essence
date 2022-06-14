@@ -1,8 +1,6 @@
 package com.teamacronymcoders.essence.common.item.tome.experience;
 
 import com.teamacronymcoders.essence.api.modified.rewrite.IModifiedItem;
-import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
-import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceFluidRegistrate;

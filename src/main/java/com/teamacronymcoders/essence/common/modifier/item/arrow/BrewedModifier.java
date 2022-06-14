@@ -5,7 +5,6 @@ import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemArrowModifier;
 import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
 import com.teamacronymcoders.essence.common.entity.ModifiableArrowEntity;
-import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

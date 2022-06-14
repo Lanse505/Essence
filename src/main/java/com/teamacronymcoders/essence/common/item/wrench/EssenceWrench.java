@@ -14,7 +14,6 @@ import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceBlockTags;
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceEntityTags;
 import com.teamacronymcoders.essence.common.util.config.EssenceGeneralConfig;
-import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import com.teamacronymcoders.essence.common.util.network.base.IItemNetwork;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceItemRegistrate;

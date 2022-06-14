@@ -34,18 +34,18 @@ public class RegistryCommand implements Command<CommandSourceStack> {
 
     public static int dumpKnowledgeRegistry(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
-        source.sendSuccess(Component.translatable("command.essence.registry.dump.knowledge"), true);
+        source.sendSuccess(Component.translatable("command.essence.registry.dump.com.teamacronymcoders.essenceapi.knowledge"), true);
         for (Map.Entry<ResourceKey<Knowledge>, Knowledge> knowledge : EssenceKnowledgeRegistrate.REGISTRY.get().getEntries()) {
-            Essence.LOGGER.info(Component.translatable("command.essence.registry.dump.knowledge.type", Component.translatable(knowledge.getValue().getTranslationString()), knowledge.getKey().toString()).m_214077_());
+            Essence.LOGGER.info(Component.translatable("command.essence.registry.dump.com.teamacronymcoders.essenceapi.knowledge.type", Component.translatable(knowledge.getValue().getTranslationString()), knowledge.getKey().toString()).m_214077_());
         }
         return 1;
     }
 
     public static int dumpModifierRegistry(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
-        source.sendSuccess(Component.translatable("command.essence.registry.dump.modifier"), true);
+        source.sendSuccess(Component.translatable("command.essence.registry.dump.com.teamacronymcoders.essenceapi.modifier"), true);
         for (Map.Entry<ResourceKey<IModifier<?>>, IModifier<?>> knowledge : EssenceModifierRegistrate.REGISTRY.get().getEntries()) {
-            Essence.LOGGER.info(Component.translatable("command.essence.registry.dump.modifier.type", knowledge.getValue(), knowledge.getKey().toString()).m_214077_());
+            Essence.LOGGER.info(Component.translatable("command.essence.registry.dump.com.teamacronymcoders.essenceapi.modifier.type", knowledge.getValue(), knowledge.getKey().toString()).m_214077_());
         }
         return 1;
     }

@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.client.render.tesr;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionPedestalBlockEntity;
-import com.teamacronymcoders.essence.common.util.helper.EssenceRenderHelper;
 import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

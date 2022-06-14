@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
-import com.teamacronymcoders.essence.common.util.helper.EssenceRenderHelper;
 import net.minecraft.client.model.BookModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;

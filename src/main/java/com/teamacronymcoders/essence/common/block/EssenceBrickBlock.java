@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.common.block;
 
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.misc.IColorProvider;
-import com.teamacronymcoders.essence.common.util.helper.EssenceColorHelper;
 import com.teamacronymcoders.essence.compat.registrate.EssenceBlockRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

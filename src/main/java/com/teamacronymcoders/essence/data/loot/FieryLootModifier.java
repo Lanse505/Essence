@@ -24,7 +24,7 @@ public class FieryLootModifier extends LootModifier {
     /**
      * Constructs a LootModifier.
      *
-     * @param conditionsIn the ILootConditions that need to be matched before the loot is modified.
+     * @param conditionsIn the ILootConditions that need to be matched before the loot is com.teamacronymcoders.essenceapi.modified.
      */
     protected FieryLootModifier(LootItemCondition[] conditionsIn) {
         super(conditionsIn);

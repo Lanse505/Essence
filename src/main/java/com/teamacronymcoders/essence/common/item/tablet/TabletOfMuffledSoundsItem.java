@@ -1,7 +1,6 @@
 package com.teamacronymcoders.essence.common.item.tablet;
 
 import com.teamacronymcoders.essence.client.util.keybindings.EssenceKeyHandler;
-import com.teamacronymcoders.essence.common.util.helper.EssenceInformationHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

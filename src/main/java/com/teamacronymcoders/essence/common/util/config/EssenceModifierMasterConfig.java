@@ -21,7 +21,7 @@ public class EssenceModifierMasterConfig {
         this.excavation = new EssenceCascadingConfig(builder, "Excavation", 125, 25);
         this.lumber = new EssenceCascadingConfig(builder, "Lumber", 125, 75);
         this.vein = new EssenceCascadingConfig(builder, "Vein", 125, 25);
-        this.lifesteal = new EssenceModifierConfig(builder, "Lifesteal").addDoubleRangeConfig("Determines the lifesteal procentage for the modifier", "lifestealProcentage", 0.25d, 0.0d, 1.0d).build();
+        this.lifesteal = new EssenceModifierConfig(builder, "Lifesteal").addDoubleRangeConfig("Determines the lifesteal procentage for the com.teamacronymcoders.essenceapi.modifier", "lifestealProcentage", 0.25d, 0.0d, 1.0d).build();
         builder.pop();
         this.spec = builder.build();
     }

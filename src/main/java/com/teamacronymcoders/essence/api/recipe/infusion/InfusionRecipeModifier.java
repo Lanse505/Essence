@@ -6,7 +6,6 @@ import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.common.block.infusion.tile.InfusionTableBlockEntity;
 import com.teamacronymcoders.essence.common.util.EssenceTags;
 import com.teamacronymcoders.essence.common.util.helper.EssenceBowHelper;
-import com.teamacronymcoders.essence.common.util.helper.EssenceJsonHelper;
 import com.teamacronymcoders.essence.common.util.helper.recipe.EssenceModifierRecipeHelper;
 import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;

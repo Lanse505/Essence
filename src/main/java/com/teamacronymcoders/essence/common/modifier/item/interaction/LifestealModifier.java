@@ -4,7 +4,6 @@ import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.api.modifier.ModifierInstance;
 import com.teamacronymcoders.essence.api.modifier.item.ItemInteractionModifier;
 import com.teamacronymcoders.essence.common.item.tool.EssenceSword;
-import com.teamacronymcoders.essence.common.util.helper.EssenceItemstackModifierHelpers;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
