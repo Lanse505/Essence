@@ -9,8 +9,6 @@ import com.teamacronymcoders.essence.common.util.helper.EssenceWorldHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -37,7 +35,7 @@ public class CascadingModifier extends ItemInteractionModifier {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miner, ModifierInstance instance) {
-        if (state.is(this.type.getBlockTag())) {
+        if (state.m_204336_(this.type.getBlockTag())) {
             if (miner instanceof Player player) {
                 if (player instanceof ServerPlayer serverPlayer) {
                     List<BlockPos> found = EssenceBlockHelper.findPositions(state, pos, level, this.type);
@@ -85,7 +83,7 @@ public class CascadingModifier extends ItemInteractionModifier {
 
     @Override
     public boolean canApplyOnObject(ItemStack stack) {
-        return stack.is(this.type.getToolTag());
+        return stack.m_204117_(this.type.getToolTag());
     }
 
 
@@ -97,7 +95,7 @@ public class CascadingModifier extends ItemInteractionModifier {
     @Override
     public Component getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslatableComponent(getTranslationName(), new TranslatableComponent("essence.cascading.type." + this.type.getName()));
+            return Component.translatable(getTranslationName(), Component.translatable("essence.cascading.type." + this.type.getName()));
         }
         return super.getTextComponentName(level);
     }
@@ -105,7 +103,7 @@ public class CascadingModifier extends ItemInteractionModifier {
     @Override
     public List<Component> getRenderedText(ModifierInstance instance) {
         List<Component> textComponents = new ArrayList<>();
-        textComponents.add(new TextComponent("  ").append(new TranslatableComponent(getTranslationName(), new TranslatableComponent("essence.cascading.type." + this.type.getName()).withStyle(this.type.getFormatting())).withStyle(ChatFormatting.GRAY)));
+        textComponents.add(Component.literal("  ").append(Component.translatable(getTranslationName(), Component.translatable("essence.cascading.type." + this.type.getName()).withStyle(this.type.getFormatting())).withStyle(ChatFormatting.GRAY)));
         return textComponents;
     }
 

@@ -2,6 +2,7 @@ package com.teamacronymcoders.essence.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.client.container.PortableWorkbenchMenu;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -16,7 +17,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 
 public class PortableWorkbenchScreen extends AbstractContainerScreen<PortableWorkbenchMenu> implements RecipeUpdateListener, MenuAccess<PortableWorkbenchMenu> {
-    private static final ResourceLocation CRAFTING_TABLE_GUI_TEXTURES = new ResourceLocation("textures/gui/container/crafting_table.png");
+    private static final ResourceLocation CRAFTING_TABLE_GUI_TEXTURES = new ResourceLocation(Essence.MOD_ID, "textures/gui/crafting_biscuit_gui.png");
     private static final ResourceLocation RECIPE_BUTTON_TEXTURE = new ResourceLocation("textures/gui/recipe_button.png");
     private final RecipeBookComponent recipeBookGui = new RecipeBookComponent();
     private boolean widthTooNarrow;

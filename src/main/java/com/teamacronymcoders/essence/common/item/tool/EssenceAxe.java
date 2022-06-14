@@ -11,7 +11,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -51,15 +50,13 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
 
     public InteractionResult onItemBehaviour(UseOnContext context) {
         Level level = context.getLevel();
-        Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
-        ItemStack stack = context.getItemInHand();
         BlockState state = level.getBlockState(context.getClickedPos());
         InteractionResult resultType = InteractionResult.FAIL;
         BlockState behaviourState;
 
         for (ToolAction action : ToolActions.DEFAULT_AXE_ACTIONS) {
-            behaviourState = state.getToolModifiedState(level, pos, player, stack, action);
+            behaviourState = state.getToolModifiedState(context, action, false);
             if (behaviourState != null && !behaviourState.equals(state)) {
                 level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                 resultType = InteractionResult.SUCCESS;
@@ -86,7 +83,7 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
         // Check Vanilla Axe Behaviour
         if (resultType == InteractionResult.FAIL) {
             for (ToolAction action : ToolActions.DEFAULT_AXE_ACTIONS) {
-                behaviourState = state.getToolModifiedState(level, pos, player, stack, action);
+                behaviourState = state.getToolModifiedState(context, action, false);
                 if (behaviourState != null && !behaviourState.equals(state)) {
                     level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                     resultType = InteractionResult.SUCCESS;
@@ -153,7 +150,7 @@ public class EssenceAxe extends AxeItem implements IModifiedItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        tooltip.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
         addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 

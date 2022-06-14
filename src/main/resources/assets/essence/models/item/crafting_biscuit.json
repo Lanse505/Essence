@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "essence:item/raw_essence"
+    "layer0": "essence:item/crafting_biscuit"
   }
 }

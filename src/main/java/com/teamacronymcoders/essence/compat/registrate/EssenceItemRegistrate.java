@@ -2,7 +2,7 @@ package com.teamacronymcoders.essence.compat.registrate;
 
 import com.hrznstudio.titanium.item.BasicItem;
 import com.teamacronymcoders.essence.Essence;
-import com.teamacronymcoders.essence.common.item.CraftingCookieItem;
+import com.teamacronymcoders.essence.common.item.CraftingBiscuitItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceCrystalItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceIngotItem;
 import com.teamacronymcoders.essence.common.item.essence.EssenceNuggetItem;
@@ -23,7 +23,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -204,12 +204,12 @@ public class EssenceItemRegistrate {
 
     // Tools
     // MISC
-    public static FoodProperties CRAFTING_COOKIE_FOOD = new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().build();
-    public static ItemEntry<CraftingCookieItem> CRAFTING_COOKIE = Essence.ESSENCE_REGISTRATE.object("crafting_cookie")
-            .item(CraftingCookieItem::new).properties(properties -> properties.stacksTo(64).rarity(Rarity.RARE).food(CRAFTING_COOKIE_FOOD))
+    public static FoodProperties CRAFTING_BISCUIT_FOOD = new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).alwaysEat().build();
+    public static ItemEntry<CraftingBiscuitItem> CRAFTING_BISCUIT = Essence.ESSENCE_REGISTRATE.object("crafting_biscuit")
+            .item(CraftingBiscuitItem::new).properties(properties -> properties.stacksTo(64).rarity(Rarity.RARE).food(CRAFTING_BISCUIT_FOOD))
             .tab(() -> Essence.CORE_TAB)
-            .lang("Crafting Cookie")
-            .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/crafting_cookie")))
+            .lang("Crafting Biscuit")
+            .model((context, provider) -> provider.handheld(context, new ResourceLocation(Essence.MOD_ID, "item/crafting_biscuit")))
             .register();
     public static ItemEntry<EssenceWrench> ESSENCE_WRENCH = Essence.ESSENCE_REGISTRATE.object("essence_wrench")
             .item(EssenceWrench::new)
@@ -303,7 +303,7 @@ public class EssenceItemRegistrate {
     public static ItemEntry<EssenceBow> ESSENCE_BOW_DIVINE = getTool("_essence_bow", "Essence Bow", EssenceBow.class, EssenceToolTiers.DIVINE, bowRecipe(() -> DataIngredient.tag(EssenceTags.EssenceItemTags.ESSENCE_INFUSED_METAL_NUGGET_DIVINE), new ResourceLocation(Essence.MOD_ID, "essence_bow_divine")), EssenceTags.EssenceItemTags.ESSENCE_BOW_DIVINE);
 
     @SuppressWarnings("unchecked")
-    public static <T extends Item> ItemEntry<T> getTool(String name, String lang, Class<T> tool, EssenceToolTiers tier, NonNullBiConsumer<DataGenContext<Item, Item>, RegistrateRecipeProvider> recipeConsumer, Tag.Named<Item>... tags) {
+    public static <T extends Item> ItemEntry<T> getTool(String name, String lang, Class<T> tool, EssenceToolTiers tier, NonNullBiConsumer<DataGenContext<Item, Item>, RegistrateRecipeProvider> recipeConsumer, TagKey<Item>... tags) {
         String tierType = tier == EssenceToolTiers.ESSENCE ? "" : tier.toString().toLowerCase();
         String entryName = tierType.equals("") ? name.substring(1) : tierType + name;
         return (ItemEntry<T>) Essence.ESSENCE_REGISTRATE.object(entryName)

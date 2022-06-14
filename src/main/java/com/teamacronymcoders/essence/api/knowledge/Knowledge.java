@@ -5,13 +5,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Knowledge extends ForgeRegistryEntry<Knowledge> implements INBTSerializable<CompoundTag> {
+public class Knowledge implements INBTSerializable<CompoundTag> {
     private static final String TAG_KNOWLEDGE = "Knowledge";
     private static final String TAG_MODIFIER_INSTANCES = "ModifierInstances";
 

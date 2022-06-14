@@ -2,7 +2,6 @@ package com.teamacronymcoders.essence.common.item;
 
 import com.teamacronymcoders.essence.client.container.PortableWorkbenchMenu;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,9 +16,9 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class CraftingCookieItem extends Item implements MenuProvider {
+public class CraftingBiscuitItem extends Item implements MenuProvider {
 
-    public CraftingCookieItem(Item.Properties properties) {
+    public CraftingBiscuitItem(Item.Properties properties) {
         super(properties);
     }
 
@@ -35,11 +34,11 @@ public class CraftingCookieItem extends Item implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity) {
-        return new PortableWorkbenchMenu(id, playerInventory, ContainerLevelAccess.create(playerEntity.getLevel(), playerEntity.blockPosition()));
+        return new PortableWorkbenchMenu(id, playerInventory, ContainerLevelAccess.create(playerEntity.level, playerEntity.m_20183_()));
     }
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent("container.essence.portable.crafter");
+        return Component.translatable("container.essence.crafting.biscuit");
     }
 }

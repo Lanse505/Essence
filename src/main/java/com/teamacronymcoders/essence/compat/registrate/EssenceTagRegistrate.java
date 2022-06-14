@@ -8,7 +8,8 @@ import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagBuilder;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,8 +42,8 @@ public class EssenceTagRegistrate {
             Blocks.BEDROCK, Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME
     };
 
-    private static final Tag.Named<Block>[] blacklistedTags = new Tag.Named[]{
-            BlockTags.LOGS, BlockTags.LEAVES, Tags.Blocks.ORES, Tags.Blocks.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL
+    private static final TagKey<Block>[] blacklistedTags = new TagKey[]{
+            BlockTags.LOGS, BlockTags.LEAVES, Tags.Blocks.ORES, BlockTags.DIRT, Tags.Blocks.SAND, Tags.Blocks.GRAVEL
     };
 
     private static final Block[] whitelistedBlocks = new Block[]{
@@ -175,15 +176,15 @@ public class EssenceTagRegistrate {
             provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.CASCADING_LUMBER).addTag(BlockTags.LOGS.getName(), Essence.MOD_ID);
             provider.getOrCreateRawBuilder(EssenceTags.EssenceModifierTags.CASCADING_EXCAVATION).addTag(Tags.Blocks.DIRT.getName(), Essence.MOD_ID).addTag(Tags.Blocks.SAND.getName(), Essence.MOD_ID).addTag(Tags.Blocks.GRAVEL.getName(), Essence.MOD_ID);
             provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.END_STONE_REPLACEABLE).addElement(Blocks.END_STONE.getRegistryName(), Essence.MOD_ID);
-            Tag.Builder blacklist = provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST);
+            TagBuilder blacklist = provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_BLACKLIST);
             for (Block block : blacklistedBlocks) {
                 ResourceLocation rl = block.getRegistryName();
                 if (rl != null) blacklist.addElement(rl, Essence.MOD_ID);
             }
-            for (Tag.Named<Block> tag : blacklistedTags) {
+            for (TagKey<Block> tag : blacklistedTags) {
                 blacklist.addTag(tag.getName(), Essence.MOD_ID);
             }
-            Tag.Builder whitelist = provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_WHITELIST);
+            TagBuilder whitelist = provider.getOrCreateRawBuilder(EssenceTags.EssenceBlockTags.FORGE_MOVEABLE_WHITELIST);
             for (Block block : whitelistedBlocks) {
                 ResourceLocation rl = block.getRegistryName();
                 if (rl != null) whitelist.addElement(rl, Essence.MOD_ID);
@@ -196,12 +197,12 @@ public class EssenceTagRegistrate {
 
         // Misc Entity Tags
         registrate.addDataGenerator(ProviderType.ENTITY_TAGS, provider -> {
-            Tag.Builder blacklist = provider.getOrCreateRawBuilder(EssenceTags.EssenceEntityTags.BLACKLIST);
+            TagBuilder blacklist = provider.getOrCreateRawBuilder(EssenceTags.EssenceEntityTags.BLACKLIST);
             for (EntityType<?> type : blacklistedEntities) {
                 ResourceLocation rl = type.getRegistryName();
                 if (rl != null) blacklist.addElement(rl, Essence.MOD_ID);
             }
-            Tag.Builder whitelist = provider.getOrCreateRawBuilder(EssenceTags.EssenceEntityTags.WHITELIST);
+            TagBuilder whitelist = provider.getOrCreateRawBuilder(EssenceTags.EssenceEntityTags.WHITELIST);
             for (EntityType<?> type : whitelistedEntities) {
                 ResourceLocation rl = type.getRegistryName();
                 if (rl != null) whitelist.addElement(rl, Essence.MOD_ID);

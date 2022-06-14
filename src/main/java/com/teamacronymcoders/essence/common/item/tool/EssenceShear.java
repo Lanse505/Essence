@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -136,7 +135,7 @@ public class EssenceShear extends ShearsItem implements IModifiedItem {
         if (sheared instanceof IForgeShearable) {
             return EssenceShearingHelper.handleIShearableEntity(stack, player, sheared, hand);
         }
-        Optional<EssenceShearingRecipe> recipe = player.getLevel().getRecipeManager().getAllRecipesFor(EssenceShearingRecipe.SERIALIZER.getRecipeType()).stream()
+        Optional<EssenceShearingRecipe> recipe = player.level.getRecipeManager().getAllRecipesFor(EssenceShearingRecipe.SERIALIZER.getRecipeType()).stream()
                 .filter(checking -> checking.matches(sheared)).findFirst();
         return recipe.isPresent() ? recipe.get().resolveRecipe(stack, player, sheared, hand) : InteractionResult.FAIL;
     }
@@ -144,7 +143,7 @@ public class EssenceShear extends ShearsItem implements IModifiedItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, list, flag);
-        list.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        list.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
         addInformationFromModifiers(stack, level, list, flag);
     }
 

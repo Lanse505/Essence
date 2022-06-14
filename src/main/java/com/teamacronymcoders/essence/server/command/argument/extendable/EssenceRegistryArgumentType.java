@@ -9,7 +9,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -24,7 +24,7 @@ public class EssenceRegistryArgumentType<T extends IForgeRegistryEntry<T>> imple
     private final IForgeRegistry<T> registry;
     private final List<String> examples;
     private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
-            new TranslatableComponent("command.argument.essence.registry.invalid", input));
+            Component.translatable("command.argument.essence.registry.invalid", input));
 
     public EssenceRegistryArgumentType() {
         this.registry = null;

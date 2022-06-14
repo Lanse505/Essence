@@ -12,8 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -58,10 +56,10 @@ public class TomeOfExperienceItem extends Item implements IModifiedItem, IItemNe
         stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> {
             int currentAmount = handler.getFluidInTank(0).getAmount();
             int capacityAmount = handler.getTankCapacity(0);
-            tooltip.add(new TranslatableComponent("tooltip.tome.essence.mode.tooltip").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(" ").withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(mode.getLocaleString()))));
-            tooltip.add(new TranslatableComponent("tooltip.essence.tome_of_experience.holding").withStyle(ChatFormatting.LIGHT_PURPLE));
-            tooltip.add(new TextComponent("  ").append(new TranslatableComponent("tooltip.essence.tome_of_experience.levels").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount)) + "/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(Math.floor(EssenceUtilHelper.getLevelForExperience(capacityAmount))))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, Math.round(EssenceUtilHelper.getLevelForExperience(capacityAmount)))))));
-            tooltip.add(new TextComponent("  ").append(new TranslatableComponent("tooltip.essence.tome_of_experience.amount").withStyle(ChatFormatting.LIGHT_PURPLE).append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount)).append("/").append(new TextComponent(NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, capacityAmount)))));
+            tooltip.add(Component.translatable("tooltip.tome.essence.mode.tooltip").withStyle(ChatFormatting.LIGHT_PURPLE).append(Component.literal(" ").withStyle(ChatFormatting.WHITE).append(Component.translatable(mode.getLocaleString()))));
+            tooltip.add(Component.translatable("tooltip.essence.tome_of_experience.holding").withStyle(ChatFormatting.LIGHT_PURPLE));
+            tooltip.add(Component.literal("  ").append(Component.translatable("tooltip.essence.tome_of_experience.levels").withStyle(ChatFormatting.LIGHT_PURPLE).append(Component.literal(NumberFormat.getNumberInstance(Locale.ROOT).format(EssenceUtilHelper.getLevelForExperience(currentAmount)) + "/").append(Component.literal(NumberFormat.getNumberInstance(Locale.ROOT).format(Math.floor(EssenceUtilHelper.getLevelForExperience(capacityAmount))))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, Math.round(EssenceUtilHelper.getLevelForExperience(capacityAmount)))))));
+            tooltip.add(Component.literal("  ").append(Component.translatable("tooltip.essence.tome_of_experience.amount").withStyle(ChatFormatting.LIGHT_PURPLE).append(Component.literal(NumberFormat.getNumberInstance(Locale.ROOT).format(currentAmount)).append("/").append(Component.literal(NumberFormat.getNumberInstance(Locale.ROOT).format(capacityAmount))).withStyle(EssenceUtilHelper.getTextColor(currentAmount, capacityAmount)))));
         });
 
         addInformationFromModifiers(stack, level, tooltip, flagIn);

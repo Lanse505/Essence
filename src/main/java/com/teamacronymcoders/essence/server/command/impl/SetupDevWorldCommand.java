@@ -15,7 +15,7 @@ import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,7 +53,7 @@ public class SetupDevWorldCommand implements Command<CommandSourceStack> {
     // Setup dev chest for Testing
     ServerPlayer player = source.getPlayerOrException();
     ServerLevel world = source.getLevel();
-    BlockPos pos = player.getOnPos().offset(player.getDirection().getNormal());
+    BlockPos pos = player.getOnPos().m_121955_(player.getDirection().getNormal());
     BlockState newState = Blocks.CHEST.defaultBlockState();
     world.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
     ChestBlockEntity chest = (ChestBlockEntity) world.getBlockEntity(pos);
@@ -68,7 +68,7 @@ public class SetupDevWorldCommand implements Command<CommandSourceStack> {
       chest.setChanged();
     }
     // Send a response to the Player
-    source.sendSuccess(new TranslatableComponent("command.essence.setup_dev"), true);
+    source.sendSuccess(Component.translatable("command.essence.setup_dev"), true);
     // Finally set the time to Noon
     return setTime(source, 6000);
   }

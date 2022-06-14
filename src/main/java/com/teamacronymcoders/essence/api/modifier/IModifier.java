@@ -1,18 +1,16 @@
 package com.teamacronymcoders.essence.api.modifier;
 
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
+import com.teamacronymcoders.essence.compat.registrate.EssenceModifierRegistrate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IModifier<T> extends IForgeRegistryEntry<IModifier<?>> {
+public interface IModifier<T> {
 
     // Core Modifier Methods
 
@@ -123,7 +121,7 @@ public interface IModifier<T> extends IForgeRegistryEntry<IModifier<?>> {
      * @return Returns the translation id for the Modifier
      */
     default String getTranslationName() {
-        final ResourceLocation id = this.getRegistryName();
+        final ResourceLocation id = EssenceModifierRegistrate.REGISTRY.get().getKey(this);
         return "modifier." + id.getNamespace() + "." + id.getPath();
     }
 
@@ -135,12 +133,12 @@ public interface IModifier<T> extends IForgeRegistryEntry<IModifier<?>> {
      */
     default Component getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslatableComponent(getTranslationName()).withStyle(ChatFormatting.GRAY);
+            return Component.translatable(getTranslationName()).withStyle(ChatFormatting.GRAY);
         }
         if (level == 1) {
-            return new TextComponent("  ").append(new TranslatableComponent(getTranslationName()).withStyle(ChatFormatting.GRAY));
+            return Component.literal("  ").append(Component.translatable(getTranslationName()).withStyle(ChatFormatting.GRAY));
         }
-        return new TextComponent("  ").append(new TranslatableComponent(getTranslationName()).append(" " + EssenceUtilHelper.toRoman(level)).withStyle(ChatFormatting.GRAY));
+        return Component.literal("  ").append(Component.translatable(getTranslationName()).append(" " + EssenceUtilHelper.toRoman(level)).withStyle(ChatFormatting.GRAY));
     }
 
     /**

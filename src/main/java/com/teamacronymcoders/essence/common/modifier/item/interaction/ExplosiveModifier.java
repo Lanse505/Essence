@@ -7,8 +7,6 @@ import com.teamacronymcoders.essence.common.modifier.item.interaction.explosive.
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -68,7 +66,7 @@ public class ExplosiveModifier extends ItemArrowModifier {
   @Override
   public List<Component> getRenderedText(ModifierInstance instance) {
     List<Component> components = super.getRenderedText(instance);
-    components.add(new TextComponent("   ").append(new TranslatableComponent("essence.modifier.explosive.charge", instance.getModifierData().getFloat("charge"))));
+    components.add(Component.literal("   ").append(Component.translatable("essence.modifier.explosive.charge", instance.getModifierData().getFloat("charge"))));
     return components;
   }
 

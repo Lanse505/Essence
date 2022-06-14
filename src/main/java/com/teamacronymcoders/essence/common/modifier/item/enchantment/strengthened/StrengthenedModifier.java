@@ -7,8 +7,6 @@ import com.teamacronymcoders.essence.common.util.helper.EssenceEnchantmentHelper
 import com.teamacronymcoders.essence.common.util.helper.EssenceUtilHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -49,7 +47,7 @@ public class StrengthenedModifier extends ItemInteractionModifier {
     @Override
     public Component getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslatableComponent(getTranslationName() + ".cleaned", new TranslatableComponent("essence.strengthened.type." + this.type.getName()));
+            return Component.translatable(getTranslationName() + ".cleaned", Component.translatable("essence.strengthened.type." + this.type.getName()));
         }
         return super.getTextComponentName(level);
     }
@@ -57,7 +55,7 @@ public class StrengthenedModifier extends ItemInteractionModifier {
     @Override
     public List<Component> getRenderedText(ModifierInstance instance) {
         List<Component> textComponents = new ArrayList<>();
-        textComponents.add(new TextComponent("  ").append(new TranslatableComponent(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), new TranslatableComponent("essence.strengthened.type." + this.type.getName()).withStyle(this.type.getTextFormatting())).withStyle(ChatFormatting.GRAY)));
+        textComponents.add(Component.literal("  ").append(Component.translatable(getTranslationName(), EssenceUtilHelper.toRoman(instance.getLevel()), Component.translatable("essence.strengthened.type." + this.type.getName()).withStyle(this.type.getTextFormatting())).withStyle(ChatFormatting.GRAY)));
         return textComponents;
     }
 

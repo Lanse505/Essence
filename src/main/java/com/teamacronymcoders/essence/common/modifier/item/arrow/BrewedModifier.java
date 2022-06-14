@@ -11,12 +11,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,7 @@ public class BrewedModifier extends ItemArrowModifier {
     @Override
     public Component getTextComponentName(int level) {
         if (level == -1) {
-            return new TranslatableComponent(getTranslationName() + ".cleaned");
+            return Component.translatable(getTranslationName() + ".cleaned");
         }
         return super.getTextComponentName(level);
     }
@@ -65,20 +62,20 @@ public class BrewedModifier extends ItemArrowModifier {
             instances.add(MobEffectInstance.load(nbt));
         }
         if (!EssenceKeyHandler.EXTENDED_INFORMATION.isDown()) {
-            textComponents.add(new TextComponent("  ").append(new TranslatableComponent(getTranslationName(), new TranslatableComponent(EssenceKeyHandler.EXTENDED_INFORMATION.getKey().getName())).withStyle(ChatFormatting.GREEN)));
+            textComponents.add(Component.literal("  ").append(Component.translatable(getTranslationName(), Component.translatable(EssenceKeyHandler.EXTENDED_INFORMATION.getKey().getName())).withStyle(ChatFormatting.GREEN)));
             return textComponents;
         }
-        textComponents.add(new TextComponent("    ").append(new TranslatableComponent(getTranslationName() + ".cleaned").withStyle(ChatFormatting.GREEN)));
-        textComponents.add(new TextComponent("      ").append(new TranslatableComponent("essence.brewed.contents").withStyle(ChatFormatting.GOLD)));
+        textComponents.add(Component.literal("    ").append(Component.translatable(getTranslationName() + ".cleaned").withStyle(ChatFormatting.GREEN)));
+        textComponents.add(Component.literal("      ").append(Component.translatable("essence.brewed.contents").withStyle(ChatFormatting.GOLD)));
         for (MobEffectInstance effect : instances) {
             if (effect.getEffect().isBeneficial()) {
-                textComponents.add(new TextComponent("        ").append(new TranslatableComponent(effect.getEffect().getDescriptionId())).withStyle(ChatFormatting.BLUE));
-                textComponents.add(new TextComponent("          ").append(new TranslatableComponent("essence.brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).withStyle(ChatFormatting.BLUE)));
-                textComponents.add(new TextComponent("          ").append(new TranslatableComponent("essence.brewed.amplifier", effect.getAmplifier()).withStyle(ChatFormatting.BLUE)));
+                textComponents.add(Component.literal("        ").append(Component.translatable(effect.getEffect().getDescriptionId())).withStyle(ChatFormatting.BLUE));
+                textComponents.add(Component.literal("          ").append(Component.translatable("essence.brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).withStyle(ChatFormatting.BLUE)));
+                textComponents.add(Component.literal("          ").append(Component.translatable("essence.brewed.amplifier", effect.getAmplifier()).withStyle(ChatFormatting.BLUE)));
             } else {
-                textComponents.add(new TextComponent("        ").append(new TranslatableComponent(effect.getEffect().getDescriptionId())).withStyle(ChatFormatting.RED));
-                textComponents.add(new TextComponent("          ").append(new TranslatableComponent("essence.brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).withStyle(ChatFormatting.RED)));
-                textComponents.add(new TextComponent("          ").append(new TranslatableComponent("essence.brewed.amplifier", effect.getAmplifier()).withStyle(ChatFormatting.RED)));
+                textComponents.add(Component.literal("        ").append(Component.translatable(effect.getEffect().getDescriptionId())).withStyle(ChatFormatting.RED));
+                textComponents.add(Component.literal("          ").append(Component.translatable("essence.brewed.duration", EssenceUtilHelper.getDurationString(effect.getDuration() / 20)).withStyle(ChatFormatting.RED)));
+                textComponents.add(Component.literal("          ").append(Component.translatable("essence.brewed.amplifier", effect.getAmplifier()).withStyle(ChatFormatting.RED)));
             }
         }
         return textComponents;

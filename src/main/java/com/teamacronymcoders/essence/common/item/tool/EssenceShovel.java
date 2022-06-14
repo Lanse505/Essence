@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -76,7 +75,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
             InteractionResult resultType = InteractionResult.FAIL;
             BlockState behaviourState;
 
-            behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
+            behaviourState = state.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
             if (behaviourState != null && !behaviourState.equals(state)) {
                 level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                 resultType = InteractionResult.SUCCESS;
@@ -102,7 +101,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
 
         // Check Vanilla Axe Behaviour
         if (resultType == InteractionResult.FAIL) {
-            behaviourState = state.getToolModifiedState(world, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
+            behaviourState = state.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
             if (behaviourState != null && !behaviourState.equals(state)) {
                 world.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                 resultType = InteractionResult.SUCCESS;
@@ -183,7 +182,7 @@ public class EssenceShovel extends ShovelItem implements IModifiedItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        tooltip.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
         addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 

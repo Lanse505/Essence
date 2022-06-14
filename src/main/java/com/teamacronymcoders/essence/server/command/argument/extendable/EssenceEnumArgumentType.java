@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class EssenceEnumArgumentType<E extends Enum<E>> implements ArgumentType<
     private final E[] eVal;
     private final Class<E> eClass;
     private final DynamicCommandExceptionType exceptionType = new DynamicCommandExceptionType((input) ->
-            new TranslatableComponent("command.argument.essence.enum.invalid", input));
+            Component.translatable("command.argument.essence.enum.invalid", input));
 
     public EssenceEnumArgumentType(Class<E> eVal) {
         this.eVal = eVal.getEnumConstants();

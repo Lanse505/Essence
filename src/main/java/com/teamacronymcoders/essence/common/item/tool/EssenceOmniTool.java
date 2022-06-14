@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -75,7 +74,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
         BlockState behaviourState;
 
         for (ToolAction action : DEFAULT_OMNITOOL_ACTIONS) {
-            behaviourState = state.getToolModifiedState(level, pos, player, stack, action);
+            behaviourState = state.getToolModifiedState(context, action, false);
             if (behaviourState != null && !behaviourState.equals(state)) {
                 level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                 resultType = InteractionResult.SUCCESS;
@@ -102,7 +101,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
 
         // Check Vanilla Axe Behaviour
         if (resultType == InteractionResult.FAIL) {
-            behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.AXE_STRIP);
+            behaviourState = state.getToolModifiedState(context, ToolActions.AXE_STRIP, false);
             if (behaviourState != null && !behaviourState.equals(state)) {
                 level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
                 resultType = InteractionResult.SUCCESS;
@@ -113,7 +112,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
         }
 
         // Check Pickaxe Behaviour
-        behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.PICKAXE_DIG);
+        behaviourState = state.getToolModifiedState(context, ToolActions.PICKAXE_DIG, false);
         if (behaviourState != null && !behaviourState.equals(state)) {
             level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
             resultType = InteractionResult.SUCCESS;
@@ -123,7 +122,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
         }
 
         // Check Vanilla Shovel Behaviour
-        behaviourState = state.getToolModifiedState(level, pos, player, stack, ToolActions.SHOVEL_FLATTEN);
+        behaviourState = state.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
         if (behaviourState != null && behaviourState.equals(state)) {
             level.setBlock(pos, behaviourState, Block.UPDATE_ALL_IMMEDIATE);
             resultType = InteractionResult.SUCCESS;
@@ -181,7 +180,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
     @Override
     @ParametersAreNonnullByDefault
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return this.blocks.contains(state.getBlock()) ? this.speed + getDestroySpeedFromModifiers(stack, state, this.speed) : 1.0F + getDestroySpeedFromModifiers(stack, state, 1.0F);
+        return state.m_204336_(this.blocks) ? this.speed + getDestroySpeedFromModifiers(stack, state, this.speed) : 1.0F + getDestroySpeedFromModifiers(stack, state, 1.0F);
     }
 
     @Override
@@ -217,7 +216,7 @@ public class EssenceOmniTool extends DiggerItem implements IModifiedItem {
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        tooltip.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
         addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 

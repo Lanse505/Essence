@@ -1,5 +1,6 @@
 package com.teamacronymcoders.essence.common.util;
 
+import com.google.common.collect.ImmutableList;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.teamacronymcoders.essence.Essence;
 import com.teamacronymcoders.essence.api.capabilities.EssenceCapability;
@@ -36,7 +37,6 @@ import com.teamacronymcoders.essence.data.loot.MagneticLootModifier;
 import com.teamacronymcoders.essence.server.command.EssenceCommands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -55,6 +55,7 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -62,6 +63,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.registries.RegisterEvent;
 
 import java.awt.*;
 import java.util.Collections;
@@ -83,9 +85,9 @@ public class EssenceEventHandlers {
 
     // Registration Handlers
     private static void setupRegistries() {
-        EventManager.modGeneric(RegistryEvent.Register.class, RecipeSerializer.class)
+        EventManager.modGeneric(RegisterEvent.class, RecipeSerializer.class)
                 .process(register -> {
-                    ((RegistryEvent.Register) register).getRegistry().registerAll(
+                    ((RegisterEvent) register).getRegistry().registerAll(
                             InfusionRecipeConversion.SERIALIZER,
                             InfusionRecipeModifier.SERIALIZER,
                             EssenceShearingRecipe.SERIALIZER,
@@ -93,9 +95,9 @@ public class EssenceEventHandlers {
                             ExplosiveChargeRecipe.SERIALIZER.setRegistryName(new ResourceLocation(MOD_ID, "explosive_charge"))
                     );
                 }).subscribe();
-        EventManager.modGeneric(RegistryEvent.Register.class, GlobalLootModifierSerializer.class)
+        EventManager.modGeneric(RegisterEvent.class, GlobalLootModifierSerializer.class)
                 .process(register -> {
-                    ((RegistryEvent.Register) register).getRegistry().registerAll(
+                    ((RegisterEvent) register).getRegistry().registerAll(
                             new FieryLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "fiery_modifier")),
                             new MagneticLootModifier.Serializer().setRegistryName(new ResourceLocation(MOD_ID, "magnetic_modifier"))
                     );
@@ -161,8 +163,8 @@ public class EssenceEventHandlers {
         // Add Ores to Overworld
         EventManager.forge(BiomeLoadingEvent.class)
                 .filter(biome -> {
-                    Set<ResourceKey<Biome>> biomes = BiomeDictionary.getBiomes(Type.OVERWORLD);
-                    return biomes.stream().anyMatch(key -> key.getRegistryName().compareTo(biome.getName()) > 0);
+                    ImmutableList<BiomeManager.BiomeEntry> biomes = BiomeManager.getBiomes(BiomeManager.BiomeType.COOL);
+                    return biomes.stream().anyMatch(key -> key.getKey().compareTo(biome.getName()) > 0);
                 })
                 .process(biome -> {
                     EssenceOreGenConfig oreGenConfig = EssenceWorldGenConfig.getOreGenConfig();

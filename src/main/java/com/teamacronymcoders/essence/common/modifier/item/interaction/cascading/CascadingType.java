@@ -3,7 +3,7 @@ package com.teamacronymcoders.essence.common.modifier.item.interaction.cascading
 import com.teamacronymcoders.essence.common.util.EssenceTags.EssenceModifierTags;
 import com.teamacronymcoders.essence.common.util.config.EssenceModifierMasterConfig;
 import net.minecraft.ChatFormatting;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -21,12 +21,12 @@ public enum CascadingType {
     private final int id;
     private final String name;
     private final ChatFormatting[] formatting;
-    private final Tag.Named<Item> toolTag;
-    private final Tag.Named<Block> blockTag;
+    private final TagKey<Item> toolTag;
+    private final TagKey<Block> blockTag;
     private final Supplier<Integer> blockLimit;
     private final Supplier<Integer> searchLimit;
 
-    CascadingType(int id, String name, Tag.Named<Item> toolTag, Tag.Named<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, ChatFormatting... formatting) {
+    CascadingType(int id, String name, TagKey<Item> toolTag, TagKey<Block> blockTag, Supplier<Integer> blockLimit, Supplier<Integer> searchLimit, ChatFormatting... formatting) {
         this.id = id;
         this.name = name;
         this.toolTag = toolTag;
@@ -56,11 +56,11 @@ public enum CascadingType {
         return name;
     }
 
-    public Tag.Named<Item> getToolTag() {
+    public TagKey<Item> getToolTag() {
         return toolTag;
     }
 
-    public Tag.Named<Block> getBlockTag() {
+    public TagKey<Block> getBlockTag() {
         return blockTag;
     }
 

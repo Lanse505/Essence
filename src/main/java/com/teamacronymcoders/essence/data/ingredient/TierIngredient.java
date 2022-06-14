@@ -11,8 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,11 +31,11 @@ public class TierIngredient extends Ingredient {
     private static final Predicate<EssenceToolTiers> supremePredicate = tier -> tier == EssenceToolTiers.SUPREME || tier == EssenceToolTiers.DIVINE;
     private static final Predicate<EssenceToolTiers> divinePredicate = tier -> tier == EssenceToolTiers.DIVINE;
 
-    private final Tag<Item> tag;
+    private final TagKey<Item> tag;
     private final EssenceToolTiers tier;
     private final Optional<CompoundTag> tagOptional;
 
-    protected TierIngredient(Tag<Item> tag, EssenceToolTiers tier, Optional<CompoundTag> tagOptional) {
+    protected TierIngredient(TagKey<Item> tag, EssenceToolTiers tier, Optional<CompoundTag> tagOptional) {
         super(Stream.of(new Ingredient.TagValue(tag)));
         this.tag = tag;
         this.tier = tier;
@@ -85,11 +84,11 @@ public class TierIngredient extends Ingredient {
         };
     }
 
-    public static TierIngredient of(Tag<Item> tag, EssenceToolTiers tier) {
+    public static TierIngredient of(TagKey<Item> tag, EssenceToolTiers tier) {
         return of(tag, tier, Optional.empty());
     }
 
-    public static TierIngredient of(Tag<Item> tag, EssenceToolTiers tier, Optional<CompoundTag> optionalNBT) {
+    public static TierIngredient of(TagKey<Item> tag, EssenceToolTiers tier, Optional<CompoundTag> optionalNBT) {
         return new TierIngredient(tag, tier, optionalNBT);
     }
 
@@ -99,7 +98,7 @@ public class TierIngredient extends Ingredient {
         @Override
         public TierIngredient parse(FriendlyByteBuf buffer) {
             ResourceLocation resourcelocation = new ResourceLocation(buffer.readUtf());
-            Tag<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (rl) -> new JsonSyntaxException("Unknown item tag '" + rl + "'"));
+            TagKey<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (rl) -> new JsonSyntaxException("Unknown item tag '" + rl + "'"));
             CompoundTag nbt = buffer.readNbt();
             return nbt != null ? new TierIngredient(tag, EssenceToolTiers.valueOf(buffer.readUtf()), Optional.of(nbt)) : new TierIngredient(tag, EssenceToolTiers.valueOf(buffer.readUtf()), Optional.empty());
         }
@@ -108,7 +107,7 @@ public class TierIngredient extends Ingredient {
         public TierIngredient parse(JsonObject json) {
             if (json.has("tag") && json.has("tier") && json.has("nbt")) {
                 ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-                Tag<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (p_151262_) -> new JsonSyntaxException("Unknown item tag '" + p_151262_ + "'"));
+                TagKey<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (p_151262_) -> new JsonSyntaxException("Unknown item tag '" + p_151262_ + "'"));
                 try {
                     return new TierIngredient(tag, EssenceToolTiers.valueOf(json.get("tier").getAsString()), Optional.of(TagParser.parseTag(json.get("nbt").getAsString())));
                 } catch (CommandSyntaxException e) {
@@ -116,7 +115,7 @@ public class TierIngredient extends Ingredient {
                 }
             } else if (json.has("tag") && json.has("tier")) {
                 ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
-                Tag<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (p_151262_) -> new JsonSyntaxException("Unknown item tag '" + p_151262_ + "'"));
+                TagKey<Item> tag = SerializationTags.getInstance().getTagOrThrow(Registry.ITEM_REGISTRY, resourcelocation, (p_151262_) -> new JsonSyntaxException("Unknown item tag '" + p_151262_ + "'"));
                 return new TierIngredient(tag, EssenceToolTiers.valueOf(json.get("tier").getAsString()), Optional.empty());
             }
             throw new IllegalStateException("Unable to parse TierIngredient due to lack of 'tag' and/or 'tier' json entries");

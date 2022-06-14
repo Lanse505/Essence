@@ -15,7 +15,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -79,7 +78,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
                 if (predicate.test(containerStack)) {
                     return containerStack;
                 }
-                if (containerStack.is(EssenceItemTags.AMMO_HOLDER)) {
+                if (containerStack.m_204117_(EssenceItemTags.AMMO_HOLDER)) {
                     if (containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
                         LazyOptional<IItemHandler> handler = containerStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                         return handler.map(stackHandler -> {
@@ -121,7 +120,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
                 float f = getPowerForTime(i);
                 if (!((double) f < 0.1D)) {
                     boolean flag1 = player.getAbilities().instabuild || (arrow.getItem() instanceof ArrowItem && ((ArrowItem) arrow.getItem()).isInfinite(arrow, bow, player));
-                    if(!player.getLevel().isClientSide){
+                    if(!player.level.isClientSide){
                         ModifiableArrowEntity modifiableArrowEntity = EssenceBowHelper.getArrowEntity(level, bow, arrow, player, f);
                         EssenceBowHelper.modifyArrowEntityWithEnchantments(modifiableArrowEntity, bow);
                         bow.hurtAndBreak(1, player, (entity) -> entity.broadcastBreakEvent(player.getUsedItemHand()));
@@ -222,7 +221,7 @@ public class EssenceBow extends BowItem implements IModifiedItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, level, tooltip, flagIn);
-        tooltip.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+        tooltip.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
         addInformationFromModifiers(stack, level, tooltip, flagIn);
     }
 

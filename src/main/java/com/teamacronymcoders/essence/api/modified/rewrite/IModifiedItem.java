@@ -13,8 +13,6 @@ import com.teamacronymcoders.essence.common.util.tier.EssenceToolTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -140,7 +138,7 @@ public interface IModifiedItem {
         if (stack.hasTag() && stack.getTag().contains(EssenceItemstackModifierHelpers.TAG_MODIFIERS) && !stack.getTag().getCompound(EssenceItemstackModifierHelpers.TAG_MODIFIERS).isEmpty()) {
             Map<String, List<Component>> sorting_map = new HashMap<>();
             stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER).ifPresent(holder -> {
-                if (!holder.getModifierInstances().isEmpty()) list.add(new TranslatableComponent("tooltip.essence.modifier").withStyle(ChatFormatting.GOLD));
+                if (!holder.getModifierInstances().isEmpty()) list.add(Component.translatable("tooltip.essence.modifier").withStyle(ChatFormatting.GOLD));
                 for (ModifierInstance instance : holder.getModifierInstances()) {
                     sorting_map.put(instance.getModifier().get().getRenderedText(instance).get(0).toString(), instance.getModifier().get().getRenderedText(instance));
                 }
@@ -149,7 +147,7 @@ public interface IModifiedItem {
                 List<Component> iTextComponents = entry.getValue();
                 list.addAll(iTextComponents);
             }
-            list.add(new TextComponent(""));
+            list.add(Component.literal(""));
         }
 
     }

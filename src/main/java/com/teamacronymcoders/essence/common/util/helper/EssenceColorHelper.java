@@ -1,10 +1,10 @@
 package com.teamacronymcoders.essence.common.util.helper;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EssenceColorHelper {
-    public static Map<IOptionalNamedTag<Item>, DyeColor> tagToDye = new HashMap<>();
+    public static Map<TagKey<Item>, DyeColor> tagToDye = new HashMap<>();
     private static final List<Color> colors = new ArrayList<>();
 
     static {

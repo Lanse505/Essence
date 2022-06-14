@@ -1,9 +1,8 @@
 package com.teamacronymcoders.essence.api.modifier;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class Modifier<T> extends ForgeRegistryEntry<IModifier<?>> implements IModifier<T> {
+public class Modifier<T> implements IModifier<T> {
 
     private final int maxLevel;
     private final int minLevel;

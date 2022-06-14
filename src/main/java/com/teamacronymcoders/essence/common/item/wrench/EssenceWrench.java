@@ -25,7 +25,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -75,7 +74,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
     public @NotNull InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-        if (target.getLevel().isClientSide()) {
+        if (target.level.isClientSide()) {
             return InteractionResult.FAIL;
         }
         LazyOptional<ItemStackModifierHolder> lazy = stack.getCapability(EssenceCapability.ITEMSTACK_MODIFIER_HOLDER);
@@ -147,10 +146,10 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
         addInformationFromModifiers(stack, level, list, flag);
         if (stack.getTag() != null && stack.getTag().contains("wrench_mode"))
-            list.add(new TranslatableComponent("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).withStyle(ChatFormatting.WHITE).append(new TranslatableComponent(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
+            list.add(Component.translatable("essence.wrench.mode.tooltip").withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD).withStyle(ChatFormatting.WHITE).append(Component.translatable(WrenchModeEnum.byName(stack.getTag().getString("wrench_mode")).getLocaleName())));
         if (stack.getTag() != null && flag == TooltipFlag.Default.ADVANCED && stack.getTag().getString("wrench_mode").equals(WrenchModeEnum.SERIALIZE.getName())) {
-            list.add(new TranslatableComponent("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
-            list.add(new TranslatableComponent("essence.wrench.disclaimer_message"));
+            list.add(Component.translatable("essence.wrench.disclaimer").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            list.add(Component.translatable("essence.wrench.disclaimer_message"));
         }
     }
 
@@ -164,7 +163,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
     }
 
     public boolean serializeEntity(ItemStack stack, LivingEntity target, boolean checkBoss) {
-        if (target.getLevel().isClientSide()) {
+        if (target.level.isClientSide()) {
             return false;
         }
         if (checkBoss) {
@@ -176,7 +175,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
                 return false;
             }
         }
-        UUID uuid = target.getUUID();
+        UUID uuid = UUID.fromString(target.getStringUUID());
         String entityID = EntityType.getKey(target.getType()).toString();
         if (EssenceGeneralConfig.getInstance().getSerializeEntity().get() == EntitySerializationEnum.BLACKLIST) {
             if (isEntityBlacklisted(entityID)) {
@@ -195,7 +194,7 @@ public class EssenceWrench extends Item implements IModifiedItem, IItemNetwork {
 
     public CompoundTag serializeNBT(LivingEntity entity) {
         CompoundTag nbt = new CompoundTag();
-        nbt.putUUID("uuid", entity.getUUID());
+        nbt.putUUID("uuid", UUID.fromString(entity.getStringUUID()));
         String entityID = EntityType.getKey(entity.getType()).toString();
         nbt.putString("entity", entityID);
         entity.load(nbt);

@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -159,28 +158,28 @@ public class TabletOfMuffledSoundsItem extends TabletItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(new TranslatableComponent("item.sound_muffler_bauble.tooltip.header"));
+        tooltip.add(Component.translatable("item.sound_muffler_bauble.tooltip.header"));
         if (stack.hasTag()) {
             CompoundTag compound = stack.getTag();
             boolean showWhiteListTooltip = compound != null && (!compound.contains("whiteList") || compound.getBoolean("whiteList"));
             String key = showWhiteListTooltip ? "item.sound_muffler.tooltip.mode.white_list" : "item.sound_muffler.tooltip.mode.black_list";
-            tooltip.add(new TranslatableComponent(key));
+            tooltip.add(Component.translatable(key));
             if (compound != null && compound.contains("sounds")) {
                 ListTag tagList = compound.getList("sounds", Tag.TAG_COMPOUND);
                 int count = tagList.size();
-                tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", count));
+                tooltip.add(Component.translatable("item.sound_muffler.tooltip.sounds.count", count));
                 if (EssenceInformationHelper.isSneakKeyDown()) {
                     for (int i = 0; i < tagList.size(); ++i) {
                         CompoundTag sound = tagList.getCompound(i);
-                        tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sound", sound.getString("sound")));
+                        tooltip.add(Component.translatable("item.sound_muffler.tooltip.sound", sound.getString("sound")));
                     }
                 }
             } else {
-                tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", 0));
+                tooltip.add(Component.translatable("item.sound_muffler.tooltip.sounds.count", 0));
             }
         } else {
-            tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.mode.black_list"));
-            tooltip.add(new TranslatableComponent("item.sound_muffler.tooltip.sounds.count", 0));
+            tooltip.add(Component.translatable("item.sound_muffler.tooltip.mode.black_list"));
+            tooltip.add(Component.translatable("item.sound_muffler.tooltip.sounds.count", 0));
         }
     }
 

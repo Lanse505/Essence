@@ -91,7 +91,8 @@ processResources {
 }
 
 minecraft {
-    mappings channel: "parchment", version: "${mappings_version}"
+    mappings channel: "official", version: "1.19"
+    //mappings channel: "parchment", version: "${mappings_version}"
     runs {
         client {
             workingDirectory project.file('run')
@@ -147,25 +148,25 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Titanium
-    implementation fg.deobf("com.hrznstudio:titanium:${titanium_version}") {
-        transitive = false
-    }
+    //implementation fg.deobf("com.hrznstudio:titanium:${titanium_version}") {
+    //    transitive = false
+    //}
 
     // Registrate
-    def registrate = "com.tterrag.registrate:Registrate:MC1.18-${registrate_version}"
-    implementation fg.deobf(registrate)
-    shade registrate
-//
-//    //Patchouli
-//    compile fg.deobf("vazkii.patchouli:Patchouli:${old_minecraft_version}-${patchouli_version}")
-//
-//    // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
-//
-//    // Curios
-//    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}:api")
-//    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${old_minecraft_version}-${curios_version}")
+    //def registrate = "com.tterrag.registrate:Registrate:MC1.18-${registrate_version}"
+    //implementation fg.deobf(registrate)
+    //shade registrate
+
+    //Patchouli
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+
+    // JEI
+    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+
+    // Curios
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}")
 
     // Apply Mixin AP
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

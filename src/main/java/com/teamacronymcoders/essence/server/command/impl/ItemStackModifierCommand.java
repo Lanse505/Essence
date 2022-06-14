@@ -18,7 +18,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -84,7 +84,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 presentHolder.addModifierInstance(false, stack, instance);
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
+                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.add", modifier.getTextComponentName(-1), hand.name()), true);
             });
             return 1;
         }
@@ -103,7 +103,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 presentHolder.removeModifierInstance(false, stack, (IModifier<ItemStack>) instance.getModifier().get());
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
+                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.remove", modifier.getTextComponentName(-1), hand.name()), true);
             });
             return 1;
         }
@@ -127,7 +127,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                             modifiedCompound.merge(compound);
                             instance.setModifierData(modifiedCompound);
                         });
-                source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
+                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.merge", modifier.getTextComponentName(-1)), true);
             });
         }
         return 0;
@@ -147,7 +147,7 @@ public class ItemStackModifierCommand implements Command<CommandSourceStack> {
                 }
                 stack.getOrCreateTag().put(EssenceItemstackModifierHelpers.TAG_MODIFIERS, presentHolder.serializeNBT());
                 presentHolder.deserializeNBT(stack.getOrCreateTag().getCompound(EssenceItemstackModifierHelpers.HOLDER));
-                source.sendSuccess(new TranslatableComponent("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
+                source.sendSuccess(Component.translatable("command.essence.modifier.itemstack.level_up", modifier.getTextComponentName(-1)), true);
             });
             return 1;
         }

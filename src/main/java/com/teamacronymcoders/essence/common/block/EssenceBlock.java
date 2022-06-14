@@ -4,7 +4,6 @@ import com.hrznstudio.titanium.api.IFactory;
 import com.teamacronymcoders.essence.common.util.tier.EssenceItemTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +27,7 @@ public class EssenceBlock extends Block {
         return () -> (BlockItem) new BlockItem(this, properties.rarity(tier.getRarity())) {
             @Override
             public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level level, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
-                list.add(new TranslatableComponent("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent(tier.getLocaleString()).withStyle(tier.getRarity().color)));
+                list.add(Component.translatable("tooltip.essence.tool.tier").withStyle(ChatFormatting.GRAY).append(Component.translatable(tier.getLocaleString()).withStyle(tier.getRarity().color)));
             }
         };
     }
